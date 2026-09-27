@@ -1,9 +1,10 @@
 # Task 05 — KILNWORKS
 
-Current active candidate: **R3**, in `r3/`. State: LOCALLY FROZEN, INDEPENDENTLY
-RECONSTRUCTED TO FULL CONVERGENCE, SCORE-TOPOLOGY AUDITED. NO TARGET-MODEL PILOT RUN
-YET. Not submission-ready until Phase 10 of the playbook SOP (one pilot, reconstructed
-and diagnosed) actually happens.
+Current active candidate: **R3b**, in `r3/` (artifact `kw-r3b.pdf`). State: LOCALLY
+FROZEN, INDEPENDENTLY RECONSTRUCTED TO FULL CONVERGENCE, SCORE-TOPOLOGY AUDITED,
+HARDENED AFTER PILOT 1, CONFIRMED BY A SECOND LOCAL BLIND PILOT AT 17.6%. NO
+TARGET-MODEL PILOT RUN YET. Not submission-ready until Phase 10 of the playbook SOP
+(one pilot, reconstructed and diagnosed) actually happens.
 
 R3 architecture: every dispatch decision (machine assignment, robot routing, oven
 batching) is pinned to one explicit deterministic policy stated in the packet —
@@ -13,30 +14,39 @@ comes from correctly composing that policy across one continuous, cross-campaign
 fault-affected run per design. Two independent from-scratch reconstructions (fresh
 agents, no access to the reference) converged to the reference's exact numbers after
 three real specification gaps and two real reference-code bugs were found and fixed
-(`r3/audit/independent-reconstruction.md`). A score-topology audit against an
-executed "reverted to R2-style per-campaign resets" mutant, and a perfect-local-
-semantics hypothetical, both stay under 50% of positive weight
-(`r3/platform/score-topology.md`). Frozen goldens: D0 187/1331, D1 165/1294,
-D2 187/1447, D3 185/1401, D4 155/1413, D5 142/1290 minutes/bill; unrestricted
-selection D5 (142,1356,22,D5); capital<=9 selection D1 (165,1315,7,D1).
+(`r3/audit/independent-reconstruction.md`).
 
-**Local blind-agent pilot run (not the target-model pilot):** a general-purpose
-agent, given only the prompt and PDF (no rules, no rubric, no reference), scored
-~85% (52/61) against the frozen rubric — 4 of 6 designs matched the reference
-exactly, including correct vector-PDF graph extraction. The gap came from one real
-implementation bug in the agent's own oven-timing code (arrival/deadline off-by-one)
-and exposed one real gap in my own packet (the selection-key formula was defined
-privately but never rendered into the PDF — now fixed). See
-`r3/audit/blind-pilot-1.md` for full detail. **This is a real concern**: an 85%
-blind score from an unhurried solver is well above the <50% target, and is grounds
-to consider further hardening before spending a real Opus 4.8 Max platform run — not
-yet decided, flagged here for the next session/human call.
+R3b hardening added a second, independent state-triggered disruption (S13, the
+Machine-Q maintenance freeze) using the *default* boundary convention deliberately
+different from S07's explicit inclusive exception, plus per-design SHA-256
+trace-integrity hash criteria at the official +10 ceiling, growing the rubric from
+61 to 221 positive weight. Frozen goldens (R3b): D0 187/1331, D1 161/1242,
+D2 187/1373, D3 185/1408, D4 151/1384, D5 153/1298 minutes/bill; unrestricted
+selection D4 (151,1432,16,D4); capital<=9 selection D1 (161,1263,7,D1).
 
-Next step: either harden R3 further (increase the density/interaction of boundary
-rules that a careful solver must get exactly right) or accept the risk and run one
-Opus 4.8 Max pilot on the frozen R3 packet, reconstruct and replay its delivered
-implementation, and find the earliest production-trace divergence. Do not skip
-straight to a full run batch either way.
+**Local blind-pilot 1 (pre-hardening, against `kw-r3.pdf`):** scored ~85% — 4 of 6
+designs matched exactly. The gap traced to one real bug in the agent's own
+oven-timing code and one real packet gap (the selection-key formula was never
+rendered into the PDF — fixed as Section G in R3b). See `r3/audit/blind-pilot-1.md`.
+
+**Local blind-pilot 2 (post-hardening, against `kw-r3b.pdf`):** scored **17.6%
+(39/221)** by direct rubric grading (not the agent's self-report). All six designs'
+`(makespan, bill)` pairs came out wrong, despite the agent independently recovering
+every local fact correctly (graph, lot-generation formulas, design tuples, tariff,
+and — notably — both S07's inclusive and S13's default boundary conventions,
+correctly distinguished). Root cause, confirmed by direct minute-by-minute trace
+diffing against the reference: a same-minute lot-claim propagation bug (Robot 1's
+turn still saw a lot Robot 0 claimed the same minute in its "move toward nearest
+waiting lot" pool, because the agent only propagated Robot 0's already-decided
+outcome for position collisions, not for lot claims). Two independently-written
+implementations by the same agent agreed with each other and passed all adversarial
+mutation checks while both being wrong — full detail, including the exact code
+diff, in `r3/audit/blind-pilot-2.md`. This is a genuine task-difficulty result, not
+a packet defect, and confirms the hardening worked.
+
+Next step: run one Opus 4.8 Max pilot on the frozen R3b packet, reconstruct and
+replay its delivered implementation, and find the earliest production-trace
+divergence. Do not skip straight to a full run batch.
 
 ---
 

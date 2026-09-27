@@ -1,0 +1,98 @@
+{
+  "results": {
+    "D0": {
+      "makespan": 187,
+      "bill": 1398,
+      "capital": 0,
+      "F": 2,
+      "G": 5,
+      "aisle_open": false
+    },
+    "D1": {
+      "makespan": 171,
+      "bill": 1313,
+      "capital": 7,
+      "F": 3,
+      "G": 5,
+      "aisle_open": false
+    },
+    "D2": {
+      "makespan": 187,
+      "bill": 1427,
+      "capital": 9,
+      "F": 2,
+      "G": 6,
+      "aisle_open": false
+    },
+    "D3": {
+      "makespan": 188,
+      "bill": 1329,
+      "capital": 6,
+      "F": 2,
+      "G": 5,
+      "aisle_open": true
+    },
+    "D4": {
+      "makespan": 152,
+      "bill": 1465,
+      "capital": 16,
+      "F": 3,
+      "G": 6,
+      "aisle_open": false
+    },
+    "D5": {
+      "makespan": 152,
+      "bill": 1307,
+      "capital": 22,
+      "F": 3,
+      "G": 6,
+      "aisle_open": true
+    }
+  },
+  "unrestricted_ranking": [
+    [
+      "(152, 1373, 22, 'D5')",
+      "D5"
+    ],
+    [
+      "(152, 1513, 16, 'D4')",
+      "D4"
+    ],
+    [
+      "(171, 1334, 7, 'D1')",
+      "D1"
+    ],
+    [
+      "(187, 1398, 0, 'D0')",
+      "D0"
+    ],
+    [
+      "(187, 1454, 9, 'D2')",
+      "D2"
+    ],
+    [
+      "(188, 1347, 6, 'D3')",
+      "D3"
+    ]
+  ],
+  "budget_ranking": [
+    [
+      "(171, 1334, 7, 'D1')",
+      "D1"
+    ],
+    [
+      "(187, 1398, 0, 'D0')",
+      "D0"
+    ],
+    [
+      "(187, 1454, 9, 'D2')",
+      "D2"
+    ],
+    [
+      "(188, 1347, 6, 'D3')",
+      "D3"
+    ]
+  ],
+  "unrestricted_winner": "D5",
+  "budget_winner": "D1"
+}
