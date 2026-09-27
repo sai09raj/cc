@@ -16,15 +16,18 @@ ablation.
 ## Layout
 
 - `design/` — architecture attack, perfect-semantics ablation, and the full visible
-  semantic contract (S00-S12). Private authoring material.
+  semantic contract (S00-S13, including the hardening-round S13 Machine-Q
+  maintenance freeze). Private authoring material.
 - `reference/` — canonical simulator, independently-checked feasibility verifier,
-  and mutation-test harness (including the per-campaign-reset mutant that
-  represents "reverting to R2's architecture"). Private.
-- `audit/` — activation-coverage evidence, mutation-kill results, and the two-round
-  independent-reconstruction record that drove the reference to full numeric
-  convergence with a from-scratch implementation. Private.
+  mutation-test harness (per-campaign-reset, fault/oven/maintenance disable,
+  tiebreak-reversal, maintenance-boundary mutants), and `score_counterfactual.py`
+  (the programmatic rubric scorer used for every score-topology number). Private.
+- `audit/` — activation-coverage evidence, mutation-kill results, the two-round
+  independent-reconstruction record, and two local blind-pilot runs
+  (`blind-pilot-1.md` against the pre-hardening packet, `blind-pilot-2.md` against
+  this hardened one). Private.
 - `artifact/` — `make_packet.py` (deterministic matplotlib renderer, no image-
-  generation model involved) and the rendered `kw-r3.pdf`. Only the PDF
+  generation model involved) and the rendered `kw-r3b.pdf`. Only the PDF
   is model-facing.
 - `platform/` — prompt, Ideal Flow, rubric, coverage ledger, score-topology audit,
   production witnesses, transcription checklist, entry guide, and revision delta.

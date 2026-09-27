@@ -1,4 +1,6 @@
-# R2 -> R3 prospective revision
+# R2 -> R3 -> R3b prospective revision history
+
+## R2 -> R3
 
 Reason: R2's architecture ("find the exact global optimum of a small bounded
 scheduling/routing instance via complete search") is CP-SAT-shaped and was solved
@@ -13,45 +15,63 @@ convergence evidence this new architecture was built and checked against.
 No previous task's topology, tuple format, five/six-file package, or goldens were
 reused unexamined; the aisle graph and design table (F/G/aisle/capital tuples) are
 the only R2 elements deliberately kept, because R2's own evidence shows visual
-extraction was not the failure point.
+extraction was not the failure point. Artifact renamed
+`KILNWORKS-T05-R2-20260926.pdf` / `kilnworks.pdf` -> `kw-r3.pdf`. Entirely new
+prompt, Ideal Flow, rubric, and reference implementation.
 
-**Artifact:** `KILNWORKS-T05-R2-20260926.pdf` / `kilnworks.pdf` -> `kw-r3.pdf`.
+## R3 -> R3b (hardening after local blind pilot 1)
 
-**Exact visual/content changes:**
-- Removed: the "find the exact optimum via complete search" framing, the four
-  independent per-campaign profiles per design, the 24-case sweep table.
-- Added: the deterministic priority-policy sections (machine assignment, robot
-  dispatch, oven pairing timer), the campaign-cadence timeline, the node-4 fault
-  timeline (window length shown geometrically, not printed as a number), and the
-  tariff step-function panel.
-- Kept: the aisle graph (identical edge set and open/closed variant), the six
-  design tuples `(F, G, aisle, capital)`.
+Reason: a local blind-agent pilot against the frozen R3 packet (`kw-r3.pdf`,
+`audit/blind-pilot-1.md`) scored ~85% against the R3 rubric. 4 of 6 designs matched
+the reference exactly. The gap traced to one real bug in the agent's own oven-timing
+code and one real gap in the R3 packet (the selection-key formula was never actually
+rendered into the PDF). Both were confirmed by direct inspection, not assumed.
 
-**Prompt:** entirely rewritten (`platform/prompt.md`) — no old sentence reused
-verbatim; the "exact offline solution" / "independently checked complete optimality
-certificate" framing is replaced by "deterministic simulator" / "independent
-verifier that re-derives the trace."
+**Artifact:** `kw-r3.pdf` -> `kw-r3b.pdf` (new filename, different bytes -- do not
+treat these as the same upload, per the mistake register's explicit warning against
+filename reuse across revisions). Added: Section G (explicit lexicographic
+selection-key formula, previously missing) and Section H (a second, independent
+disruption mechanism: the Machine-Q maintenance freeze, S13). Tightened Section F's
+oven-timer wording (explicit ">=" and explicit "arrival minute = one after the
+delivering unload, not the minute picked up as anchor").
 
-**Ideal Flow:** all three fields newly authored for R3 (`platform/ideal-flow.md`).
-No R2 field carried over.
+**Semantic contract:** added S13 (Machine-Q maintenance freeze) to
+`design/semantic-contract.md`, deliberately using the *default* (non-inclusive)
+boundary convention rather than copying S07's explicit inclusive exception, so a
+solver must actually distinguish the two rather than pattern-match one onto the
+other.
 
-**Rubric:** entirely new 38-criterion (+1 negative) set (`platform/rubric.md`).
-R2's 41-criterion set targeted per-campaign profiles and a global-optimality proof;
-none of those criteria apply to a system with no free optimization decision, so
-none were carried over. R2's old runs are not, and cannot be, rescored under R3.
+**Reference:** `reference/kilnworks_sim.py` implements S13 (`MAINT_THRESHOLD=12`,
+`MAINT_WINDOW=13`, tuned empirically so the mechanism produces an observable effect
+-- not merely fires silently -- in 5 of 6 designs; D0's immunity is structural, not
+a shielding bug, and is disclosed as such). Added `canonical_trace_serialization`/
+per-design hashing for the new trace-integrity hash criteria.
+`reference/score_counterfactual.py` added: a programmatic rubric scorer used to
+compute every score-topology counterfactual in this revision, replacing hand
+arithmetic after it was shown to be error-prone in earlier rounds of this same
+audit.
 
-**Reference:** new simulator (`reference/kilnworks_sim.py`) and independent verifier/
-mutation harness (`reference/kilnworks_verify.py`, `reference/mutant_per_campaign_reset.py`),
-validated by two independent from-scratch reconstructions to full numeric
-convergence (`audit/independent-reconstruction.md`).
+**Prompt:** unchanged in substance; filename reference updated to `kw-r3b.pdf`.
 
-**Recheck performed:** visual edge inventory unchanged and reverified; fresh
-packet-only-equivalent independent audits (two rounds, see above) found and closed
-three real specification gaps and two real reference-code bugs before freezing;
-score-topology audit run against an executed per-campaign-reset mutant and a
-perfect-local-semantics hypothetical, both kept under 50% (`platform/score-topology.md`);
-all field/weight limits checked (`platform/numeric-transcription-checklist.md`).
+**Ideal Flow:** Analyze and Synthesize fields updated to mention the second
+disruption mechanism and its deliberately-different boundary convention.
 
-**Old runs:** R2's two 100%-scoring Opus 4.8 Max trajectories are not acceptance
-evidence for R3 and are not reused in any form. A fresh target-model pilot is
-required before any acceptance runs.
+**Rubric:** substantially reweighted and extended (38 positive criteria at weight 61
+-> 47 positive criteria at weight 221). New criteria 14-15 (maintenance
+trigger/tracking, split from a single criterion so a boundary-only bug does not
+also erase trigger-tracking credit) and 31 (maintenance-freeze production witness
+W5). New criteria 36-41 (per-design SHA-256 trace-integrity hash, at the official
++10 ceiling) added specifically because lower weights let a single-mechanism
+mutant retain 38-50% of positive weight -- see `score-topology.md` for the full
+counterfactual evidence and the explicit disclosure that two narrow
+single-boundary-bit mutants still sit at 29.9-30.8% despite two rounds of retuning.
+
+**Goldens:** all six designs' makespan/bill changed (the new mechanism is not a
+no-op): D0=187/1331 (unaffected structurally), D1=161/1242, D2=187/1373,
+D3=185/1408, D4=151/1384, D5=153/1298. Unrestricted selection changed from D5 to
+D4; budget selection remains D1.
+
+**Old runs:** R2's two 100%-scoring trajectories and R3's local blind-pilot-1 run
+are not acceptance evidence for R3b and are not reused in any form. A fresh local
+blind pilot (`audit/blind-pilot-2.md`) and, eventually, a fresh target-model pilot
+are both required before any acceptance runs.

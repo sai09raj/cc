@@ -1,9 +1,10 @@
 {
-  "artifact/kw-r3.pdf": "d54d6e9592da6c49deb8d2461c6fae13b4d1d4270afd3e3b2b5bcb2d6d274688",
-  "prompt.md": "47ba85c4a5eaa1c8c03efdd9ad5c5a7d1ca7cf0264a2e2cc8ebf0bfb4b4353bd",
-  "ideal-flow.md": "f86e621b342cb1bc43de93170c77cc1ee1e49e6599883cda561143254e90f3bb",
-  "rubric.md": "9b04e3a6399ccef54bcb3c8e14dd3cd41cb038f7379fde862ae7508e4e616826",
-  "score-topology.md": "a1fdd807ddeab97beec8f78f74e5859d77855066e27365831fc0ac3260dcdae4",
-  "production-witnesses.md": "41c2160679d7d31ab3567aec81b544f729d0dbb1e3caaab5809fe7ab4af0f0e4",
-  "coverage-ledger.md": "d31213513100dd201d698daeda247f1cd138d37818d50fc10b2907228d545baf"
+  "artifact/kw-r3b.pdf": "0fdfe24a70020217047f911ea1ddd03de408e009c4fcd5a92b02ac13fbe831ca",
+  "prompt.md": "b5bbf7e7efbb351376c2305f014be0397dbe545f036fec8421f454e49ac17403",
+  "ideal-flow.md": "4f055175e0d585b3b0eb8e458c3cf7a0e31a75182e5ad7ea29043f5e4e3266f0",
+  "rubric.md": "cbd7dd968ab88c8eaa462c3da1b497fe99cf4b4cb80972c66d80cccce18ece37",
+  "score-topology.md": "226d9d69420dea24207f6de3d6a73f7c1b5991daa4b3b895c1ac27b467e87bb2",
+  "production-witnesses.md": "58bce4595349f7938c68d7f331593f469d5f63e959edbe076781a52d5fa6f254",
+  "coverage-ledger.md": "6776110dba37c2dc4d9b25d889cdabc9660ca9d1003a34cd96615fba60015bd5",
+  "numeric-transcription-checklist.md": "85f39307a11534b05cbbf745ecdca3a2533a8b7689d8cf051e55ee0cda627ac7"
 }

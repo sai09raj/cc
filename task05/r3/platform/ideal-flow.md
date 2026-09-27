@@ -9,7 +9,11 @@ robot priority order with same-minute collision resolution, and the oven's bound
 pairing timer anchored to each lot's own arrival minute. There is no free scheduling
 choice to search for. Recover the one-time node-4 disruption: on Robot 0's first
 arrival there, it freezes for a fixed window read from the packet's timeline, not
-printed as a number. Treat each of the six designs as one continuous run covering
+printed as a number. Recover the independent machine-Q maintenance freeze triggered
+by cumulative processing time, and notice it uses the packet's default t-to-t+1
+timing convention rather than the node-4 rule's explicitly stated inclusive
+exception -- the two disruptions are deliberately timed differently. Treat each of
+the six designs as one continuous run covering
 all four campaigns on a shared clock, shared fixture pool, and shared machine memory
 -- overlapping campaign release windows mean lots from two campaigns are routinely
 in the plant at once. A distance-only relaxation cannot certify a feasible joint
@@ -50,6 +54,7 @@ achieved schedule, and why treating the four campaigns as independent resets wou
 not reproduce the required continuous-run results (cite a concrete consequence, such
 as a machine losing its cross-campaign setup memory or a cross-campaign oven pairing
 becoming impossible). Reconcile schedules, traces, verifier agreement, and selection
-arithmetic. Any accurate, evidence-tied causal argument is acceptable; no particular
+arithmetic against both disruption mechanisms as well as the ordinary machine/robot/
+oven rules. Any accurate, evidence-tied causal argument is acceptable; no particular
 route or additional design comparison is required.
 ```

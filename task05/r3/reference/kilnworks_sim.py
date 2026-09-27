@@ -15,6 +15,8 @@ FAULT_WINDOW = 6
 OVEN_WAIT_TICKS = 2
 CAMPAIGNS = 4
 LOTS_PER_CAMPAIGN = 5
+MAINT_THRESHOLD = 12
+MAINT_WINDOW = 13
 
 DESIGNS = {
     "D0": dict(F=2, G=5, aisle="closed", capital=0),
@@ -141,7 +143,8 @@ def duration_on(machine, lot):
 
 def simulate(design_name, trace_limit=2000, debug=False,
              mutant_disable_fault=False, mutant_oven_no_timer=False,
-             mutant_tiebreak_high=False, lots_data=None):
+             mutant_tiebreak_high=False, mutant_disable_maintenance=False,
+             mutant_maintenance_inclusive=False, lots_data=None):
     d = DESIGNS[design_name]
     edges, adj = build_graph(d["aisle"])
     F, G = d["F"], d["G"]
@@ -154,6 +157,12 @@ def simulate(design_name, trace_limit=2000, debug=False,
     machine_busy_until = {"P": None, "Q": None}
     machine_last_family = {"P": None, "Q": None}
     machine_current_lot = {"P": None, "Q": None}
+    machine_current_proc_only = {"P": None, "Q": None}  # processing-only duration of the job in progress
+
+    q_cumulative = 0
+    q_maint_triggered = False
+    q_maint_trigger_t = None
+    q_freeze_until = None
 
     fixture_held = 0
 
@@ -194,6 +203,16 @@ def simulate(design_name, trace_limit=2000, debug=False,
                 lot.node = DOCK_P if m == "P" else DOCK_Q
                 machine_busy_until[m] = None
                 machine_current_lot[m] = None
+                if m == "Q" and not mutant_disable_maintenance:
+                    q_cumulative += machine_current_proc_only[m]
+                    machine_current_proc_only[m] = None
+                    if not q_maint_triggered and q_cumulative >= MAINT_THRESHOLD:
+                        q_maint_triggered = True
+                        q_maint_trigger_t = t
+                        if mutant_maintenance_inclusive:
+                            q_freeze_until = t + MAINT_WINDOW - 1  # wrong: copies S07's inclusive convention
+                        else:
+                            q_freeze_until = t + MAINT_WINDOW       # correct: default rule, starts t+1
 
         if oven_busy_until == t:
             for gidx in oven_members:
@@ -255,9 +274,18 @@ def simulate(design_name, trace_limit=2000, debug=False,
             locked_power += POWER["oven"]
         remaining_budget = [G - locked_power]
 
+        def q_frozen(t2):
+            if q_maint_trigger_t is None:
+                return False
+            if mutant_maintenance_inclusive:
+                return q_maint_trigger_t <= t2 <= q_freeze_until
+            return q_maint_trigger_t < t2 <= q_freeze_until
+
         # ---- S03: machine assignment (P then Q), power-budget gated ----
         for m in ("P", "Q"):
             if machine_busy_until[m] is not None:
+                continue
+            if m == "Q" and q_frozen(t):
                 continue
             pool = [
                 lot for lot in lots
@@ -277,6 +305,7 @@ def simulate(design_name, trace_limit=2000, debug=False,
             machine_busy_until[m] = t + dur
             machine_last_family[m] = chosen.family
             machine_current_lot[m] = chosen
+            machine_current_proc_only[m] = duration_on(m, chosen)
             chosen.state = "in_prep"
             chosen.machine = m
             fixture_held += 1  # fixture held from prep start
@@ -483,7 +512,27 @@ def simulate(design_name, trace_limit=2000, debug=False,
         batch_log=batch_log,
         prep_events=prep_events,
         edges=edges,
+        q_maint_triggered=q_maint_triggered,
+        q_maint_trigger_t=q_maint_trigger_t,
+        q_freeze_until=q_freeze_until,
     )
+
+
+def canonical_trace_serialization(result):
+    """One line per minute: 't,power,cum_bill'. No header row per design other
+    than a 'DESIGN:<name>' marker line. Used only for the trace-integrity hash
+    (rubric criterion on canonical_hash); not a required output format."""
+    lines = [f"DESIGN:{result['design']}"]
+    for row in result["trace"]:
+        lines.append(f"{row['t']},{row['power']},{row['cum_bill']}")
+    return "\n".join(lines)
+
+
+def canonical_hash(results_by_design):
+    import hashlib
+    blocks = [canonical_trace_serialization(results_by_design[name]) for name in DESIGNS]
+    blob = "\n".join(blocks).encode("utf-8")
+    return hashlib.sha256(blob).hexdigest()
 
 
 def lexicographic_key(result):

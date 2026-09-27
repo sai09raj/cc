@@ -52,6 +52,41 @@ Both share `family = 1` (`family(3,0) = (3+0) mod 2 = 1`; `family(2,1) = (2+1) m
 for `4 + 1 = 5` minutes — a same-family pairing that only exists because a
 campaign-0 and a campaign-1 lot were simultaneously waiting at the oven.
 
+## W5 — machine-Q maintenance freeze delaying a job (design D1)
+
+Q's cumulative completed-processing total reaches 12 at `t=44` (after lot with
+global index 1's 7 minutes and lot with global index 7's 6 minutes: `7+6=13 >= 12`,
+crossing the threshold on the second job since the running total after lot 1 alone
+was `7 < 12`). The freeze covers `[45, 57]` (13 minutes, starting the minute after
+the trigger — S13's default, non-inclusive convention). Without the mechanism
+(`mutant_disable_maintenance`), Q's next job (global index 8) starts at `t=55`,
+inside that window; with the mechanism active, it is delayed to `t=62`, seven
+minutes after the freeze ends:
+
+| | Q job (global index 8) start |
+|---|---:|
+| Mechanism active (reference) | 62 |
+| Mechanism disabled (mutant) | 55 |
+
+## Trace-integrity hashes (criteria 36-41)
+
+Each design's complete minute-by-minute trace, canonically serialized as
+`DESIGN:<name>` followed by one `t,power,cum_bill` line per minute, hashed with
+SHA-256 (`kilnworks_sim.canonical_trace_serialization` +
+`hashlib.sha256(...).hexdigest()`):
+
+| Design | SHA-256 |
+|---|---|
+| D0 | `955957f0e6a9788d034f615b29341368fae4d42a5fa575a788379d3a6f1e3212` |
+| D1 | `0e46cf0e88a3c39dd2e997d1184d70361a8d7a124b03e5715c05c5bb27deef46` |
+| D2 | `3e42a4ac02477575336794f1283c0ac5193f439ef691ea2cb039cbb0a2c91bcd` |
+| D3 | `c237acbc4fab1df9e28de4c573de705ba9f08d0c671392466c80ef41ec7a5c97` |
+| D4 | `07824bc182e06107852a8196806f0a90c9f12cf33d01b3d7583380c0cd064374` |
+| D5 | `80f5ceea7c33d2b145fc87f1a087c8dd1b1e6142c8767401ee2208d240cf940b` |
+
+Every one of these 64-hex-character values was copied directly from executed
+Python output, never hand-typed.
+
 ## Cross-file reconciliation
 
 - Each design's full trace has exactly `makespan` records; its last cumulative bill

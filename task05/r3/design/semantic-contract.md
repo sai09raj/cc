@@ -175,6 +175,27 @@ regardless of design. This mechanism triggers exactly once per design's continuo
 run (Robot 0 does not return to node 4 needing a second trigger; the fault fires only
 on the first occupancy).
 
+## S13 — Machine Q maintenance freeze `[NEW]`
+
+Track `Q_cumulative`: the sum of the **processing** portion only (never setup) of
+every job Q has **completed**, running continuously for the whole design (never
+reset). At the boundary minute Q becomes free after completing a job, if adding
+that job's processing duration makes `Q_cumulative >= MAINT_THRESHOLD` (`= 12`) for
+the first time, Q immediately becomes unable to start any new job. Unlike S07
+(which explicitly states its freeze is inclusive of the triggering arrival minute),
+S13 states no such override, so the **default** timing convention applies: the
+triggering completion minute itself is unaffected (Q could in principle still be
+assigned that same minute if somehow idle and eligible, though in practice it just
+completed a job so is not simultaneously idle for a new one), and the freeze covers
+the `MAINT_WINDOW` (`= 13`) minutes **starting the minute after** the trigger,
+through `trigger + MAINT_WINDOW` inclusive; Q resumes normal assignment eligibility
+at `trigger + MAINT_WINDOW + 1` (i.e. `trigger + 14`). This mechanism fires at most once per design's run.
+While frozen, Q simply never appears in the S03 per-minute machine-assignment pass
+(P is unaffected and continues normally); a lot that would have gone to Q must wait
+for P or for Q's freeze to end, whichever the S03 cost comparison and pool
+availability naturally produce -- there is no special-case rerouting rule beyond
+ordinary S03 mechanics applied to "Q currently ineligible."
+
 ## S08 — Aggregate power `[R2, reused; R3 admission order made explicit]`
 
 Every minute, across ongoing operations and all new starts/actions: `P=2`, `Q=3`,

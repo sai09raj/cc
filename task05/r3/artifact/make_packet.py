@@ -20,7 +20,7 @@ import matplotlib.patches as mpatches
 def wrapped(text, width=95):
     return "\n".join(textwrap.fill(line, width) if line.strip() else "" for line in text.split("\n"))
 
-OUT = "kw-r3.pdf"
+OUT = "kw-r3b.pdf"
 
 NODE_XY = {n: (n % 3, 2 - n // 3) for n in range(9)}  # node = 3y+x, y grows downward on page
 BASE_EDGES = [(0, 3), (3, 6), (3, 4), (4, 7), (6, 7), (7, 8), (5, 8), (2, 5), (1, 4)]
@@ -278,12 +278,43 @@ def page_4(pdf):
     plt.close(fig)
 
 
+def page_5(pdf):
+    fig = plt.figure(figsize=(8.5, 11))
+    fig.text(0.5, 0.965, "Section H — Machine Q maintenance freeze", ha="center", fontsize=12)
+
+    body = (
+        "Track Q_cumulative: the sum of the PROCESSING portion only (never setup) of\n"
+        "every job Q has completed, running continuously for the whole design (never\n"
+        "reset). At the boundary minute Q becomes free after completing a job, if\n"
+        "adding that job's processing duration makes Q_cumulative >= 12 for the first\n"
+        "time, Q immediately becomes unable to start any new job.\n\n"
+        "Unlike Section E's node-4 disruption, which explicitly states its freeze is\n"
+        "inclusive of the triggering arrival minute, this rule states no such\n"
+        "override -- so the DEFAULT timing convention applies (Section E: an action's\n"
+        "effect becomes visible starting the minute AFTER it occurs): the triggering\n"
+        "completion minute itself is unaffected, and the freeze covers the 13 minutes\n"
+        "starting the minute after the trigger, through trigger+13 inclusive. Q\n"
+        "resumes normal assignment eligibility at trigger+14. This mechanism fires at\n"
+        "most once per design's run.\n\n"
+        "While frozen, Q simply never appears in the per-minute machine-assignment\n"
+        "pass (P is unaffected and continues normally); a lot that would otherwise\n"
+        "have gone to Q must wait for P or for Q's freeze to end, whichever the\n"
+        "ordinary assignment-cost comparison and pool availability produce -- there is\n"
+        "no special-case rerouting rule beyond applying the normal machine-assignment\n"
+        "policy (Section D) to \"Q currently ineligible.\""
+    )
+    fig.text(0.08, 0.94, body, fontsize=9.3, family="monospace", va="top")
+    pdf.savefig(fig)
+    plt.close(fig)
+
+
 def main():
     with PdfPages(OUT, metadata={}) as pdf:
         page_1(pdf)
         page_2(pdf)
         page_3(pdf)
         page_4(pdf)
+        page_5(pdf)
         info = pdf.infodict()
         for k in list(info.keys()):
             del info[k]

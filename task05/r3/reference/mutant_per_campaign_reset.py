@@ -13,6 +13,11 @@ def simulate_per_campaign_reset(design_name):
     total_makespan = 0
     total_bill = 0
     per_campaign = []
+    batch_log = []
+    fault_triggered_any = False
+    q_maint_triggered_any = False
+    q_maint_trigger_t = None
+    q_freeze_until = None
     for s in range(k.CAMPAIGNS):
         camp_lots = [dict(x) for x in all_lots if x["s"] == s]
         for x in camp_lots:
@@ -21,8 +26,16 @@ def simulate_per_campaign_reset(design_name):
         total_makespan += r["makespan"]
         total_bill += r["bill"]
         per_campaign.append((r["makespan"], r["bill"]))
+        batch_log.extend(r["batch_log"])
+        fault_triggered_any = fault_triggered_any or r["fault_triggered"]
+        if r["q_maint_triggered"] and not q_maint_triggered_any:
+            q_maint_triggered_any = True
+            q_maint_trigger_t = r["q_maint_trigger_t"]
+            q_freeze_until = r["q_freeze_until"]
     return dict(design=design_name, makespan=total_makespan, bill=total_bill,
-                per_campaign=per_campaign, fault_triggered=None)
+                per_campaign=per_campaign, fault_triggered=fault_triggered_any,
+                batch_log=batch_log, q_maint_triggered=q_maint_triggered_any,
+                q_maint_trigger_t=q_maint_trigger_t, q_freeze_until=q_freeze_until)
 
 
 if __name__ == "__main__":
