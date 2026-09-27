@@ -1,0 +1,28 @@
+from pathlib import Path
+import json,hashlib
+ROOT=Path(__file__).resolve().parents[1];P=ROOT/'platform'
+read=lambda p:Path(p).read_text(encoding='utf-8')
+rows=json.loads(read(P/'rubric.json'));flows=json.loads(read(P/'ideal-flow.json'));prompt=read(P/'prompt.md').strip()
+manifest=json.loads(read(P/'frozen-packet-manifest.json'))
+for r in manifest['files']:assert hashlib.sha256((ROOT/r['path']).read_bytes()).hexdigest()==r['sha256'],r['path']
+gold=json.loads(read(ROOT/'reference/golden-r2/production-plans.json'))
+lines=['# KILNWORKS Task05 - complete R2-F1 entry guide','',
+'Status: frozen for one local blind calibration. This is a complete transcription package, not a claim of submission readiness. No target-model pilot, preferred acceptance score, platform linter execution or platform transcription verification is archived yet. The local blind run must be reviewed before deciding whether this architecture merits a target pilot.','',
+'## Exact field placement','',
+'1. Attachment: upload only `KILNWORKS-T05-R2-20260926.pdf` from the artifact folder. It is the four-page visual engineering specification. Do not attach this guide, rendering source, private reference, goldens, rubric, hashes or audits.','2. Prompt field: paste the entire Prompt block below.','3. Ideal Flow: paste Analyze, Execute & Generate and Synthesize into their respective separate fields.','4. Rubric: enter criteria1-41 below in exactly that order, each with its displayed unchanged signed weight. Each block is the complete criterion text.','5. Target model/effort: the user-requested target is Claude Opus4.8 at maximum effort. Availability has not been verified. Select the required target only when the platform makes it available; do not silently substitute this local solver.','6. First target-model execution: one pilot only, after local gates permit it. Preserve its trajectory and outputs. Do not launch remaining preferred runs until a fair technical sub50 pilot is reconstructed and verified.','7. Linter: use platform/linter-responses.md only for matching warnings; investigate real contradictions and record actual warnings/decisions.','',
+'## Prompt','',f'```text\n{prompt}\n```','']
+for key,val in flows.items():lines += [f'## Ideal Flow: {key}','',f'```text\n{val}\n```','']
+lines += ['## Rubric in platform order','', 'Positive total77. One negative trap-8. Criteria are binary. Local diagnostic normalization is points/77; official platform normalization has not been assumed. A supplemental proportional diagnostic prevents incomplete multi-case profiles from manufacturing a low-difficulty claim. Neither score changes the frozen weights.','']
+for r in rows:lines += [f"### Criterion {r['id']} | weight {r['weight']:+d}",'',f"```text\n{r['text']}\n```",'']
+lines += ['## Numeric transcription checklist','',f"- [ ] Prompt: {len(prompt.split())} whitespace-delimited words (permitted2-500)."]
+for key,val in flows.items():lines.append(f'- [ ] {key}: {len(val)} characters (permitted5-3000).')
+lines += [f'- [ ] Exactly{len(rows)} criteria; weights in order: '+','.join(str(r['weight']) for r in rows)+'.','- [ ] Positive weights sum77; criterion41 alone has weight-8.','- [ ] Attachment filename includes R2 and date20260926; do not upload R1.','- [ ] Four campaigns0..3, five lots0..4, six designsD0..D5,24 cases.','- [ ] Budget capital<=9 includesD2 at equality.','- [ ] Correct unrestricted key: (33,1116,22,D5); budget key: (37,1110,7,D1).','', '| Design | M by campaign0,1,2,3 | Bill by campaign0,1,2,3 |','|---|---|---|']
+for d in range(6):
+    subset=[r for r in gold if r['design']==f'D{d}'];lines.append(f"| D{d} | {[r['makespan'] for r in subset]} | {[r['bill'] for r in subset]} |")
+lines += ['', '- [ ] After entry, compare an export or screenshots of every field and weight with this guide. This checkbox remains unverified until that evidence exists.','', '## Frozen field manifest','',f"Freeze timestamp UTC: {manifest['frozen_utc']}. Manifest file: platform/frozen-packet-manifest.json. The guide is generated from these unchanged frozen files.",'','| Frozen file | SHA256 |','|---|---|']
+for r in manifest['files']:lines.append(f"| {r['path']} | `{r['sha256']}` |")
+lines += ['', '## Run evidence and revision discipline','', 'Archive exact model/effort metadata, original trajectory export, every source edit, final files, execution logs, screenshots/exports and criterion-by-criterion grading. Reconstruct final code from all edits and execute it against the frozen visible inputs. Compare feasibility and optimum results, allowing different optimal schedules. Locate the first invalid transition or first unsupported/incorrect optimization claim; distinguish technical failures from resource interruption, ambiguity and presentation.','', 'If a pilot scores50 or more, do not change this rubric to suppress it. Diagnose architecture and score survival. Any new artifact/prompt/rubric revision needs a new identifier, exact field replacements, separate weight-change list, regenerated goldens and fresh run evidence. Three preferred target runs must each independently score below50; an average does not qualify.','', 'No platform text has been entered by this task. The empty checkboxes and missing target scores are intentional records of unperformed user-controlled work, not approvals or inferred results.']
+(P/'entry-guide.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
+start=lines.index('## Numeric transcription checklist');end=lines.index('## Frozen field manifest')
+(P/'numeric-transcription-checklist.md').write_text('\n'.join(lines[start:end])+'\n',encoding='utf-8')
+print('entry guide generated; all six frozen field hashes verified')

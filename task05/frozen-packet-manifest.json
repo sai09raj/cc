@@ -1,0 +1,40 @@
+{
+  "version": "R2-F1",
+  "frozen_utc": "2026-09-27T05:36:50.977521+00:00",
+  "purpose": "one local blind calibration; no target-model acceptance claims",
+  "criteria": 41,
+  "positive_weight": 77,
+  "negative_weight": -8,
+  "files": [
+    {
+      "path": "artifact/KILNWORKS-T05-R2-20260926.pdf",
+      "bytes": 11731,
+      "sha256": "85d84267f20a1444f44fef0a96694a6322397486e58fcc5e40832ce3fb287ad8"
+    },
+    {
+      "path": "platform/prompt.md",
+      "bytes": 1697,
+      "sha256": "8ec5622a14994d06510f4b97e2dd7598c5e7c60bbd470d09ad564e4873cd2738"
+    },
+    {
+      "path": "platform/ideal-flow.json",
+      "bytes": 2546,
+      "sha256": "b5a049bf8c8e28127bac24ce8985acf289ddf5e1599bc6a2fab4e0486a0ed541"
+    },
+    {
+      "path": "platform/ideal-flow.md",
+      "bytes": 2581,
+      "sha256": "b499b6aa9f01c4928be4764ba8d37b954deb61c5559fd350819f8ed9bff86c59"
+    },
+    {
+      "path": "platform/rubric.json",
+      "bytes": 14891,
+      "sha256": "ec9ef900a6a554075ac8cb5ed2f292836cc8a10023c8c84c261bbc50eb68e4d0"
+    },
+    {
+      "path": "platform/rubric.md",
+      "bytes": 11158,
+      "sha256": "7eb84e628b56ffc2602f183e84bc9a4cecdd82daa8be92cd8d50c71fd876b301"
+    }
+  ]
+}

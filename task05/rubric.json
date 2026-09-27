@@ -1,0 +1,289 @@
+[
+  {
+    "id": 1,
+    "weight": 1,
+    "bucket": "package",
+    "causal_owner": "execution",
+    "text": "Executes the delivered offline optimizer with a documented command to generate the submitted case results; equivalent languages and source organization pass."
+  },
+  {
+    "id": 2,
+    "weight": 1,
+    "bucket": "package",
+    "causal_owner": "deliverables",
+    "text": "Provides the six logical products as accessible files: optimizer, independent verifier, schedules, case matrix/selections, certification/traces/adversarial results, and memo. No particular filenames, schema or physical file count is required."
+  },
+  {
+    "id": 3,
+    "weight": 1,
+    "bucket": "package",
+    "causal_owner": "coverage",
+    "text": "Identifies all24 distinct design/campaign cases: D0..D5 crossed with campaign0..3. Extra explanatory records pass when these cases are unambiguous."
+  },
+  {
+    "id": 4,
+    "weight": 2,
+    "bucket": "local",
+    "causal_owner": "graph",
+    "text": "Recovers solid undirected edges {0-3,3-6,3-4,4-7,6-7,7-8,5-8,2-5,1-4}, adding only4-5 for open designs D3/D5. Node=3y+x, P=3,Q=5,K=1; equivalent labels pass with an explicit mapping."
+  },
+  {
+    "id": 5,
+    "weight": 2,
+    "bucket": "local",
+    "causal_owner": "workload",
+    "text": "Generates lots j=0..4 for campaigns s=0..3 with family=(j+s)%2, release=2floor(j/2), Pbase=5+(j*j+2s)%4 and Qbase=4+(3j+s)%5. Equivalent formula notation passes."
+  },
+  {
+    "id": 6,
+    "weight": 1,
+    "bucket": "local",
+    "causal_owner": "design-input",
+    "text": "Uses design inputs (F,G,aisle,capital): D0=(2,5,closed,0),D1=(3,5,closed,7),D2=(2,6,closed,9),D3=(2,5,open,6),D4=(3,6,closed,16),D5=(3,6,open,22)."
+  },
+  {
+    "id": 7,
+    "weight": 2,
+    "bucket": "integrated",
+    "causal_owner": "makespan-results",
+    "text": "Reports D0 four-campaign optimum makespan profile as [41, 46, 39, 47] minutes, campaign order0,1,2,3. This is one design profile; separate rows, an equivalent table or another explicit ordering pass. Any attaining schedule passes."
+  },
+  {
+    "id": 8,
+    "weight": 2,
+    "bucket": "integrated",
+    "causal_owner": "makespan-results",
+    "text": "Reports D1 four-campaign optimum makespan profile as [34, 37, 33, 37] minutes, campaign order0,1,2,3. This is one design profile; separate rows, an equivalent table or another explicit ordering pass. Any attaining schedule passes."
+  },
+  {
+    "id": 9,
+    "weight": 2,
+    "bucket": "integrated",
+    "causal_owner": "makespan-results",
+    "text": "Reports D2 four-campaign optimum makespan profile as [41, 46, 39, 46] minutes, campaign order0,1,2,3. This is one design profile; separate rows, an equivalent table or another explicit ordering pass. Any attaining schedule passes."
+  },
+  {
+    "id": 10,
+    "weight": 2,
+    "bucket": "integrated",
+    "causal_owner": "makespan-results",
+    "text": "Reports D3 four-campaign optimum makespan profile as [40, 44, 39, 43] minutes, campaign order0,1,2,3. This is one design profile; separate rows, an equivalent table or another explicit ordering pass. Any attaining schedule passes."
+  },
+  {
+    "id": 11,
+    "weight": 2,
+    "bucket": "integrated",
+    "causal_owner": "makespan-results",
+    "text": "Reports D4 four-campaign optimum makespan profile as [33, 35, 31, 35] minutes, campaign order0,1,2,3. This is one design profile; separate rows, an equivalent table or another explicit ordering pass. Any attaining schedule passes."
+  },
+  {
+    "id": 12,
+    "weight": 2,
+    "bucket": "integrated",
+    "causal_owner": "makespan-results",
+    "text": "Reports D5 four-campaign optimum makespan profile as [30, 33, 31, 33] minutes, campaign order0,1,2,3. This is one design profile; separate rows, an equivalent table or another explicit ordering pass. Any attaining schedule passes."
+  },
+  {
+    "id": 13,
+    "weight": 2,
+    "bucket": "integrated",
+    "causal_owner": "bill-results",
+    "text": "Reports D0 four-campaign minimum bill at optimum makespan profile as [267, 307, 300, 286] benchmark cost units, campaign order0,1,2,3. This is one design profile; separate rows, an equivalent table or another explicit ordering pass. Any attaining schedule passes."
+  },
+  {
+    "id": 14,
+    "weight": 2,
+    "bucket": "integrated",
+    "causal_owner": "bill-results",
+    "text": "Reports D1 four-campaign minimum bill at optimum makespan profile as [255, 289, 251, 294] benchmark cost units, campaign order0,1,2,3. This is one design profile; separate rows, an equivalent table or another explicit ordering pass. Any attaining schedule passes."
+  },
+  {
+    "id": 15,
+    "weight": 2,
+    "bucket": "integrated",
+    "causal_owner": "bill-results",
+    "text": "Reports D2 four-campaign minimum bill at optimum makespan profile as [266, 289, 290, 318] benchmark cost units, campaign order0,1,2,3. This is one design profile; separate rows, an equivalent table or another explicit ordering pass. Any attaining schedule passes."
+  },
+  {
+    "id": 16,
+    "weight": 2,
+    "bucket": "integrated",
+    "causal_owner": "bill-results",
+    "text": "Reports D3 four-campaign minimum bill at optimum makespan profile as [254, 301, 260, 288] benchmark cost units, campaign order0,1,2,3. This is one design profile; separate rows, an equivalent table or another explicit ordering pass. Any attaining schedule passes."
+  },
+  {
+    "id": 17,
+    "weight": 2,
+    "bucket": "integrated",
+    "causal_owner": "bill-results",
+    "text": "Reports D4 four-campaign minimum bill at optimum makespan profile as [264, 284, 249, 289] benchmark cost units, campaign order0,1,2,3. This is one design profile; separate rows, an equivalent table or another explicit ordering pass. Any attaining schedule passes."
+  },
+  {
+    "id": 18,
+    "weight": 2,
+    "bucket": "integrated",
+    "causal_owner": "bill-results",
+    "text": "Reports D5 four-campaign minimum bill at optimum makespan profile as [267, 274, 230, 279] benchmark cost units, campaign order0,1,2,3. This is one design profile; separate rows, an equivalent table or another explicit ordering pass. Any attaining schedule passes."
+  },
+  {
+    "id": 19,
+    "weight": 1,
+    "bucket": "integrated",
+    "causal_owner": "boundary",
+    "text": "Resets production state separately for every case and completes operations at boundary t before simultaneous starts/actions occupying [t,t+1); a duration-d operation occupies [t,t+d). Starts use resources released at t, and execution ends at the final cure boundary."
+  },
+  {
+    "id": 20,
+    "weight": 1,
+    "bucket": "integrated",
+    "causal_owner": "preparation",
+    "text": "Assigns each lot in executed preparation once to P or Q after release, with at most one uninterrupted setup-plus-processing operation per machine; the machine frees on completion and prepared output waits in an unlimited buffer."
+  },
+  {
+    "id": 21,
+    "weight": 1,
+    "bucket": "integrated",
+    "causal_owner": "setup",
+    "text": "Initializes executed machine family memory unset, updates it at preparation start, retains it through idle, and applies setup0 initially/on unchanged family or2 on a change; processing duration is the generated duration for the selected machine."
+  },
+  {
+    "id": 22,
+    "weight": 1,
+    "bucket": "integrated",
+    "causal_owner": "fixtures",
+    "text": "Keeps executed fixture holdings at most F; each lot holds one continuously from preparation start through waits, transport and curing, releasing only at cure completion."
+  },
+  {
+    "id": 23,
+    "weight": 1,
+    "bucket": "integrated",
+    "causal_owner": "robot-actions",
+    "text": "Starts executed robots empty at nodes3 and5 with fixed identities and executes exactly one one-minute wait, adjacent drawn-edge move, pickup or unload action per minute. Pickup/unload/wait remain at the node; empty repositioning is allowed and locations persist."
+  },
+  {
+    "id": 24,
+    "weight": 1,
+    "bucket": "integrated",
+    "causal_owner": "cargo-precedence",
+    "text": "Executes pickups taking one prepared untransported lot at its source using an empty robot; cargo capacity is one and duplicate pickup is forbidden. Pickup becomes cargo at t+1; unloading occurs only at K and makes the lot available for curing at t+1. Every lot is conserved through its stages."
+  },
+  {
+    "id": 25,
+    "weight": 1,
+    "bucket": "integrated",
+    "causal_owner": "collision",
+    "text": "Uses each undirected edge in executed routes at most once per minute, forbidding both swaps and same-direction sharing; boundary node capacity is1 except P/Q/K capacity2. Following into a vacated node is legal."
+  },
+  {
+    "id": 26,
+    "weight": 1,
+    "bucket": "integrated",
+    "causal_owner": "batch",
+    "text": "Selects at executed oven starts one or two arrived uncured same-family lots while the oven is idle; membership stays fixed for4+family minutes, then all members finish together. Waiting arrivals do not automatically start curing."
+  },
+  {
+    "id": 27,
+    "weight": 1,
+    "bucket": "integrated",
+    "causal_owner": "power",
+    "text": "Respects aggregate G in every executed minute including ongoing operations and all new starts/actions: P=2,Q=3,oven=3,robot move/pick/unload=1 each, wait=0; setup draws full machine power and other idle resources draw zero."
+  },
+  {
+    "id": 28,
+    "weight": 1,
+    "bucket": "integrated",
+    "causal_owner": "objective-arithmetic",
+    "text": "Computes makespan as final cure boundary and bill as sum over t=0..M-1 of total minute power times 1+(floor(t/7)%3). This checks arithmetic on delivered schedules independently of whether they are optimal."
+  },
+  {
+    "id": 29,
+    "weight": 2,
+    "bucket": "integrated",
+    "causal_owner": "verifier-independence",
+    "text": "Delivers and executes a separately runnable verifier that independently reconstructs constraints and checks; shared material with the optimizer is limited to immutable instance data. Equivalent complete-certificate checkers pass; a wrapper importing optimizer transitions, feasibility or pruning does not establish independence."
+  },
+  {
+    "id": 30,
+    "weight": 10,
+    "bucket": "integrated",
+    "causal_owner": "makespan-proof",
+    "text": "Independently establishes the minimum makespan for all24 cases through executed complete search excluding earlier completion or a checked complete mathematical certificate, with justified state merging/pruning. Feasible schedules, labels or hashes alone do not prove optimality; equivalent complete proof methods pass."
+  },
+  {
+    "id": 31,
+    "weight": 10,
+    "bucket": "integrated",
+    "causal_owner": "bill-proof",
+    "text": "Independently establishes the minimum bill at the minimum makespan for all24 cases through executed complete cost search or a checked complete mathematical certificate. This grades complete independent evidence, not another copy of the numerical result; equivalent complete proof methods pass."
+  },
+  {
+    "id": 32,
+    "weight": 2,
+    "bucket": "integrated",
+    "causal_owner": "trace",
+    "text": "Produces chronological traces from the delivered uninterrupted schedules with starts/completions, both robot positions/cargo, active preparation/oven work, fixtures, minute power and cumulative bill; final time/bill reconcile with case records. Equivalent nesting, compression and simultaneous-event ordering pass."
+  },
+  {
+    "id": 33,
+    "weight": 2,
+    "bucket": "decision",
+    "causal_owner": "unrestricted-selection",
+    "text": "Applies the lexicographic key (max of four makespans,sum of four bills+3capital,capital,ID) to all six designs and selects its minimum. Grade selection arithmetic/population on delivered metrics without charging an upstream metric error again; with correct metrics the result is D5,(33,1116,22,D5)."
+  },
+  {
+    "id": 34,
+    "weight": 2,
+    "bucket": "decision",
+    "causal_owner": "budget-selection",
+    "text": "Minimizes the lexicographic key (max of four makespans,sum of four bills+3capital,capital,ID) within capital<=9, including equality and hence D0,D1,D2,D3. Grade population/selection on delivered metrics without recharging upstream metric errors; with correct metrics the result is D1,(37,1110,7,D1)."
+  },
+  {
+    "id": 35,
+    "weight": 1,
+    "bucket": "decision",
+    "causal_owner": "baseline-comparison",
+    "text": "Compares D0 with both selected designs using the delivered executed objectives. Accept a comparison that is correct relative to delivered results despite an upstream optimization error; do not require additional design pairs."
+  },
+  {
+    "id": 36,
+    "weight": 2,
+    "bucket": "decision",
+    "causal_owner": "causal-explanation",
+    "text": "Explains at least one actual routing, batching or resource interaction using identifiable event times from delivered production schedules, connecting it to the engineering recommendation. Accept any accurate supported interaction; no particular reference route or unrequested comparison is mandatory."
+  },
+  {
+    "id": 37,
+    "weight": 1,
+    "bucket": "decision",
+    "causal_owner": "relaxation",
+    "text": "Explains that distance-only travel omits shared undirected-edge and interior-node occupancy interactions, so its bound alone cannot certify a feasible joint robot schedule or achieved completion time."
+  },
+  {
+    "id": 38,
+    "weight": 1,
+    "bucket": "integrated",
+    "causal_owner": "negative-start",
+    "text": "Executes a copied-production-schedule test changing its earliest preparation start to-1; verifier rejects the copy and accepts the preserved original. Equivalent test harnesses pass."
+  },
+  {
+    "id": 39,
+    "weight": 1,
+    "bucket": "integrated",
+    "causal_owner": "collision-test",
+    "text": "Executes a copied-production-route mutation causing an edge or interior-node conflict; verifier rejects it, identifies the first invalid action minute or clearly mapped boundary, and preserves the accepted original. Either collision type suffices."
+  },
+  {
+    "id": 40,
+    "weight": 1,
+    "bucket": "package",
+    "causal_owner": "reproduction",
+    "text": "Records optimizer/verifier reproduction commands and actual tool versions, sufficient to regenerate the delivered files in the declared offline environment."
+  },
+  {
+    "id": 41,
+    "weight": -8,
+    "bucket": "negative",
+    "causal_owner": "embedded-answer",
+    "text": "Embeds precomputed case-result values or schedule tables as substitutes for executing the optimizer that produces reported results. Immutable input constants and computed search caches do not trigger this active-behavior trap; omission alone does not trigger it."
+  }
+]
