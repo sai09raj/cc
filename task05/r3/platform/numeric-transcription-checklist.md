@@ -7,7 +7,7 @@
 - [ ] Exactly 39 criteria (38 positive + 1 negative); weights in order:
       1,1,1,1,2,2,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,2,3,1,1,1,1,1,1,1,1,-8.
 - [ ] Positive weights sum 61; criterion 39 alone has weight -8.
-- [ ] Attachment filename: `KILNWORKS-T05-R3.pdf` (unique to this revision; do not
+- [ ] Attachment filename: `kw-r3.pdf` (unique to this revision; do not
       upload any R1/R2 file).
 - [ ] Four campaigns 0..3, five lots 0..4 per campaign, twenty lots per design, six
       designs D0..D5 — one continuous trace per design, not 24 independent cases.

@@ -20,7 +20,7 @@ import matplotlib.patches as mpatches
 def wrapped(text, width=95):
     return "\n".join(textwrap.fill(line, width) if line.strip() else "" for line in text.split("\n"))
 
-OUT = "KILNWORKS-T05-R3.pdf"
+OUT = "kw-r3.pdf"
 
 NODE_XY = {n: (n % 3, 2 - n // 3) for n in range(9)}  # node = 3y+x, y grows downward on page
 BASE_EDGES = [(0, 3), (3, 6), (3, 4), (4, 7), (6, 7), (7, 8), (5, 8), (2, 5), (1, 4)]

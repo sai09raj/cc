@@ -24,7 +24,7 @@ ablation.
   independent-reconstruction record that drove the reference to full numeric
   convergence with a from-scratch implementation. Private.
 - `artifact/` — `make_packet.py` (deterministic matplotlib renderer, no image-
-  generation model involved) and the rendered `KILNWORKS-T05-R3.pdf`. Only the PDF
+  generation model involved) and the rendered `kw-r3.pdf`. Only the PDF
   is model-facing.
 - `platform/` — prompt, Ideal Flow, rubric, coverage ledger, score-topology audit,
   production witnesses, transcription checklist, entry guide, and revision delta.

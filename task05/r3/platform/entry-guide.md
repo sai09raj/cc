@@ -4,7 +4,7 @@ Status: frozen after two-round independent-reconstruction convergence (see audit
 
 ## Exact field placement
 
-1. Attachment: upload only `artifact/KILNWORKS-T05-R3.pdf`. Do not attach this guide, design/, reference/, audit/, or any other private file.
+1. Attachment: upload only `artifact/kw-r3.pdf`. Do not attach this guide, design/, reference/, audit/, or any other private file.
 2. Prompt field: paste the entire Prompt block below.
 3. Ideal Flow: paste Analyze, Execute & Generate and Synthesize into their respective separate fields.
 4. Rubric: enter criteria 1-39 below in exactly that order, each with its displayed unchanged signed weight.
@@ -14,7 +14,7 @@ Status: frozen after two-round independent-reconstruction convergence (see audit
 ## Prompt
 
 ```text
-You are the production-optimization engineer for a small kiln plant. Use the attached KILNWORKS-T05-R3.pdf as the complete engineering specification. Recover the aisle graph, docking bays, and shared junction from the drawing; reconstruct the fixed dispatch policy the plant's control software already runs for machine assignment, robot routing, and oven batching (there is no free scheduling choice to search for); and reconstruct the one-time robot disruption at the shared junction from the packet.
+You are the production-optimization engineer for a small kiln plant. Use the attached kw-r3.pdf as the complete engineering specification. Recover the aisle graph, docking bays, and shared junction from the drawing; reconstruct the fixed dispatch policy the plant's control software already runs for machine assignment, robot routing, and oven batching (there is no free scheduling choice to search for); and reconstruct the one-time robot disruption at the shared junction from the packet.
 
 Implement and execute an offline, deterministic, event-by-event simulator for all six retrofit designs (D0-D5). Each design is ONE continuous run covering all four campaigns back-to-back on a shared clock and a shared resource pool -- not four independent per-campaign resets. Report each design's resulting makespan and tariff-weighted bill, then make both investment selections (unrestricted, and restricted to capital<=9) using the lexicographic key in the packet. Verify your results with a separately-coded implementation that independently re-derives the full trace, or an executed complete feasibility certificate, sharing only immutable input constants with your primary implementation.
 
@@ -247,7 +247,7 @@ continuous run. Any attaining schedule passes; report the pair however organized
 - [ ] Exactly 39 criteria (38 positive + 1 negative); weights in order:
       1,1,1,1,2,2,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,2,3,1,1,1,1,1,1,1,1,-8.
 - [ ] Positive weights sum 61; criterion 39 alone has weight -8.
-- [ ] Attachment filename: `KILNWORKS-T05-R3.pdf` (unique to this revision; do not
+- [ ] Attachment filename: `kw-r3.pdf` (unique to this revision; do not
       upload any R1/R2 file).
 - [ ] Four campaigns 0..3, five lots 0..4 per campaign, twenty lots per design, six
       designs D0..D5 — one continuous trace per design, not 24 independent cases.
@@ -278,9 +278,9 @@ continuous run. Any attaining schedule passes; report the pair however organized
 | Frozen file | SHA256 |
 |---|---|
 
-| artifact/KILNWORKS-T05-R3.pdf | `6b1b7ab16a7a3c0ee6b64988d9ce0716ee2c9125c8cc23bd37a940cb24cd0f7c` |
+| artifact/kw-r3.pdf | `6b1b7ab16a7a3c0ee6b64988d9ce0716ee2c9125c8cc23bd37a940cb24cd0f7c` |
 
-| prompt.md | `d951f3c4c20c780afba358c688f628e8ea4896cde96fafb568aa9c160e606ed1` |
+| prompt.md | `47ba85c4a5eaa1c8c03efdd9ad5c5a7d1ca7cf0264a2e2cc8ebf0bfb4b4353bd` |
 
 | ideal-flow.md | `f86e621b342cb1bc43de93170c77cc1ee1e49e6599883cda561143254e90f3bb` |
 

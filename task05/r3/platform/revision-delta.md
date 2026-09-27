@@ -15,7 +15,7 @@ reused unexamined; the aisle graph and design table (F/G/aisle/capital tuples) a
 the only R2 elements deliberately kept, because R2's own evidence shows visual
 extraction was not the failure point.
 
-**Artifact:** `KILNWORKS-T05-R2-20260926.pdf` / `kilnworks.pdf` -> `KILNWORKS-T05-R3.pdf`.
+**Artifact:** `KILNWORKS-T05-R2-20260926.pdf` / `kilnworks.pdf` -> `kw-r3.pdf`.
 
 **Exact visual/content changes:**
 - Removed: the "find the exact optimum via complete search" framing, the four
