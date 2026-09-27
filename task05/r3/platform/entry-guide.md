@@ -1,6 +1,6 @@
 # KILNWORKS Task05 - complete R3 entry guide
 
-Status: frozen after two-round independent-reconstruction convergence (see audit/independent-reconstruction.md) and a pre-pilot score-topology audit (see platform/score-topology.md). No target-model pilot has been run yet. This guide is a complete transcription package, not a claim of acceptance-run success.
+Status: frozen after two-round independent-reconstruction convergence, a pre-pilot score-topology audit, and one local blind-agent pilot (see audit/independent-reconstruction.md and audit/blind-pilot-1.md). No target-model platform pilot has been run yet.
 
 ## Exact field placement
 
@@ -278,7 +278,7 @@ continuous run. Any attaining schedule passes; report the pair however organized
 | Frozen file | SHA256 |
 |---|---|
 
-| artifact/kw-r3.pdf | `6b1b7ab16a7a3c0ee6b64988d9ce0716ee2c9125c8cc23bd37a940cb24cd0f7c` |
+| artifact/kw-r3.pdf | `d54d6e9592da6c49deb8d2461c6fae13b4d1d4270afd3e3b2b5bcb2d6d274688` |
 
 | prompt.md | `47ba85c4a5eaa1c8c03efdd9ad5c5a7d1ca7cf0264a2e2cc8ebf0bfb4b4353bd` |
 

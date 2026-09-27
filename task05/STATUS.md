@@ -20,10 +20,23 @@ semantics hypothetical, both stay under 50% of positive weight
 D2 187/1447, D3 185/1401, D4 155/1413, D5 142/1290 minutes/bill; unrestricted
 selection D5 (142,1356,22,D5); capital<=9 selection D1 (165,1315,7,D1).
 
-Next step: run one Opus 4.8 Max pilot on the frozen R3 packet, reconstruct and
-replay its delivered implementation, find the earliest production-trace divergence
-(if any), and only then decide whether to launch the remaining acceptance runs or
-issue a prospective R4 repair. Do not skip straight to a full run batch.
+**Local blind-agent pilot run (not the target-model pilot):** a general-purpose
+agent, given only the prompt and PDF (no rules, no rubric, no reference), scored
+~85% (52/61) against the frozen rubric — 4 of 6 designs matched the reference
+exactly, including correct vector-PDF graph extraction. The gap came from one real
+implementation bug in the agent's own oven-timing code (arrival/deadline off-by-one)
+and exposed one real gap in my own packet (the selection-key formula was defined
+privately but never rendered into the PDF — now fixed). See
+`r3/audit/blind-pilot-1.md` for full detail. **This is a real concern**: an 85%
+blind score from an unhurried solver is well above the <50% target, and is grounds
+to consider further hardening before spending a real Opus 4.8 Max platform run — not
+yet decided, flagged here for the next session/human call.
+
+Next step: either harden R3 further (increase the density/interaction of boundary
+rules that a careful solver must get exactly right) or accept the risk and run one
+Opus 4.8 Max pilot on the frozen R3 packet, reconstruct and replay its delivered
+implementation, and find the earliest production-trace divergence. Do not skip
+straight to a full run batch either way.
 
 ---
 

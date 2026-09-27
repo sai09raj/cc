@@ -230,14 +230,18 @@ def page_4(pdf):
         "starts and never changes. A batch cures for (4 + family) minutes. Batching is\n"
         "by family value alone — lots from different campaigns MAY be batched together.\n\n"
         "Bounded pairing timer (evaluated after both robots' actions, same minute\n"
-        "eligible): when the oven is idle with no pending anchor, the earliest-arrived\n"
-        "waiting uncured lot (tie-break lowest global index) becomes the pending\n"
-        "anchor, with a deadline of its own arrival minute + 2. Every minute the anchor\n"
-        "is pending and the oven is idle: if another arrived, uncured, same-family lot\n"
-        "exists, start the batch now with the anchor plus the lowest-global-index such\n"
-        "partner (size 2); else if the deadline has passed, start with the anchor alone\n"
-        "(size 1); otherwise wait. A power refusal does not forfeit the anchor or its\n"
-        "deadline — it simply retries next minute.\n\n"
+        "eligible): a lot's \"arrival minute\" is the minute it is actually available\n"
+        "per Section E's t -> t+1 visibility rule (one minute AFTER the unload action\n"
+        "that delivers it, not the minute that action was decided). When the oven is\n"
+        "idle with no pending anchor, the earliest-arrived waiting uncured lot\n"
+        "(tie-break lowest global index) becomes the pending anchor, with deadline =\n"
+        "its own arrival minute + 2. Every minute the anchor is pending and the oven\n"
+        "is idle: if another arrived, uncured, same-family lot exists, start the batch\n"
+        "now with the anchor plus the lowest-global-index such partner (size 2); else\n"
+        "if the CURRENT minute is >= the deadline (deadline reached OR already passed;\n"
+        "not strictly greater than), start with the anchor alone (size 1); otherwise\n"
+        "wait. A power refusal does not forfeit the anchor or its deadline — it simply\n"
+        "retries next minute.\n\n"
         "Power admission is ONE ordered pass per minute, not two separate passes:\n"
         "machine P start, machine Q start, Robot 0's action, Robot 1's action, then a\n"
         "new oven start — each step drawing from whatever budget remains after the\n"
@@ -247,7 +251,22 @@ def page_4(pdf):
     )
     fig.text(0.08, 0.94, body, fontsize=9.3, family="monospace", va="top")
 
-    ax = fig.add_axes([0.12, 0.10, 0.76, 0.24])
+    fig.text(0.08, 0.42, "Section G — Investment selection", fontsize=12)
+    key_body = (
+        "Selection key per design, minimized lexicographically (compare the first\n"
+        "component; only break a tie with the next): (makespan, bill + 3*capital,\n"
+        "capital, design ID). Unrestricted selection: the minimizing design among all\n"
+        "six. Budget selection: the minimizing design among only those with\n"
+        "capital <= 9."
+    )
+    fig.text(0.08, 0.39, key_body, fontsize=9.3, family="monospace", va="top")
+
+    fig.text(0.08, 0.235,
+        "Tariff multiplier on that minute's total power draw: multiplier(t) = 1 +\n"
+        "(floor(t/7) mod 3). Bill = sum of power(t) x multiplier(t), t = 0..makespan-1.",
+        fontsize=9, va="top")
+
+    ax = fig.add_axes([0.12, 0.05, 0.76, 0.12])
     ts = list(range(0, 42))
     mult = [1 + ((t // 7) % 3) for t in ts]
     ax.step(ts, mult, where="post", color="black")
@@ -255,9 +274,6 @@ def page_4(pdf):
     ax.set_ylabel("tariff multiplier")
     ax.set_yticks([1, 2, 3])
     ax.grid(color="0.9")
-    ax.set_title("Tariff multiplier applied to that minute's total power draw:\n"
-                 "multiplier(t) = 1 + (floor(t/7) mod 3). Bill = Σ power(t) × multiplier(t)\n"
-                 "over t = 0 .. makespan−1, on the design's single continuous clock.", fontsize=9)
     pdf.savefig(fig)
     plt.close(fig)
 
