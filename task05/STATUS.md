@@ -1,6 +1,35 @@
 # Task 05 — KILNWORKS
 
-Current frozen candidate: R2-F1. State: REJECTED FOR THE REQUESTED DIFFICULTY TARGET AFTER SUCCESSFUL TARGET-MODEL RUNS. NOT SUBMISSION-READY.
+Current active candidate: **R3**, in `r3/`. State: LOCALLY FROZEN, INDEPENDENTLY
+RECONSTRUCTED TO FULL CONVERGENCE, SCORE-TOPOLOGY AUDITED. NO TARGET-MODEL PILOT RUN
+YET. Not submission-ready until Phase 10 of the playbook SOP (one pilot, reconstructed
+and diagnosed) actually happens.
+
+R3 architecture: every dispatch decision (machine assignment, robot routing, oven
+batching) is pinned to one explicit deterministic policy stated in the packet —
+there is no free optimization decision left for a generic solver (this is the
+direct architectural response to R2's CP-SAT solve, see below). Difficulty instead
+comes from correctly composing that policy across one continuous, cross-campaign,
+fault-affected run per design. Two independent from-scratch reconstructions (fresh
+agents, no access to the reference) converged to the reference's exact numbers after
+three real specification gaps and two real reference-code bugs were found and fixed
+(`r3/audit/independent-reconstruction.md`). A score-topology audit against an
+executed "reverted to R2-style per-campaign resets" mutant, and a perfect-local-
+semantics hypothetical, both stay under 50% of positive weight
+(`r3/platform/score-topology.md`). Frozen goldens: D0 187/1331, D1 165/1294,
+D2 187/1447, D3 185/1401, D4 155/1413, D5 142/1290 minutes/bill; unrestricted
+selection D5 (142,1356,22,D5); capital<=9 selection D1 (165,1315,7,D1).
+
+Next step: run one Opus 4.8 Max pilot on the frozen R3 packet, reconstruct and
+replay its delivered implementation, find the earliest production-trace divergence
+(if any), and only then decide whether to launch the remaining acceptance runs or
+issue a prospective R4 repair. Do not skip straight to a full run batch.
+
+---
+
+## R2 history (archived, rejected — preserved verbatim below)
+
+Former frozen candidate: R2-F1. State: REJECTED FOR THE REQUESTED DIFFICULTY TARGET AFTER SUCCESSFUL TARGET-MODEL RUNS. NOT SUBMISSION-READY.
 
 User reports100% scores on the preferred runs and supplied two Claude Opus4.8 trajectories. Both contain all24 correct optimum pairs and correct D5/D1 selections. The second trajectory records a complete CP-SAT optimization stage of169.9seconds, independent model/replay checks for24 cases, and six explicit-search crosschecks. Final sources have been reconstructed and archived under audit/target-runs. A fresh local spotcheck agrees; further local replay is in progress. These are successful technical solutions, not sub50 acceptance evidence. Do not run more target trials of unchanged R2 hoping for failure. Frozen fields/weights remain preserved for honest grading.
 

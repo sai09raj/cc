@@ -1,0 +1,32 @@
+{
+  "D0": {
+    "makespan": 187,
+    "bill": 1331,
+    "fault_triggered": true
+  },
+  "D1": {
+    "makespan": 165,
+    "bill": 1294,
+    "fault_triggered": true
+  },
+  "D2": {
+    "makespan": 187,
+    "bill": 1447,
+    "fault_triggered": true
+  },
+  "D3": {
+    "makespan": 185,
+    "bill": 1401,
+    "fault_triggered": true
+  },
+  "D4": {
+    "makespan": 155,
+    "bill": 1413,
+    "fault_triggered": true
+  },
+  "D5": {
+    "makespan": 142,
+    "bill": 1290,
+    "fault_triggered": true
+  }
+}
