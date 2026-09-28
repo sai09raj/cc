@@ -68,24 +68,31 @@ minutes after the freeze ends:
 | Mechanism active (reference) | 62 |
 | Mechanism disabled (mutant) | 55 |
 
-## Trace-integrity hashes (criteria 36-41)
+## Trace-integrity hashes (criteria 38-43)
 
 Each design's complete minute-by-minute trace, canonically serialized as
 `DESIGN:<name>` followed by one `t,power,cum_bill` line per minute, hashed with
 SHA-256 (`kilnworks_sim.canonical_trace_serialization` +
-`hashlib.sha256(...).hexdigest()`):
+`hashlib.sha256(...).hexdigest()`). The full 64-hex-character digest is the
+canonical/grading-material record below; **the rubric criteria (38-43) use only
+the first 16 hex characters**, truncated deliberately to keep manual platform
+entry safe from transcription errors while remaining overwhelmingly sensitive
+to any single divergent minute (64 bits of entropy — an accidental match
+between two genuinely different traces is astronomically unlikely across this
+six-design, non-adversarial setting). Enter only the bolded 16-character
+prefix into the rubric field, not the full hash.
 
-| Design | SHA-256 |
-|---|---|
-| D0 | `955957f0e6a9788d034f615b29341368fae4d42a5fa575a788379d3a6f1e3212` |
-| D1 | `0e46cf0e88a3c39dd2e997d1184d70361a8d7a124b03e5715c05c5bb27deef46` |
-| D2 | `3e42a4ac02477575336794f1283c0ac5193f439ef691ea2cb039cbb0a2c91bcd` |
-| D3 | `c237acbc4fab1df9e28de4c573de705ba9f08d0c671392466c80ef41ec7a5c97` |
-| D4 | `07824bc182e06107852a8196806f0a90c9f12cf33d01b3d7583380c0cd064374` |
-| D5 | `80f5ceea7c33d2b145fc87f1a087c8dd1b1e6142c8767401ee2208d240cf940b` |
+| Design | Full SHA-256 | Rubric value (first 16 chars) |
+|---|---|---|
+| D0 | `955957f0e6a9788d034f615b29341368fae4d42a5fa575a788379d3a6f1e3212` | **`955957f0e6a9788d`** |
+| D1 | `0e46cf0e88a3c39dd2e997d1184d70361a8d7a124b03e5715c05c5bb27deef46` | **`0e46cf0e88a3c39d`** |
+| D2 | `3e42a4ac02477575336794f1283c0ac5193f439ef691ea2cb039cbb0a2c91bcd` | **`3e42a4ac02477575`** |
+| D3 | `c237acbc4fab1df9e28de4c573de705ba9f08d0c671392466c80ef41ec7a5c97` | **`c237acbc4fab1df9`** |
+| D4 | `07824bc182e06107852a8196806f0a90c9f12cf33d01b3d7583380c0cd064374` | **`07824bc182e06107`** |
+| D5 | `80f5ceea7c33d2b145fc87f1a087c8dd1b1e6142c8767401ee2208d240cf940b` | **`80f5ceea7c33d2b1`** |
 
-Every one of these 64-hex-character values was copied directly from executed
-Python output, never hand-typed.
+Every one of these values was copied directly from executed Python output,
+never hand-typed.
 
 ## Cross-file reconciliation
 

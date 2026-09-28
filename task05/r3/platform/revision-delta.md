@@ -153,3 +153,21 @@ of repeating full witness names, or replacing a clause with a terser
 equivalent). Affected: 10, 11, 16, 24, 27, 29, 32, 34, 44, 47. Re-verified
 programmatically after editing: all 50 criteria are now under the limit
 (longest is 298 characters). No weights or criterion numbers changed.
+
+## R3b hash-criteria length reduction (64 -> 16 hex characters)
+
+The user flagged genuine transcription risk in criteria 38-43: six separate
+64-character hex fields, any single mistyped character making that criterion
+permanently unsatisfiable (including by a perfect answer). Considered and
+rejected dropping the hash bucket entirely: tested via
+`score_counterfactual.py` with `PER_DESIGN_HASH_WEIGHT=0`, and the three
+borderline adversarial mutants (tiebreak-reversed, maintenance-boundary,
+maintenance-disabled) rose from ~30-32% to 35-38% -- the bucket is load-bearing
+for difficulty, not optional. Instead, shortened the displayed/typed value to
+the first 16 hex characters of each SHA-256 (64 bits of entropy, still
+overwhelmingly sensitive to any single divergent minute for this six-design,
+non-adversarial setting). No change to weights, criterion numbers, or the
+underlying pass/fail semantics -- score_counterfactual.py's internal logic
+still compares full 64-character hashes, so all previously-computed mutant
+percentages are unaffected. Updated: rubric.md (criteria 38-43),
+numeric-transcription-checklist.md, production-witnesses.md.

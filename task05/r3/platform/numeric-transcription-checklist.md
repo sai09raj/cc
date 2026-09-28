@@ -43,10 +43,13 @@
 - [ ] Witness W4 (D1): mixed-campaign batch at t=50, members {global index 3, 7}.
 - [ ] Witness W5 (D1): maintenance trigger at t=44, freeze [45,57]; Q's next job
       (global index 8) delayed to t=62 (vs t=55 if the mechanism were absent).
-- [ ] All six per-design trace-integrity SHA-256 hashes are each exactly 64
-      lowercase hex characters (verify programmatically, not by eye) and were
-      copied from `production-witnesses.md` / `frozen-packet-manifest.json`, never
-      retyped by hand.
+- [ ] All six per-design trace-integrity values are each exactly 16 lowercase hex
+      characters — the first 16 characters of the full SHA-256, truncated for safe
+      manual transcription (verify programmatically, not by eye) and copied from
+      `production-witnesses.md` / `frozen-packet-manifest.json`, never retyped by
+      hand:
+      D0=`955957f0e6a9788d`, D1=`0e46cf0e88a3c39d`, D2=`3e42a4ac02477575`,
+      D3=`c237acbc4fab1df9`, D4=`07824bc182e06107`, D5=`80f5ceea7c33d2b1`.
 - [ ] After entry, compare an export or screenshots of every field and weight
       against this guide. This checkbox remains unverified until that evidence
       exists.
