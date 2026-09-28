@@ -1,6 +1,6 @@
 # ATRIUM-9 rubric
 
-Positive total **248**; one negative trap **-8**. Criteria are binary. Accept
+Positive total **250**; one negative trap **-8**. Criteria are binary. Accept
 equivalent correct work throughout: equivalent languages, source
 organization, output schemas, file layout, and formula notation. No hidden
 filename/schema requirements. Score topology deliberately anchors the
@@ -162,7 +162,7 @@ Baseline configuration for every witness below and for the hash:
     configuration's budget; the verifier rejects it, identifies the
     offending tick, and the original is preserved and still accepted.
 
-### Decision/causal reconciliation (criteria 43-46, weight 8)
+### Decision/causal reconciliation (criteria 43-47, weight 10)
 
 43. **+2** — Explains, citing the baseline trace's own car counts and
     metrics, why the wait-optimal and energy-optimal selections diverge
@@ -179,10 +179,14 @@ Baseline configuration for every witness below and for the hash:
     later be served by that original car even if it is still nearby,
     tying the explanation to what would go wrong (a passenger served
     twice, or a phantom stop) if this were not enforced.
+47. **+2** — Explains why treating the DWELL-to-CLOSING transition as
+    automatic rather than power-gated would understate real contention: an
+    ungated close draws power outside the admission pass, so a tick that
+    should show the shared budget binding would not.
 
-### Negative trap (criterion 47)
+### Negative trap (criterion 48)
 
-47. **-8** — Embeds precomputed sweep rows, selection values, or the
+48. **-8** — Embeds precomputed sweep rows, selection values, or the
     trace-integrity hash as literals substituting for executing the
     delivered simulator that produces them. Immutable input constants
     (the call-generation formulas, timing/power constants) do not trigger

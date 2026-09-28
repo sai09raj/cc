@@ -31,7 +31,12 @@ PAGE_W, PAGE_H = 612, 792  # US letter, points
 
 def render_png(fig):
     buf = io.BytesIO()
-    fig.savefig(buf, format="png", dpi=DPI)
+    # metadata={"Software": ""} suppresses matplotlib's default
+    # "Software: Matplotlib version X, https://matplotlib.org/" tEXt chunk.
+    # Belt-and-suspenders: PyMuPDF's insert_image() already re-encodes PNGs
+    # into raw image XObjects and drops ancillary chunks on its own, but the
+    # raw bytes shouldn't carry the tag even transiently.
+    fig.savefig(buf, format="png", dpi=DPI, metadata={"Software": ""})
     plt.close(fig)
     buf.seek(0)
     return buf.read()
@@ -336,10 +341,29 @@ def main():
         doc.del_xml_metadata()
     except Exception:
         pass
+    # PyMuPDF also writes a self-referential /Info dict directly on the
+    # Catalog object (distinct from the trailer-level Info doc.metadata
+    # controls) stamped with its own Producer string -- clear that too.
+    doc.xref_set_key(doc.pdf_catalog(), "Info", "null")
 
     out_path = "/home/user/cc/task06/artifact/atrium9.pdf"
     doc.save(out_path, garbage=4, deflate=True, clean=True)
     doc.close()
+
+    # PyMuPDF unconditionally stamps a "% Written by MuPDF x.y.z" comment as
+    # the third line of every file it writes, with no save() option to
+    # suppress it. Blank it out in place -- same total byte length, so every
+    # later object's byte offset in the xref table is unaffected -- rather
+    # than deleting it, which would shift offsets and corrupt the file.
+    raw = open(out_path, "rb").read()
+    start = raw.find(b"% Written by")
+    if start != -1:
+        end = raw.find(b"\n", start)
+        segment = raw[start:end]
+        blanked = b"%" + b" " * (len(segment) - 1)
+        raw = raw[:start] + blanked + raw[end:]
+        open(out_path, "wb").write(raw)
+
     print("wrote", out_path)
 
 

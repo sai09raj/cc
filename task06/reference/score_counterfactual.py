@@ -34,14 +34,14 @@ W3B_WEIGHT = 28                # criterion 36
 W4_WEIGHT = 14                  # criterion 37 (only discriminates power-disabled; kept modest since it raises the other two mutants' scores)
 HASH_WEIGHT = 36                # criterion 38 (forced-fail for power-disabled too: pure discriminator)
 VERIFY_WEIGHT = 1             # criteria 37-40
-DECISION_WEIGHT = 2           # criteria 41-44
+DECISION_WEIGHT = 2           # criteria 43-47 (rubric.md numbering)
 
 TOTAL = (sum(PACKAGE_WEIGHT) + sum(LOCAL_WEIGHT.values())
          + SWEEP_SELECTION_WEIGHT * 3 + SWEEP_ROWCOUNT_WEIGHT + SWEEP_AGREE_WEIGHT
          + SWEEP_SAMPLE_WEIGHT * 4 + SWEEP_RECON_WEIGHT * 3
          + SWEEP_REASSIGN_TOTAL_WEIGHT + SWEEP_ENERGY_TOTAL_WEIGHT
          + W1_WEIGHT + W2_WEIGHT + W3A_WEIGHT + W3B_WEIGHT + W4_WEIGHT + HASH_WEIGHT
-         + VERIFY_WEIGHT * 4 + DECISION_WEIGHT * 4)
+         + VERIFY_WEIGHT * 4 + DECISION_WEIGHT * 5)
 
 BASELINE_CFG = dict(active_cars=3, zoning="TOP", wait_timeout=50, capacity=6, power_budget=8)
 POWER_WITNESS_CFG = dict(active_cars=4, zoning="GROUND", wait_timeout=50, capacity=6, power_budget=6)
@@ -172,8 +172,11 @@ def score(name, sweep_kwargs=None, local_fail=(), decision_fail=(), verify_fail=
         if cid not in verify_fail:
             earned += VERIFY_WEIGHT
 
-    # decision (41-44) -- generously assume explained correctly unless told otherwise
-    for cid in (41, 42, 43, 44):
+    # decision (43-47 in rubric.md numbering) -- generously assume explained
+    # correctly unless told otherwise; criterion 47 (door-closing-automatic
+    # explanation) is a general causal point independent of which mechanism
+    # a given mutant broke, so it is never in decision_fail below.
+    for cid in (43, 44, 45, 46, 47):
         if cid not in decision_fail:
             earned += DECISION_WEIGHT
 
