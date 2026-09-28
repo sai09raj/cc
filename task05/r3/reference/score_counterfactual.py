@@ -4,15 +4,16 @@ programmatically to avoid hand-arithmetic transcription errors (see
 Playbook/03-RUBRIC-AND-LINTER-GUIDE.md's numeric-entry-discipline warnings).
 
 Criterion numbering matches platform/rubric.md (final, post-hardening, post
-rubric-guidelines audit -- see revision-delta.md for the renumbering that
-split witness W3 out of criterion 26 and removed the W5 duplicate in 23):
-  1-4 package, 5-15 local (14=maintenance trigger/tracking, 15=maintenance
-  boundary convention -- split so a boundary-only bug doesn't also erase
-  trigger-tracking credit), 16-27 per-design values+reconciliation (26 is
-  +7, not +10 -- see below), 28-32 named production witnesses (28 fault,
-  29 interleave, 30 mixed-batch, 31 maintenance-freeze, 32 setup-memory/W3),
-  33 verifier-exists, 34 verifier-agrees, 35-36 adversarial checks,
-  37-42 per-design canonical trace-hash, 43-48 decision, 49 negative trap.
+full rubric-guidelines atomicity pass -- see revision-delta.md):
+  1-3 package (1-4 merged into one reproducibility criterion), 4-16 local
+  (10=oven partner-matching, 11=oven deadline-timing -- split from the old
+  bundled criterion 11; 14=maintenance trigger/tracking, 15=maintenance
+  trigger-minute-unaffected, 16=maintenance 13-minute window -- split from
+  the old bundled criterion 15), 17-28 per-design values+reconciliation (27
+  is +7, not +10 -- see below), 29-33 named production witnesses (29 fault,
+  30 interleave, 31 mixed-batch, 32 maintenance-freeze, 33 setup-memory/W3),
+  34 verifier-exists, 35 verifier-agrees, 36-37 adversarial checks,
+  38-43 per-design canonical trace-hash, 44-49 decision, 50 negative trap.
 
 Weights below must be kept in sync with platform/rubric.md by hand; this file
 does not parse the rubric. After any rubric weight change, re-check both.
@@ -21,18 +22,18 @@ import hashlib
 import kilnworks_sim as k
 from mutant_per_campaign_reset import simulate_per_campaign_reset as reset_sim
 
-PER_DESIGN_WEIGHT = 10          # criteria 16-21 (all) and 22-27 (D4/26 overridden below)
-PER_DESIGN_RECON_WEIGHT = {"D4": 7}  # 26 lost 3 of its 10 to the standalone W3 criterion (32)
-PER_DESIGN_HASH_WEIGHT = 10     # criteria 37-42, one per design
-PACKAGE_WEIGHT = [1, 1, 1, 1]                                                  # 1-4
-LOCAL_WEIGHT = {5: 2, 6: 2, 7: 1, 8: 1, 9: 1, 10: 1, 11: 1, 12: 1, 13: 1, 14: 2, 15: 2}  # 5-15
-W_FAULT, W_INTERLEAVE, W_MIXED, W_MAINT, W_SETUP_MEM = 3, 3, 3, 3, 3           # 28-32
-W_VERIFIER_EXISTS, W_VERIFIER_AGREES, W_NEGSTART, W_COLLISION = 1, 1, 1, 1     # 33-36
-DECISION_WEIGHT = {43: 1, 44: 1, 45: 1, 46: 1, 47: 1, 48: 1}
+PER_DESIGN_WEIGHT = 10          # criteria 17-22 (all) and 23-28 (D4/27 overridden below)
+PER_DESIGN_RECON_WEIGHT = {"D4": 7}  # 27 lost 3 of its 10 to the standalone W3 criterion (33)
+PER_DESIGN_HASH_WEIGHT = 10     # criteria 38-43, one per design
+PACKAGE_WEIGHT = [2, 1, 1]                                                     # 1-3
+LOCAL_WEIGHT = {4: 2, 5: 2, 6: 1, 7: 1, 8: 1, 9: 1, 10: 1, 11: 1, 12: 1, 13: 1, 14: 2, 15: 1, 16: 1}  # 4-16
+W_FAULT, W_INTERLEAVE, W_MIXED, W_MAINT, W_SETUP_MEM = 3, 3, 3, 3, 3           # 29-33
+W_VERIFIER_EXISTS, W_VERIFIER_AGREES, W_NEGSTART, W_COLLISION = 1, 1, 1, 1     # 34-37
+DECISION_WEIGHT = {44: 1, 45: 1, 46: 1, 47: 1, 48: 1, 49: 1}
 
 TOTAL = (sum(PACKAGE_WEIGHT) + sum(LOCAL_WEIGHT.values())
-         + PER_DESIGN_WEIGHT * 6                                    # 16-21
-         + (PER_DESIGN_WEIGHT * 5 + PER_DESIGN_RECON_WEIGHT["D4"])  # 22-27
+         + PER_DESIGN_WEIGHT * 6                                    # 17-22
+         + (PER_DESIGN_WEIGHT * 5 + PER_DESIGN_RECON_WEIGHT["D4"])  # 23-28
          + PER_DESIGN_HASH_WEIGHT * 6
          + W_FAULT + W_INTERLEAVE + W_MIXED + W_MAINT + W_SETUP_MEM
          + W_VERIFIER_EXISTS + W_VERIFIER_AGREES + W_NEGSTART + W_COLLISION
@@ -130,7 +131,7 @@ def score(label, results, local_fail, package_fail=(), decision_fail=(),
     w_ver_exists, w_negstart, w_collision = W_VERIFIER_EXISTS, W_NEGSTART, W_COLLISION
     w_ver_agrees = W_VERIFIER_AGREES
 
-    package_earned = sum(wt for i, wt in zip(range(1, 5), PACKAGE_WEIGHT) if i not in package_fail)
+    package_earned = sum(wt for i, wt in zip(range(1, 4), PACKAGE_WEIGHT) if i not in package_fail)
     local_earned = sum(wt for i, wt in LOCAL_WEIGHT.items() if i not in local_fail)
     decision_earned = sum(wt for i, wt in DECISION_WEIGHT.items() if i not in decision_fail)
 
@@ -149,20 +150,20 @@ if __name__ == "__main__":
     score("canonical (sanity, must be 100%)", CANON, local_fail=(), package_fail=(), decision_fail=())
 
     r = {name: k.simulate(name, mutant_disable_fault=True) for name in k.DESIGNS}
-    score("fault disabled", r, local_fail={13}, decision_fail={43}, w_fault_override=False)
+    score("fault disabled", r, local_fail={13}, decision_fail={44}, w_fault_override=False)
 
     r = {name: k.simulate(name, mutant_oven_no_timer=True) for name in k.DESIGNS}
-    score("oven no timer", r, local_fail={11}, decision_fail={43})
+    score("oven no timer", r, local_fail={11}, decision_fail={44})
 
     r = {name: k.simulate(name, mutant_tiebreak_high=True) for name in k.DESIGNS}
-    score("tiebreak high", r, local_fail={8, 10, 11}, decision_fail=())  # picks D4 correctly
+    score("tiebreak high", r, local_fail={7, 9, 10}, decision_fail=())  # picks D4 correctly
 
     r = {name: k.simulate(name, mutant_disable_maintenance=True) for name in k.DESIGNS}
-    score("maintenance disabled", r, local_fail={14, 15}, w_maint_override=False, decision_fail={43})
+    score("maintenance disabled", r, local_fail={14, 15, 16}, w_maint_override=False, decision_fail={44})
 
     r = {name: k.simulate(name, mutant_maintenance_inclusive=True) for name in k.DESIGNS}
-    score("maintenance inclusive (wrong boundary only)", r, local_fail={15}, w_maint_override=False, decision_fail=())
+    score("maintenance inclusive (wrong boundary only)", r, local_fail={15, 16}, w_maint_override=False, decision_fail=())
 
     r = {name: reset_sim(name) for name in k.DESIGNS}
-    score("per-campaign reset", r, local_fail={6, 8, 9, 13, 14, 15}, package_fail={3},
-          decision_fail={43, 48}, continuous=False)
+    score("per-campaign reset", r, local_fail={5, 7, 8, 13, 14, 15, 16}, package_fail={3},
+          decision_fail={44, 49}, continuous=False)

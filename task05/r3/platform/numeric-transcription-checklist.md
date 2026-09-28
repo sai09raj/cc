@@ -4,13 +4,16 @@
 - [ ] Analyze: 1352 characters (permitted 5-3000).
 - [ ] Execute & Generate: 1143 characters (permitted 5-3000).
 - [ ] Synthesize: 1221 characters (permitted 5-3000).
-- [ ] Exactly 49 criteria (48 positive + 1 negative); weights in order:
-      1,1,1,1, 2,2,1,1,1,1,1,1,1,2,2, 10,10,10,10,10,10,10,10,10,10,7,10, 3,3,3,3,3,
+- [ ] Exactly 50 criteria (49 positive + 1 negative); weights in order:
+      2,1,1, 2,2,1,1,1,1,1,1,1,1,2,1,1, 10,10,10,10,10,10,10,10,10,10,7,10, 3,3,3,3,3,
       1,1,1,1, 10,10,10,10,10,10, 1,1,1,1,1,1, -8.
-      (Criterion 26 is +7, not +10 — 3 of its original weight moved to the standalone
-      witness criterion 32, once W3 was split out to stop double-counting/inconsistent
-      bundling; see `revision-delta.md`.)
-- [ ] Positive weights sum 221; criterion 49 alone has weight -8.
+      (Criterion 27 is +7, not +10 — 3 of its original weight moved to the standalone
+      witness criterion 33, once W3 was split out to stop double-counting/inconsistent
+      bundling. Criteria 1-3 are 3 rows, not 4 — the old commands/tool-versions
+      criterion merged into criterion 1. Criteria 10/11 and 14/15/16 are each split
+      from one previously-bundled criterion, per a rubric-guidelines atomicity fix;
+      see `revision-delta.md` for the full accounting.)
+- [ ] Positive weights sum 222; criterion 50 alone has weight -8.
 - [ ] Attachment filename: `kw-r3b.pdf` (unique to this revision; do not upload any
       R1/R2 file, and do not upload the earlier `kw-r3.pdf` that blind-pilot-1 saw —
       this hardened version adds Section G and Section H and has different bytes;

@@ -75,3 +75,68 @@ D4; budget selection remains D1.
 are not acceptance evidence for R3b and are not reused in any form. A fresh local
 blind pilot (`audit/blind-pilot-2.md`) and, eventually, a fresh target-model pilot
 are both required before any acceptance runs.
+
+## R3b rubric-guidelines compliance passes (post blind-pilot-2, pre-submission)
+
+Two rounds of fixes, both prompted by direct comparison against the official
+`Guide to a Good Rubric` PDF and the playbook's own rubric-and-linter guide.
+
+### Round A — MECE duplicate + witness inconsistency (48 -> 49 criteria)
+
+Found: witness W5 was checked twice (once bundled inside D1's reconciliation
+criterion, old #23, and again by its own dedicated criterion, old #31) — a
+straightforward duplicate. Also found: witness W3 was bundled inside D4's
+reconciliation criterion (old #26) instead of getting its own dedicated row like
+its four siblings (W1/W2/W4/W5) already had — an atomicity violation and an
+inconsistency with the rubric's own established pattern.
+
+Fix: removed the W5 mention from old #23's text (no weight change). Split W3 out
+into a new standalone criterion, moving 3 of old #26's 10 points to it (old #26
+became +7). Net: 48 -> 49 criteria, total weight unchanged at 221. Renumbered
+everything from old #32 onward by +1.
+
+### Round B — full atomicity pass on the oven-timer and Q-boundary criteria,
+### package merge (49 -> 50 criteria)
+
+Found, against the guide's explicit "could a response satisfy one part and fail
+another" test: old criterion 11 (oven bounded-pairing timer) bundled four
+independently-satisfiable/failable facts (deadline-anchor arithmetic, tie-break on
+an arrived partner, the `>=` threshold, cross-campaign batching eligibility). Old
+criterion 15 (Q-maintenance boundary convention) bundled two (trigger minute
+unaffected; the 13-minute window itself). Also found: old criteria 1 and 4 tested
+the same underlying fact (documented, reproducible execution) as two separate
+rows.
+
+Fix, executed at the user's explicit direction to prioritize a full fix over
+minimizing retyping (this round necessarily touches already-typed criteria 1-10,
+not just criteria 11+):
+
+- Merged old 1 + old 4 into one criterion (documented command + tool versions,
+  weight +2), freeing one row.
+- Split old 11 into new 10 (oven partner-matching: tie-break + cross-campaign
+  eligibility, +1) and new 11 (oven deadline-timing: arrival+2 anchor point +
+  `>=` threshold, +1).
+- Split old 15 into new 15 (trigger minute stays unaffected, +1) and new 16 (the
+  13-minute window itself, +1).
+- Left old 12/13/14 (power admission order, node-4 fault, Q-maintenance
+  trigger/tracking) as single rows deliberately — each is one named object (an
+  ordered interface, a state-transition vector, a cumulative counter's
+  definition) under the guidelines' own exception for a genuinely unitary answer,
+  the same reasoning already used for the production-witness criteria.
+
+Net: 49 -> 50 criteria (the platform's ceiling — deliberately reached through
+genuine atomicity fixes, not padding). Total positive weight 221 -> 222 (the net
+of -2 from the merge and +2 from the two splits, since each split row got its own
++1 rather than redistributing an existing total). Renumbered everything from old
+#5 onward.
+
+**Score-topology consequence, honestly disclosed in `score-topology.md`:** every
+round of atomicity fixes has moved the narrowest adversarial mutants' scores up
+slightly, because a properly split criterion lets a mutant that breaks only one
+of several previously-bundled facts keep the other facts' credit — exactly the
+guidelines' intended behavior, not a bug. After round B, all three of the
+narrowest hand-constructed single-mechanism mutants sit above 30%
+(30.2%/31.5%/32.4%, up from one/two in earlier rounds), while every realistic
+broader failure mode (including both actual blind-pilot runs) remains at 18% or
+below. This is disclosed as a structural tradeoff between rubric fairness and
+adversarial-mutant score margin, not resolved by further reweighting.
