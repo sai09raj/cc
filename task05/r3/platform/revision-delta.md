@@ -140,3 +140,16 @@ narrowest hand-constructed single-mechanism mutants sit above 30%
 broader failure mode (including both actual blind-pilot runs) remains at 18% or
 below. This is disclosed as a structural tradeoff between rubric fairness and
 adversarial-mutant score margin, not resolved by further reweighting.
+
+## R3b criterion-length pass (301-character field limit)
+
+The platform's rubric-criterion field caps each entry at 301 characters.
+Verified programmatically against the final post-atomicity rubric.md: 10 of the
+50 criteria exceeded this (criterion 32/W5 was the worst, at 461 characters).
+Shortened each to comfortably under 301 while preserving every stated fact —
+no requirement, threshold, tie-break rule, or exception was dropped, only
+restated more tersely (e.g. spelling out an inline parenthetical once instead
+of repeating full witness names, or replacing a clause with a terser
+equivalent). Affected: 10, 11, 16, 24, 27, 29, 32, 34, 44, 47. Re-verified
+programmatically after editing: all 50 criteria are now under the limit
+(longest is 298 characters). No weights or criterion numbers changed.

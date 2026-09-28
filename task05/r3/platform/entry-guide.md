@@ -1,13 +1,13 @@
-# KILNWORKS Task05 - complete R3(b) entry guide (post-hardening, post rubric-guidelines atomicity pass)
+# KILNWORKS Task05 - complete R3(b) entry guide (post-hardening, post rubric-guidelines atomicity + length pass)
 
-Status: hardened after a local blind-agent pilot scored ~85% against the pre-hardening rubric (audit/blind-pilot-1.md); a second local blind pilot against the hardened packet scored 17.6% (audit/blind-pilot-2.md, later 18.0% under the current rubric weights). A rubric-guidelines compliance pass then split several bundled criteria and merged two redundant ones, growing the rubric from 48 to 50 criteria (revision-delta.md). No target-model platform pilot has been run yet.
+Status: hardened after a local blind-agent pilot scored ~85% against the pre-hardening rubric (audit/blind-pilot-1.md); a second local blind pilot against the hardened packet scored 17.6% (audit/blind-pilot-2.md, later 18.0% under the current rubric weights). Two rubric-guidelines compliance passes then split several bundled criteria, merged two redundant ones, and shortened every criterion beyond 301 characters (the platform's per-field limit) without changing meaning, growing the rubric from 48 to 50 criteria (revision-delta.md). No target-model platform pilot has been run yet.
 
 ## Exact field placement
 
 1. Attachment: upload only `artifact/kw-r3b.pdf`. Do not attach this guide, design/, reference/, audit/, or any other private file.
 2. Prompt field: paste the entire Prompt block below.
 3. Ideal Flow: paste Analyze, Execute & Generate and Synthesize into their respective separate fields.
-4. Rubric: enter criteria 1-50 below in exactly that order, each with its displayed unchanged signed weight.
+4. Rubric: enter criteria 1-50 below in exactly that order, each with its displayed unchanged signed weight. Every criterion is under 301 characters (verified programmatically).
 5. Target model/effort: Claude Opus 4.8 at maximum effort. Do not silently substitute a local solver run for the target-model pilot.
 6. First target-model execution: one pilot only. Preserve its trajectory and outputs; do not launch further runs until the pilot is reconstructed, replayed, and diagnosed per Playbook/04-PREFLIGHT-AND-VALIDATION.md.
 
@@ -170,16 +170,14 @@ without cutting real coverage; see `revision-delta.md` for the full accounting.
    collision handling (including that a node vacated by one robot this same minute
    may be legally entered by the other) and ties broken by lowest target/next-hop
    node id, not highest.
-10. **+1** — Matches an oven batch's members by family: a same-family partner
-    already arrived at K starts the batch immediately alongside the anchor,
-    tie-broken by lowest global index, not highest; and batching is not
-    restricted to lots that share a campaign — a same-family pair from two
-    different campaigns still batches together.
-11. **+1** — Times an oven batch's deadline as one boundary rule: an anchor's
-    deadline is its own arrival minute (one minute after the delivering unload
-    action, not the minute it is later picked up as anchor) plus 2; absent a
-    partner, the batch starts alone as soon as the current minute reaches or
-    passes that deadline, not strictly after.
+10. **+1** — Matches oven batches by family: an already-arrived same-family
+    partner joins the anchor immediately, tie-broken by lowest global index,
+    not highest; cross-campaign same-family pairs still batch together, not
+    restricted to one campaign.
+11. **+1** — Sets an oven anchor's deadline to its own arrival minute (one
+    minute after the delivering unload, not the minute later picked as
+    anchor) plus 2; absent a partner, starts the batch alone once the current
+    minute reaches or passes that deadline, not strictly after.
 12. **+1** — Admits aggregate power as one ordered per-minute pass — P start, Q
     start, Robot 0, Robot 1, oven start — where each step draws only what the
     previous steps left, a refusal defers or downgrades that step's action rather
@@ -196,10 +194,9 @@ without cutting real coverage; see `revision-delta.md` for the full accounting.
     maintenance freeze — the packet's *default* timing rule, stated with no
     inclusive exception, unlike node-4's explicit one in criterion 13.
 16. **+1** — Covers the Q maintenance freeze for exactly the 13 minutes starting
-    the minute **after** the trigger, through `trigger + 13` inclusive. A freeze
-    that starts on the trigger minute itself, copying node-4's convention, fails
-    this criterion even when criterion 14's trigger detection and criterion 15's
-    "trigger minute unaffected" rule are otherwise both satisfied.
+    the minute **after** the trigger, through `trigger+13` inclusive. Starting
+    the freeze on the trigger minute itself, copying node-4's convention, fails
+    this criterion regardless of criteria 14-15.
 
 ### Integrated production execution — per-design values (criteria 17-28, weight 117)
 
@@ -217,52 +214,44 @@ independent asks). Any attaining schedule passes; report however organized.
 23. **+10** — Reconciles D0's delivered trace as one record: 20 of 20 lots done, 0
     fixtures held, and a cumulative bill of 1331, all at the final boundary.
 24. **+10** — Reconciles D1's delivered trace as one record: 20 of 20 lots done, 0
-    fixtures held, and a cumulative bill of 1242, all at the final boundary. (The
-    Q-maintenance-freeze delay this design also exhibits is graded separately and
-    only once, by production-witness criterion 32 — not charged again here.)
+    fixtures held, and a cumulative bill of 1242, all at the final boundary. (W5
+    also appears here, but is graded once, via criterion 32 — not charged again.)
 25. **+10** — Reconciles D2's delivered trace as one record: 20 of 20 lots done, 0
     fixtures held, and a cumulative bill of 1373, all at the final boundary.
 26. **+10** — Reconciles D3's delivered trace as one record: 20 of 20 lots done, 0
     fixtures held, and a cumulative bill of 1408, all at the final boundary.
 27. **+7** — Reconciles D4's delivered trace as one record: 20 of 20 lots done, 0
-    fixtures held, and a cumulative bill of 1384, all at the final boundary. (The
-    cross-campaign setup-memory job this design also exhibits is graded separately,
-    at its own weight, by production-witness criterion 33 — not charged again here.)
+    fixtures held, and a cumulative bill of 1384, all at the final boundary. (W3
+    also appears here, but is graded once, via criterion 33 — not charged again.)
 28. **+10** — Reconciles D5's delivered trace as one record: 20 of 20 lots done, 0
     fixtures held, and a cumulative bill of 1298, all at the final boundary.
 
 ### Integrated production execution — named witnesses (criteria 29-33, weight 15)
 
-29. **+3** — Shows production witness W1 within the design's required single
-    continuous four-campaign trace (not an isolated fixture): Robot 0 frozen at
-    node 4 for exactly 6 consecutive minutes including its arrival minute, the
-    other robot unable to enter node 4 during that window, and legally entering it
-    the minute Robot 0 vacates. A fault that fires more than once in one design's
-    run fails this criterion.
+29. **+3** — Shows W1 in the design's required continuous trace (not an isolated
+    fixture): Robot 0 frozen at node 4 for exactly 6 consecutive minutes incl.
+    arrival, the other robot blocked from node 4 that whole window, then legally
+    entering the minute Robot 0 vacates. Firing more than once fails this.
 30. **+3** — Shows production witness W2 in a delivered trace (any design): at
     least one lot from an earlier campaign still open, not yet cured, at the
     minute a later campaign's first lot releases.
 31. **+3** — Shows production witness W4 in a delivered trace (D1, D4, or D5): at
     least one oven batch whose two members belong to two different campaigns.
-32. **+3** — Shows production witness W5 within the design's required single
-    continuous four-campaign trace (D1, D2, D3, D4, or D5): Q assignment-eligible
-    every minute up to its own maintenance-freeze trigger, then absent from every
-    Q assignment for exactly the 13 minutes after the trigger, then eligible
-    again. A freeze computed from an isolated single-campaign fixture, one that
-    fires more than once, or one that starts on the trigger minute itself, fails
-    this criterion.
+32. **+3** — Shows W5 in the design's required continuous trace (D1-D5): Q
+    eligible up to its own trigger, then absent exactly 13 minutes after, then
+    eligible again. Fails if computed from an isolated single-campaign fixture,
+    if it fires more than once, or if it starts on the trigger minute itself.
 33. **+3** — Shows production witness W3 in D4's delivered trace: a machine job
     whose setup cost of 2 is attributable only to family memory carried over from
     an earlier campaign, not to any job within the same campaign.
 
 ### Independent verification and adversarial checks (criteria 34-37, weight 4)
 
-34. **+1** — Delivers and executes a separately-coded verifier that independently
-    re-derives the full per-design trace (or an executed complete feasibility
-    certificate covering fixture, power, node/edge capacity, and timing), sharing
-    only immutable input constants with the primary implementation; a wrapper that
-    imports the primary's transitions, feasibility checks, or state does not
-    establish independence.
+34. **+1** — Delivers and executes a separately-coded verifier that
+    independently re-derives the full trace (or a complete feasibility
+    certificate covering fixture, power, node/edge capacity, timing), sharing
+    only immutable inputs with primary; a wrapper importing primary's
+    transitions/state isn't independent.
 35. **+1** — Matches the independent verifier's re-derived trace to the primary's
     delivered trace exactly for all six designs. This criterion checks
     cross-implementation agreement only; correctness of the agreed-upon values is
@@ -297,22 +286,19 @@ rather than retyping.
 ### Decision/causal reconciliation (criteria 44-49, weight 6)
 
 44. **+1** — Applies the lexicographic key `(makespan, bill+3*capital, capital, ID)`
-    across all six designs' delivered results and selects its minimum. Grade
-    selection arithmetic on the delivered metrics without recharging an upstream
-    metric error already charged in 17-22; with correct metrics the result is
-    D4, (151, 1432, 16, D4).
+    across all six designs' results and selects its minimum. Grade arithmetic on
+    delivered metrics without recharging an upstream error charged in 17-22;
+    correct metrics give D4, (151, 1432, 16, D4).
 45. **+1** — Minimizes the same key within `capital<=9` (D0, D1, D2, D3). Grade
     population/selection on delivered metrics without recharging upstream metric
     errors; with correct metrics the result is D1, (161, 1263, 7, D1).
 46. **+1** — Compares D0 (baseline) against both selected designs using the
     delivered executed objectives. Accept a comparison correct relative to
     delivered results despite an upstream error.
-47. **+1** — Explains at least one actual routing, batching, or resource interaction
-    using identifiable event times from a delivered production trace, connected to
-    the recommendation. Any accurate supported interaction is acceptable (the
-    node-4 fault forcing a reroute, the machine-Q maintenance freeze delaying a
-    lot to P, and the F=2 designs' fixture ceiling preventing oven pairing despite
-    the open-aisle retrofit, are three available examples, not a required set).
+47. **+1** — Explains at least one actual routing, batching, or resource
+    interaction using event times from a delivered trace, connected to the
+    recommendation (e.g. the node-4 reroute, the Q-freeze delay, or an F=2
+    fixture ceiling blocking oven pairing — any accurate example counts).
 48. **+1** — Explains that distance-only travel omits shared undirected-edge and
     interior-node occupancy, so its bound alone cannot certify a feasible joint
     robot schedule or an achieved completion time.
@@ -404,7 +390,7 @@ for name in k.DESIGNS:
 
 | ideal-flow.md | `4f055175e0d585b3b0eb8e458c3cf7a0e31a75182e5ad7ea29043f5e4e3266f0` |
 
-| rubric.md | `5e226ca72781edded9d801c6a0ae99015cbb5f6848172a928321eb4fac66b2f7` |
+| rubric.md | `799b5745a09e304aee49da03026f61f9e5e31caa80f27d8e8ad97a73f7c3b8e5` |
 
 | score-topology.md | `3f3c5fd2334522ee699152b1fbca5ed097af14f73358f15c4078f18e9a670cd6` |
 
