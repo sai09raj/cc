@@ -1,20 +1,20 @@
-# KILNWORKS Task05 - complete R3(b) entry guide (post-hardening, post atomicity + length passes)
+# KILNWORKS Task05 - complete R3c entry guide (post target-model-pilot hardening: recurring Q-maintenance)
 
-Status: hardened after a local blind-agent pilot scored ~85% against the pre-hardening rubric (audit/blind-pilot-1.md); a second local blind pilot against the hardened packet scored 17.6% (audit/blind-pilot-2.md, later 18.0% under the current rubric weights). Two rubric-guidelines compliance passes then split several bundled criteria, merged two redundant ones, and shortened every criterion beyond 301 characters -- and the six trace-hash criteria (38-43) now use a 16-character prefix instead of the full 64-character SHA-256, to keep manual platform entry safe -- growing the rubric from 48 to 50 criteria (revision-delta.md). No target-model platform pilot has been run yet.
+Status: hardened after a local blind-agent pilot scored ~85% against the pre-hardening rubric (audit/blind-pilot-1.md); a second local blind pilot against the hardened R3b packet scored 17.6% (audit/blind-pilot-2.md, later 18.0% under the current rubric weights). Two rubric-guidelines compliance passes then split several bundled criteria, merged two redundant ones, and shortened every criterion beyond 301 characters, growing the rubric from 48 to 50 criteria (revision-delta.md). Three real target-model (Opus 4.8 Max) pilots then scored 72%, 73%, and 99% against the R3b rubric -- forensic reconstruction proved the two lower-scoring runs' delivered simulators were bit-exact correct, a genuine task-difficulty gap, not a scoring artifact. R3c hardens Section H's Q-maintenance freeze from a one-time event to a recurring interval (threshold 12->10) in response, and also fixes three pre-existing over-301-character criteria (4, 7, 9) found during this pass. No pilot has yet been run against R3c.
 
 ## Exact field placement
 
-1. Attachment: upload only `artifact/kw-r3b.pdf`. Do not attach this guide, design/, reference/, audit/, or any other private file.
+1. Attachment: upload only `artifact/kw-r3c.pdf`. Do not attach this guide, design/, reference/, audit/, or any other private file.
 2. Prompt field: paste the entire Prompt block below.
 3. Ideal Flow: paste Analyze, Execute & Generate and Synthesize into their respective separate fields.
-4. Rubric: enter criteria 1-50 below in exactly that order, each with its displayed unchanged signed weight. Every criterion is under 301 characters (verified programmatically). Criteria 38-43 take only the 16-character hash prefix shown -- do not type the full 64-character hash.
+4. Rubric: enter criteria 1-50 below in exactly that order, each with its displayed unchanged signed weight. Every criterion body (text after the weight) is under 301 characters (verified programmatically). Criteria 38-43 take only the 16-character hash prefix shown -- do not type the full 64-character hash.
 5. Target model/effort: Claude Opus 4.8 at maximum effort. Do not silently substitute a local solver run for the target-model pilot.
-6. First target-model execution: one pilot only. Preserve its trajectory and outputs; do not launch further runs until the pilot is reconstructed, replayed, and diagnosed per Playbook/04-PREFLIGHT-AND-VALIDATION.md.
+6. First target-model execution against R3c: one pilot only. Preserve its trajectory and outputs; do not launch further runs until the pilot is reconstructed, replayed, and diagnosed per Playbook/04-PREFLIGHT-AND-VALIDATION.md.
 
 ## Prompt
 
 ```text
-You are the production-optimization engineer for a small kiln plant. Use the attached kw-r3b.pdf as the complete engineering specification. Recover the aisle graph, docking bays, and shared junction from the drawing; reconstruct the fixed dispatch policy the plant's control software already runs for machine assignment, robot routing, and oven batching (there is no free scheduling choice to search for); and reconstruct the one-time robot disruption at the shared junction from the packet.
+You are the production-optimization engineer for a small kiln plant. Use the attached kw-r3c.pdf as the complete engineering specification. Recover the aisle graph, docking bays, and shared junction from the drawing; reconstruct the fixed dispatch policy the plant's control software already runs for machine assignment, robot routing, and oven batching (there is no free scheduling choice to search for); and reconstruct the one-time robot disruption at the shared junction from the packet.
 
 Implement and execute an offline, deterministic, event-by-event simulator for all six retrofit designs (D0-D5). Each design is ONE continuous run covering all four campaigns back-to-back on a shared clock and a shared resource pool -- not four independent per-campaign resets. Report each design's resulting makespan and tariff-weighted bill, then make both investment selections (unrestricted, and restricted to capital<=9) using the lexicographic key in the packet. Verify your results with a separately-coded implementation that independently re-derives the full trace, or an executed complete feasibility certificate, sharing only immutable input constants with your primary implementation.
 
@@ -45,6 +45,8 @@ in the plant at once. A distance-only relaxation cannot certify a feasible joint
 robot schedule because it ignores shared-edge and interior-node occupancy.
 ```
 
+Character count: 1352
+
 ## Ideal Flow: Execute & Generate
 
 ```text
@@ -63,6 +65,8 @@ holdings, minute power, and cumulative bill against the reported case values.
 Equivalent languages, source organization, output schemas, and physically-valid
 tie-broken routes all pass; only one policy-conformant trace per design exists.
 ```
+
+Character count: 1143
 
 ## Ideal Flow: Synthesize
 
@@ -83,6 +87,8 @@ arithmetic against both disruption mechanisms as well as the ordinary machine/ro
 oven rules. Any accurate, evidence-tied causal argument is acceptable; no particular
 route or additional design comparison is required.
 ```
+
+Character count: 1221
 
 ## Rubric in platform order
 
@@ -146,8 +152,8 @@ without cutting real coverage; see `revision-delta.md` for the full accounting.
 
 4. **+2** — Recovers solid undirected edges `{0-3,3-6,3-4,4-7,6-7,7-8,5-8,2-5,1-4}`,
    adding only `4-5` for open designs D3/D5; docking bays `P=3, Q=5, K=1` at
-   capacity 2, all other nodes at capacity 1; and that node 1 (K) has only the edge
-   `1-4` in both topologies. Equivalent labels pass with an explicit mapping.
+   capacity 2, other nodes at capacity 1; node 1 (K) has only edge `1-4` in both
+   topologies. Equivalent labels pass with an explicit mapping.
 5. **+2** — Generates 20 lots per design (campaigns s=0..3, lots j=0..4) with
    `family=(j+s)%2`, `release_local=2*floor(j/2)`, `Pbase=5+(j*j+2s)%4`,
    `Qbase=4+(3j+s)%5`, and **absolute release `35*s + release_local`** on one shared
@@ -155,21 +161,17 @@ without cutting real coverage; see `revision-delta.md` for the full accounting.
 6. **+1** — Uses the six design input tuples `(F,G,aisle,capital)`: D0=(2,5,closed,0),
    D1=(3,5,closed,7), D2=(2,6,closed,9), D3=(2,5,open,6), D4=(3,6,closed,16),
    D5=(3,6,open,22).
-7. **+1** — Machine assignment: each machine's remembered family **persists for the
-   whole continuous run** (never resets at a campaign boundary); setup is 0 on a
-   machine's first job or an unchanged family, else 2; a machine whose pool is empty
-   or whose start is refused by the power budget claims nothing and leaves the other
-   machine's pool unaffected that minute; a fixture is counted held only from an
-   actually-started preparation; ties broken by lowest global index.
+7. **+1** — Machine assignment: family memory persists for the whole run (never
+   resets per campaign); setup 0 on a first job or unchanged family, else 2; an
+   empty/power-refused machine claims nothing, leaving the other's pool
+   unaffected; fixture held only from actual prep start; ties by lowest index.
 8. **+1** — Keeps plant-wide fixture holdings at most F at every minute across the
    entire continuous run; each lot holds one fixture from the start of its own
    preparation through cure completion.
-9. **+1** — Robot dispatch applies the six-rule priority order (offline / unload /
-   pickup / toward-K / toward-nearest-waiting-lot / toward-home), Robot 0 decided
-   and power-finalized before Robot 1, with correct same-minute edge/node-capacity
-   collision handling (including that a node vacated by one robot this same minute
-   may be legally entered by the other) and ties broken by lowest target/next-hop
-   node id, not highest.
+9. **+1** — Robot dispatch: six-rule priority order (offline/unload/pickup/
+   toward-K/toward-nearest-lot/toward-home), Robot 0 decided and power-finalized
+   before Robot 1, correct same-minute collision handling (a node vacated this
+   minute may be entered by the other robot), ties by lowest target/next-hop id.
 10. **+1** — Matches oven batches by family: an already-arrived same-family
     partner joins the anchor immediately, tie-broken by lowest global index,
     not highest; cross-campaign same-family pairs still batch together, not
@@ -186,17 +188,18 @@ without cutting real coverage; see `revision-delta.md` for the full accounting.
     Robot 0's first actually-admitted arrival at node 4, freezes its position and
     cargo for 6 minutes counting the arrival minute itself (the packet's explicit
     inclusive exception), and fires at most once per design's run.
-14. **+2** — Tracks Q's maintenance-freeze trigger as one cumulative counter: sums
-    only Q's completed processing time (never setup) continuously across the whole
-    run (never reset per campaign), and triggers the first time that sum reaches 12
-    at a completion boundary, firing at most once per design's run.
+14. **+2** — Tracks Q's maintenance trigger as one cumulative counter: sums only
+    Q's completed processing (never setup) since its last freeze ended, triggers
+    at a completion boundary once the sum reaches 10, and resets to 0 on each
+    trigger — recurring, uncapped, not a one-time event.
 15. **+1** — Leaves the triggering completion minute itself unaffected by the Q
-    maintenance freeze — the packet's *default* timing rule, stated with no
-    inclusive exception, unlike node-4's explicit one in criterion 13.
-16. **+1** — Covers the Q maintenance freeze for exactly the 13 minutes starting
-    the minute **after** the trigger, through `trigger+13` inclusive. Starting
-    the freeze on the trigger minute itself, copying node-4's convention, fails
-    this criterion regardless of criteria 14-15.
+    maintenance freeze on every trigger, not only the first — the packet's
+    *default* timing rule, stated with no inclusive exception, unlike node-4's
+    explicit one in criterion 13.
+16. **+1** — Covers each Q freeze for 13 minutes starting the minute **after**
+    its trigger, through `trigger+13`, resuming tracking from 0 at
+    `trigger+14`. Copying node-4's inclusive convention, or capping this at
+    one occurrence, fails this criterion regardless of 14-15.
 
 ### Integrated production execution — per-design values (criteria 17-28, weight 117)
 
@@ -206,25 +209,25 @@ cumulative bill together describe a single trace's internal consistency, not thr
 independent asks). Any attaining schedule passes; report however organized.
 
 17. **+10** — Reports D0's `(makespan, bill)` as `(187, 1331)`.
-18. **+10** — Reports D1's `(makespan, bill)` as `(161, 1242)`.
-19. **+10** — Reports D2's `(makespan, bill)` as `(187, 1373)`.
-20. **+10** — Reports D3's `(makespan, bill)` as `(185, 1408)`.
-21. **+10** — Reports D4's `(makespan, bill)` as `(151, 1384)`.
-22. **+10** — Reports D5's `(makespan, bill)` as `(153, 1298)`.
+18. **+10** — Reports D1's `(makespan, bill)` as `(159, 1239)`.
+19. **+10** — Reports D2's `(makespan, bill)` as `(188, 1435)`.
+20. **+10** — Reports D3's `(makespan, bill)` as `(185, 1378)`.
+21. **+10** — Reports D4's `(makespan, bill)` as `(152, 1344)`.
+22. **+10** — Reports D5's `(makespan, bill)` as `(151, 1258)`.
 23. **+10** — Reconciles D0's delivered trace as one record: 20 of 20 lots done, 0
     fixtures held, and a cumulative bill of 1331, all at the final boundary.
 24. **+10** — Reconciles D1's delivered trace as one record: 20 of 20 lots done, 0
-    fixtures held, and a cumulative bill of 1242, all at the final boundary. (W5
+    fixtures held, and a cumulative bill of 1239, all at the final boundary. (W5
     also appears here, but is graded once, via criterion 32 — not charged again.)
 25. **+10** — Reconciles D2's delivered trace as one record: 20 of 20 lots done, 0
-    fixtures held, and a cumulative bill of 1373, all at the final boundary.
+    fixtures held, and a cumulative bill of 1435, all at the final boundary.
 26. **+10** — Reconciles D3's delivered trace as one record: 20 of 20 lots done, 0
-    fixtures held, and a cumulative bill of 1408, all at the final boundary.
+    fixtures held, and a cumulative bill of 1378, all at the final boundary.
 27. **+7** — Reconciles D4's delivered trace as one record: 20 of 20 lots done, 0
-    fixtures held, and a cumulative bill of 1384, all at the final boundary. (W3
+    fixtures held, and a cumulative bill of 1344, all at the final boundary. (W3
     also appears here, but is graded once, via criterion 33 — not charged again.)
 28. **+10** — Reconciles D5's delivered trace as one record: 20 of 20 lots done, 0
-    fixtures held, and a cumulative bill of 1298, all at the final boundary.
+    fixtures held, and a cumulative bill of 1258, all at the final boundary.
 
 ### Integrated production execution — named witnesses (criteria 29-33, weight 15)
 
@@ -237,10 +240,10 @@ independent asks). Any attaining schedule passes; report however organized.
     minute a later campaign's first lot releases.
 31. **+3** — Shows production witness W4 in a delivered trace (D1, D4, or D5): at
     least one oven batch whose two members belong to two different campaigns.
-32. **+3** — Shows W5 in the design's required continuous trace (D1-D5): Q
-    eligible up to its own trigger, then absent exactly 13 minutes after, then
-    eligible again. Fails if computed from an isolated single-campaign fixture,
-    if it fires more than once, or if it starts on the trigger minute itself.
+32. **+3** — Shows W5 in the design's trace (D1-D5): for every Q trigger, Q
+    eligible up to it, absent 13 minutes after, eligible again with tracking
+    reset. Fails on an isolated single-campaign fixture, a missing later
+    trigger (single-shot, not recurring), or a freeze on its trigger minute.
 33. **+3** — Shows production witness W3 in D4's delivered trace: a machine job
     whose setup cost of 2 is attributable only to family memory carried over from
     an earlier campaign, not to any job within the same campaign.
@@ -271,11 +274,11 @@ per minute (`t,power,cumulative_bill`, in execution order, preceded by a
 divergent minute anywhere in that design's run, not just the final summary.
 
 38. **+10** — Matches the first 16 hex characters of D0's canonical trace hash to `955957f0e6a9788d`.
-39. **+10** — Matches the first 16 hex characters of D1's canonical trace hash to `0e46cf0e88a3c39d`.
-40. **+10** — Matches the first 16 hex characters of D2's canonical trace hash to `3e42a4ac02477575`.
-41. **+10** — Matches the first 16 hex characters of D3's canonical trace hash to `c237acbc4fab1df9`.
-42. **+10** — Matches the first 16 hex characters of D4's canonical trace hash to `07824bc182e06107`.
-43. **+10** — Matches the first 16 hex characters of D5's canonical trace hash to `80f5ceea7c33d2b1`.
+39. **+10** — Matches the first 16 hex characters of D1's canonical trace hash to `9eafc0820bda70a9`.
+40. **+10** — Matches the first 16 hex characters of D2's canonical trace hash to `7d104044363f36b2`.
+41. **+10** — Matches the first 16 hex characters of D3's canonical trace hash to `b1086cb4f38396f4`.
+42. **+10** — Matches the first 16 hex characters of D4's canonical trace hash to `c9e705daef1ddcf7`.
+43. **+10** — Matches the first 16 hex characters of D5's canonical trace hash to `6a1d99ca7302e560`.
 
 Generated by `reference/kilnworks_sim.py` (`canonical_trace_serialization` +
 SHA-256), truncated to 16 hex characters to keep manual transcription safe
@@ -292,10 +295,10 @@ rather than retyping.
 44. **+1** — Applies the lexicographic key `(makespan, bill+3*capital, capital, ID)`
     across all six designs' results and selects its minimum. Grade arithmetic on
     delivered metrics without recharging an upstream error charged in 17-22;
-    correct metrics give D4, (151, 1432, 16, D4).
+    correct metrics give D5, (151, 1324, 22, D5).
 45. **+1** — Minimizes the same key within `capital<=9` (D0, D1, D2, D3). Grade
     population/selection on delivered metrics without recharging upstream metric
-    errors; with correct metrics the result is D1, (161, 1263, 7, D1).
+    errors; with correct metrics the result is D1, (159, 1260, 7, D1).
 46. **+1** — Compares D0 (baseline) against both selected designs using the
     delivered executed objectives. Accept a comparison correct relative to
     delivered results despite an upstream error.
@@ -320,6 +323,7 @@ rather than retyping.
 
 ## Numeric transcription checklist
 
+
 - [ ] Prompt: 343 whitespace-delimited words (permitted 2-500).
 - [ ] Analyze: 1352 characters (permitted 5-3000).
 - [ ] Execute & Generate: 1143 characters (permitted 5-3000).
@@ -334,42 +338,49 @@ rather than retyping.
       from one previously-bundled criterion, per a rubric-guidelines atomicity fix;
       see `revision-delta.md` for the full accounting.)
 - [ ] Positive weights sum 222; criterion 50 alone has weight -8.
-- [ ] Attachment filename: `kw-r3b.pdf` (unique to this revision; do not upload any
-      R1/R2 file, and do not upload the earlier `kw-r3.pdf` that blind-pilot-1 saw —
-      this hardened version adds Section G and Section H and has different bytes;
-      verify against the hash in `frozen-packet-manifest.json`).
+- [ ] Attachment filename: `kw-r3c.pdf` (unique to this revision; do not upload any
+      R1/R2/R3b file, and do not upload the earlier `kw-r3b.pdf` that blind-pilot-2
+      saw — this hardened version changes Section H's maintenance mechanism to
+      recurring and has different bytes; verify against the hash in
+      `frozen-packet-manifest.json`).
 - [ ] Four campaigns 0..3, five lots 0..4 per campaign, twenty lots per design, six
       designs D0..D5 — one continuous trace per design, not 24 independent cases.
 - [ ] Budget population `capital<=9` includes D0, D1, D2, D3 (D2 at equality).
-- [ ] Correct unrestricted key: `(151, 1432, 16, D4)`.
-- [ ] Correct capital<=9 key: `(161, 1263, 7, D1)`.
+- [ ] Correct unrestricted key: `(151, 1324, 22, D5)`.
+- [ ] Correct capital<=9 key: `(159, 1260, 7, D1)`.
 
 | Design | Makespan | Bill |
 |---|---:|---:|
 | D0 | 187 | 1331 |
-| D1 | 161 | 1242 |
-| D2 | 187 | 1373 |
-| D3 | 185 | 1408 |
-| D4 | 151 | 1384 |
-| D5 | 153 | 1298 |
+| D1 | 159 | 1239 |
+| D2 | 188 | 1435 |
+| D3 | 185 | 1378 |
+| D4 | 152 | 1344 |
+| D5 | 151 | 1258 |
 
 - [ ] Node-4 fault (S07): freezes 6 minutes including arrival, fires once per design.
-- [ ] Machine-Q maintenance freeze (S13): triggers at cumulative processing >= 12;
-      freezes 13 minutes starting the minute AFTER the trigger (not inclusive,
-      unlike S07); fires once per design. D0 never triggers it (structural, not a
-      bug — Q's total workload in D0 stays under 12).
+- [ ] Machine-Q maintenance freeze (S13, hardened R3c): triggers at cumulative
+      processing (since the last freeze ended) >= 10; freezes 13 minutes starting
+      the minute AFTER the trigger (not inclusive, unlike S07); **recurring** —
+      cumulative tracking resets to 0 on every trigger, no per-design cap. D0
+      triggers it exactly once (its 2-job Q workload sums to exactly 12, crossing
+      on its last job) but that trigger has zero effect — no remaining Q work is
+      left to delay. D1/D2/D3/D4/D5 each trigger it 2-3 times with real effect.
 - [ ] Witness W3 (D4): Q's campaign-1 job on global-index-6 lot runs 10 minutes
-      (Qbase 8 + setup 2).
+      (Qbase 8 + setup 2). Unaffected by the R3c threshold change.
 - [ ] Witness W4 (D1): mixed-campaign batch at t=50, members {global index 3, 7}.
-- [ ] Witness W5 (D1): maintenance trigger at t=44, freeze [45,57]; Q's next job
-      (global index 8) delayed to t=62 (vs t=55 if the mechanism were absent).
+      Unaffected by the R3c threshold change.
+- [ ] Witness W5 (D1): two maintenance triggers — t=44 (freeze [45,57]) and t=118
+      (freeze [119,131]) — the second changes which lot fills Q's last slot
+      (global index 18 instead of 16, see `production-witnesses.md`).
 - [ ] All six per-design trace-integrity values are each exactly 16 lowercase hex
       characters — the first 16 characters of the full SHA-256, truncated for safe
       manual transcription (verify programmatically, not by eye) and copied from
       `production-witnesses.md` / `frozen-packet-manifest.json`, never retyped by
       hand:
-      D0=`955957f0e6a9788d`, D1=`0e46cf0e88a3c39d`, D2=`3e42a4ac02477575`,
-      D3=`c237acbc4fab1df9`, D4=`07824bc182e06107`, D5=`80f5ceea7c33d2b1`.
+      D0=`955957f0e6a9788d`, D1=`9eafc0820bda70a9`, D2=`7d104044363f36b2`,
+      D3=`b1086cb4f38396f4`, D4=`c9e705daef1ddcf7`, D5=`6a1d99ca7302e560`.
+      (Only D0's value is unchanged from R3b — see above.)
 - [ ] After entry, compare an export or screenshots of every field and weight
       against this guide. This checkbox remains unverified until that evidence
       exists.
@@ -391,18 +402,18 @@ for name in k.DESIGNS:
 | Frozen file | SHA256 |
 |---|---|
 
-| kw-r3b.pdf | `0fdfe24a70020217047f911ea1ddd03de408e009c4fcd5a92b02ac13fbe831ca` |
+| artifact/kw-r3c.pdf | `ecd0308c675fababd72bef5a35fcfb48d29b67d35024a795b2eea1598234b01b` |
 
-| prompt.md | `b5bbf7e7efbb351376c2305f014be0397dbe545f036fec8421f454e49ac17403` |
+| prompt.md | `4cee8d930d1a74e0aa2a8a949bca620c56c729568f4afe2d173a810e729e8d89` |
 
 | ideal-flow.md | `4f055175e0d585b3b0eb8e458c3cf7a0e31a75182e5ad7ea29043f5e4e3266f0` |
 
-| rubric.md | `435b9e02e42f604119f50e06a7349f941d19c3ae2386b2df92b430b350c9a64c` |
+| rubric.md | `e6334c58061837c47610fa88398cf9d4375797d895496e700f673f9eb26ad90f` |
 
-| score-topology.md | `3f3c5fd2334522ee699152b1fbca5ed097af14f73358f15c4078f18e9a670cd6` |
+| score-topology.md | `755457cfce9eb0876a5b62a530adae022c5bccef88ad17db343795babdeb09da` |
 
-| production-witnesses.md | `2a3e8cd9476811765ab178dd3e8dcbb7caad413ac1a0ea707735a29488894b30` |
+| production-witnesses.md | `114f2d9dc1b2db321a7c044883dbfe4c11b520a3474b5d0d6249eef55422d521` |
 
-| coverage-ledger.md | `cd7d5dbd17ca64dd7413d6557497af5f816615e781a50d5d66dac9dc1db7f3d5` |
+| coverage-ledger.md | `85a2c6f19670d3ccb751f583fd8c5dad6d217408643d4b5b501186627ab0f1d8` |
 
-| numeric-transcription-checklist.md | `031351432ba1483f8f7f489340cff881205ca93e28a383f905873a262dae6014` |
+| numeric-transcription-checklist.md | `faa36e59ffdc096a4aee79e9707d9dc75ad86e85dc0867f0033268b1780e1ae4` |

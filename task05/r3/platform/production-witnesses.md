@@ -52,21 +52,35 @@ Both share `family = 1` (`family(3,0) = (3+0) mod 2 = 1`; `family(2,1) = (2+1) m
 for `4 + 1 = 5` minutes — a same-family pairing that only exists because a
 campaign-0 and a campaign-1 lot were simultaneously waiting at the oven.
 
-## W5 — machine-Q maintenance freeze delaying a job (design D1)
+## W5 — machine-Q maintenance freeze, now recurring (design D1)
 
-Q's cumulative completed-processing total reaches 12 at `t=44` (after lot with
-global index 1's 7 minutes and lot with global index 7's 6 minutes: `7+6=13 >= 12`,
-crossing the threshold on the second job since the running total after lot 1 alone
-was `7 < 12`). The freeze covers `[45, 57]` (13 minutes, starting the minute after
-the trigger — S13's default, non-inclusive convention). Without the mechanism
-(`mutant_disable_maintenance`), Q's next job (global index 8) starts at `t=55`,
-inside that window; with the mechanism active, it is delayed to `t=62`, seven
-minutes after the freeze ends:
+S13 is a **recurring** interval (hardened in R3c): `Q_cumulative` resets to 0 on
+every trigger, and the mechanism can fire any number of times in one design's run
+-- not just once. Design D1 fires it twice:
 
-| | Q job (global index 8) start |
-|---|---:|
-| Mechanism active (reference) | 62 |
-| Mechanism disabled (mutant) | 55 |
+- **Trigger 1** at `t=44` (lot global index 1's 7 minutes + lot global index 7's 6
+  minutes: `7+6=13 >= 10`, crossing on the second job). Freeze `[45,57]`, resumes
+  `58`, cumulative tracking restarts from 0.
+- **Trigger 2** at `t=118` (three more completed jobs -- global indices 8, 11, 19 --
+  accumulate `4+4+4=12 >= 10`, crossing on the third). Freeze `[119,131]`, resumes
+  `132`.
+
+Without the mechanism (`mutant_disable_maintenance`), Q's schedule after `t=114`
+assigns global index **16** to its last slot (`start=133`); with the mechanism
+active, the second freeze pushes that same slot to global index **18** instead
+(`start=136`) -- the freeze doesn't just delay a job, it changes *which* lot Q
+ends up processing, because the delay lets a different lot become the cheaper
+choice by the time Q reopens:
+
+| | Q's final job |
+|---|---|
+| Mechanism active (reference) | global index 18, start `t=136` |
+| Mechanism disabled (mutant) | global index 16, start `t=133` |
+
+A model that implements only a single, non-recurring freeze (matching R3b's old
+behavior) reproduces trigger 1 correctly but silently drops trigger 2 -- passing
+half of criteria 14-16's intent while failing D1's golden value, full-trace hash,
+and this witness.
 
 ## Trace-integrity hashes (criteria 38-43)
 
@@ -85,11 +99,19 @@ prefix into the rubric field, not the full hash.
 | Design | Full SHA-256 | Rubric value (first 16 chars) |
 |---|---|---|
 | D0 | `955957f0e6a9788d034f615b29341368fae4d42a5fa575a788379d3a6f1e3212` | **`955957f0e6a9788d`** |
-| D1 | `0e46cf0e88a3c39dd2e997d1184d70361a8d7a124b03e5715c05c5bb27deef46` | **`0e46cf0e88a3c39d`** |
-| D2 | `3e42a4ac02477575336794f1283c0ac5193f439ef691ea2cb039cbb0a2c91bcd` | **`3e42a4ac02477575`** |
-| D3 | `c237acbc4fab1df9e28de4c573de705ba9f08d0c671392466c80ef41ec7a5c97` | **`c237acbc4fab1df9`** |
-| D4 | `07824bc182e06107852a8196806f0a90c9f12cf33d01b3d7583380c0cd064374` | **`07824bc182e06107`** |
-| D5 | `80f5ceea7c33d2b145fc87f1a087c8dd1b1e6142c8767401ee2208d240cf940b` | **`80f5ceea7c33d2b1`** |
+| D1 | `9eafc0820bda70a94009a8f3dacc0d119bad748a64518b681880cc2764b7afbe` | **`9eafc0820bda70a9`** |
+| D2 | `7d104044363f36b297277d2a09d0a419c8c634dae3a11d2566046f790d600f66` | **`7d104044363f36b2`** |
+| D3 | `b1086cb4f38396f41d51ab74450d46f982a205dd1bd981f48bfd27e5f1fc97e8` | **`b1086cb4f38396f4`** |
+| D4 | `c9e705daef1ddcf7d204c5c720152cba158c6f233176ab1954c645cbffe4bdac` | **`c9e705daef1ddcf7`** |
+| D5 | `6a1d99ca7302e560d10088487821a15129f006d3379117b686acca636f93248a` | **`6a1d99ca7302e560`** |
+
+D0's hash is unchanged from R3b -- its Q workload (two jobs, `7+5=12`) crosses the
+new threshold (10) exactly once, on its very last Q job, so there is no remaining
+work left for a freeze to ever block; the trigger fires but has zero causal effect
+on D0's trace (confirmed: `mutant_disable_maintenance` and
+`mutant_maintenance_inclusive` both still reproduce D0 exactly). This is now
+correctly described as structural: D0 *does* trigger the mechanism once, it just
+never has a second job available to delay. All five other hashes changed.
 
 Every one of these values was copied directly from executed Python output,
 never hand-typed.

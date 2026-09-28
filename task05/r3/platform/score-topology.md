@@ -1,11 +1,23 @@
 # R3 score topology and plausible-wrong survival audit (post-hardening)
 
 Positive total **222** across 49 binary criteria; one **-8** negative trap. This is
-the fourth revision of this document: after the Machine-Q maintenance freeze was
+the fifth revision of this document: after the Machine-Q maintenance freeze was
 added (round 2), after a rubric-guidelines duplicate/consistency fix split witness
-W3 out of criterion 26 into its own row (round 3), and now after a full atomicity
-pass split the oven-timer and Q-maintenance-boundary criteria and merged two
-redundant package criteria (round 4, this revision).
+W3 out of criterion 26 into its own row (round 3), after a full atomicity pass
+split the oven-timer and Q-maintenance-boundary criteria and merged two redundant
+package criteria (round 4), and now (round 5, R3c) after three real target-model
+(Opus 4.8 Max) pilot transcripts scored 72%, 73%, and 99% — see
+`revision-delta.md`'s R3b->R3c section for the full forensic finding: the two
+lower-scoring runs' delivered simulators were proven **bit-exact identical** to
+`reference/kilnworks_sim.py` (independently recomputed trace hash match, with no
+access to our serialization algorithm), meaning this was a genuine task-difficulty
+gap, not a scoring artifact. Round 4's own closing paragraph flagged this exact
+risk in advance ("if Opus 4.8 Max produces a response that is correct on almost
+everything... it could plausibly score in the low 30s") — the actual pilots
+outpaced even that warning, landing at 72-99%, because the model didn't even need
+the one-narrow-mistake failure mode: it got the mechanism fully right. Round 5's
+fix hardens S13 (Machine-Q maintenance) from a one-time event to a **recurring**
+interval, the smallest change consistent with "harden the task, not the rubric."
 
 ## Method: programmatic scoring, not hand arithmetic
 
@@ -61,12 +73,21 @@ any bucket that a wrong implementation can pass "for free."
 | Per-campaign reset (reverts to R2's architecture) | Everything about the continuous run | **8.1%** |
 | Fault disabled | S07 only | **18.0%** |
 | Oven pairing timer disabled | S06 only | **18.0%** |
+| All tie-breaks reversed (highest index wins, not lowest) | S03/S05/S06 tie-break direction only | **18.9%** |
 | Machine-Q maintenance disabled | S13 entirely | **30.2%** |
+| Machine-Q maintenance single-shot (fires once, doesn't recur) | Exactly the "reverted to R3b's old behavior" regression — R3c's real target failure mode | **30.2%** |
 | Machine-Q maintenance boundary convention only (copies S07's inclusive rule instead of S13's stated default) | One `>=` vs the wrong minute-alignment, nothing else | **31.5%** |
-| All tie-breaks reversed (highest index wins, not lowest) | S03/S05/S06 tie-break direction only | **32.4%** |
 
-## Honest limitation: all three narrow single-mechanism mutants now sit above 30%
-## (30.2%, 31.5%, 32.4%), up from two in the prior revision
+`MAINT_THRESHOLD` was lowered from 12 to 10 specifically to fix the single-shot
+regression's score: at 12, three of six designs' recurrence was causally inert
+(each happened to cross the threshold only on its very last Q job), so a mutant
+that quietly reverted to one-time behavior still scored 57.2% — above the <50%
+target and the whole reason this hardening round exists. At 10, five of six
+designs genuinely exercise the recurrence and the same mutant drops to 30.2%,
+in line with every other single-mechanism mutant.
+
+## Honest limitation: the narrowest single-mechanism mutants still sit above 30%
+## (30.2%, 30.2%, 31.5%)
 
 This moved again — every round of atomicity fixes moves these three numbers up a
 little, and this revision is no exception. The pattern is structural, not a bug to
@@ -112,13 +133,20 @@ points, unchanged in substance from the prior revision:
    the atomicity fix this revision exists to make — the real gate is the
    target-model pilot, not this local diagnostic.
 
-**What this means going in to a target-model pilot**: if Opus 4.8 Max produces a
-response that is correct on almost everything and wrong on exactly one narrow
-boundary-timing or tie-break rule — the single hardest, most specific class of
-error this task was built to invite — it could plausibly score in the low 30s
-rather than comfortably under 30. That is a real, known, disclosed risk, not a
-guarantee of failure to stump the model; it is also, by construction, evidence
-that the model got unusually close to a fully correct answer.
+**What actually happened when this went to a target-model pilot**: this section
+previously predicted that a response correct on almost everything, wrong on
+exactly one narrow boundary/tie-break rule, "could plausibly score in the low
+30s." Three real Opus 4.8 Max pilots outpaced that warning entirely — two of them
+were not "almost everything," they were **bit-exact correct**, proven by
+independently recomputing the canonical trace hash from their own delivered code
+and matching ours exactly, and scored 72-73%; the third scored 99%. The
+speculative "one narrow mistake" scenario this document worried about did not
+occur; the model simply solved the mechanism. That is the actual finding this
+revision (R3c) responds to — see `revision-delta.md`. The remaining
+30.2/30.2/31.5% single-mechanism-mutant scores above are a different, narrower,
+still-honest concern (an adversarially-constructed one-bug mutant, not a real
+pilot result) and are disclosed as such below, not conflated with the pilot
+finding.
 
 ## Executed counterfactual C — correct engine, different valid organization
 
@@ -129,15 +157,21 @@ filenames, or one specific route among equally valid ones).
 
 ## Conclusion
 
-The hardening pass closed the gap the local blind pilot actually exploited
-(criteria 15-16's boundary-convention requirement now exists and is worth real
-weight) and drives every tested realistic wrong implementation to 18% or below —
-confirmed for real by a second, independent local blind pilot. This revision's
-full atomicity pass (splitting the oven-timer and Q-boundary criteria, merging two
-redundant package criteria, fixing the W3/W5 duplicate and inconsistency from the
-prior round) brings the rubric into compliance with the official rubric guidelines
-at the cost of all three narrow, hand-constructed single-mechanism mutants now
-sitting above 30% (30.2-32.4%). This is disclosed as a known, structural
-limitation — not resolved by further reweighting, since doing so would either
-undo the atomicity fix or just relocate the whack-a-mole problem. The next real
-signal is an actual Opus 4.8 Max platform pilot.
+Round 4's atomicity pass brought the rubric into compliance with the official
+rubric guidelines but, as its own closing paragraph anticipated, left real margin
+for a target model that gets the mechanism substantively right. Three real Opus
+4.8 Max pilots confirmed this directly: two delivered bit-exact-correct
+simulators (72%, 73%), one scored 99%. Round 5 (R3c) responds with the smallest
+change consistent with "harden the task, not the rubric": S13 (Machine-Q
+maintenance) is now a recurring interval instead of a one-time event, with the
+threshold tuned (12->10) so the recurrence is causally load-bearing in 5 of 6
+designs rather than inert in half of them. This closes the exact regression this
+round exists to catch (a "reverted to one-shot" implementation, previously scoring
+57.2%, now scores 30.2% — in line with every other single-mechanism mutant) without
+touching rubric weights, criterion count, goldens' overall shape, or any mechanism
+outside S13. It does not, and cannot, guarantee the next target-model pilot scores
+under 50% — that determination requires an actual fresh pilot against the
+hardened `kw-r3c.pdf`, not another local proxy. The three narrow, hand-constructed
+single-mechanism mutants sitting at 30.2-31.5% remain a disclosed, structural,
+unresolved limitation (see above); they are a different, more adversarial question
+than what the actual pilots exercised.

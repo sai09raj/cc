@@ -164,6 +164,9 @@ if __name__ == "__main__":
     r = {name: k.simulate(name, mutant_maintenance_inclusive=True) for name in k.DESIGNS}
     score("maintenance inclusive (wrong boundary only)", r, local_fail={15, 16}, w_maint_override=False, decision_fail=())
 
+    r = {name: k.simulate(name, mutant_maintenance_single_shot=True) for name in k.DESIGNS}
+    score("maintenance single-shot (not recurring)", r, local_fail={14, 15, 16}, w_maint_override=False, decision_fail={44})
+
     r = {name: reset_sim(name) for name in k.DESIGNS}
     score("per-campaign reset", r, local_fail={5, 7, 8, 13, 14, 15, 16}, package_fail={3},
           decision_fail={44, 49}, continuous=False)

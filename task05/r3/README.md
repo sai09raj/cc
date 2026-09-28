@@ -27,8 +27,8 @@ ablation.
   (`blind-pilot-1.md` against the pre-hardening packet, `blind-pilot-2.md` against
   this hardened one). Private.
 - `artifact/` — `make_packet.py` (deterministic matplotlib renderer, no image-
-  generation model involved) and the rendered `kw-r3b.pdf`. Only the PDF
-  is model-facing.
+  generation model involved) and the rendered `kw-r3c.pdf` (current; `kw-r3b.pdf`
+  kept for record only, do not upload it). Only the PDF is model-facing.
 - `platform/` — prompt, Ideal Flow, rubric, coverage ledger, score-topology audit,
   production witnesses, transcription checklist, entry guide, and revision delta.
   Only `prompt.md`, `ideal-flow.md`, and the rubric text are model-facing (via the
@@ -37,7 +37,13 @@ ablation.
 
 ## Status
 
-Frozen locally after full independent-reconstruction convergence and a pre-pilot
-score-topology audit. **No target-model pilot has been run.** Do not treat this as
-submission-ready until Phase 10 of `../../Playbook/01-END-TO-END-SOP.md` (one pilot,
-reconstructed and diagnosed) has actually happened.
+R3b's frozen packet was actually piloted: three real Opus 4.8 Max transcripts came
+back scoring 72%, 73%, and 99% — far above the <50% target. Forensic reconstruction
+(see `platform/revision-delta.md`'s R3b->R3c section) proved the two lower-scoring
+runs' delivered simulators were bit-exact correct against `reference/kilnworks_sim.py`,
+a genuine task-difficulty gap, not a scoring artifact. **R3c** hardens Section H's
+Q-maintenance freeze from a one-time event to a recurring interval in response
+(`kw-r3c.pdf`, new goldens, new rubric wording for criteria 14-16 — no weight or
+criterion-count change). **No pilot has yet been run against R3c.** Do not treat
+R3c as submission-ready until a fresh target-model pilot against it has been run,
+reconstructed, and diagnosed per `../../Playbook/01-END-TO-END-SOP.md` Phase 10.

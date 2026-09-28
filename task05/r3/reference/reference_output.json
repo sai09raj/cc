@@ -5,28 +5,28 @@
     "fault_triggered": true
   },
   "D1": {
-    "makespan": 161,
-    "bill": 1242,
+    "makespan": 159,
+    "bill": 1239,
     "fault_triggered": true
   },
   "D2": {
-    "makespan": 187,
-    "bill": 1373,
+    "makespan": 188,
+    "bill": 1435,
     "fault_triggered": true
   },
   "D3": {
     "makespan": 185,
-    "bill": 1408,
+    "bill": 1378,
     "fault_triggered": true
   },
   "D4": {
-    "makespan": 151,
-    "bill": 1384,
+    "makespan": 152,
+    "bill": 1344,
     "fault_triggered": true
   },
   "D5": {
-    "makespan": 153,
-    "bill": 1298,
+    "makespan": 151,
+    "bill": 1258,
     "fault_triggered": true
   }
 }

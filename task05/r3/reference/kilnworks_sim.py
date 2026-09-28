@@ -15,7 +15,7 @@ FAULT_WINDOW = 6
 OVEN_WAIT_TICKS = 2
 CAMPAIGNS = 4
 LOTS_PER_CAMPAIGN = 5
-MAINT_THRESHOLD = 12
+MAINT_THRESHOLD = 10
 MAINT_WINDOW = 13
 
 DESIGNS = {
@@ -144,7 +144,8 @@ def duration_on(machine, lot):
 def simulate(design_name, trace_limit=2000, debug=False,
              mutant_disable_fault=False, mutant_oven_no_timer=False,
              mutant_tiebreak_high=False, mutant_disable_maintenance=False,
-             mutant_maintenance_inclusive=False, lots_data=None):
+             mutant_maintenance_inclusive=False, mutant_maintenance_single_shot=False,
+             lots_data=None):
     d = DESIGNS[design_name]
     edges, adj = build_graph(d["aisle"])
     F, G = d["F"], d["G"]
@@ -162,6 +163,7 @@ def simulate(design_name, trace_limit=2000, debug=False,
     q_cumulative = 0
     q_maint_triggered = False
     q_maint_trigger_t = None
+    q_maint_trigger_count = 0
     q_freeze_until = None
 
     fixture_held = 0
@@ -206,9 +208,18 @@ def simulate(design_name, trace_limit=2000, debug=False,
                 if m == "Q" and not mutant_disable_maintenance:
                     q_cumulative += machine_current_proc_only[m]
                     machine_current_proc_only[m] = None
-                    if not q_maint_triggered and q_cumulative >= MAINT_THRESHOLD:
+                    if q_cumulative >= MAINT_THRESHOLD and not (
+                        mutant_maintenance_single_shot and q_maint_triggered
+                    ):
+                        # Recurring maintenance interval: re-arms every time the
+                        # threshold is crossed, not just the first. q_cumulative
+                        # resets to 0 so the next interval counts fresh processing
+                        # only, matching a real periodic maintenance schedule.
                         q_maint_triggered = True
                         q_maint_trigger_t = t
+                        q_maint_trigger_count += 1
+                        if not mutant_maintenance_single_shot:
+                            q_cumulative = 0
                         if mutant_maintenance_inclusive:
                             q_freeze_until = t + MAINT_WINDOW - 1  # wrong: copies S07's inclusive convention
                         else:
@@ -514,6 +525,7 @@ def simulate(design_name, trace_limit=2000, debug=False,
         edges=edges,
         q_maint_triggered=q_maint_triggered,
         q_maint_trigger_t=q_maint_trigger_t,
+        q_maint_trigger_count=q_maint_trigger_count,
         q_freeze_until=q_freeze_until,
     )
 

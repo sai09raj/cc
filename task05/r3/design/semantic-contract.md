@@ -175,21 +175,30 @@ regardless of design. This mechanism triggers exactly once per design's continuo
 run (Robot 0 does not return to node 4 needing a second trigger; the fault fires only
 on the first occupancy).
 
-## S13 — Machine Q maintenance freeze `[NEW]`
+## S13 — Machine Q maintenance freeze `[NEW, hardened to recurring in R3c]`
 
 Track `Q_cumulative`: the sum of the **processing** portion only (never setup) of
-every job Q has **completed**, running continuously for the whole design (never
-reset). At the boundary minute Q becomes free after completing a job, if adding
-that job's processing duration makes `Q_cumulative >= MAINT_THRESHOLD` (`= 12`) for
-the first time, Q immediately becomes unable to start any new job. Unlike S07
+every job Q has **completed since Q's last freeze ended** (or since the start of
+the run, if no freeze has fired yet). At the boundary minute Q becomes free after
+completing a job, if adding that job's processing duration makes `Q_cumulative >=
+MAINT_THRESHOLD` (`= 12`), Q immediately becomes unable to start any new job **and
+`Q_cumulative` resets to 0** for the next interval -- this is a genuinely recurring
+maintenance interval, not a one-time event: real periodic maintenance recurs every
+time the equipment accumulates another `MAINT_THRESHOLD` minutes of processing, and
+nothing in the packet's wording ever claimed otherwise. Unlike S07
 (which explicitly states its freeze is inclusive of the triggering arrival minute),
-S13 states no such override, so the **default** timing convention applies: the
-triggering completion minute itself is unaffected (Q could in principle still be
-assigned that same minute if somehow idle and eligible, though in practice it just
-completed a job so is not simultaneously idle for a new one), and the freeze covers
-the `MAINT_WINDOW` (`= 13`) minutes **starting the minute after** the trigger,
-through `trigger + MAINT_WINDOW` inclusive; Q resumes normal assignment eligibility
-at `trigger + MAINT_WINDOW + 1` (i.e. `trigger + 14`). This mechanism fires at most once per design's run.
+S13 states no such override, so the **default** timing convention applies on
+**every** trigger: the triggering completion minute itself is unaffected (Q could
+in principle still be assigned that same minute if somehow idle and eligible,
+though in practice it just completed a job so is not simultaneously idle for a new
+one), and each freeze covers the `MAINT_WINDOW` (`= 13`) minutes **starting the
+minute after** that trigger, through `trigger + MAINT_WINDOW` inclusive; Q resumes
+normal assignment eligibility at `trigger + MAINT_WINDOW + 1` (i.e. `trigger +
+14`), and cumulative tracking resumes from 0 at that same resumption point. This
+mechanism can fire any number of times per design's run, including zero, depending
+purely on how much processing Q actually accumulates between freezes -- there is no
+per-design cap and no special-casing of a "first" vs. "later" trigger; the same
+rule is applied identically every time the threshold is crossed.
 While frozen, Q simply never appears in the S03 per-minute machine-assignment pass
 (P is unaffected and continues normally); a lot that would have gone to Q must wait
 for P or for Q's freeze to end, whichever the S03 cost comparison and pool

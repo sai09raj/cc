@@ -14,7 +14,7 @@
 | Packet Section F: oven pairing timer, tie-breaks | 10, 11, 31 (W4) | Partner-matching + deadline-timing + mixed-campaign witness |
 | Packet Section F: power admission order | 12 | Ordered-pass admission |
 | Packet Section G: lexicographic selection key formula | 44, 45 | Both selection criteria state the exact formula |
-| Packet Section H: Q maintenance trigger/tracking | 14 | Cumulative processing-only sum, threshold 12 |
+| Packet Section H: Q maintenance trigger/tracking | 14 | Cumulative processing-only sum, threshold 10, recurring (resets on each trigger) |
 | Packet Section H: Q maintenance boundary convention | 15, 16, 32 (W5) | Default (non-inclusive) timing rule, split trigger/window facts + delay witness |
 | Prompt: per-design makespan/bill from executed simulator | 17-22 | Six named result pairs |
 | Prompt: full trace reconciliation | 23-28 | Per-design reconciliation (own record; witnesses owned separately by 29-33) |

@@ -58,8 +58,8 @@ without cutting real coverage; see `revision-delta.md` for the full accounting.
 
 4. **+2** — Recovers solid undirected edges `{0-3,3-6,3-4,4-7,6-7,7-8,5-8,2-5,1-4}`,
    adding only `4-5` for open designs D3/D5; docking bays `P=3, Q=5, K=1` at
-   capacity 2, all other nodes at capacity 1; and that node 1 (K) has only the edge
-   `1-4` in both topologies. Equivalent labels pass with an explicit mapping.
+   capacity 2, other nodes at capacity 1; node 1 (K) has only edge `1-4` in both
+   topologies. Equivalent labels pass with an explicit mapping.
 5. **+2** — Generates 20 lots per design (campaigns s=0..3, lots j=0..4) with
    `family=(j+s)%2`, `release_local=2*floor(j/2)`, `Pbase=5+(j*j+2s)%4`,
    `Qbase=4+(3j+s)%5`, and **absolute release `35*s + release_local`** on one shared
@@ -67,21 +67,17 @@ without cutting real coverage; see `revision-delta.md` for the full accounting.
 6. **+1** — Uses the six design input tuples `(F,G,aisle,capital)`: D0=(2,5,closed,0),
    D1=(3,5,closed,7), D2=(2,6,closed,9), D3=(2,5,open,6), D4=(3,6,closed,16),
    D5=(3,6,open,22).
-7. **+1** — Machine assignment: each machine's remembered family **persists for the
-   whole continuous run** (never resets at a campaign boundary); setup is 0 on a
-   machine's first job or an unchanged family, else 2; a machine whose pool is empty
-   or whose start is refused by the power budget claims nothing and leaves the other
-   machine's pool unaffected that minute; a fixture is counted held only from an
-   actually-started preparation; ties broken by lowest global index.
+7. **+1** — Machine assignment: family memory persists for the whole run (never
+   resets per campaign); setup 0 on a first job or unchanged family, else 2; an
+   empty/power-refused machine claims nothing, leaving the other's pool
+   unaffected; fixture held only from actual prep start; ties by lowest index.
 8. **+1** — Keeps plant-wide fixture holdings at most F at every minute across the
    entire continuous run; each lot holds one fixture from the start of its own
    preparation through cure completion.
-9. **+1** — Robot dispatch applies the six-rule priority order (offline / unload /
-   pickup / toward-K / toward-nearest-waiting-lot / toward-home), Robot 0 decided
-   and power-finalized before Robot 1, with correct same-minute edge/node-capacity
-   collision handling (including that a node vacated by one robot this same minute
-   may be legally entered by the other) and ties broken by lowest target/next-hop
-   node id, not highest.
+9. **+1** — Robot dispatch: six-rule priority order (offline/unload/pickup/
+   toward-K/toward-nearest-lot/toward-home), Robot 0 decided and power-finalized
+   before Robot 1, correct same-minute collision handling (a node vacated this
+   minute may be entered by the other robot), ties by lowest target/next-hop id.
 10. **+1** — Matches oven batches by family: an already-arrived same-family
     partner joins the anchor immediately, tie-broken by lowest global index,
     not highest; cross-campaign same-family pairs still batch together, not
@@ -98,17 +94,18 @@ without cutting real coverage; see `revision-delta.md` for the full accounting.
     Robot 0's first actually-admitted arrival at node 4, freezes its position and
     cargo for 6 minutes counting the arrival minute itself (the packet's explicit
     inclusive exception), and fires at most once per design's run.
-14. **+2** — Tracks Q's maintenance-freeze trigger as one cumulative counter: sums
-    only Q's completed processing time (never setup) continuously across the whole
-    run (never reset per campaign), and triggers the first time that sum reaches 12
-    at a completion boundary, firing at most once per design's run.
+14. **+2** — Tracks Q's maintenance trigger as one cumulative counter: sums only
+    Q's completed processing (never setup) since its last freeze ended, triggers
+    at a completion boundary once the sum reaches 10, and resets to 0 on each
+    trigger — recurring, uncapped, not a one-time event.
 15. **+1** — Leaves the triggering completion minute itself unaffected by the Q
-    maintenance freeze — the packet's *default* timing rule, stated with no
-    inclusive exception, unlike node-4's explicit one in criterion 13.
-16. **+1** — Covers the Q maintenance freeze for exactly the 13 minutes starting
-    the minute **after** the trigger, through `trigger+13` inclusive. Starting
-    the freeze on the trigger minute itself, copying node-4's convention, fails
-    this criterion regardless of criteria 14-15.
+    maintenance freeze on every trigger, not only the first — the packet's
+    *default* timing rule, stated with no inclusive exception, unlike node-4's
+    explicit one in criterion 13.
+16. **+1** — Covers each Q freeze for 13 minutes starting the minute **after**
+    its trigger, through `trigger+13`, resuming tracking from 0 at
+    `trigger+14`. Copying node-4's inclusive convention, or capping this at
+    one occurrence, fails this criterion regardless of 14-15.
 
 ### Integrated production execution — per-design values (criteria 17-28, weight 117)
 
@@ -118,25 +115,25 @@ cumulative bill together describe a single trace's internal consistency, not thr
 independent asks). Any attaining schedule passes; report however organized.
 
 17. **+10** — Reports D0's `(makespan, bill)` as `(187, 1331)`.
-18. **+10** — Reports D1's `(makespan, bill)` as `(161, 1242)`.
-19. **+10** — Reports D2's `(makespan, bill)` as `(187, 1373)`.
-20. **+10** — Reports D3's `(makespan, bill)` as `(185, 1408)`.
-21. **+10** — Reports D4's `(makespan, bill)` as `(151, 1384)`.
-22. **+10** — Reports D5's `(makespan, bill)` as `(153, 1298)`.
+18. **+10** — Reports D1's `(makespan, bill)` as `(159, 1239)`.
+19. **+10** — Reports D2's `(makespan, bill)` as `(188, 1435)`.
+20. **+10** — Reports D3's `(makespan, bill)` as `(185, 1378)`.
+21. **+10** — Reports D4's `(makespan, bill)` as `(152, 1344)`.
+22. **+10** — Reports D5's `(makespan, bill)` as `(151, 1258)`.
 23. **+10** — Reconciles D0's delivered trace as one record: 20 of 20 lots done, 0
     fixtures held, and a cumulative bill of 1331, all at the final boundary.
 24. **+10** — Reconciles D1's delivered trace as one record: 20 of 20 lots done, 0
-    fixtures held, and a cumulative bill of 1242, all at the final boundary. (W5
+    fixtures held, and a cumulative bill of 1239, all at the final boundary. (W5
     also appears here, but is graded once, via criterion 32 — not charged again.)
 25. **+10** — Reconciles D2's delivered trace as one record: 20 of 20 lots done, 0
-    fixtures held, and a cumulative bill of 1373, all at the final boundary.
+    fixtures held, and a cumulative bill of 1435, all at the final boundary.
 26. **+10** — Reconciles D3's delivered trace as one record: 20 of 20 lots done, 0
-    fixtures held, and a cumulative bill of 1408, all at the final boundary.
+    fixtures held, and a cumulative bill of 1378, all at the final boundary.
 27. **+7** — Reconciles D4's delivered trace as one record: 20 of 20 lots done, 0
-    fixtures held, and a cumulative bill of 1384, all at the final boundary. (W3
+    fixtures held, and a cumulative bill of 1344, all at the final boundary. (W3
     also appears here, but is graded once, via criterion 33 — not charged again.)
 28. **+10** — Reconciles D5's delivered trace as one record: 20 of 20 lots done, 0
-    fixtures held, and a cumulative bill of 1298, all at the final boundary.
+    fixtures held, and a cumulative bill of 1258, all at the final boundary.
 
 ### Integrated production execution — named witnesses (criteria 29-33, weight 15)
 
@@ -149,10 +146,10 @@ independent asks). Any attaining schedule passes; report however organized.
     minute a later campaign's first lot releases.
 31. **+3** — Shows production witness W4 in a delivered trace (D1, D4, or D5): at
     least one oven batch whose two members belong to two different campaigns.
-32. **+3** — Shows W5 in the design's required continuous trace (D1-D5): Q
-    eligible up to its own trigger, then absent exactly 13 minutes after, then
-    eligible again. Fails if computed from an isolated single-campaign fixture,
-    if it fires more than once, or if it starts on the trigger minute itself.
+32. **+3** — Shows W5 in the design's trace (D1-D5): for every Q trigger, Q
+    eligible up to it, absent 13 minutes after, eligible again with tracking
+    reset. Fails on an isolated single-campaign fixture, a missing later
+    trigger (single-shot, not recurring), or a freeze on its trigger minute.
 33. **+3** — Shows production witness W3 in D4's delivered trace: a machine job
     whose setup cost of 2 is attributable only to family memory carried over from
     an earlier campaign, not to any job within the same campaign.
@@ -183,11 +180,11 @@ per minute (`t,power,cumulative_bill`, in execution order, preceded by a
 divergent minute anywhere in that design's run, not just the final summary.
 
 38. **+10** — Matches the first 16 hex characters of D0's canonical trace hash to `955957f0e6a9788d`.
-39. **+10** — Matches the first 16 hex characters of D1's canonical trace hash to `0e46cf0e88a3c39d`.
-40. **+10** — Matches the first 16 hex characters of D2's canonical trace hash to `3e42a4ac02477575`.
-41. **+10** — Matches the first 16 hex characters of D3's canonical trace hash to `c237acbc4fab1df9`.
-42. **+10** — Matches the first 16 hex characters of D4's canonical trace hash to `07824bc182e06107`.
-43. **+10** — Matches the first 16 hex characters of D5's canonical trace hash to `80f5ceea7c33d2b1`.
+39. **+10** — Matches the first 16 hex characters of D1's canonical trace hash to `9eafc0820bda70a9`.
+40. **+10** — Matches the first 16 hex characters of D2's canonical trace hash to `7d104044363f36b2`.
+41. **+10** — Matches the first 16 hex characters of D3's canonical trace hash to `b1086cb4f38396f4`.
+42. **+10** — Matches the first 16 hex characters of D4's canonical trace hash to `c9e705daef1ddcf7`.
+43. **+10** — Matches the first 16 hex characters of D5's canonical trace hash to `6a1d99ca7302e560`.
 
 Generated by `reference/kilnworks_sim.py` (`canonical_trace_serialization` +
 SHA-256), truncated to 16 hex characters to keep manual transcription safe
@@ -204,10 +201,10 @@ rather than retyping.
 44. **+1** — Applies the lexicographic key `(makespan, bill+3*capital, capital, ID)`
     across all six designs' results and selects its minimum. Grade arithmetic on
     delivered metrics without recharging an upstream error charged in 17-22;
-    correct metrics give D4, (151, 1432, 16, D4).
+    correct metrics give D5, (151, 1324, 22, D5).
 45. **+1** — Minimizes the same key within `capital<=9` (D0, D1, D2, D3). Grade
     population/selection on delivered metrics without recharging upstream metric
-    errors; with correct metrics the result is D1, (161, 1263, 7, D1).
+    errors; with correct metrics the result is D1, (159, 1260, 7, D1).
 46. **+1** — Compares D0 (baseline) against both selected designs using the
     delivered executed objectives. Accept a comparison correct relative to
     delivered results despite an upstream error.
