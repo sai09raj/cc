@@ -57,6 +57,64 @@ A strong architecture should combine several of these independent burdens:
 
 No single obscure semantic should carry the task. A low score should still occur when the model extracts every local rule correctly but fails the genuinely difficult execution, optimization, verification, or reconciliation work.
 
+## Platform domain picker (fixed list) — record the choice here, do not reinvent it
+
+The platform's task-creation UI offers a **fixed** domain radio list, not
+free text. Screenshotted from the live UI (task07 creation flow); treat
+this as authoritative over any domain string invented in an earlier
+task's prose (Task 06's rubric header said "Building Systems / Vertical
+Transportation Engineering," which is not one of these options — that was
+never validated against the real picker and should not be repeated):
+
+```text
+Applied Physics              Genomics
+Chemistry                    Geoscience
+Civil Engineering             Industrial Engineering
+Climate Science               Mechanical Engineering
+Computational Biology         Architecture
+Computer Engineering          Molecular Biology
+Earth & Environmental Sciences  Robotics
+Electrical Engineering        Systems & Technology Engineering
+Electronics                   Other
+Finance
+```
+
+Pick the single closest-fitting entry as **Domain**; the free-text
+**Subdomain** field (seen elsewhere in the platform UI) is where the
+specific engineering decision/subfield goes — e.g. domain `Civil
+Engineering`, subdomain `Water Resources & Public Works — wastewater
+lift-station control`. If nothing fits well, `Other` is available, but
+check this list again first rather than inventing a category.
+
+### Domain diversity is not the same as task-shape diversity
+
+Picking a different entry off this list for each new task is necessary
+but **not sufficient** for making tasks genuinely different from each
+other. A task's *shape* — build a deterministic simulator, exhaustively
+sweep a configuration space, select via several competing lexicographic
+objectives, verify independently, survive adversarial mutations, grade on
+whole-sweep aggregates — can repeat identically across three different
+domain labels (kiln scheduling, elevator dispatch, lift-station control)
+while testing the same underlying reasoning skill in a new costume each
+time. Before starting a new task, explicitly check it against the last
+2-3 tasks actually built (not just their domain labels) for:
+
+- the same core mechanism (discrete event dispatch vs. continuous-state
+  integration vs. something else entirely — constraint satisfaction,
+  graph/routing, protocol/consensus, statistical inference, etc.);
+- the same overall pipeline shape (simulate → sweep → 3-objective select
+  → verify → mutate) reused wholesale rather than adapted to what the new
+  domain actually calls for;
+- whether a person who built the last task could solve this one almost
+  entirely by pattern-matching the file/module structure, not by
+  re-deriving anything domain-specific.
+
+If the answer to any of these is "yes, basically," treat that as a real
+finding to raise with the user before investing further, not something to
+paper over with a new domain label. See `13-CASE-STUDY-TASK-06.md` for
+the reusable-shape pattern that make this risk easy to fall into
+unintentionally.
+
 ## Required reading order
 
 1. Current official PDFs and project handbook.

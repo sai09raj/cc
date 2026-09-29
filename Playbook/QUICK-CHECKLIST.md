@@ -3,7 +3,8 @@
 ## Before designing
 
 - [ ] Read `guidelines.pdf`, `rubric.pdf`, `common-errors.pdf`, and the handbook.
-- [ ] Choose an expert domain and real engineering decision.
+- [ ] Choose an expert domain from the platform's fixed domain picker list (`00-START-HERE-EVERY-FUTURE-TASK.md`) and a real engineering decision for the subdomain.
+- [ ] Check the new task's actual mechanism/pipeline shape against the last 2-3 tasks built, not just their domain labels — a different domain label reused over the same simulate-sweep-select-verify template is not real diversity.
 - [ ] Prove the four pillars: visual, tools, expertise, long horizon.
 - [ ] Reject a small clean-rewrite architecture.
 - [ ] Assume the target model has no internet; no required fact, package, API, or documentation may live only online.
