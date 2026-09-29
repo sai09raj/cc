@@ -1,14 +1,14 @@
 # ATRIUM-9 rubric
 
-Positive total **281**; six negative criteria totaling **-28** (**-8**,
-**-5**, **-4**, **-4**, **-4**, **-3** — see the two negative sections
-below). Exactly **50 criteria** (the platform maximum; not padded — see
-`07-MISTAKE-REGISTER.md` #38). Every weight is capped at 10 (the
-platform's per-criterion maximum). Criteria are binary. Accept equivalent
-correct work throughout: equivalent languages, source organization,
-output schemas, file layout, and formula notation.
+Positive total **266**; seven negative criteria totaling **-33** (**-4**,
+**-4**, **-4**, **-3**, **-5**, **-5**, **-8** — see the two negative
+sections below). Exactly **50 criteria** (the platform maximum; not
+padded — see `07-MISTAKE-REGISTER.md` #38). Every weight is capped at 10
+(the platform's per-criterion maximum). Criteria are binary. Accept
+equivalent correct work throughout: equivalent languages, source
+organization, output schemas, file layout, and formula notation.
 
-This revision responds to two rounds of platform-linter feedback.
+This revision responds to three rounds of platform-linter feedback.
 Round 1: criterion 16 (agree/diverge disclosure) was reworded to remove
 ambiguous "must be compared as equal" framing; two "must never"
 prohibitions (verifier independence; reassigned-away non-reuse) that were
@@ -16,11 +16,15 @@ previously positive-only got dedicated negative criteria. Round 2: three
 more prompt-stated prohibitions were found uncovered (no free per-tick
 search/optimization in place of the fixed policy; no bouncing between
 equally-good cars; no shortened/sampled sweep runs) and given dedicated
-negatives too. To stay at exactly 50 criteria across both rounds, several
-same-mechanism local-semantics pairs were merged further and the
-reconciliation criterion (which had become largely tautological once
-criteria 13-15 already grade the selection value against a known-correct
-reference) was dropped.
+negatives too. Round 3: criterion 10's DWELL-to-CLOSING clause was also
+positive-only (required in one criterion, never penalized in a dedicated
+negative); it got its own negative criterion, and the two per-call
+board-tick witnesses for `gidx=26` and `gidx=27` were merged into one to
+hold the count at exactly 50. To stay at exactly 50 criteria across all
+three rounds, several same-mechanism local-semantics pairs were also
+merged and the reconciliation criterion (which had become largely
+tautological once criteria 13-15 already grade the selection value
+against a known-correct reference) was dropped.
 
 Score-topology floor: even a mutant that failed every single discriminating
 criterion in this rubric would still earn a low-double-digit percentage
@@ -36,7 +40,7 @@ evidence this weighting is built from.
 | 1 | +2 | Executes the delivered offline simulator with a documented, reproducible command, records the actual tool versions used in a declared offline, stdlib-only environment, includes the memo's own layout interpretation of the packet's diagrams, and delivers all six named products as accessible files. |
 | 2 | +1 | The delivered sweep table contains exactly 144 unique legal `(active_cars, zoning, wait_timeout, power_budget)` rows, no duplicate, no missing combination. |
 
-### Local semantics/rules/scaffolding (3-12, weight 26)
+### Local semantics/rules/scaffolding (3-12, weight 22)
 
 | # | Wt | Criterion |
 | --- | --- | --- |
@@ -47,7 +51,7 @@ evidence this weighting is built from.
 | 7 | +1 | A car re-derives its next action fresh each decision: continues its scan direction only while a commitment remains ahead, else switches to the nearer remaining commitment. |
 | 8 | +1 | Uses the stated timing constants: `T_DOOR_OPEN=2`, `T_DWELL=3`, `T_DOOR_CLOSE=2`, `T_FLOOR=4` per floor. |
 | 9 | +2 | Boards, atomically at the first DWELL tick, every waiting call matching direction at that floor (ascending call-index, up to capacity 6), then alights every boarded call whose destination is the current floor, freeing capacity immediately. |
-| 10 | +10 | Admits power in one ordered pass per tick, car priority A,B,C,D (mandatory draws first, new events from what remains, a refusal defers rather than errors) AND treats DWELL-to-CLOSING as its own power-gated event, not automatic. |
+| 10 | +5 | Admits power in one ordered pass per tick, car priority A,B,C,D: mandatory ongoing draws are honored first, then new events draw from what remains; a refusal defers that car's event to a later tick rather than erroring. |
 | 11 | +1 | Energy per moving tick is `3+load` UP, `3-load` DOWN (regenerative credit for a loaded descent). |
 | 12 | +3 | Triggers timeout re-evaluation at `WAIT_TIMEOUT` age AND reassigns only when a strictly cheaper alternative exists. |
 
@@ -86,7 +90,7 @@ plausible-wrong mutant tested — the rubric's main discriminating bloc.
 | 31 | +10 | Summed over only `zoning=TOP AND power_budget=6` (12 rows): `avg_wait` totals `272.2875` (±0.05), `net_energy` totals `45552`. |
 | 32 | +10 | Summed over only `zoning=TOP AND wait_timeout=50` (12 rows): `avg_wait` totals `286.9375` (±0.05), `net_energy` totals `45672`. |
 
-### Production witnesses from the baseline trace (33-41, weight 89)
+### Production witnesses from the baseline trace (33-40, weight 79)
 
 Baseline configuration for 33-35 and the hash: `(active_cars=3, zoning=TOP,
 wait_timeout=50, power_budget=8, capacity=6)`.
@@ -97,34 +101,34 @@ wait_timeout=50, power_budget=8, capacity=6)`.
 | 34 | +10 | Shows call `gidx=15` alighting at exactly `t=200` (cross-campaign overlap) AND call `gidx=5` reassigned exactly once, to car C at `t=91`, boarding `t=94`. |
 | 35 | +10 | Shows call `gidx=19` (floor 2, UP, arrival `t=152`) assigned ONCE, at `t=243` to car A, boarding `t=248` (attempt stays 1) — switching on timeout expiry alone would delay it to `t=265`. |
 | 36 | +10 | Shows, in `(4,GROUND,50,6)`: some tick in `t=24`-`t=59` draws exactly 6 power, and power never exceeds 6 anywhere in the run. |
-| 37 | +10 | Shows call `gidx=26` (floor 0, UP, arrival `t=248`) boards at exactly `t=278`, assigned to car B (attempt stays 1). |
-| 38 | +10 | Shows call `gidx=27` (floor 0, UP, arrival `t=256`) boards at exactly `t=302`, assigned to car C (attempt stays 1). |
-| 39 | +10 | Shows, in `(4,SPLIT,50,6)`: drawn power never exceeds 6 anywhere in the run. |
-| 40 | +10 | Shows, in `(4,TOP,50,6)`: drawn power never exceeds 6 anywhere in the run. |
-| 41 | +10 | Matches the first 16 hex chars of the baseline's trace-integrity hash to `f544b2d2a1d0fb30`. |
+| 37 | +10 | Shows call `gidx=26` (floor 0, UP, arrival `t=248`) boards at exactly `t=278`, assigned car B, AND call `gidx=27` (floor 0, UP, arrival `t=256`) boards at exactly `t=302`, assigned car C (both attempt stays 1). |
+| 38 | +10 | Shows, in `(4,SPLIT,50,6)`: drawn power never exceeds 6 anywhere in the run. |
+| 39 | +10 | Shows, in `(4,TOP,50,6)`: drawn power never exceeds 6 anywhere in the run. |
+| 40 | +10 | Matches the first 16 hex chars of the baseline's trace-integrity hash to `f544b2d2a1d0fb30`. |
 
-### Independent verification and decision/causal reconciliation (42-44, weight 13)
-
-| # | Wt | Criterion |
-| --- | --- | --- |
-| 42 | +3 | Delivers a separately-coded verifier, sharing only immutable input constants, that re-derives the call table, checks a certificate or re-simulates the baseline trace, rejects both adversarial mutations with the original preserved and accepted, and reports this evidence in the memo. |
-| 43 | +8 | Explains, citing the baseline trace's own numbers, why wait-optimal and energy-optimal diverge and what budget-constrained trades away, AND explains, citing a concrete tick/car pair, a power-budget delay and why treating DWELL-to-CLOSING as automatic would understate it. |
-| 44 | +2 | Explains in the memo, tied to a concrete failure mode (double-served passenger, phantom stop), why the simulator must never let a call reassigned away from a car later be served by that same car. |
-
-### Negative criteria — verifier and reassignment prohibitions (45-46)
+### Independent verification and decision/causal reconciliation (41-43, weight 13)
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 45 | −4 | Delivers a verifier that shares anything beyond immutable input constants with the primary implementation (importing or wrapping its internal state, classes, or in-memory objects) rather than independently re-deriving the call table and trace or certificate. |
-| 46 | −4 | The simulator itself lets a call reassigned away from a car later be boarded or served by that same car, instead of permanently excluding it from that car's future assignments. |
+| 41 | +3 | Delivers a separately-coded verifier, sharing only immutable input constants, that re-derives the call table, checks a certificate or re-simulates the baseline trace, rejects both adversarial mutations with the original preserved and accepted, and reports this evidence in the memo. |
+| 42 | +8 | Explains, citing the baseline trace's own numbers, why wait-optimal and energy-optimal diverge and what budget-constrained trades away, AND explains, citing a concrete tick/car pair, a power-budget delay and why treating DWELL-to-CLOSING as automatic would understate it. |
+| 43 | +2 | Explains in the memo, tied to a concrete failure mode (double-served passenger, phantom stop), why the simulator must never let a call reassigned away from a car later be served by that same car. |
 
-### Negative criteria — architecture and execution prohibitions (47-49)
+### Negative criteria — verifier and reassignment prohibitions (44-45)
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 47 | −4 | Implements hall-call assignment, commitment scanning, or reassignment as a per-tick search or optimization computed fresh each tick, rather than the packet's fixed, deterministic policy (there is no free scheduling choice at the per-tick level). |
-| 48 | −3 | Reassigns a call to an alternative car whose cost is equal to (not strictly less than) the incumbent's, or reassigns the same call back and forth between two equally-good cars over time. |
-| 49 | −5 | Runs any of the 144 legal configurations as a shortened, truncated, or sampled subset of its 80 calls rather than one continuous run to completion. |
+| 44 | −4 | Delivers a verifier that shares anything beyond immutable input constants with the primary implementation (importing or wrapping its internal state, classes, or in-memory objects) rather than independently re-deriving the call table and trace or certificate. |
+| 45 | −4 | The simulator itself lets a call reassigned away from a car later be boarded or served by that same car, instead of permanently excluding it from that car's future assignments. |
+
+### Negative criteria — architecture and execution prohibitions (46-49)
+
+| # | Wt | Criterion |
+| --- | --- | --- |
+| 46 | −4 | Implements hall-call assignment, commitment scanning, or reassignment as a per-tick search or optimization computed fresh each tick, rather than the packet's fixed, deterministic policy (there is no free scheduling choice at the per-tick level). |
+| 47 | −3 | Reassigns a call to an alternative car whose cost is equal to (not strictly less than) the incumbent's, or reassigns the same call back and forth between two equally-good cars over time. |
+| 48 | −5 | Runs any of the 144 legal configurations as a shortened, truncated, or sampled subset of its 80 calls rather than one continuous run to completion. |
+| 49 | −5 | The simulator treats the DWELL-to-CLOSING transition as automatic rather than its own power-gated event, letting a car leave DWELL without that transition being admitted from the power budget that tick. |
 
 ### Negative trap (50)
 

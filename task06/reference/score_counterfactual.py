@@ -51,7 +51,10 @@ LOCAL_WEIGHT = {
     7: 1,   # re-derive next action
     8: 1,   # door-cycle timing constants
     9: 2,   # boarding+alighting (merged, was 12+13)
-    10: 10, # power admission order + DWELL-to-CLOSING gating (merged, was 14+15)
+    10: 5,  # power admission order ONLY (DWELL-to-CLOSING gating split out to its
+            # own negative criterion -- see NEG_DWELL_CLOSING_AUTO_WEIGHT -- since
+            # this positive clause was restating the same fact a dedicated negative
+            # now tests, the same double-charging issue fixed for criterion 12)
     11: 1,  # energy formula
     12: 3,  # timeout trigger + reassign cost-compare (merged, was 17+18)
 }
@@ -91,35 +94,44 @@ W1_WEIGHT = 9    # criterion 33
 W23_WEIGHT = 10  # criterion 34: merged W2(gidx=15)+W3a(gidx=5) -- both T-only, capped (was 9+10=19)
 W3B_WEIGHT = 10  # criterion 35
 W4_WEIGHT = 10   # criterion 36
-W5_WEIGHT = 10   # criterion 37: gidx=26 board_tick
-W6_WEIGHT = 10   # criterion 38: gidx=27 board_tick
+W56_WEIGHT = 10  # criterion 37: merged gidx=26 + gidx=27 board_tick witnesses (was 10+10=20,
+                 # freed a slot for the new DWELL-to-CLOSING negative below)
 PW1_CFG = dict(active_cars=4, zoning="SPLIT", wait_timeout=50, capacity=6, power_budget=6)
 PW2_CFG = dict(active_cars=4, zoning="TOP", wait_timeout=50, capacity=6, power_budget=6)
-PW1_WEIGHT = 10  # criterion 39
-PW2_WEIGHT = 10  # criterion 40
-HASH_WEIGHT = 10  # criterion 41
+PW1_WEIGHT = 10  # criterion 38
+PW2_WEIGHT = 10  # criterion 39
+HASH_WEIGHT = 10  # criterion 40
 
-VERIFY_WEIGHT = 3   # criterion 42: merged -- independent verifier delivered, accepts baseline,
+VERIFY_WEIGHT = 3   # criterion 41: merged -- independent verifier delivered, accepts baseline,
                      # and rejects both required adversarial mutations
 
-DECISION_MAIN_WEIGHT = 8   # criterion 43: merged wait/energy-divergence + budget-tradeoff +
+DECISION_MAIN_WEIGHT = 8   # criterion 42: merged wait/energy-divergence + budget-tradeoff +
                            # power-delay-witness + door-closing-automatic explanation --
                            # this merge makes it fail under ALL THREE mutants (each fails a
                            # different piece of the combined explanation), so it moved from
                            # two AlwaysPass-ish decision criteria to one universal discriminator
-DECISION_REASSIGN_WEIGHT = 2  # criterion 44: reassignment-non-reuse explanation
+DECISION_REASSIGN_WEIGHT = 2  # criterion 43: reassignment-non-reuse explanation
 
-# criteria 45-49: negative criteria. 45-46 were added for the linter's first
-# "prohibition must have a dedicated negative" finding; 47-49 for its second
-# pass (three more positive-only prohibitions in the prompt text). None of
-# these five trigger for canonical or the three scored mutants below -- they
-# test failure modes distinct from the three mechanism bugs this script
-# scores, so they cost 0 for all four and exist purely for required coverage.
-NEG_VERIFIER_WRAP_WEIGHT = 4     # criterion 45
-NEG_REASSIGN_REUSE_WEIGHT = 4    # criterion 46
-NEG_PER_TICK_SEARCH_WEIGHT = 4   # criterion 47
-NEG_EQUAL_COST_BOUNCE_WEIGHT = 3  # criterion 48
-NEG_SHORTENED_RUN_WEIGHT = 5     # criterion 49
+# criteria 44-49: negative criteria. 44-45 were added for the linter's first
+# "prohibition must have a dedicated negative" finding; 46-48 for its second
+# pass (three more positive-only prohibitions in the prompt text); 49 for a
+# third pass (DWELL-to-CLOSING gating was positive-only inside criterion 10,
+# same issue as the reassignment rule that was split out of criterion 12).
+# Five of these six never trigger for canonical or the three scored mutants
+# below -- they test failure modes distinct from the three mechanism bugs
+# this script scores, so they cost 0 and exist purely for coverage. The
+# sixth (49, DWELL-to-CLOSING automatic) DOES trigger for mutant_power_disabled:
+# that mutant sets remaining=10**9 (atrium_sim.py:341), which bypasses the
+# `remaining < POWER["door"]` gate on the DWELL-to-CLOSING transition
+# (atrium_sim.py:351) exactly as this negative criterion describes -- it is
+# not a distinct failure mode for that one mutant, it is the same power-
+# budget-disabled bug this mutant already fails criterion 10 for.
+NEG_VERIFIER_WRAP_WEIGHT = 4     # criterion 44
+NEG_REASSIGN_REUSE_WEIGHT = 4    # criterion 45
+NEG_PER_TICK_SEARCH_WEIGHT = 4   # criterion 46
+NEG_EQUAL_COST_BOUNCE_WEIGHT = 3  # criterion 47
+NEG_SHORTENED_RUN_WEIGHT = 5     # criterion 48
+NEG_DWELL_CLOSING_AUTO_WEIGHT = 5  # criterion 49
 
 TOTAL = (sum(PACKAGE_WEIGHT) + PACKAGE2_WEIGHT + sum(LOCAL_WEIGHT.values())
          + SWEEP_SELECTION_WEIGHT * 3 + SWEEP_AGREE_WEIGHT
@@ -127,10 +139,12 @@ TOTAL = (sum(PACKAGE_WEIGHT) + PACKAGE2_WEIGHT + sum(LOCAL_WEIGHT.values())
          + SWEEP_REASSIGN_TOTAL_WEIGHT + SWEEP_ENERGY_TOTAL_WEIGHT + SWEEP_WAIT_TOTAL_WEIGHT
          + PARTIAL_SUM_WEIGHT * len(PARTIAL_SUMS)
          + W1_WEIGHT + W23_WEIGHT + W3B_WEIGHT + W4_WEIGHT
-         + W5_WEIGHT + W6_WEIGHT + PW1_WEIGHT + PW2_WEIGHT + HASH_WEIGHT
+         + W56_WEIGHT + PW1_WEIGHT + PW2_WEIGHT + HASH_WEIGHT
          + VERIFY_WEIGHT
          + DECISION_MAIN_WEIGHT + DECISION_REASSIGN_WEIGHT)
-NEGATIVE_TOTAL = 8 + NEG_VERIFIER_WRAP_WEIGHT + NEG_REASSIGN_REUSE_WEIGHT
+NEGATIVE_TOTAL = (8 + NEG_VERIFIER_WRAP_WEIGHT + NEG_REASSIGN_REUSE_WEIGHT
+                  + NEG_PER_TICK_SEARCH_WEIGHT + NEG_EQUAL_COST_BOUNCE_WEIGHT
+                  + NEG_SHORTENED_RUN_WEIGHT + NEG_DWELL_CLOSING_AUTO_WEIGHT)
 
 BASELINE_CFG = dict(active_cars=3, zoning="TOP", wait_timeout=50, capacity=6, power_budget=8)
 POWER_WITNESS_CFG = dict(active_cars=4, zoning="GROUND", wait_timeout=50, capacity=6, power_budget=6)
@@ -157,8 +171,13 @@ def selections(sweep):
     return wait_opt, energy_opt, budget_opt
 
 
+NEG_WEIGHT = {44: NEG_VERIFIER_WRAP_WEIGHT, 45: NEG_REASSIGN_REUSE_WEIGHT,
+              46: NEG_PER_TICK_SEARCH_WEIGHT, 47: NEG_EQUAL_COST_BOUNCE_WEIGHT,
+              48: NEG_SHORTENED_RUN_WEIGHT, 49: NEG_DWELL_CLOSING_AUTO_WEIGHT}
+
+
 def score(name, sweep_kwargs=None, local_fail=(), decision_fail=(), verify_fail=(),
-          hash_ok=True):
+          hash_ok=True, negative_fail=()):
     sweep_kwargs = sweep_kwargs or {}
     sweep = run_sweep(**sweep_kwargs)
 
@@ -226,6 +245,7 @@ def score(name, sweep_kwargs=None, local_fail=(), decision_fail=(), verify_fail=
     w3b = 19 in calls and calls[19].attempt == 1 and calls[19].assigned_car == 0 and calls[19].board_tick == 248
     w5 = 26 in calls and calls[26].board_tick == 278 and calls[26].assigned_car == 1
     w6 = 27 in calls and calls[27].board_tick == 302 and calls[27].assigned_car == 2
+    w56 = w5 and w6
     rp = SIM.simulate(POWER_WITNESS_CFG, trace_limit=300000, **sweep_kwargs)
     w4 = (any(row["power"] == 6 for row in rp["trace"][24:60])
           and all(row["power"] <= 6 for row in rp["trace"]))
@@ -234,10 +254,10 @@ def score(name, sweep_kwargs=None, local_fail=(), decision_fail=(), verify_fail=
     rpw2 = SIM.simulate(PW2_CFG, trace_limit=300000, **sweep_kwargs)
     pw2 = all(row["power"] <= 6 for row in rpw2["trace"])
 
-    for ok, cid, wgt in [(w1, 36, W1_WEIGHT), (w23, 37, W23_WEIGHT),
-                          (w3b, 38, W3B_WEIGHT), (w4, 39, W4_WEIGHT),
-                          (w5, 40, W5_WEIGHT), (w6, 41, W6_WEIGHT),
-                          (pw1, 42, PW1_WEIGHT), (pw2, 43, PW2_WEIGHT)]:
+    for ok, cid, wgt in [(w1, 33, W1_WEIGHT), (w23, 34, W23_WEIGHT),
+                          (w3b, 35, W3B_WEIGHT), (w4, 36, W4_WEIGHT),
+                          (w56, 37, W56_WEIGHT),
+                          (pw1, 38, PW1_WEIGHT), (pw2, 39, PW2_WEIGHT)]:
         if ok:
             earned += wgt
 
@@ -245,21 +265,16 @@ def score(name, sweep_kwargs=None, local_fail=(), decision_fail=(), verify_fail=
     if hash_ok and h == REF_HASH16:
         earned += HASH_WEIGHT
 
-    if 42 not in verify_fail:
+    if 41 not in verify_fail:
         earned += VERIFY_WEIGHT
 
-    if 43 not in decision_fail:
+    if 42 not in decision_fail:
         earned += DECISION_MAIN_WEIGHT
-    if 44 not in decision_fail:
+    if 43 not in decision_fail:
         earned += DECISION_REASSIGN_WEIGHT
 
-    # criteria 45-49 (negative): none of the tested mutants actually violates
-    # any of these five prohibitions (verifier independence, reassigned-away
-    # non-reuse, per-tick search instead of the fixed policy, equal-cost
-    # bouncing, shortened/sampled runs) -- each tests a failure mode distinct
-    # from the three mechanism bugs scored here, so they cost 0 for all of
-    # canonical/T/C/Pw. They exist for coverage the linter required, not as
-    # discriminators.
+    for cid in negative_fail:
+        earned -= NEG_WEIGHT[cid]
 
     pct = 100 * earned / TOTAL
     print(f"{name}: {earned}/{TOTAL} = {pct:.1f}%  hash_match={h == REF_HASH16}  "
@@ -284,4 +299,4 @@ if __name__ == "__main__":
 
     score("power admission disabled",
           sweep_kwargs=dict(mutant_power_disabled=True),
-          local_fail={10}, hash_ok=False, decision_fail={43})
+          local_fail={10}, hash_ok=False, decision_fail={43}, negative_fail={49})
