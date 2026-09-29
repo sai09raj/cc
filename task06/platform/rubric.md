@@ -41,8 +41,8 @@ evidence this weighting is built from.
 | # | Wt | Criterion |
 | --- | --- | --- |
 | 3 | +2 | Generates the 80-call workload from the packet's formulas: `origin=(3*group+2*s) mod 8` with `group=k//3`; direction UP at floor 0, DOWN at floor 7, else by `(group+s)` parity; `arrival=200*s+8*k`; destination via the stated span formula, revealed only at boarding. |
-| 4 | +2 | Uses the zoning home-floor table (SPLIT=(0,2,5,7), GROUND=(0,0,0,0), TOP=(7,7,7,7) for cars A,B,C,D) AND puts only the lowest-ID `ACTIVE_CARS` cars into service; an inactive car never moves and is never eligible. |
-| 5 | +3 | Hall-call eligibility: idle car eligible for any call at distance-based cost; a scanning car eligible only for a call in its OWN current direction still ahead of its position (no mid-scan backtracking); ties broken by lowest car ID. |
+| 4 | +2 | Uses the zoning home-floor table: SPLIT=(0,2,5,7), GROUND=(0,0,0,0), TOP=(7,7,7,7) AND puts only the lowest-ID `ACTIVE_CARS` cars into service; a car OUTSIDE the active roster never moves and is never eligible for any call, regardless of the eligibility rule below. |
+| 5 | +3 | Hall-call eligibility (among ACTIVE roster cars only): an idle active car is eligible for any call at distance-based cost; a scanning active car eligible only for a call in its OWN current direction still ahead of its position (no mid-scan backtracking); ties broken by lowest car ID. |
 | 6 | +2 | Tracks each car's commitments SEPARATELY per direction; boarding only serves calls matching the SPECIFIC direction currently being scanned. |
 | 7 | +1 | A car re-derives its next action fresh each decision: continues its scan direction only while a commitment remains ahead, else switches to the nearer remaining commitment. |
 | 8 | +1 | Uses the stated timing constants: `T_DOOR_OPEN=2`, `T_DWELL=3`, `T_DOOR_CLOSE=2`, `T_FLOOR=4` per floor. |
