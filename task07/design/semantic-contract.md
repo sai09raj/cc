@@ -213,9 +213,12 @@ named scenarios = 15 sweep rows, each one continuous run to completion.
 A setting is FEASIBLE only if it violates none of the three safety
 invariants (S10) in any of its 5 scenario runs. Among feasible settings:
 
-1. **Recovery-optimal**: minimizes the worst-case tick-count from a
-   partition/crash window's end to the next successful commit afterward,
-   across the PARTITION and CRASH-RECOVER scenarios.
+1. **Recovery-optimal**: minimizes the tick-count from the
+   CRASH_RECOVER scenario's own crash-window start to the tick a new
+   node establishes LEADER for a higher term (the direct
+   leader-loss-to-new-leader latency; PARTITION never loses its leader,
+   since only the 2-node minority is isolated, so it is not part of this
+   metric — see S11).
 2. **Overhead-optimal**: minimizes total message count (all message
    classes, all 5 scenarios combined).
 

@@ -242,22 +242,34 @@ def check_log_matching(final_logs):
 
 def check_leader_completeness(commit_history, final_logs):
     """Every entry ever recorded as committed by any node must still be
-    present, unchanged, in every node's final log at that same index."""
+    present, unchanged, in every node's final log at that same index --
+    a DIFFERENT term at that index is itself a violation (the committed
+    entry was replaced entirely), not just a same-term/different-command
+    mismatch."""
     for tick, nid, idx, term, cmd in commit_history:
         for other, log in final_logs.items():
-            if idx < len(log) and log[idx][0] == term and log[idx][1] != cmd:
+            if idx >= len(log):
                 return False, (f"committed at t={tick} by node {nid}: index {idx} "
                                 f"term {term} cmd={cmd}, but node {other}'s final log "
-                                f"has cmd={log[idx][1]} at that index/term")
+                                f"has no entry at that index (log truncated below it)")
+            if log[idx] != (term, cmd):
+                return False, (f"committed at t={tick} by node {nid}: index {idx} "
+                                f"term {term} cmd={cmd}, but node {other}'s final log "
+                                f"has {log[idx]} at that index")
     return True, "ok"
 
 
 def verify_scenario(base_timeout_name, script, primary_result):
-    indep = independent_resimulate(base_timeout_name, script)
-    final_logs = {nid: st["log"] for nid, st in indep["final"].items()}
+    """Checks the PRIMARY's own delivered trace/logs/commit-history against
+    the three safety invariants (not just the independent re-simulation's
+    self-consistency), plus cross-checks the independent re-simulation
+    agrees with the primary as a second, independent line of evidence."""
+    primary_final_logs = {nid: f["log"] for nid, f in primary_result["final"].items()}
     ok1, r1 = check_election_safety(primary_result["trace"])
-    ok2, r2 = check_log_matching(final_logs)
-    ok3, r3 = check_leader_completeness(indep["commit_history"], final_logs)
+    ok2, r2 = check_log_matching(primary_final_logs)
+    ok3, r3 = check_leader_completeness(primary_result["commit_history"], primary_final_logs)
+
+    indep = independent_resimulate(base_timeout_name, script)
     agree = all(indep["final"][nid]["term"] == f["term"] and
                 indep["final"][nid]["log"] == f["log"] and
                 indep["final"][nid]["commit"] == f["commit_index"]

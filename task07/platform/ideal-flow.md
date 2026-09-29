@@ -1,74 +1,81 @@
 ## Analyze
 
 ```text
-Read the packet and reconstruct the wet-well cross-section (tank bounds,
-per-role start/stop elevations for each of the three deadband settings,
-measured against the labeled axis), the pump curve (discharge vs. level,
-including pump C's reduced scale relative to pumps A/B, read by comparing
-the two plotted curves), the diurnal inflow hydrograph (dry baseline and
-the wet-day storm surcharge, measured off the same time axis), and the
-time-of-use tariff bands. Recover the fully deterministic control policy
-already in force: hysteresis start/stop staging per role (LEAD, LAG1,
-LAG2, the latter two always assigned to the remaining in-roster pumps by
-ascending ID), each pump's INDEPENDENT minimum-run and minimum-off timers
-(a pump blocked from stopping keeps discharging and keeps occupying its
-duty slot -- conflating "blocked from stopping" with "off" is the
-packet's most common failure mode), and the three lead-rotation policies,
-whose index advances only on a genuine lead-pump start transition, never
-on any other event. Treat the 54-configuration sweep as one genuine
-multi-objective search evaluated over BOTH day-types per configuration:
-more duty pumps and a tighter deadband lower peak level but raise energy
-and pump-cycling wear, so the energy-optimal, reliability-optimal, and
-wear-balance-constrained selections are not guaranteed to agree and must
-each be found by executing the full legal space, not assumed from one
-run. day_type is weather, never a choosable dimension.
+Read the packet and reconstruct the per-node role state machine
+(FOLLOWER, PRECANDIDATE, CANDIDATE, LEADER), the pre-vote gate that a
+node must clear (winning a non-binding majority of pre-votes) before any
+real election is allowed to increment current_term, the per-node
+election-timeout stagger (effective timeout = BASE_TIMEOUT + 20*node_id,
+measured off the labeled chart for each of the three swept BASE_TIMEOUT
+settings), the bounded-batch AppendEntries mechanism (K=4 entries per
+round, independent next_index/match_index tracking per follower -- a
+leader that resends from a fixed starting index instead is the packet's
+most common failure mode), and the current-term-only commit-index
+advancement rule (an earlier-term entry a majority already holds is never
+committed directly; it only becomes committed indirectly once a
+same-term entry after it is committed). Recover the 5 named fault
+scenarios and their scripted windows (partition splits, a crash window,
+targeted message-loss overrides), each expressed relative to a run-time-
+derived anchor tick, not a literal number printed in the packet. Treat
+the 3x5=15-row sweep as one genuine multi-objective search: a shorter
+election timeout speeds crash recovery but raises message overhead from
+more frequent election attempts, so the recovery-optimal and
+overhead-optimal selections are not guaranteed to agree and must each be
+found by executing the full legal space, not assumed from one run.
 ```
 
 ## Execute & Generate
 
 ```text
-Implement a deterministic, offline, tick-by-tick (1-minute, 1440 ticks)
-mass-balance simulator executing the packet's control policy exactly --
-for each of the 54 legal configurations, one continuous run per day_type
-(DRY and WET), both feeding the same selection objectives. Build a
-separately-coded verifier that independently re-derives the inflow
-hydrograph from the same public formulas and either fully re-simulates or
-checks a complete feasibility certificate (mass balance closes every
-tick, no pump violates its own minimum-run/minimum-off timers, level
-never leaves its physical bounds), sharing only immutable input constants
-with the primary implementation. Run the two required adversarial
-mutations -- a tick whose recorded level is inconsistent with that tick's
-own inflow minus outflow, and a pump recorded as stopping before its own
-minimum-run time has elapsed -- against a preserved original and confirm
-the verifier rejects both while accepting the original. Deliver simulator
-source, verifier source, the complete 108-row sweep table, a decision
-file with all three selections and their keys, certification evidence
-(the baseline configuration's full trace plus its stated SHA-256
-trace-integrity hash, computed by the algorithm the packet specifies),
-and a memo. Equivalent languages, source organization, output schemas,
-and physically valid tie-broken orderings all pass; only one
-policy-conformant trace per configuration-per-day-type exists.
+Implement a deterministic, offline, tick-by-tick protocol engine
+executing the packet's pre-vote/election/replication/commit rules exactly
+-- for each of the 3 election-timeout settings, one continuous 2400-tick
+run per each of the 5 named scenarios (15 rows total), all feeding the
+same two selection objectives. Build a separately-coded verifier that
+independently re-derives the 5-node state trace (or checks a complete
+feasibility certificate) and confirms, for every one of the 15 runs:
+election safety (no two nodes LEADER for the same current_term
+simultaneously), log matching (agreement at one index implies agreement
+at every earlier index), and leader completeness (a committed entry
+survives, unchanged, in every future leader's log at that index), sharing
+only immutable input constants with the primary implementation. Run the
+two required adversarial mutations -- a vote granted to a candidate whose
+term is below the recipient's own current_term, and a leader overwriting
+an already-committed log entry with a different one -- against a
+preserved original and confirm the verifier rejects both while accepting
+the original. Deliver protocol-engine source, verifier source, the
+complete 15-row sweep table, a decision file with both selections and
+their agreement/divergence disclosure, certification evidence (the
+baseline (MEDIUM, PARTITION) configuration's full trace plus its stated
+SHA-256 trace-integrity hash, computed by the algorithm the packet
+specifies), and a memo. Equivalent languages, source organization, output
+schemas, and physically valid tie-broken orderings all pass; only one
+protocol-conformant trace per (election_timeout, scenario) combination
+exists.
 ```
 
 ## Synthesize
 
 ```text
-Using the 108 executed sweep rows (54 configurations, each scored by its
-own DRY and WET rows together), apply the three lexicographic selection
-keys (energy-optimal subject to zero overflow on both days,
-reliability-optimal, wear-balance-constrained under the stated fleet
-run-time imbalance ceiling) and report all three, explicitly noting
+Using the 15 executed sweep rows, apply the two selection definitions
+(recovery-optimal: minimizes CRASH_RECOVER's own crash-window-start to
+new-higher-term-leader latency; overhead-optimal: minimizes total message
+count across all 5 scenarios combined) and report both, explicitly noting
 whether they agree. Explain, using actual event times from your delivered
-baseline trace, at least one concrete instance of a pump's minimum-run
-timer forcing it to keep running (and keep discharging) past its own
-stop elevation, and cite the rotation-sequence witness from that same
-trace. Explain why energy-optimal and reliability-optimal diverge, and
-why the wear-balance-constrained pick trades away some energy saving for
-a lower fleet run-time imbalance. Explain why the lead-rotation index
-must advance only on a genuine lead-start transition, and why a
-minimum-run-timer-blocked pump must still count toward the duty-pump
-concurrency limit. Reconcile your sweep, selections, verifier agreement,
-and baseline witnesses against the same underlying control and mass-
-balance rules. Any accurate, evidence-tied causal argument is acceptable;
-no particular configuration beyond the three selections is required.
+baseline trace, why a shorter election timeout detects a crashed leader
+and elects a replacement sooner, but costs more messages overall from
+more frequent pre-vote/election rounds across all 5 scenarios. Cite the
+COMPETING_CANDIDATES witness from your own trace and explain why the
+pre-vote phase specifically prevents the isolated 2-node minority from
+ever incrementing current_term while cut off, and why that matters once
+the partition heals (a partitioned minority that could freely increment
+its term would otherwise force the healed majority through needless
+re-elections). Explain why per-follower next_index/match_index tracking
+is required for correct bounded-batch replication, and why commit-index
+advancement must require a same-current-term entry rather than trusting
+majority replication of an earlier-term entry alone. Reconcile your
+sweep, selections, verifier agreement, and baseline witnesses against the
+same underlying protocol rules. Any accurate, evidence-tied causal
+argument is acceptable; no particular sweep row beyond the two selections
+and the stated baseline is required.
 ```

@@ -1,121 +1,113 @@
-# CISTERN-7 rubric
+# QUORUM-7 rubric
 
-Positive total **234**; seven negative criteria totaling **-30** (**-4**,
-**-5**, **-4**, **-4**, **-4**, **-5**, **-4**), plus a negative trap
-**-8**. **48 criteria** (within the platform's 12-50 range; not padded to
-50 -- coverage was complete at 48). Every weight is capped at 10. Every
+Positive total **205**; six negative criteria totaling **-28** (**-4**,
+**-5**, **-4**, **-6**, **-4**, **-5**), plus a negative trap **-8**.
+**43 criteria** (within the platform's 12-50 range; not padded --
+coverage was complete at 43). Every weight is capped at 10. Every
 criterion body is 301 characters or fewer. Criteria are binary. Accept
 equivalent correct work throughout: equivalent languages, source
 organization, output schemas, file layout, and formula notation.
 
-Every prohibition below (rotation-advance timing, minimum-run-timer
-compliance, TOU-tariff use, level-dependent pump discharge) was given its
-own dedicated negative criterion from this rubric's first draft, not added
-round-by-round after a linter finding -- the corresponding positive
-criteria state only the mechanism, never the prohibition, to avoid
-double-charging the same fact from the first draft.
+Every prohibition below (skipping pre-vote, using the wrong quorum size,
+ignoring per-follower replication tracking, committing an entry from a
+prior term) was given its own dedicated negative criterion from this
+rubric's first draft, not added round-by-round after a linter finding --
+matching the lesson recorded in `Playbook/07-MISTAKE-REGISTER.md` #59.
 
 ### Package (1-2, weight 3)
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 1 | +2 | Executes the delivered offline simulator with a documented, reproducible command, records the actual tool versions used in a declared offline, stdlib-only environment, includes the memo's own layout interpretation of the packet's charts, and delivers all six named products as accessible files. |
-| 2 | +1 | The delivered sweep table contains exactly 108 rows (54 legal `(duty_pump_count, rotation_policy, deadband, min_run_time)` configurations, each with one `DRY` row and one `WET` row), no duplicate, no missing combination. |
+| 1 | +2 | Executes the delivered offline protocol engine with a documented, reproducible command, records actual tool versions in a declared offline, stdlib-only environment, includes the memo's layout interpretation of the packet's diagrams, and delivers all six named products as files. |
+| 2 | +1 | The delivered sweep table contains exactly 15 rows (3 election-timeout settings x 5 named scenarios), no duplicate, no missing combination. |
 
-### Local semantics/rules/scaffolding (3-12, weight 21)
-
-| # | Wt | Criterion |
-| --- | --- | --- |
-| 3 | +2 | Generates `Q_in(t)` for `DRY` by linearly interpolating the packet's hydrograph anchor points; for `WET`, adds the triangular storm surcharge (zero outside `[300,420]`, peaking `+8.0 m^3/min` at `t=360`) on top of the `DRY` curve. |
-| 4 | +2 | Interpolates each running pump's discharge linearly from the pump curve against `level(t)` (breakpoints `(0.4,3.0),(2.0,4.0),(4.2,5.0)`, pump C scaled to 85%); a non-running pump discharges zero regardless of level. |
-| 5 | +2 | Puts only the lowest-ID `duty_pump_count` pumps into service; a pump OUTSIDE that roster never runs and never fills any role, regardless of level. |
-| 6 | +2 | Assigns LAG1/LAG2 to the in-roster non-lead pumps in ascending pump-ID order, re-derived fresh each tick from the current lead identity. |
-| 7 | +2 | Starts a role's pump when `level(t)` reaches that role's own start elevation from the swept deadband table, and stops it when `level(t)` falls to that role's own stop elevation, using the exact TIGHT/MEDIUM/WIDE elevations stated in the packet. |
-| 8 | +2 | Once a pump starts, keeps it running until its own swept `min_run_time` ticks have elapsed even if level has already fallen to its stop elevation; re-evaluates the stop condition every tick after that. |
-| 9 | +2 | Once a pump stops, keeps it from restarting until 4 ticks have elapsed (`MIN_OFF`), independent of and not swept with `min_run_time`. |
-| 10 | +2 | Selects the LEAD-role pump per the swept `rotation_policy`: `STRICT_ALTERNATE` cycles in-roster pumps by fixed ID order; `RUNTIME_BALANCED` picks lowest cumulative run-minutes so far (ties to lowest ID); `FIXED_LEAD` always picks lowest-ID in-roster pump. |
-| 11 | +2 | Whenever the tick's unclamped level update would exceed `4.2 m`, adds the excess volume (times the `60 m^2` plan area) to `overflow_volume` and clamps `level` to exactly `4.2 m` for that tick. |
-| 12 | +3 | Costs each tick as `(running pump count) * 15 kW * (1/60 h) * rate(t)`, where `rate(t)` is set by which of the three stated TOU bands contains that tick's own start minute. |
-
-### Integrated production execution — 54-configuration sweep (13-19, weight 19)
+### Local semantics/rules/scaffolding (3-12, weight 24)
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 13 | +2 | Reports the energy-optimal configuration as `(duty=2, rotation=FIXED_LEAD, deadband=WIDE, min_run=LONG)` with combined (`DRY`+`WET`) energy cost `$93.51` (±0.05) and worst-day peak level `3.5474 m` (±0.01). |
-| 14 | +2 | Reports the reliability-optimal configuration as `(duty=3, rotation=FIXED_LEAD, deadband=TIGHT, min_run=LONG)` with worst-day peak level `2.4101 m` (±0.01) and combined energy cost `$98.685` (±0.05). |
-| 15 | +2 | Reports the wear-balance-constrained configuration (feasible on both days, worst-day fleet run-time imbalance `<=0.80`) as `(duty=2, rotation=RUNTIME_BALANCED, deadband=TIGHT, min_run=SHORT)` with combined energy cost `$96.74` (±0.05). |
-| 16 | +1 | Reports explicitly, for each pair among the three selections in criteria 13-15, whether it agrees (identical configuration) or diverges; this packet's reference has all three diverge — the criterion tests the disclosure, not agreement itself. |
-| 17 | +4 | Reports configuration `(2,FIXED_LEAD,WIDE,LONG)`'s own `WET` row as `total_energy_cost=47.93, overflow_volume=0, peak_level=3.5474`. |
-| 18 | +4 | Reports configuration `(3,FIXED_LEAD,TIGHT,LONG)`'s own `DRY` row as `total_energy_cost=48.22, overflow_volume=0, peak_level=1.8154`. |
-| 19 | +4 | Reports configuration `(2,RUNTIME_BALANCED,TIGHT,SHORT)`'s own `WET` row as `total_energy_cost=49.46, overflow_volume=0, peak_level=2.8625, starts={A:16,B:9}`. |
+| 3 | +2 | A node reaching its own effective election timeout becomes PRECANDIDATE and requests pre-votes; it only becomes CANDIDATE (incrementing `current_term`) after winning a majority of pre-votes, never directly on timeout. |
+| 4 | +2 | Resets `election_elapsed` to 0 only on granting a vote, receiving a valid AppendEntries at term >= its own, or starting a fresh pre-vote round -- never merely from receiving any other message. |
+| 5 | +3 | Grants a real vote only when the requester's term is >= its own, `voted_for` allows it, AND the requester's log is at least as up-to-date (by the stated term-then-index rule); resolves same-tick concurrent requests in ascending requester-ID order. |
+| 6 | +2 | Uses exactly a 3-of-5 majority (itself included) for pre-vote success, real-election success, and leader commit-index advancement -- the same threshold in all three places. |
+| 7 | +4 | A leader tracks `next_index`/`match_index` independently per follower and sends at most `K=4` log entries per AppendEntries round, requiring multiple rounds to catch up a far-behind follower. |
+| 8 | +3 | A leader advances `commit_index` to index N only when a majority has `match_index >= N` AND the entry at N is from the leader's own current term -- never for an earlier-term entry merely because a majority already has it. |
+| 9 | +2 | A crashed node's `current_term`, `voted_for`, `log`, and `commit_index` are exactly as they were at the crash tick on recovery; its `role` and timers reset to FOLLOWER/0. |
+| 10 | +2 | A scripted partition window drops every message between nodes on opposite sides for its whole duration, regardless of any other per-message override; a scripted crash window means the node sends and processes nothing at all. |
+| 11 | +2 | A client command is broadcast to all 5 nodes at its stated tick; only the node that is LEADER at that exact tick appends it to its own log, and every other node ignores it (no queueing, no forwarding). |
+| 12 | +2 | A leader sends an AppendEntries round to each follower every `HEARTBEAT_INTERVAL=10` ticks, or immediately after appending a new command, whichever is sooner. |
 
-### Whole-sweep aggregate totals (20-32, weight 130)
-
-Each total sums one or two metrics across a stated subset of the
-54-configuration sweep (both day-rows combined). Report to the stated
-tolerance. Pump C's discharge curve is scaled to 85% of pumps A/B's shared
-curve (packet fact), so `rotation_policy` genuinely affects these
-aggregates whenever pump C is in the roster (`duty_pump_count=3`), not just
-per-pump wear distribution. Each of these 13 facts is wrong under every
-plausible-wrong mutant tested — the rubric's main discriminating bloc.
+### Integrated production execution — 15-run sweep (13-18, weight 23)
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 20 | +10 | Reports the sum of combined two-day energy cost across all 54 configurations as `$5024.80` (±0.5). |
-| 21 | +10 | Reports the sum of worst-day peak level across all 54 configurations as `187.4774 m` (±0.05). |
-| 22 | +10 | Reports the sum of worst-day fleet run-time imbalance across all 54 configurations as `46.3073` (±0.05). |
-| 23 | +10 | Summed over only `duty_pump_count=1` (18 configs): energy totals `$1506.27` (±0.5), worst-day peak totals `75.60 m` (±0.05). |
-| 24 | +10 | Summed over only `duty_pump_count=3` (18 configs): energy totals `$1795.75` (±0.5), worst-day peak totals `54.891 m` (±0.05). |
-| 25 | +10 | Summed over only `deadband=TIGHT` (18 configs): energy totals `$1706.81` (±0.5), imbalance totals `14.0612` (±0.05). |
-| 26 | +10 | Summed over only `deadband=WIDE` (18 configs): energy totals `$1658.70` (±0.5), imbalance totals `16.1731` (±0.05). |
-| 27 | +10 | Summed over only `rotation_policy=FIXED_LEAD` (18 configs): energy totals `$1651.735` (±0.5), imbalance totals `16.7808` (±0.05). |
-| 28 | +10 | Summed over only `rotation_policy=STRICT_ALTERNATE` (18 configs): energy totals `$1684.445` (±0.5), imbalance totals `14.8384` (±0.05). |
-| 29 | +10 | Summed over only `rotation_policy=RUNTIME_BALANCED` (18 configs): energy totals `$1688.62` (±0.5), imbalance totals `14.688` (±0.05). |
-| 30 | +10 | Summed over only `min_run_time=SHORT` (27 configs): energy totals `$2503.12` (±0.5), worst-day peak totals `93.7619 m` (±0.05). |
-| 31 | +10 | Summed over only `duty_pump_count=1 AND deadband=WIDE` (6 configs): energy totals `$499.68` (±0.5); exactly `0` of the `6` are feasible on both days. |
-| 32 | +10 | Summed over only `duty_pump_count=3 AND rotation_policy=STRICT_ALTERNATE` (6 configs): energy totals `$608.095` (±0.5), imbalance totals `4.4443` (±0.05). |
+| 13 | +3 | Reports the recovery-optimal timeout setting as `SHORT`, with a CRASH_RECOVER new-leader latency of `172` ticks (±2) from the crash-window start. |
+| 14 | +3 | Reports the overhead-optimal timeout setting as `LONG`, with a combined 5-scenario message count of `7355` (±20). |
+| 15 | +1 | Reports explicitly whether the two selections in criteria 13-14 agree or diverge; this packet's reference has them diverge — the criterion tests the disclosure, not agreement itself. |
+| 16 | +6 | Reports the `(SHORT, PARTITION)` row's own final state as `max_commit_index=5, max_term=1, leader=N0, message_count=1660` (±10). |
+| 17 | +6 | Reports the `(MEDIUM, CLEAN)` row's own final state as `max_commit_index=5, max_term=1, leader=N0, message_count=1736` (±10). |
+| 18 | +6 | Reports the `(MEDIUM, MESSAGE_LOSS)` row's own final state as `max_commit_index=5, max_term=1, leader=N0, message_count=1704` (±10). |
 
-### Production witnesses from the baseline trace (33-40, weight 48)
+### Whole-sweep aggregate totals (19-28, weight 100)
 
-Baseline configuration for every witness below and for the hash:
-`(duty_pump_count=3, rotation_policy=STRICT_ALTERNATE, deadband=TIGHT,
-min_run_time=LONG, day_type=WET)`.
+Each total sums one or two metrics across a stated subset of the 15-run
+sweep. Report to the stated tolerance. Each of these 10 facts is wrong
+under every plausible-wrong mutant tested — the rubric's main
+discriminating bloc.
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 33 | +10 | Shows the LEAD role assigned strictly cyclically: pump A at `t=25`, B at `t=123`, C at `t=211`, A at `t=248`, B at `t=280`, C at `t=308` — each a genuine START, two complete `A,B,C` cycles confirming `STRICT_ALTERNATE`. |
-| 34 | +10 | Shows pump A starting at `t=25`, continuing to run past its own role's stop elevation (`0.8 m`) once `level` falls below it (by `t=34`) because `min_run_time=LONG` has not yet elapsed, and finally stopping at exactly `t=40` (15 ticks after `t=25`). |
-| 35 | +8 | Shows `level(t)` reaching its run-wide peak of `2.4336 m` (±0.005) at exactly `t=358`, during the storm surcharge window. |
-| 36 | +10 | Shows that, across the sweep, every one of the 18 `duty_pump_count=1` configurations is infeasible on `WET` (nonzero overflow) while every `duty_pump_count=2` and `duty_pump_count=3` configuration is feasible on both days. |
-| 37 | +10 | Matches the first 16 hex characters of the baseline's canonical trace-integrity hash (algorithm in the packet) to `6a880d5a0cb10b6c`. |
+| 19 | +10 | Reports the sum of message counts across all 15 runs as `24027` (±50). |
+| 20 | +10 | Reports the sum of each run's own max final `commit_index` across all 15 runs as `67` (±1). |
+| 21 | +10 | Summed over only `election_timeout=SHORT` (5 runs): message counts total `8573` (±20), commit-index sums total `24` (±1). |
+| 22 | +10 | Summed over only `election_timeout=LONG` (5 runs): message counts total `7355` (±20), commit-index sums total `19` (±1). |
+| 23 | +10 | Summed over only the `CLEAN` scenario (3 runs): message counts total `5168` (±20), commit-index sums total `14` (±1). |
+| 24 | +10 | Summed over only the `PARTITION` scenario (3 runs): message counts total `4692` (±20), commit-index sums total `14` (±1). |
+| 25 | +10 | Summed over only the `CRASH_RECOVER` scenario (3 runs): message counts total `4524` (±20), commit-index sums total `11` (±1). |
+| 26 | +10 | Summed over only the `MESSAGE_LOSS` scenario (3 runs): message counts total `5063` (±20), commit-index sums total `14` (±1). |
+| 27 | +10 | Summed over only the `COMPETING_CANDIDATES` scenario (3 runs): message counts total `4580` (±20), commit-index sums total `14` (±1). |
+| 28 | +10 | Summed over only `election_timeout=MEDIUM` (5 runs): message counts total `8099` (±20), commit-index sums total `24` (±1). |
 
-### Independent verification and decision/causal reconciliation (38-40, weight 13)
+### Production witnesses from the baseline trace (29-33, weight 40)
 
-| # | Wt | Criterion |
-| --- | --- | --- |
-| 38 | +3 | Delivers a separately-coded verifier, sharing only immutable input constants, that re-derives `Q_in(t)`, checks a feasibility certificate or re-simulates the baseline trace, rejects both adversarial mutations with the original preserved and accepted, and reports this evidence in the memo. |
-| 39 | +8 | Explains, citing the baseline trace's own numbers, why energy-optimal and reliability-optimal diverge (fewer duty pumps, wider deadband cut energy but raise peak level), AND why wear-balance-constrained trades energy savings for lower fleet run-time imbalance. |
-| 40 | +2 | Explains in the memo, tied to the baseline trace's rotation-sequence witness (criterion 33), why treating the rotation index as advancing every tick rather than only on a genuine LEAD-START would concentrate wear unevenly across the pump fleet. |
-
-### Negative criteria — control-loop prohibitions (41-44)
-
-| # | Wt | Criterion |
-| --- | --- | --- |
-| 41 | −4 | Advances the `STRICT_ALTERNATE` rotation index on any tick or event other than a genuine LEAD-START transition (e.g. every tick, or on a LAG start/stop), rather than exactly once per LEAD-START. |
-| 42 | −5 | Lets any pump stop before its own swept `min_run_time` has elapsed since it started, instead of continuing to run (and continuing to discharge) until that timer clears. |
-| 43 | −4 | Costs energy using a single flat rate instead of the three stated time-of-use tariff bands, or otherwise ignores which band contains a tick's own start minute. |
-| 44 | −4 | Uses a constant pump discharge instead of interpolating from the level-dependent pump curve, for any running pump at any tick. |
-
-### Negative criteria — architecture and execution prohibitions (45-47)
+Baseline configuration for the hash and for witnesses 30 and 32:
+`(election_timeout=MEDIUM, scenario=PARTITION)`. Witnesses 29 and 31 name
+their own scenario explicitly, since each depends on a fault type the
+baseline scenario does not contain.
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 45 | −4 | Delivers a verifier that shares anything beyond immutable input constants with the primary implementation (importing or wrapping its internal state, classes, or in-memory objects) rather than independently re-deriving the hydrograph and trace or certificate. |
-| 46 | −5 | Runs any of the 54 legal configurations as a shortened, truncated, or sampled subset of its own 1440-tick day, on either day-type, rather than one continuous run to completion. |
-| 47 | −4 | Treats `day_type` as a free dimension a selection may optimize over (picking whichever of `DRY`/`WET` is cheaper or safer for a given configuration) rather than evaluating every configuration on both days together. |
+| 29 | +10 | In the `CRASH_RECOVER` scenario at this same timeout setting, shows the leader (N0) crashing at `t=457`, and a new node (N1) establishing LEADER for a higher term at exactly `t=729` (272 ticks later). |
+| 30 | +8 | Shows no tick anywhere in the baseline run where two nodes are simultaneously LEADER for the same term. |
+| 31 | +10 | In the `COMPETING_CANDIDATES` scenario at this same timeout setting, shows the isolated pair `{N2,N3}` remaining at `current_term=1` (unchanged) for the entire ~500-tick isolation window, never electing a leader between themselves. |
+| 32 | +2 | Shows the baseline's final delivered log identical across all 5 nodes, at `commit_index=5`. |
+| 33 | +10 | Matches the first 16 hex characters of the baseline's canonical trace-integrity hash (algorithm in the packet) to `3243b745aaf9e7e2`. |
 
-### Negative trap (48)
+### Independent verification and decision/causal reconciliation (34-36, weight 13)
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 48 | −8 | Embeds precomputed sweep rows, selection values, or the trace-integrity hash as literals substituting for executing the delivered simulator. Immutable input constants don't trigger this; omission alone doesn't either. |
+| 34 | +3 | Delivers a separately-coded verifier, sharing only immutable input constants, that independently re-derives the 5-node state trace or checks a feasibility certificate, rejects both adversarial mutations with the original preserved and accepted, and reports this evidence in the memo. |
+| 35 | +8 | Explains, citing the baseline trace's own numbers, why the recovery-optimal and overhead-optimal timeout settings diverge, AND explains why a shorter timeout speeds crash recovery but raises message overhead from more frequent election attempts. |
+| 36 | +2 | Explains in the memo, tied to the COMPETING_CANDIDATES witness (criterion 31), why the pre-vote phase prevents a partitioned minority from inflating its term and disrupting the majority once the partition heals. |
+
+### Negative criteria — protocol-correctness prohibitions (37-40)
+
+| # | Wt | Criterion |
+| --- | --- | --- |
+| 37 | −4 | Increments `current_term` and requests real votes directly on election timeout, skipping the pre-vote phase entirely. |
+| 38 | −5 | Uses a majority threshold other than 3-of-5 for pre-vote success, real-election success, or leader commit-index advancement, in any of the three. |
+| 39 | −4 | Advances `commit_index` for a log entry from an earlier term merely because a majority already has it, without requiring a same-current-term entry to be committed first. |
+| 40 | −6 | Resends AppendEntries from a fixed starting index instead of tracking each follower's own `next_index`/`match_index` independently, silently stalling commit progress past the first batch window. |
+
+### Negative criteria — architecture and execution prohibitions (41-42)
+
+| # | Wt | Criterion |
+| --- | --- | --- |
+| 41 | −4 | Delivers a verifier that shares anything beyond immutable input constants with the primary implementation (importing or wrapping its internal state, classes, or in-memory objects) rather than independently re-deriving the state trace or certificate. |
+| 42 | −5 | Runs any of the 15 legal (timeout, scenario) combinations as a shortened, truncated, or sampled subset of its own scenario length, rather than one continuous run to completion. |
+
+### Negative trap (43)
+
+| # | Wt | Criterion |
+| --- | --- | --- |
+| 43 | −8 | Embeds precomputed sweep rows, selection values, or the trace-integrity hash as literals substituting for executing the delivered protocol engine. Immutable input constants don't trigger this; omission alone doesn't either. |

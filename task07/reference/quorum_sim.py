@@ -102,13 +102,23 @@ class Script:
 
 
 class Engine:
-    def __init__(self, base_timeout_name, script):
+    def __init__(self, base_timeout_name, script, mutant_no_prevote=False,
+                 mutant_commit_any_term=False, mutant_vote_no_log_check=False,
+                 mutant_wrong_quorum=False, mutant_reset_on_any_message=False,
+                 mutant_ignore_replication_tracking=False):
         self.base_timeout = TIMEOUTS[base_timeout_name]
         self.script = script
         self.nodes = {i: Node(i) for i in range(NUM_NODES)}
         self.inbox = {}  # delivery_tick -> list of (dst, src, msg)
         self.msg_count = 0
         self.trace = []  # per-tick snapshot
+        self.commit_history = []  # (tick, node, index, term, cmd)
+        self.mutant_no_prevote = mutant_no_prevote
+        self.mutant_commit_any_term = mutant_commit_any_term
+        self.mutant_vote_no_log_check = mutant_vote_no_log_check
+        self.mutant_reset_on_any_message = mutant_reset_on_any_message
+        self.mutant_ignore_replication_tracking = mutant_ignore_replication_tracking
+        self.quorum = 2 if mutant_wrong_quorum else 3
 
     def eff_timeout(self, nid):
         return effective_timeout(self.base_timeout, nid)
@@ -169,18 +179,20 @@ class Engine:
 
     def send_append_entries(self, tick, leader, j):
         leader.last_sent[j] = tick
-        prev_index = leader.next_index[j] - 1
+        prev_index = 0 if self.mutant_ignore_replication_tracking else leader.next_index[j] - 1
         prev_term = leader.log[prev_index][0] if prev_index >= 0 else 0
         entries = leader.log[prev_index + 1: prev_index + 1 + BATCH_K]
         self.send(tick, leader.nid, j, ("APPEND_REQ", leader.current_term, prev_index,
                                          prev_term, tuple(entries), leader.commit_index))
 
-    def advance_commit_index(self, leader):
+    def advance_commit_index(self, tick, leader):
         for n in range(leader.last_log_index(), leader.commit_index, -1):
-            if leader.log[n][0] != leader.current_term:
+            if not self.mutant_commit_any_term and leader.log[n][0] != leader.current_term:
                 continue
             count = 1 + sum(1 for j, m in leader.match_index.items() if m >= n)
-            if count >= 3:
+            if count >= self.quorum:
+                for k in range(leader.commit_index + 1, n + 1):
+                    self.commit_history.append((tick, leader.nid, k, leader.log[k][0], leader.log[k][1]))
                 leader.commit_index = n
                 return
 
@@ -189,6 +201,8 @@ class Engine:
         if node.crashed:
             return
         kind = msg[0]
+        if self.mutant_reset_on_any_message and node.role != LEADER:
+            node.election_elapsed = 0
 
         if kind == "PREVOTE_REQ":
             _, term, last_idx, last_term = msg
@@ -198,7 +212,7 @@ class Engine:
             term, granted = msg[1], msg[2]
             if node.role == PRECANDIDATE and term == node.current_term + 1 and granted:
                 node.pre_vote_grants.add(src)
-                if len(node.pre_vote_grants) >= 3:
+                if len(node.pre_vote_grants) >= self.quorum:
                     self.become_candidate(tick, node)
         elif kind == "VOTE_REQ":
             _, term, last_idx, last_term = msg
@@ -206,7 +220,7 @@ class Engine:
                 self.step_down(node, term)
             granted = False
             if term >= node.current_term and node.voted_for in (None, src):
-                if log_is_at_least_as_up_to_date(last_term, last_idx, node):
+                if self.mutant_vote_no_log_check or log_is_at_least_as_up_to_date(last_term, last_idx, node):
                     node.voted_for = src
                     node.election_elapsed = 0
                     granted = True
@@ -215,7 +229,7 @@ class Engine:
             term, granted = msg[1], msg[2]
             if node.role == CANDIDATE and term == node.current_term and granted:
                 node.vote_grants.add(src)
-                if len(node.vote_grants) >= 3:
+                if len(node.vote_grants) >= self.quorum:
                     self.become_leader(tick, node)
         elif kind == "APPEND_REQ":
             _, term, prev_index, prev_term, entries, leader_commit = msg
@@ -239,7 +253,10 @@ class Engine:
                         node.log.append(entry)
                 last_new_index = prev_index + len(entries)
                 if leader_commit > node.commit_index:
-                    node.commit_index = min(leader_commit, last_new_index)
+                    new_commit = min(leader_commit, last_new_index)
+                    for k in range(node.commit_index + 1, new_commit + 1):
+                        self.commit_history.append((tick, node.nid, k, node.log[k][0], node.log[k][1]))
+                    node.commit_index = new_commit
                 self.send(tick, dst, src, ("APPEND_RESP", node.current_term, True,
                                             prev_index + len(entries)))
             else:
@@ -250,7 +267,7 @@ class Engine:
                 if success:
                     node.match_index[src] = match_idx
                     node.next_index[src] = match_idx + 1
-                    self.advance_commit_index(node)
+                    self.advance_commit_index(tick, node)
                 else:
                     node.next_index[src] = max(1, node.next_index[src] - 1)
                     self.send_append_entries(tick, node, src)
@@ -285,7 +302,10 @@ class Engine:
                     continue
                 node.election_elapsed += 1
                 if node.election_elapsed >= self.eff_timeout(node.nid):
-                    self.become_precandidate(tick, node)
+                    if self.mutant_no_prevote:
+                        self.become_candidate(tick, node)
+                    else:
+                        self.become_precandidate(tick, node)
 
             for node in self.nodes.values():
                 if node.crashed or node.role != LEADER:
@@ -317,6 +337,7 @@ class Engine:
         return {
             "trace": self.trace,
             "msg_count": self.msg_count,
+            "commit_history": self.commit_history,
             "final": {nid: {"term": n.current_term, "role": n.role,
                              "log": list(n.log), "commit_index": n.commit_index,
                              "voted_for": n.voted_for}
@@ -324,8 +345,19 @@ class Engine:
         }
 
 
-def run_scenario(base_timeout_name, script):
-    return Engine(base_timeout_name, script).run()
+def run_scenario(base_timeout_name, script, **mutant_kwargs):
+    return Engine(base_timeout_name, script, **mutant_kwargs).run()
+
+
+def canonical_trace_serialization(base_timeout_name, scenario_name, result):
+    """Deterministic serialization of one scenario run's full trace for
+    hashing. One line per tick: t|role0,term0|role1,term1|...|role4,term4."""
+    parts = [f"QUORUM7|{base_timeout_name}|{scenario_name}"]
+    for row in result["trace"]:
+        cells = "|".join(f"{row['nodes'][i]['role'][0]}{row['nodes'][i]['term']}"
+                          for i in range(NUM_NODES))
+        parts.append(f"{row['t']}|{cells}")
+    return "\n".join(parts)
 
 
 if __name__ == "__main__":
