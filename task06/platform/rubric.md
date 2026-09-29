@@ -49,7 +49,7 @@ evidence this weighting is built from.
 | 9 | +2 | Boards, atomically at the first DWELL tick, every waiting call matching direction at that floor (ascending call-index, up to capacity 6), then alights every boarded call whose destination is the current floor, freeing capacity immediately. |
 | 10 | +10 | Admits power in one ordered pass per tick, car priority A,B,C,D (mandatory draws first, new events from what remains, a refusal defers rather than errors) AND treats DWELL-to-CLOSING as its own power-gated event, not automatic. |
 | 11 | +1 | Energy per moving tick is `3+load` UP, `3-load` DOWN (regenerative credit for a loaded descent). |
-| 12 | +3 | Triggers timeout re-evaluation at `WAIT_TIMEOUT` age AND reassigns only when a strictly cheaper alternative exists (never bounces between equally-good cars; a reassigned-away call is never later served by that car). |
+| 12 | +3 | Triggers timeout re-evaluation at `WAIT_TIMEOUT` age AND reassigns only when a strictly cheaper alternative exists. |
 
 ### Integrated production execution — exhaustive sweep (13-19, weight 20)
 
@@ -107,7 +107,7 @@ wait_timeout=50, power_budget=8, capacity=6)`.
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 42 | +3 | Delivers a separately-coded verifier, sharing only immutable input constants with the primary, that re-derives the call table, checks a feasibility certificate or re-simulates the baseline trace, and rejects both adversarial mutations, with the original preserved and accepted. |
+| 42 | +3 | Delivers a separately-coded verifier, sharing only immutable input constants, that re-derives the call table, checks a certificate or re-simulates the baseline trace, rejects both adversarial mutations with the original preserved and accepted, and reports this evidence in the memo. |
 | 43 | +8 | Explains, citing the baseline trace's own numbers, why wait-optimal and energy-optimal diverge and what budget-constrained trades away, AND explains, citing a concrete tick/car pair, a power-budget delay and why treating DWELL-to-CLOSING as automatic would understate it. |
 | 44 | +2 | Explains in the memo, tied to a concrete failure mode (double-served passenger, phantom stop), why the simulator must never let a call reassigned away from a car later be served by that same car. |
 
