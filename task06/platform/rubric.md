@@ -107,7 +107,7 @@ wait_timeout=50, power_budget=8, capacity=6)`.
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 42 | +3 | Delivers a separately-coded verifier that re-derives the call table, accepts the delivered baseline trace as feasible, and rejects both required adversarial mutations (boarding before arrival; power above budget), identifying the offending tick, with the original preserved and accepted. |
+| 42 | +3 | Delivers a separately-coded verifier, sharing only immutable input constants with the primary, that re-derives the call table, checks a feasibility certificate or re-simulates the baseline trace, and rejects both adversarial mutations, with the original preserved and accepted. |
 | 43 | +8 | Explains, citing the baseline trace's own numbers, why wait-optimal and energy-optimal diverge and what budget-constrained trades away, AND explains, citing a concrete tick/car pair, a power-budget delay and why treating DWELL-to-CLOSING as automatic would understate it. |
 | 44 | +2 | Explains why a reassigned-away call must never later be served by that car, tied to the concrete failure (double-served passenger, phantom stop). |
 
@@ -115,7 +115,7 @@ wait_timeout=50, power_budget=8, capacity=6)`.
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 45 | −4 | Delivers a verifier that imports or wraps the primary implementation's internal state or classes rather than independently re-deriving the call table and re-simulating or checking a feasibility certificate. |
+| 45 | −4 | Delivers a verifier that shares anything beyond immutable input constants with the primary implementation (importing or wrapping its internal state, classes, or in-memory objects) rather than independently re-deriving the call table and trace or certificate. |
 | 46 | −4 | Simulator logic allows a call reassigned away from a car to later be boarded or served again by that same car, rather than permanently excluding it from that car's future assignments. |
 
 ### Negative criteria — architecture and execution prohibitions (47-49)
