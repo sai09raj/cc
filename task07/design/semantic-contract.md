@@ -1,214 +1,222 @@
-# CISTERN-7 semantic contract
+# QUORUM-7 semantic contract
 
-Executable contract for the reference oracle. Every rule below must be
-visibly recoverable from the packet (chart, table, or stated prose); this
-file is the internal design source, not the artifact itself.
+Executable contract for the reference protocol engine. Every rule below
+must be visibly recoverable from the packet (diagram, timeline chart, or
+stated prose); this file is the internal design source, not the artifact
+itself. Supersedes CISTERN-7's semantic contract (kept in git history,
+not in this file) after the task07 shape-reuse finding recorded in
+`design/architecture-attack.md`.
 
-## S01 — Simulation resolution and horizon
+## S01 — Cluster and tick model
 
-One simulated day is exactly `1440` ticks of `1` minute each, `t=0` (00:00)
-through `t=1439` (23:59), run to completion with no early termination. Each
-of the 108 sweep rows (54 legal configurations x 2 day-types, S08) is one
-continuous, independent 1440-tick run — never a shortened or sampled run.
+5 nodes, N0 through N4 (node IDs 0-4). Ticks are discrete integer time
+units. Each of the 5 named scenarios (S11) is one continuous run of
+exactly its own stated tick count, run to completion — never a shortened
+or sampled run. There are 3 x 5 = 15 total sweep rows (3 election-timeout
+settings x 5 scenarios).
 
-## S02 — Wet-well geometry and level state
+## S02 — Per-node state
 
-The wet well is a vertical tank of constant plan area `A = 60.0 m^2`.
-`level(t)` (meters, measured from the invert) is a single continuous state
-variable, carried tick-to-tick (never reset within a run):
+Each node maintains:
 
-```
-level(t+1) = clamp(level(t) + (Q_in(t) - Q_out(t)) * dt / A, LOW_CUTOFF, HIGH_HIGH)
-```
+- `current_term` (int, starts 0) — **persisted** across a crash.
+- `voted_for` (node ID or None) — **persisted**; reset to `None` every
+  time `current_term` increases.
+- `log` (list of entries `(term, cmd_id)`, 1-indexed; index 0 is an
+  implicit empty sentinel) — **persisted**.
+- `commit_index` (int, starts 0) — **persisted** (a stated simplification
+  of the Raft paper's volatile-commit-index-with-majority-recompute rule,
+  adopted here to keep crash-recovery unambiguous).
+- `role` (FOLLOWER / PRECANDIDATE / CANDIDATE / LEADER) — **volatile**;
+  resets to FOLLOWER on crash-recovery.
+- `election_elapsed` (ticks since last valid reset) — **volatile**.
+- While LEADER only: `next_index[j]`, `match_index[j]` for every other
+  node `j` — **volatile**, reinitialized on becoming leader.
 
-with `dt = 1` minute, `LOW_CUTOFF = 0.4 m`, `HIGH_HIGH = 4.2 m` (the overflow
-elevation, S06). `Q_in(t)` is the inflow hydrograph (S01a below); `Q_out(t)`
-is the sum of every currently-running pump's discharge at `level(t)` (S03).
+## S03 — Election timeout and its reset rule
 
-## S01a — Inflow hydrograph (the workload)
+Each node's own effective election timeout is
+`BASE_TIMEOUT + 20 * node_id` ticks, where `BASE_TIMEOUT` is the swept
+setting (S12: SHORT=150, MEDIUM=250, LONG=400). This per-node stagger is
+fixed and deterministic (not randomized), so every scenario's outcome is
+fully reproducible.
 
-`Q_in(t)` for `day_type=DRY` is linearly interpolated (m^3/min) between these
-anchor points on the 24h axis (minutes since 00:00):
+`election_elapsed` resets to `0` only when one of these occurs THIS tick:
+the node grants a vote to a candidate (S05); the node receives a valid
+AppendEntries (S06) from a term `>=` its own `current_term` (adopting
+that term and stepping down to FOLLOWER first if it was higher); or the
+node itself just began a fresh pre-vote round (S04). It is NOT reset by
+receiving or sending a pre-vote message, and a LEADER does not track
+`election_elapsed` at all while it remains leader.
 
-| minute | 0 | 180 | 330 | 480 | 600 | 780 | 1080 | 1200 | 1320 | 1439 |
-|---|---|---|---|---|---|---|---|---|---|---|
-| Q_in | 0.5 | 0.5 | 2.5 | 6.0 | 3.5 | 3.0 | 5.5 | 4.0 | 1.5 | 0.5 |
+## S04 — Pre-vote phase
 
-For `day_type=WET`, add a triangular storm surcharge on top of the DRY
-curve, zero outside `[300,420]`, ramping linearly to a peak of `+8.0 m^3/min`
-at minute `360`, back to zero at minute `420`. `Q_in` is never generated as a
-discrete list; it is this continuous function, sampled once per tick — a
-materially different "workload" shape from a discrete arrival list.
+When `election_elapsed` reaches a FOLLOWER's (or a CANDIDATE's, after a
+failed election) own effective timeout: the node becomes PRECANDIDATE
+(does NOT increment `current_term` or touch `voted_for` yet), resets
+`election_elapsed` to `0`, and sends `PreVoteRequest(term=current_term+1,
+last_log_index, last_log_term)` to every other node. A recipient grants
+`PreVoteResponse(granted=True)` iff the requester's log is at least as
+up-to-date as its own by the SAME log-completeness rule as a real vote
+(S05) — regardless of the recipient's own `current_term` or `voted_for`;
+granting a pre-vote never mutates `voted_for`. The PRECANDIDATE proceeds
+to S05 the instant it has collected grants from a majority (>=3 of 5,
+itself included); if its `election_elapsed` reaches the same effective
+timeout again first (no majority yet), it stays PRECANDIDATE, resets
+`election_elapsed` to `0`, and resends `PreVoteRequest` to every node
+(a fresh pre-vote round, still without incrementing `current_term`).
 
-## S03 — Pump curve and staging (the control loop)
+## S05 — Real election (RequestVote)
 
-Three pumps A, B, C share one curve shape; each pump's discharge while
-running is interpolated (m^3/min) from `level(t)` against that curve, then
-scaled by its own capacity factor:
+On winning a pre-vote majority: increment `current_term` by 1, set
+`voted_for = self`, become CANDIDATE, reset `election_elapsed` to `0`,
+and send `RequestVote(term=current_term, last_log_index, last_log_term)`
+to every other node. A recipient grants the vote iff ALL of: (a) the
+request's term is `>=` the recipient's own `current_term` (if strictly
+greater, the recipient first adopts that term, steps down to FOLLOWER,
+and clears `voted_for` before evaluating this vote); (b) the recipient's
+`voted_for` is `None` or already equals the requester for this term; (c)
+log-completeness: requester's `last_log_term` is greater than the
+recipient's own, OR equal AND requester's `last_log_index >=` the
+recipient's own. If multiple `RequestVote`s from different candidates
+arrive at the same recipient on the same tick, evaluate them in ascending
+requester-node-ID order (the recipient can grant at most one; later ones
+this term are then rejected by rule (b)). A CANDIDATE that wins a
+majority (>=3, itself included) becomes LEADER immediately upon reaching
+that majority (does not wait for all 5 responses): it initializes
+`next_index[j] = len(own log) + 1` and `match_index[j] = 0` for every
+other node `j`, and immediately sends an AppendEntries round (S06). A
+CANDIDATE (or PRECANDIDATE) that receives an AppendEntries with term `>=`
+its own steps down to FOLLOWER, adopting that term if higher. A CANDIDATE
+whose `election_elapsed` reaches its effective timeout again without
+winning (split vote) returns to S04 (a fresh pre-vote round; `current_term`
+is not incremented again until a pre-vote succeeds).
 
-| level (m) | 0.4 | 2.0 | 4.2 |
-|---|---|---|---|
-| Q_pump (before scale) | 3.0 | 4.0 | 5.0 |
+## S06 — Log replication (bounded-batch AppendEntries)
 
-Capacity scale: pumps A and B (the station's matched primary units) are
-`1.00`; pump C (the smaller reserve unit, always the first excluded as
-`duty_pump_count` drops — S08) is `0.85`. Pump C is therefore only ever at
-full roster strength when `duty_pump_count=3`.
+LEADER only. For each other node `j`, the leader sends an AppendEntries
+round to `j` every `HEARTBEAT_INTERVAL=10` ticks, or immediately after a
+new command is appended to the leader's own log (S08), whichever is
+sooner. The message carries `prevLogIndex = next_index[j] - 1`,
+`prevLogTerm` (the leader's own log's term at that index, or `0` if
+`prevLogIndex == 0`), up to `K=4` entries starting at `next_index[j]`
+(bounded batch — a lagging follower needs multiple rounds to catch up),
+and `leaderCommit = ` the leader's own `commit_index`.
 
-(Static lift decreases as the well fills, so discharge rises with level;
-linear interpolation between breakpoints, no extrapolation needed since
-`level` is clamped to `[0.4, 4.2]`.) A pump that is not running discharges
-zero regardless of level. A pump may never start while `level < LOW_CUTOFF`
-(dry-run protection) — this is already enforced by the clamp in S02, since
-level never goes below `LOW_CUTOFF`.
+A follower rejects (`success=False`) iff `prevLogIndex > 0` and either it
+has no entry at `prevLogIndex` or that entry's term differs from
+`prevLogTerm`. On rejection, the leader sets
+`next_index[j] = max(1, next_index[j] - 1)` and retries on the next
+round (linear backoff; no conflict-term optimization in this protocol).
+On acceptance, the follower TRUNCATES any existing entry (and everything
+after it) at an index the incoming batch also covers if that existing
+entry's term differs from the incoming one, then appends the batch's
+entries; if `leaderCommit >` its own `commit_index`, it advances its own
+`commit_index` to `min(leaderCommit,` the index of the last entry it just
+appended-or-already-matched`)`. It responds `success=True` with
+`matchIndex = prevLogIndex + `(entries in this batch). The leader then
+sets `match_index[j] = ` that `matchIndex` and `next_index[j] =
+matchIndex + 1`.
 
-Each pump fills one of three staging roles each tick: LEAD, LAG1, LAG2, or
-OFF-ROSTER (S08's `duty_pump_count` limits how many roles beyond LEAD are
-ever assignable). Role assignment is re-derived fresh at the instant a new
-lead is selected (S05); LAG1/LAG2 are always assigned to the remaining
-in-roster pumps in ascending pump-ID order among those not filling LEAD.
+## S07 — Commit-index advancement (leader)
 
-Start/stop elevations per role are set by the swept `deadband` (S08):
+The leader advances its own `commit_index` to the highest index `N` such
+that a majority of nodes (>=3, itself included) have `match_index[j] >=
+N` (the leader always counts as matching its own log), **AND** the log
+entry at index `N` has `term ==` the leader's own CURRENT `current_term`.
+A leader must never advance `commit_index` to an index whose entry is
+from an earlier term merely because a majority already has it — that
+entry only becomes committed indirectly, once a same-term entry after it
+is committed by this rule. This is the protocol's single most commonly
+mis-implemented rule.
 
-| deadband | LEAD start / stop | LAG1 start / stop | LAG2 start / stop |
-|---|---|---|---|
-| TIGHT | 1.2 / 0.8 | 1.8 / 1.4 | 2.4 / 2.0 |
-| MEDIUM | 1.5 / 0.7 | 2.2 / 1.2 | 3.0 / 1.8 |
-| WIDE | 2.0 / 0.6 | 3.0 / 1.0 | 3.8 / 1.6 |
+## S08 — Client commands
 
-A pump in a given role starts when `level(t) >= role_start` and it is
-currently off; it stops when `level(t) <= role_stop` and it is currently
-running — EXCEPT that a stop is deferred while the pump is blocked by its
-minimum-run timer (S04). `role_start > role_stop` for every role in every
-deadband setting (hysteresis; no exceptions to verify).
+A fixed, packet-stated schedule of `(tick, command_id)` submissions.
+At the stated tick, the command is broadcast to all 5 nodes
+simultaneously; any node that is LEADER at that exact tick appends
+`(current_term, command_id)` to its own log and immediately triggers an
+AppendEntries round (S06); every other node ignores the submission (no
+queueing, no forwarding, no retry).
 
-A pump beyond `duty_pump_count` roles (i.e., filling no role because the
-concurrency ceiling S08 has been reached) never starts, full stop — the
-ceiling is a hard limit representing the station's shared electrical/
-hydraulic service capacity, not a preference.
+## S09 — Network model (deterministic, scripted)
 
-## S04 — Per-pump timers
+Every message sent at tick `T` is delivered at `T + BASE_DELAY` (fixed,
+`BASE_DELAY=2`) unless the active scenario's script states an override
+for that message class/pair/window: `DELAY(extra ticks)`, `DROP` (never
+delivered), or `DUPLICATE(offset)` (delivered a second time `offset`
+ticks after the first delivery). A scripted **partition** window naming a
+tick range and a 2-way split of the 5 nodes means every message between
+nodes on opposite sides is DROPPED for that whole window, regardless of
+any other per-message override; messages between nodes on the same side
+are unaffected. A scripted **crash** window for one node means that node
+processes no incoming message and sends none for that whole window (as if
+powered off); its persisted state (S02) is exactly as it was at the crash
+tick. On recovery (the window's end), it resumes as FOLLOWER with
+`election_elapsed` starting fresh at `0`, using its persisted state
+exactly as it was.
 
-Each pump tracks its own `last_transition_tick`. Two independent rules:
-
-- **Minimum run time** (`MIN_RUN`, swept — S08): once a pump starts, it
-  cannot stop for `MIN_RUN` ticks even if `level(t) <= role_stop` during
-  that window; it continues running (and continues discharging at the
-  level-dependent rate, S03) until `MIN_RUN` ticks have elapsed, at which
-  point the ordinary stop condition is re-evaluated every subsequent tick.
-- **Minimum off time** (`MIN_OFF = 4` ticks, fixed, not swept): once a pump
-  stops, it cannot start again for `MIN_OFF` ticks even if its role's start
-  condition is met.
-
-A pump that is timer-blocked from stopping still counts against
-`duty_pump_count` for the purposes of staging additional pumps (S03) — it
-occupies its duty slot for the full duration it is physically running,
-timer-blocked or not.
-
-## S05 — Lead rotation policy (swept — S08)
-
-The rotation index `next_lead` (initially pump A) determines which pump is
-offered the LEAD role the next time a NEW lead-selection event occurs. A
-lead-selection event occurs only at a tick where no pump currently fills
-LEAD and `level(t) >= (that would-be lead's own role_start)` for at least
-one in-roster pump — i.e., exactly when a lead pump is about to start from
-cold. **The rotation index advances by exactly one position immediately
-after a genuine LEAD-START transition completes for the pump it selected —
-never on a LAG start, never on any stop event, and never merely because a
-tick elapsed.** Advancing it on any other event is the task's core
-anti-pattern (see the negative criterion this rule owns in the rubric).
-
-Three swept policies select the offered lead pump among in-roster,
-currently-eligible-to-start pumps:
-
-- `STRICT_ALTERNATE`: the pump named by `next_lead`, in fixed cyclic order
-  A -> B -> C -> A.
-- `RUNTIME_BALANCED`: the in-roster pump with the LOWEST cumulative running
-  minutes so far this run (ties broken by lowest pump ID).
-- `FIXED_LEAD`: always pump A (no rotation; `next_lead` is never consulted
-  or advanced under this policy).
-
-## S06 — Overflow accounting
-
-Whenever the unclamped tick update in S02 would exceed `HIGH_HIGH`, the
-excess is a spill: `overflow_volume += (unclamped_level - HIGH_HIGH) * A`
-for that tick, and `level` is clamped to exactly `HIGH_HIGH`.
-`overflow_duration` is the count of ticks where this clamp was active. Mass
-balance must close for every run: total inflow volume equals total pumped
-volume plus total overflow volume plus the net change in stored volume
-(`(level(1439) - level(0)) * A`) — this is the verifier's primary
-feasibility check (S10).
-
-## S07 — Time-of-use tariff and energy cost
-
-Each pump draws a constant `15 kW` while running, regardless of level.
-Energy cost accrues per tick as `(running pump count) * 15 kW * (1/60 h) *
-rate(t)`, where `rate(t)` is set by the tariff band containing tick `t`'s
-START minute:
-
-| band | minutes (start-inclusive) | $/kWh |
-|---|---|---|
-| OFF-PEAK | [1380,1439] union [0,419] | 0.08 |
-| MID-PEAK | [420,959] union [1260,1379] | 0.14 |
-| ON-PEAK | [960,1259] | 0.22 |
-
-(i.e. off-peak 23:00-06:59, mid-peak 07:00-15:59 and 21:00-22:59, on-peak
-16:00-20:59.) `total_energy_cost` is the sum over all 1440 ticks.
-
-## S08 — Sweep dimensions (the legal configuration space)
-
-`day_type` is weather, not a control setting — a station cannot choose which
-weather it gets, so it is never a free dimension a selection optimizes over.
-The legal configuration space is the station's actual control-setting
-choices, a full Cartesian product, no exclusions, `3 x 3 x 3 x 2 = 54` legal
-configurations:
-
-- `duty_pump_count` in `{1,2,3}` — how many of the 3 installed pumps are in
-  service; pumps are taken into service by lowest ID first (pump C is the
-  first excluded at `duty_pump_count=2`, etc.).
-- `rotation_policy` in `{STRICT_ALTERNATE, RUNTIME_BALANCED, FIXED_LEAD}`.
-- `deadband` in `{TIGHT, MEDIUM, WIDE}`.
-- `min_run_time` in `{SHORT=8, LONG=15}` ticks.
-
-Every one of these 54 configurations is evaluated as a PAIR of full
-1440-tick runs, one per `day_type` (`DRY`, `WET`) — the sweep table has
-`54 x 2 = 108` rows (one per configuration-per-day-type), but a selection
-is always over the 54 configurations, scored by both of a configuration's
-own two rows together, never by picking whichever day happens to be
-cheaper.
-
-## S09 — Three competing selection objectives
-
-Computed over the 54 configurations (each represented by its DRY row and
-its WET row); the reference has all three diverge. For configuration `k`,
-`E(k) = energy_cost(k,DRY) + energy_cost(k,WET)` (combined two-day energy);
-`P(k) = max(peak_level(k,DRY), peak_level(k,WET))` (worst-day peak level);
-`imbalance(k) = max over {DRY,WET} of (that day's single highest per-pump
-run_minutes / that day's total fleet run_minutes)` (worst-day fleet
-run-time concentration — rotation policy changes WHICH pump does the work,
-not the aggregate energy or level trajectory, so this is the metric it
-actually controls); a configuration is FEASIBLE only if
-`overflow_volume(k,DRY) == 0 AND overflow_volume(k,WET) == 0`.
-
-1. **Energy-optimal**: among FEASIBLE configurations, minimize `E(k)`.
-2. **Reliability-optimal**: minimize `P(k)` across ALL 54 configurations
-   (feasible or not); ties broken by lower `E(k)`.
-3. **Wear-balance-constrained**: among FEASIBLE configurations with
-   `imbalance(k) <= 0.80` (no single pump may account for more than 80% of
-   either day's fleet run-minutes), minimize `E(k)`.
-
-## S10 — Independent verification (feasibility certificate)
+## S10 — Independent verification (safety invariants + certificate)
 
 A separately-coded verifier, sharing only immutable input constants with
-the primary implementation, must: re-derive `Q_in(t)` from the stated
-hydrograph/storm formula; and either fully re-simulate or check a
-feasibility certificate confirming, for the baseline configuration and
-every swept configuration: (a) mass balance closes (S06) to a stated
-tolerance; (b) no pump ever starts while timer-blocked by `MIN_OFF`, and no
-pump ever stops before its `MIN_RUN` has elapsed; (c) `level(t)` never
-leaves `[LOW_CUTOFF, HIGH_HIGH]`; (d) reported `overflow_volume` and
-`total_energy_cost` match independently recomputed values. Two required
-adversarial mutations: a tick where the recorded level update is
-inconsistent with `Q_in - Q_out` (a mass-balance violation), and a pump
-recorded as stopping before its own `MIN_RUN` ticks have elapsed — the
-verifier must reject both while still accepting the true baseline.
+the primary implementation, must independently re-derive each scenario's
+full 5-node state trace (or check a complete feasibility certificate) and
+confirm, for every scenario and every timeout setting: **election
+safety** (no two nodes are LEADER for the same `current_term`
+simultaneously); **log matching** (if two nodes' logs both contain an
+entry at the same index with the same term, every entry at every earlier
+index in both logs is identical); **leader completeness** (once an entry
+is committed by any node, every node that later becomes leader has that
+entry in its own log at that index). Two required adversarial mutations:
+a vote granted to a candidate whose term is BELOW the recipient's own
+`current_term` (a stale-term vote, violating election safety indirectly)
+and a leader overwriting an already-committed log entry with a different
+one (violating log matching / leader completeness) — the verifier must
+reject both while still accepting the true original.
+
+## S11 — The 5 named scenarios (each one continuous run, no resampling)
+
+Exact fault-window tick numbers are generated from the stated formulas
+below and confirmed against real executed output before being frozen
+into the rubric (never hand-derived) — see `reference/quorum_sim.py`.
+
+1. **CLEAN** (2,400 ticks): no scripted faults; `BASE_DELAY=2`
+   throughout. Commands at ticks 300, 600, 900, 1200, 1500.
+2. **PARTITION** (2,400 ticks): `{N0,N1,N2}` vs `{N3,N4}` for a stated
+   400-tick window starting once a stable leader has been observed for
+   at least 200 ticks in the CLEAN scenario's own trace (a real,
+   trace-derived tick, not assumed); commands both before, during, and
+   after the window.
+3. **CRASH-RECOVER** (2,400 ticks): the CLEAN scenario's own first
+   elected leader is crashed for a stated 300-tick window once it has
+   held leadership for at least 200 ticks; commands before, during
+   (routed to whichever node becomes the new leader), and after recovery.
+4. **MESSAGE-LOSS** (2,400 ticks): elevated scripted `DROP`/`DUPLICATE`
+   overrides on specific message classes between specific node pairs
+   over a stated window, chosen to stress AppendEntries and vote
+   messages without partitioning any node entirely.
+5. **COMPETING-CANDIDATES** (2,400 ticks): a 2-node minority (`{N2,N3}`)
+   is partitioned away from the 3-node majority for a stated long window,
+   long enough that both isolated nodes independently exceed their own
+   effective timeout and repeatedly attempt pre-vote rounds against each
+   other alone — since 2 of 5 can never reach the 3-node pre-vote
+   majority (S04), neither may ever increment its `current_term` or hold
+   an election while isolated: this is the pre-vote phase's whole
+   purpose, preventing a partitioned minority from inflating its term and
+   disrupting the majority once the partition heals. The majority side
+   keeps its existing leader (or elects a new one) undisturbed throughout.
+
+## S12 — Sweep dimension and selections
+
+`election_timeout_setting` in `{SHORT, MEDIUM, LONG}` (S03) x the 5
+named scenarios = 15 sweep rows, each one continuous run to completion.
+A setting is FEASIBLE only if it violates none of the three safety
+invariants (S10) in any of its 5 scenario runs. Among feasible settings:
+
+1. **Recovery-optimal**: minimizes the worst-case tick-count from a
+   partition/crash window's end to the next successful commit afterward,
+   across the PARTITION and CRASH-RECOVER scenarios.
+2. **Overhead-optimal**: minimizes total message count (all message
+   classes, all 5 scenarios combined).
+
+These two need not agree.

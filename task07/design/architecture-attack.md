@@ -1,314 +1,296 @@
-# CISTERN-7 — architecture attack and perfect-semantics ablation
+# QUORUM-7 — architecture attack and perfect-semantics ablation
 
-## Why this must be a different shape from task05 and task06
+## Why CISTERN-7 is shelved
 
-Task05 (KILNWORKS, shelved) was a fault-driven manufacturing dispatch/reroute
-trace over a fixed aisle graph. Task06 (ATRIUM-9, real-pilot-confirmed at
-20%/21%/sub-50%) was a multi-car elevator dispatch policy exhaustively swept
-over a 144-configuration space. Both are, underneath the domain dressing,
-**discrete-event request-dispatch simulations**: a request arrives, an agent
-(robot or car) is assigned by a fixed priority/cost rule, and the agent
-executes a bounded action sequence. Reusing that mechanism a third time in a
-row would test the same reasoning skill in a new costume, not a genuinely
-different failure surface — the playbook's own rule (`02-DIFFICULTY-
-ENGINEERING.md`, "Reusable future-task shape") says to transfer the method,
-not the surface architecture.
+CISTERN-7 (wastewater lift-station wet-well level control) was fully
+built — reference simulator, independent verifier, score-topology-audited
+rubric, metadata-stripped artifact, prompt/ideal-flow — and its four
+synthetic mutants all scored under 50%. It is shelved anyway, before any
+platform submission, because a direct comparison against ATRIUM-9
+(task06) found the two share the same underlying **task shape**, not just
+a coincidentally similar domain:
 
-CISTERN-7 is a **continuous-state control-loop simulation**, not a discrete
-request-dispatch simulation: there is no queue of discrete arriving jobs to
-assign to agents. Instead, a single continuously-varying physical quantity
-(wet-well level) is integrated forward under a hysteresis-band control policy
-that starts/stops a shared pool of pumps. The genuine difficulty comes from
-correctly composing continuous numerical integration, discrete on/off control
-transitions with two independent timers per pump (minimum run time, minimum
-off time), a *rotating* (not fixed-priority) lead-agent selection rule, and a
-time-of-use tariff — over a 24-hour trace, swept across a real multi-
-dimension configuration space, with three competing selection objectives.
-This is a different mechanism class from both prior tasks, while still
-fitting the reusable pattern's ten ingredients (see the bottom of this file).
+```text
+build a deterministic simulator
+  -> exhaustively sweep a ~50-150-row configuration space
+  -> three competing lexicographic selection objectives
+  -> independently-coded verifier + two required adversarial mutations
+  -> rubric weighted heavily onto whole-sweep aggregate totals
+```
+
+The domain differed (elevator dispatch vs. wet-well control) and the
+underlying physical mechanism differed (discrete event dispatch vs.
+continuous mass-balance integration), but a solver who had just built
+ATRIUM-9 could largely pattern-match CISTERN-7's file/module structure
+without re-deriving anything domain-specific about *how to approach the
+problem*. That is a genuine finding, not a cosmetic one — see the new
+"Domain diversity is not the same as task-shape diversity" section added
+to `Playbook/00-START-HERE-EVERY-FUTURE-TASK.md` this round. CISTERN-7's
+files are left in place (`design/semantic-contract.md`'s prior content,
+`reference/cistern_sim.py`, `reference/cistern_verify.py`,
+`reference/score_counterfactual.py`, `platform/rubric.md`,
+`platform/prompt.md`, `platform/ideal-flow.md`,
+`artifact/cistern7.pdf`) for the record, exactly as KILNWORKS R2 was kept
+rather than deleted when R3 replaced it. Do not resurrect the sweep
+template for a future task07-family revision without a new comparison
+against whatever shape ships here.
+
+## The replacement: a genuinely different mechanism
+
+QUORUM-7 is a **message-passing distributed-systems protocol**, not a
+physical or economic simulation: a custom-specified, Raft-family
+consensus protocol for a 5-node replica cluster, executed as a handful of
+long, fully deterministic, scripted-fault scenarios (not a config sweep),
+graded primarily on whether delivered safety and liveness invariants hold
+across the whole scripted run. This reuses the one pattern this project's
+own history calls out as the most reliably validated
+(`README.md`, "The Task 04 discovery": one long uninterrupted trace +
+production witnesses + independent verification + adversarial mutation,
+not an exhaustive parameter grid) while testing a completely different
+kind of correctness: concurrent/partial-failure state-machine reasoning,
+not numerical integration or request dispatch.
+
+Domain: **Systems & Technology Engineering** (or **Computer Engineering**
+— both are valid entries on the platform's fixed domain picker list, see
+`00-START-HERE-EVERY-FUTURE-TASK.md`). Subdomain: distributed consensus
+protocol correctness under network faults.
+
+### Avoiding the two known traps for this domain
+
+1. **Not textbook Raft verbatim.** A frontier model has near-perfect
+   recall of vanilla Raft (election timeout -> RequestVote -> majority ->
+   AppendEntries -> commit). Two well-documented, real (not invented)
+   Raft extensions are added and must be followed exactly as the packet
+   states them, not as the model remembers a textbook variant stating
+   them: a **pre-vote phase** (a candidate must win a non-binding
+   majority pre-vote before incrementing its term and requesting real
+   votes — used in production systems such as etcd and CockroachDB, but
+   less commonly memorized than basic Raft) and **bounded-batch
+   AppendEntries with per-follower `nextIndex`/`matchIndex` tracking** (a
+   leader may replicate at most K log entries per message, requiring
+   multiple rounds to catch up a lagging follower — a standard
+   real-implementation detail, and a common source of off-by-one and
+   over-eager-commit bugs).
+2. **Not CP-SAT-solvable.** This project's own history (KILNWORKS R2, see
+   `README.md` and the commit that replaced it) already hit the failure
+   mode of an architecture a model could solve by reaching for an
+   off-the-shelf exact solver. A consensus protocol has no such shortcut:
+   there is no general-purpose library call that takes "5 nodes, this
+   fault script" and returns the correct term/log/commit trace — it must
+   be executed by simulating the actual protocol tick by tick.
 
 ## Architecture canvas
 
 ```text
-TASK WORKING TITLE: CISTERN-7 -- wastewater lift-station level control and
-  energy-tariff/overflow-risk optimization
-DOMAIN: Civil/Environmental Engineering -- Water Resources & Public Works
-  (wastewater collection systems)
-REAL ENGINEERING DECISION: which pump-station control configuration (duty-pump
-  count, lead-rotation policy, level deadband, minimum-run-time setting) to
-  adopt for a given catchment, trading energy cost under a time-of-use tariff
-  against sanitary-sewer-overflow (SSO) risk and pump-wear (starts/day), given
-  the station's fixed pump curves and a realistic diurnal inflow hydrograph --
-  not a free re-design of the station's hydraulics.
+TASK WORKING TITLE: QUORUM-7 -- custom Raft-family consensus protocol
+  correctness under scripted network faults
+DOMAIN: Systems & Technology Engineering / Computer Engineering --
+  distributed systems, fault-tolerant replication
+REAL ENGINEERING DECISION: which of three election-timeout base settings
+  to adopt for this cluster, trading safety margin, worst-case time to
+  re-elect a leader after a network partition heals, and total message
+  overhead against each other -- not a free re-design of the protocol
+  itself, which is fixed.
 
 FOUR PILLARS
 1. Genuine visual interpretation:
-   - the diurnal inflow hydrograph (24h curve, dry-weather and wet-weather
-     variants) must be measured off its own axis, not printed as a table;
-   - the pump curve (discharge flow vs. wet-well level, since static lift
-     changes as the well drains/fills) is a plotted curve with a small number
-     of labeled breakpoints, requiring interpolation, not a lookup table;
-   - the level-setpoint diagram (start/stop elevations per pump per deadband
-     setting, high-high alarm elevation, tank geometry) is a labeled cross-
-     section drawing;
-   - the time-of-use tariff is a small multi-band chart aligned to the same
-     24h axis as the hydrograph, not a printed $/kWh table.
-2. Iterative tool use: build the tick-based simulator, run the full sweep,
-   diagnose against an independently-coded verifier (mass-balance closure,
-   timer compliance, overflow accounting), find disagreement, fix, rerun.
-3. Expert knowledge: hysteresis control with independent per-pump minimum-
-   run/minimum-off timers, lead-rotation-on-START-event-only (not every tick),
-   level-dependent pump discharge (not a constant rated flow), TOU-tariff-
-   aware energy costing, and correctly distinguishing "pump commanded to stop"
-   from "pump timer-blocked from stopping."
-4. Long horizon: one continuous 24-hour tick-by-tick trace per configuration,
-   a full legal sweep across the configuration space, cross-file
-   reconciliation of sweep table / decision file / baseline trace / verifier
-   report / memo.
+   - the node state-machine diagram (FOLLOWER/CANDIDATE/LEADER
+     transitions, pre-vote sub-state) recovered from a transition-arrow
+     drawing, not printed as a transition table;
+   - the message-timing diagram (pre-vote round -> real vote round ->
+     AppendEntries, with round-trip timing) measured against its own
+     axis;
+   - each of the 5 scenario scripts' fault timeline (delay/drop/
+     duplicate/crash-recover/partition windows) read off a timeline
+     chart, not printed as a table of tick numbers;
+   - the election-timeout comparison chart (3 settings x their effect on
+     recovery time) requiring the same axis-reading discipline as
+     ATRIUM-9/CISTERN-7's charts.
+2. Iterative tool use: build the protocol engine, run all 5 scenarios x
+   3 timeout settings (15 long runs), diagnose against an independently-
+   coded verifier checking safety invariants across all 5 replicas' full
+   logs, find disagreement, fix, rerun.
+3. Expert knowledge: pre-vote gating, per-follower replication-progress
+   tracking, the log-completeness vote-granting rule, majority-quorum
+   commit-index advancement, and correctly distinguishing "this node is
+   partitioned and cannot hear the leader" from "this node crashed" (the
+   former must not lose persisted term/voted_for/log state; a crash must
+   also preserve it on recovery, matching Raft's persistence guarantee).
+4. Long horizon: 5 independent scripted scenarios, each a continuous
+   ~2,000-3,000 tick run with no early termination and no resampling,
+   cross-file reconciliation of protocol engine output, verifier
+   invariant report, timeout-comparison decision, and causal memo.
 
 DIFFICULTY STACK
-- distributed specification: hydrograph in one chart, pump curve in another,
-  level setpoints in a cross-section drawing, tariff bands in a third chart,
-  timer/rotation rules in prose;
-- stateful interaction: wet-well level is a running numerical integral (not
-  resettable per tick), each pump carries its own independent run/off timer
-  state and last-started timestamp, the rotation index persists across the
-  whole 24h run;
-- generated/measured workload: the inflow hydrograph is a continuous function
-  sampled at every simulation tick, not a discrete arrival list -- a
-  materially different "workload" shape from either prior task's discrete
-  call/lot lists;
-- search/design space: a legal multi-dimension sweep (duty-pump count x
-  rotation policy x deadband setting x minimum-run-time setting x day-type),
-  with illegal combinations excluded (e.g. duty-pump count cannot exceed the
-  number of installed pumps);
-- coupled targets: energy cost, peak-level safety margin, and pump starts/day
-  are three genuinely different metrics that trade against each other
-  non-monotonically;
-- tie-break/rotation rule: an explicit, stated rule for which pump becomes
-  lead next, and an explicit rule for exactly which event advances that
-  rotation (a real anti-pattern trap: advancing it every tick instead of only
-  on a genuine lead-pump START event biases the rotation);
-- cross-file consistency: sweep table, decision file, baseline trace, verifier
-  report, and memo must all reconcile;
-- causal synthesis: explain why the energy-optimal and reliability-optimal
-  configurations diverge, why a config that minimizes energy can still
-  violate the pump-wear ceiling, and a concrete tick where the TOU tariff
-  boundary changed the controller's effective cost trade-off.
+- distributed specification: state-machine diagram in one panel, message
+  timing in another, per-scenario fault scripts in timeline charts, the
+  vote-granting/commit rules in prose;
+- stateful interaction: each of 5 nodes independently tracks term,
+  voted_for, role, log, commit_index, and (while leader) per-follower
+  nextIndex/matchIndex -- none of it resettable mid-scenario;
+- generated/scripted workload: fixed, fully deterministic per-tick
+  network-event scripts (not randomized) driving message delay, drop,
+  duplication, node crash/recover, and partition/heal;
+- search/decision space: 3 timeout settings x 5 scenarios = 15 long runs,
+  a materially smaller row count than ATRIUM-9/CISTERN-7's sweeps but
+  each row individually far more complex, matching KILNWORKS' proven
+  "few long continuous traces" shape rather than "many short rows";
+- coupled targets: safety margin (must never be violated, any scenario),
+  worst-case partition-recovery time, and total message overhead trade
+  against each other non-monotonically;
+- tie-break: an explicit vote-granting tie-break and pre-vote quorum rule
+  stated with no ambiguity;
+- cross-file consistency: protocol engine output, verifier invariant
+  report, timeout-comparison decision file, and memo must reconcile;
+- causal synthesis: explain why a shorter timeout speeds recovery but
+  risks more competing-candidate churn, and why skipping the pre-vote
+  phase would let a partitioned node's stale higher term disrupt the
+  majority side upon healing.
 
 POST-SEMANTICS DIFFICULTY (granting every local rule correctly)
-- work remaining: composing roughly a dozen interacting deterministic rules
-  (mass-balance integration, level-dependent pump curve interpolation,
-  hysteresis start/stop, two independent per-pump timers, rotation-on-START-
-  only, overflow accounting, TOU costing) correctly across one continuous
-  1,440-tick (24h at 1-minute resolution) trace per configuration, for every
-  configuration in the legal sweep, with no per-config reset to bound error
-  propagation within a design's own family of related configs (day-type is
-  the only axis that legitimately restarts the hydrograph);
-- interacting persistent state domains: wet-well level (continuous), each
-  pump's run/off timer and last-started tick, the rotation index, cumulative
-  energy cost, cumulative overflow volume/duration -- all must be carried
-  correctly tick-to-tick for the full 24h;
-- workload scale and execution: a legal sweep on the order of 100+
-  configurations (duty-pump count in {1,2,3} x rotation policy in {3
-  variants} x deadband setting in {3 variants} x minimum-run-time in {2
-  variants} x day-type in {DRY,WET} = 108), each one continuous 1,440-tick
-  run, full sweep table reconciliation;
-- search/optimization and coupled decision: no free-form search remains (the
-  control policy is fully fixed once a configuration is chosen), but the
-  three-way lexicographic selection across a non-monotonic 108-row space is
-  still a real decision that depends on every row being correct;
-- debugging/iteration: the interaction between the minimum-run timer and the
-  hysteresis stop condition (a pump whose level has dropped below its stop
-  setpoint but is still timer-blocked from stopping continues drawing power
-  and continues discharging, which itself affects the level trajectory the
-  next tick) is a genuinely easy edge case to get subtly wrong without
-  inspecting an actual trace;
-- independent verification: a second, differently-structured implementation
-  must reproduce the same 24h trace (or an equivalent feasibility
-  certificate) for the baseline configuration and agree on sweep aggregates
-  across the full 108-row space -- a nontrivial n-version cross-check;
-- cross-file reconciliation: sweep table, decision file, baseline trace,
-  verifier report, and memo must agree, including at TOU tariff-band
-  boundaries and at the tick where any overflow event begins/ends;
-- causal engineering synthesis: explain the energy/reliability divergence and
-  the wear-ceiling tradeoff using actual event times from the delivered
-  baseline trace, not a generic restatement of the tradeoff.
+- work remaining: composing roughly a dozen interacting deterministic
+  rules (pre-vote gating, vote-granting log-completeness check, per-
+  follower bounded-batch replication tracking, majority-quorum commit
+  advancement, crash/partition state persistence) correctly across 5
+  independent ~2,000-3,000-tick scripted scenarios, with no per-scenario
+  reset of a shared "did I get this right last time" assumption;
+- interacting persistent state domains: 5 nodes' full Raft state each,
+  all evolving under a fixed but intricate fault script;
+- workload scale and execution: 15 long runs (5 scenarios x 3 timeout
+  settings), each one continuous execution to completion;
+- search/optimization and coupled decision: no free per-tick choice
+  remains (the protocol is fully deterministic once the script and
+  timeout setting are fixed), but the three-way timeout comparison across
+  a non-monotonic tradeoff is still a real decision depending on every
+  scenario's own numbers being right;
+- debugging/iteration: the interaction between pre-vote gating and
+  crash-recovery persistence (a recovering node must not skip pre-vote
+  just because it remembers a high term from before its crash) is a
+  genuinely easy edge case to get subtly wrong without inspecting an
+  actual multi-node trace;
+- independent verification: a second, differently-structured
+  implementation must reproduce the same safety-invariant verdicts (and
+  ideally the same full state trace) for all 5 scenarios;
+- cross-file reconciliation: engine output, verifier report, decision
+  file, and memo must agree, including at every scripted fault boundary;
+- causal engineering synthesis: explain the timeout tradeoff and the
+  pre-vote/crash-persistence interaction using actual events from the
+  delivered scenario traces, not a generic restatement.
 
 Could a clean small rewrite now solve the task? NO -- there is no small
-  module to discard; correctly integrating the continuous mass balance under
-  a level-dependent pump curve, with two independent per-pump timers and a
-  rotation rule that must advance on exactly the right event, against a
-  24h/108-configuration workload, is the task itself.
-Could direct enumeration without a correct interacting model solve it? NO --
-  the wet-well level trajectory is a genuine numerical integral of a
-  time-varying inflow against a level-dependent outflow; there is nothing to
-  enumerate in place of actually running the integration.
-Could copied headline literals retain >=50%? Must be checked and kept below
-  50% in the score-topology audit (score-topology.md, once built) exactly as
-  done for ATRIUM-9 -- weight must sit on whole-sweep aggregates and baseline-
-  trace witnesses, not the three headline selections alone.
+  module to discard; correctly composing pre-vote gating, bounded-batch
+  replication tracking, and crash/partition persistence across five long
+  scripted scenarios is the task itself.
+Could direct enumeration or an off-the-shelf solver replace execution?
+  NO -- unlike KILNWORKS R2's CP-SAT-solvable exact-optimization
+  architecture, there is no general-purpose solver call that takes a
+  fault script and returns the correct term/log/commit trace; it must be
+  simulated tick by tick.
+Could copied headline literals retain >=50%? Must be checked and kept
+  below 50% in the score-topology audit before any submission, exactly as
+  done for ATRIUM-9 and CISTERN-7 -- weight must sit on per-scenario
+  safety-invariant verdicts and trace witnesses, not the three-way
+  timeout comparison alone.
 Are at least three post-semantics difficulty layers unavoidable? YES --
-  continuous-state temporal composition (mass balance + timers + rotation),
-  broad executed sweep (100+ full 24h runs), and coupled multi-objective
-  decision-making under a hard wear-ceiling constraint.
-Does any planned low score depend mainly on semantic omission/misreading?
-  NO -- every rule (pump curve, timer durations, rotation-advance event,
-  tariff bands, overflow definition) will be stated plainly and positively in
-  the packet; the difficulty is volume and correctness of long-horizon
-  continuous-state composition, not a hidden convention.
-```
+  long-horizon multi-node state composition, broad-enough executed
+  scenario coverage, and coupled decision-making under a hard safety
+  constraint.
+Does any planned low score depend mainly on semantic omission/
+  misreading? NO -- every rule (pre-vote quorum, vote-granting tie-break,
+  batch size, persistence-on-crash) will be stated plainly and positively
+  in the packet; the difficulty is long-horizon multi-node composition
+  volume under a fault script, not a hidden convention.
 
-## Perfect-semantics ablation
-
-```text
-TASK: CISTERN-7 (task07)
-CURRENT REQUIRED FRONTIER MODEL / EFFORT: Claude Opus 4.8, maximum effort
-
-GRANT THE HYPOTHETICAL SOLVER:
-- every local rule and measured constant (hydrograph curve, pump curve
-  breakpoints, level setpoints per deadband setting, timer durations, TOU
-  tariff bands, rotation-advance rule, overflow definition), stated with no
-  ambiguity;
-- correct local implementation of each rule in isolation (e.g. it can
-  correctly implement "a pump's discharge is interpolated from the pump
-  curve at the current wet-well level" as a unit test, or "the rotation
-  index advances only on a genuine lead-pump START event" as a unit test).
-
-WORK THAT STILL REMAINS:
-- integrated temporal composition: carrying wet-well level, per-pump timer
-  state, rotation index, cumulative energy cost, and cumulative overflow
-  volume correctly across one continuous 1,440-tick trace, where the
-  minimum-run-timer/hysteresis-stop interaction and the level-dependent pump
-  curve mean the level trajectory itself depends on decisions made many
-  ticks earlier -- there is no independent per-tick calculation that avoids
-  this coupling;
-- workload scale and execution: a 100+ row legal configuration sweep, each
-  one continuous 24h run at 1-minute resolution, full sweep-table
-  reconciliation;
-- search/optimization and coupled decision: no free per-tick choice remains,
-  but the three-way lexicographic selection (energy-optimal subject to zero
-  overflow, reliability-optimal, wear-constrained) across a non-monotonic
-  108-row space is still a real decision that depends on every row's number
-  being right;
-- debugging/iteration: the minimum-run-timer vs. hysteresis-stop edge case,
-  and the level-dependent pump curve's interaction with staging additional
-  pumps mid-event, have enough subtlety that a first implementation is
-  unlikely to be correct without inspecting its own trace against the
-  verifier and revising;
-- independent verification: a second, differently-structured implementation
-  must reproduce the baseline's full trace (or an equivalent feasibility
-  certificate covering mass-balance closure, timer compliance, and overflow
-  accounting) and agree on sweep aggregates across the full 108-row space;
-- cross-file reconciliation: sweep table, decision file, baseline trace,
-  verifier report, and memo must all agree, including at TOU tariff-band
-  boundaries and overflow-event ticks;
-- causal engineering synthesis: explain the energy/reliability divergence and
-  the wear-ceiling tradeoff using actual event times from the delivered
-  baseline trace, and why treating the rotation index as advancing every
-  tick (instead of only on a genuine lead-pump START event) would bias pump
-  wear unevenly across the fleet.
-
-Could a clean small rewrite now solve the task? NO -- see architecture
-  canvas above; there is no small module to discard.
-Could direct enumeration without a correct interacting model solve it? NO --
-  the level trajectory is a genuine running numerical integral; nothing to
-  enumerate in its place.
-Could copied headline literals retain >=50%? Must be checked and kept below
-  50% in the score-topology audit before any submission.
-Are at least three post-semantics difficulty layers unavoidable? YES --
-  continuous-state temporal composition, broad executed sweep, coupled
-  multi-objective decision-making under a hard wear-ceiling constraint.
-Does any planned low score depend mainly on semantic omission/misreading?
-  NO -- every rule will be stated plainly and positively; difficulty is
-  long-horizon continuous-state composition volume, not a hidden convention.
-
-DISPOSITION: accept architecture, proceed to semantic contract and reference
-  build.
-RATIONALE: genuinely different mechanism class from task05 (fault-driven
-  discrete dispatch/reroute) and task06 (discrete multi-agent request
-  dispatch): CISTERN-7's core difficulty is continuous-state numerical
-  integration composed with discrete hysteresis control and independent
-  per-agent timers, not request assignment. It still fits every ingredient
-  of the reusable future-task shape (02-DIFFICULTY-ENGINEERING.md): dense
-  complete visual spec with measured constants, multi-component stateful
-  model, author-owned invariant/mutant suite (to be built), algorithmic
-  (continuous-function) workload generation, exhaustive constrained search,
-  coupled thresholds with an explicit hard constraint (wear ceiling) and
-  tie-break, integrated witnesses from one uninterrupted 24h execution, a
-  plausible-wrong survival ceiling to be verified below 50% before any
-  submission, and executable + structured + causal-report outputs.
-REVIEWER / DATE: author self-review at proposal time; pending independent
+DISPOSITION: accept architecture, proceed to semantic contract and
+  reference build.
+RATIONALE: genuinely different mechanism class from both task06 (ATRIUM-9,
+  discrete request dispatch swept across configs) and the now-shelved
+  CISTERN-7 (continuous mass-balance integration swept across configs):
+  QUORUM-7's core difficulty is concurrent, partial-failure, message-
+  passing state-machine correctness, graded over a small number of long
+  scripted scenarios rather than an exhaustive configuration grid. It
+  reuses this project's single most validated structural principle (one
+  long uninterrupted trace, heavy production-witness weighting,
+  independent verification, required adversarial mutation) while testing
+  a reasoning skill neither prior task06-family attempt touched, and
+  explicitly avoids the one architecture class (CP-SAT-solvable exact
+  optimization) this project has already confirmed fails to stump a
+  frontier model.
+REVIEWER / DATE: author self-review at proposal time, prompted directly
+  by the user questioning task07/task06 similarity; pending independent
   packet-only reconstruction once the artifact and semantic contract are
-  frozen (see audit/ once populated), matching the process used for
-  ATRIUM-9.
+  frozen (see audit/ once populated).
 ```
 
 ## Reusable-shape checklist (02-DIFFICULTY-ENGINEERING.md)
 
 ```text
-dense but complete visual specification        -> hydrograph + pump curve +
-                                                    level-setpoint drawing +
-                                                    TOU tariff chart
-  + measured constants and one explicit override -> pump curve breakpoints
-                                                    measured off the chart;
-                                                    wet-weather override
-                                                    multiplies the DRY
-                                                    hydrograph for the WET
-                                                    day-type
-  + multi-component stateful model               -> level integral + N
-                                                    independent pump timer
-                                                    state machines + rotation
-                                                    index
-  + author-owned invariant/mutant suite           -> to be built in
-                                                    reference/ (mass-balance
-                                                    invariant, timer-
-                                                    compliance invariant,
-                                                    rotation-advance mutant,
-                                                    flat-tariff mutant)
-  + algorithmic workload generation               -> continuous hydrograph
-                                                    function sampled every
-                                                    tick, not a discrete list
-  + exhaustive constrained search                 -> duty-pump count x
-                                                    rotation policy x
-                                                    deadband x min-run-time x
-                                                    day-type, illegal combos
-                                                    excluded
-  + coupled thresholds and explicit tie-break     -> energy vs. overflow vs.
-                                                    wear-ceiling, lowest-
-                                                    pump-ID tie-break on
-                                                    equal lead-eligibility
-  + integrated witnesses from ordinary execution  -> baseline 24h trace +
-                                                    hash, to be built
+dense but complete visual specification        -> state-machine diagram +
+                                                    message-timing diagram
+                                                    + per-scenario fault
+                                                    timelines + timeout-
+                                                    comparison chart
+  + measured constants and one explicit override -> fault-script timing
+                                                    measured off timeline
+                                                    charts; crash-recovery
+                                                    persistence as the
+                                                    explicit override to
+                                                    the "state resets"
+                                                    default a model might
+                                                    otherwise assume
+  + multi-component stateful model               -> 5 independent node
+                                                    state machines, each
+                                                    with pre-vote sub-
+                                                    state and per-follower
+                                                    replication tracking
+                                                    while leader
+  + author-owned invariant/mutant suite           -> election-safety,
+                                                    log-matching, leader-
+                                                    completeness checks;
+                                                    stale-vote and commit-
+                                                    overwrite mutants
+  + algorithmic workload generation               -> deterministic
+                                                    per-tick fault scripts,
+                                                    not randomized and not
+                                                    a discrete arrival list
+  + exhaustive constrained search                 -> 5 scenarios x 3
+                                                    timeout settings, all
+                                                    15 executed to
+                                                    completion
+  + coupled thresholds and explicit tie-break     -> safety (hard
+                                                    constraint) vs.
+                                                    recovery speed vs.
+                                                    message overhead;
+                                                    explicit vote-
+                                                    granting tie-break
+  + integrated witnesses from ordinary execution  -> full state trace +
+                                                    hash per scenario, to
+                                                    be built
   + a plausible-wrong survival ceiling below 50%  -> to be verified via
                                                     score_counterfactual.py
                                                     before any submission
-  + executable + structured outputs + causal      -> simulator + verifier +
-    report                                           sweep table + decision
+  + executable + structured outputs + causal      -> protocol engine +
+    report                                           verifier + decision
                                                     file + memo
 ```
 
 ## Open design decisions to resolve in the semantic contract
 
-These are flagged here, before any numeric constant is frozen, so the
-semantic contract can answer each one explicitly rather than leaving an
-implicit convention for a solver to guess:
+1. Exact pre-vote quorum rule: does a pre-vote failure reset any local
+   state, or just prevent the term increment this round?
+2. Exact vote-granting tie-break when logs are equally up-to-date: lowest
+   node ID, or first-come-first-served within the tick?
+3. Exact bounded-batch size K for AppendEntries, and what happens when a
+   follower's log conflicts with what the leader sends (truncate-and-
+   overwrite rule, stated precisely).
+4. Exact commit-index advancement rule: does a leader need at least one
+   entry from its OWN current term replicated to a majority before it can
+   advance commit_index for older-term entries (the real Raft rule that
+   is easy to get wrong)? State it explicitly either way.
+5. Exact crash/recover and partition/heal semantics: what state survives
+   a crash (must state persisted vs. volatile fields precisely); does a
+   partitioned node keep attempting elections while cut off (and what
+   happens to its term when it reconnects)?
 
-1. Exact pump curve shape: how many breakpoints, and is interpolation
-   linear between them (simplest, avoids an unstated curve-fit convention)?
-2. Exact rotation policy variants: what does each of the 3 swept policies
-   (e.g. STRICT_ALTERNATE, RUNTIME_BALANCED, FIXED_LEAD) mean precisely, and
-   what is the tie-break when two pumps have equal eligibility?
-3. Exact overflow definition: does overflow volume accumulate continuously
-   above the high-high elevation, or is it a binary event flag plus a
-   separate duration? (Pick one; state it plainly.)
-4. Exact minimum-run/minimum-off interaction: if a pump is timer-blocked
-   from stopping and the level keeps dropping well past its stop setpoint,
-   does it still count toward the duty-pump concurrency limit for staging
-   additional pumps? (Must be stated, since it changes staging decisions.)
-5. Exact TOU tariff tick-boundary convention: is the rate for a tick
-   determined by the tick's start time, end time, or midpoint? (Pick one
-   consistent convention, matching the packet's own timing convention.)
-
-Do not proceed to `reference/cistern_sim.py` until all five are answered in
+Do not proceed to `reference/quorum_sim.py` until all five are answered in
 `design/semantic-contract.md` with no residual ambiguity.
