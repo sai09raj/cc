@@ -60,8 +60,8 @@ evidence this weighting is built from.
 | 15 | +2 | Reports budget-constrained (min `avg_wait` s.t. `net_energy<=3800`) as `(active_cars=2, zoning=SPLIT, wait_timeout=50, power_budget=6)`, `avg_wait=21.70` (±0.01), `net_energy=2796`. |
 | 16 | +1 | Reports explicitly, for each pair among the three selections in criteria 13-15, whether it agrees (identical configuration) or diverges (different configuration); this packet's reference has all three diverge — the criterion tests the disclosure, not agreement itself. |
 | 17 | +4 | Reports `(2,TOP,50,6)`'s own row as `avg_wait=34.2875, net_energy=2676`. |
-| 18 | +4 | Reports `(4,GROUND,75,8)`'s row as `avg_wait=11.9625, net_energy=4428` (exceeds the budget-constrained ceiling of 3800, so despite its lower `avg_wait` this config is not budget-eligible). |
-| 19 | +4 | Reports `(4,GROUND,75,6)`'s row as `avg_wait=12.4000, net_energy=4380` (exceeds the budget-constrained ceiling of 3800, so despite its lower `avg_wait` this config is not budget-eligible). |
+| 18 | +4 | Reports `(4,GROUND,75,8)`'s row as `avg_wait=11.9625, net_energy=4428` (exceeds the `net_energy<=3800` threshold criterion 15 uses to select among configs, so despite its lower `avg_wait` this row doesn't qualify). |
+| 19 | +4 | Reports `(4,GROUND,75,6)`'s row as `avg_wait=12.4000, net_energy=4380` (exceeds the `net_energy<=3800` threshold criterion 15 uses to select among configs, so despite its lower `avg_wait` this row doesn't qualify). |
 
 ### Whole-sweep aggregate totals (20-32, weight 130)
 
