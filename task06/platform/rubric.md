@@ -1,17 +1,19 @@
 # ATRIUM-9 rubric
 
-Positive total **250**; one negative trap **-8**. Criteria are binary. Accept
-equivalent correct work throughout: equivalent languages, source
-organization, output schemas, file layout, and formula notation. No hidden
-filename/schema requirements. Score topology deliberately anchors the
-heaviest weight on witnesses and the hash drawn from one uninterrupted
-baseline trace (106) plus two whole-sweep aggregate checks (reassignment
-count and total net energy, 72, each failed identically by every plausible
-mutant tested) rather than on the individual headline selections (18),
-which a narrow single-mechanism bug can leave almost unchanged since it
-only perturbs a handful of the 80 calls against a 144-configuration argmin
-dominated by active-car count — see `score-topology.md` for the
-counterfactual evidence that drove this weighting.
+Positive total **280**; one negative trap **-8**. Criteria are binary, and
+**every criterion is capped at weight 10** (the platform's per-criterion
+maximum). Accept equivalent correct work throughout: equivalent languages,
+source organization, output schemas, file layout, and formula notation. No
+hidden filename/schema requirements.
+
+Because no single criterion can carry outsized weight, this rubric's
+discriminating power comes from a LARGER NUMBER of small, independent,
+whole-sweep aggregate facts (criteria 31-41: three grand totals plus eight
+partial sums, each restricted to one or two sweep dimensions) rather than
+from one or two heavy witnesses. Each of these eleven aggregate criteria is
+wrong under every plausible-wrong mutant tested, so together they form the
+rubric's main discriminating bloc; see `score-topology.md` for the
+counterfactual evidence.
 
 ### Package (criteria 1-3, weight 3)
 
@@ -75,7 +77,7 @@ counterfactual evidence that drove this weighting.
     at that tick (never bounces a call between equally-good cars); a call
     once reassigned away from a car is never later served by that car.
 
-### Integrated production execution — exhaustive sweep (criteria 19-32, weight 100)
+### Integrated production execution — exhaustive sweep (criteria 19-30, weight 28)
 
 19. **+2** — Reports the wait-optimal selection as `(active_cars=4,
     zoning=SPLIT, wait_timeout=50, power_budget=6)` with `avg_wait=8.1375`
@@ -112,81 +114,122 @@ counterfactual evidence that drove this weighting.
     21): every configuration with strictly lower `avg_wait` has
     `net_energy > 3800`.
 
-31. **+36** — Reports the total number of genuine reassignments (S09)
+### Whole-sweep aggregate totals (criteria 31-41, weight 110)
+
+Each of these eleven totals is computed by summing one or two metrics
+across a stated subset of the 144-row sweep table (the whole table for
+31-33, a stated filter for 34-41). Report each to the stated tolerance.
+
+31. **+10** — Reports the total number of genuine reassignments (S09)
     summed across all 144 sweep configurations as `43`.
-
-32. **+36** — Reports the sum of `net_energy` across all 144 sweep
+32. **+10** — Reports the sum of `net_energy` across all 144 sweep
     configurations as `547080`.
+33. **+10** — Reports the sum of `avg_wait` across all 144 sweep
+    configurations as `2739.8125` (±0.05).
+34. **+10** — Reports, summed over only the `active_cars=4` configurations
+    (48 rows), `avg_wait` totaling `595.6625` (±0.05) and `net_energy`
+    totaling `222024`.
+35. **+10** — Reports, summed over only the `zoning=GROUND` configurations
+    (48 rows), `avg_wait` totaling `884.4875` (±0.05) and `net_energy`
+    totaling `180000`.
+36. **+10** — Reports, summed over only the `zoning=TOP` configurations (48
+    rows), `avg_wait` totaling `1071.15` (±0.05) and `net_energy` totaling
+    `183072`.
+37. **+10** — Reports, summed over only the `wait_timeout=50`
+    configurations (36 rows), `avg_wait` totaling `693.65` (±0.05) and
+    `net_energy` totaling `136440`.
+38. **+10** — Reports, summed over only the `wait_timeout=75`
+    configurations (36 rows), `avg_wait` totaling `682.25` (±0.05) and
+    `net_energy` totaling `136464`.
+39. **+10** — Reports, summed over only the `power_budget=6` configurations
+    (36 rows), `avg_wait` totaling `687.8875` (±0.05) and `net_energy`
+    totaling `134664`.
+40. **+10** — Reports, summed over only `active_cars=4 AND zoning=GROUND`
+    configurations (12 rows), `avg_wait` totaling `191.7875` (±0.05) and
+    `net_energy` totaling `73248`.
+41. **+10** — Reports, summed over only `active_cars=4 AND zoning=TOP`
+    configurations (12 rows), `avg_wait` totaling `229.05` (±0.05) and
+    `net_energy` totaling `75648`.
 
-### Production witnesses from the baseline trace (criteria 33-38, weight 106)
+### Production witnesses from the baseline trace (criteria 42-51, weight 97)
 
-Baseline configuration for every witness below and for the hash:
+Baseline configuration for criteria 42-46 and the hash:
 `(active_cars=3, zoning=TOP, wait_timeout=50, power_budget=8, capacity=6)`.
 
-33. **+9** — Shows, in the baseline's continuous trace, two cars scanning
+42. **+9** — Shows, in the baseline's continuous trace, two cars scanning
     genuinely different directions at the same tick early in the run (by
     `t=28`: car A scanning UP with doors OPENING at floor 0, car B
     scanning DOWN in DWELL at floor 3) — independent per-car state, not a
     single shared direction.
-34. **+9** — Shows call `gidx=15` (origin floor 7, direction DOWN, arrival
+43. **+9** — Shows call `gidx=15` (origin floor 7, direction DOWN, arrival
     `t=120`, boarded `t=169`) alighting at exactly `t=200`, the same tick
     campaign 1's first call releases — cross-campaign overlap in one
     continuous run, not four independent resets.
-35. **+10** — Shows call `gidx=5` (origin floor 3, direction DOWN, arrival
+44. **+10** — Shows call `gidx=5` (origin floor 3, direction DOWN, arrival
     `t=40`) reassigned exactly once (attempt=2) to car C at `t=91`,
     boarding at `t=94`.
-36. **+28** — Shows call `gidx=19` (floor 2, UP, arrival `t=152`) assigned
+45. **+10** — Shows call `gidx=19` (floor 2, UP, arrival `t=152`) assigned
     ONCE, at `t=243` to car A, boarding `t=248` (attempt stays 1); car A
     stays best through its own timeout window. Switching whenever the
     clock merely expires would delay this same call to `t=265` instead.
-37. **+14** — Shows, in `(active_cars=4, zoning=GROUND, wait_timeout=50,
+46. **+10** — Shows, in `(active_cars=4, zoning=GROUND, wait_timeout=50,
     power_budget=6, capacity=6)`: some tick in `t=24`-`t=59` draws exactly
     6 power, and drawn power never exceeds 6 anywhere in the run
     (genuinely binding, not silently exceeded).
-38. **+36** — Matches the first 16 hex characters of the baseline's
+47. **+10** — Shows call `gidx=26` (origin floor 0, UP, arrival `t=248`)
+    boards at exactly `t=278`, assigned to car B (attempt stays 1).
+48. **+10** — Shows call `gidx=27` (origin floor 0, UP, arrival `t=256`)
+    boards at exactly `t=302`, assigned to car C (attempt stays 1).
+49. **+10** — Shows, in `(active_cars=4, zoning=SPLIT, wait_timeout=50,
+    power_budget=6, capacity=6)`: drawn power never exceeds 6 anywhere in
+    the run.
+50. **+10** — Shows, in `(active_cars=4, zoning=TOP, wait_timeout=50,
+    power_budget=6, capacity=6)`: drawn power never exceeds 6 anywhere in
+    the run.
+51. **+10** — Matches the first 16 hex characters of the baseline's
     canonical trace-integrity hash (algorithm in the packet) to
     `f544b2d2a1d0fb30`.
 
-### Independent verification and adversarial checks (criteria 39-42, weight 4)
+### Independent verification and adversarial checks (criteria 52-55, weight 4)
 
-39. **+1** — Delivers and executes a separately-coded verifier re-deriving
+52. **+1** — Delivers and executes a separately-coded verifier re-deriving
     the call table from the packet's formulas, checking a feasibility
     certificate (power within budget, capacity never exceeded, board no
     earlier than arrival, alight after board); a wrapper importing the
     primary's state isn't independent.
-40. **+1** — The verifier accepts the delivered baseline trace as feasible.
-41. **+1** — Executes a mutation setting one call's boarding tick before its
+53. **+1** — The verifier accepts the delivered baseline trace as feasible.
+54. **+1** — Executes a mutation setting one call's boarding tick before its
     own arrival tick; the verifier rejects it and the original is
     preserved and still accepted.
-42. **+1** — Executes a mutation inflating one tick's power above that
+55. **+1** — Executes a mutation inflating one tick's power above that
     configuration's budget; the verifier rejects it, identifies the
     offending tick, and the original is preserved and still accepted.
 
-### Decision/causal reconciliation (criteria 43-47, weight 10)
+### Decision/causal reconciliation (criteria 56-60, weight 10)
 
-43. **+2** — Explains, citing the baseline trace's own car counts and
+56. **+2** — Explains, citing the baseline trace's own car counts and
     metrics, why the wait-optimal and energy-optimal selections diverge
     (more active cars lowers wait but raises simultaneous power/energy
     draw) rather than asserting they must coincide.
-44. **+2** — Explains what the budget-constrained selection trades away
+57. **+2** — Explains what the budget-constrained selection trades away
     relative to the unconstrained wait-optimal selection, citing both
     selections' own `avg_wait` values.
-45. **+2** — Explains, citing a concrete tick and car pair from a delivered
+58. **+2** — Explains, citing a concrete tick and car pair from a delivered
     trace, one instance where the shared power budget delayed one car's
     door-open or floor-hop because another car's admission consumed the
     remaining budget that tick.
-46. **+2** — Explains why a call reassigned away from a car must never
+59. **+2** — Explains why a call reassigned away from a car must never
     later be served by that original car even if it is still nearby,
     tying the explanation to what would go wrong (a passenger served
     twice, or a phantom stop) if this were not enforced.
-47. **+2** — Explains why treating the DWELL-to-CLOSING transition as
+60. **+2** — Explains why treating the DWELL-to-CLOSING transition as
     automatic rather than power-gated would understate real contention: an
     ungated close draws power outside the admission pass, so a tick that
-    should show the shared budget binding would not.
+    should show the budget binding would not.
 
-### Negative trap (criterion 48)
+### Negative trap (criterion 61)
 
-48. **-8** — Embeds precomputed sweep rows, selection values, or the
+61. **-8** — Embeds precomputed sweep rows, selection values, or the
     trace-integrity hash as literals substituting for executing the
     delivered simulator that produces them. Immutable input constants
     (the call-generation formulas, timing/power constants) do not trigger
