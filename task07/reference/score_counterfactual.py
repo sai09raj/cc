@@ -30,8 +30,8 @@ LOCAL_WEIGHT = {
     3: 2,   # pre-vote gating before real election
     4: 2,   # election_elapsed reset rule (valid triggers only)
     5: 3,   # vote-granting: term/voted_for/log-completeness + tie-break
-    6: 2,   # 3-of-5 quorum used consistently
-    7: 4,   # per-follower next_index/match_index + bounded batch K=4
+    6: 6,   # 3-of-5 quorum used consistently
+    7: 6,   # per-follower next_index/match_index + bounded batch K=4
     8: 3,   # commit-advancement current-term-only rule
     9: 2,   # crash persistence semantics
     10: 2,  # partition/crash network-model semantics
@@ -47,9 +47,9 @@ GRAND_MSG_WEIGHT = 10   # criterion 19
 GRAND_COMMIT_WEIGHT = 10  # criterion 20
 PARTIAL_WEIGHT = 10     # criteria 21-28 (each)
 
-W29_WEIGHT = 10  # crash-recovery latency witness
-W30_WEIGHT = 8   # no-dual-leader witness
-W31_WEIGHT = 10  # isolation term-unchanged witness
+W29_WEIGHT = 4   # crash-recovery latency witness
+W30_WEIGHT = 4   # no-dual-leader witness
+W31_WEIGHT = 6   # isolation term-unchanged witness
 W32_WEIGHT = 2   # final logs identical witness
 HASH_WEIGHT = 10  # criterion 33
 
@@ -58,9 +58,9 @@ DECISION_MAIN_WEIGHT = 8    # criterion 35
 DECISION_PREVOTE_WEIGHT = 2  # criterion 36
 
 NEG_NO_PREVOTE_WEIGHT = 4       # criterion 37
-NEG_WRONG_QUORUM_WEIGHT = 5     # criterion 38
+NEG_WRONG_QUORUM_WEIGHT = 10    # criterion 38
 NEG_COMMIT_ANY_TERM_WEIGHT = 4  # criterion 39
-NEG_IGNORE_TRACKING_WEIGHT = 6  # criterion 40
+NEG_IGNORE_TRACKING_WEIGHT = 10  # criterion 40
 NEG_VERIFIER_WRAP_WEIGHT = 4    # criterion 41
 NEG_SHORTENED_RUN_WEIGHT = 5    # criterion 42
 NEG_WEIGHT = {37: NEG_NO_PREVOTE_WEIGHT, 38: NEG_WRONG_QUORUM_WEIGHT,
@@ -89,13 +89,17 @@ REF_SAMPLES = [
 REF_GRAND_MSG = 24027
 REF_GRAND_COMMIT = 67
 
+SPLIT_SCENARIOS = {"PARTITION", "COMPETING_CANDIDATES"}
+
 REF_PARTIALS = [
     ("timeout==SHORT", lambda t, s: t == "SHORT", 8573, 24),
     ("timeout==LONG", lambda t, s: t == "LONG", 7355, 19),
     ("timeout==MEDIUM", lambda t, s: t == "MEDIUM", 8099, 24),
-    ("scenario==CLEAN", lambda t, s: s == "CLEAN", 5168, 14),
+    ("timeout==SHORT & scenario in {PARTITION,COMPETING_CANDIDATES}",
+     lambda t, s: t == "SHORT" and s in SPLIT_SCENARIOS, 3284, 10),
     ("scenario==PARTITION", lambda t, s: s == "PARTITION", 4692, 14),
-    ("scenario==CRASH_RECOVER", lambda t, s: s == "CRASH_RECOVER", 4524, 11),
+    ("timeout==MEDIUM & scenario in {PARTITION,COMPETING_CANDIDATES}",
+     lambda t, s: t == "MEDIUM" and s in SPLIT_SCENARIOS, 3120, 10),
     ("scenario==MESSAGE_LOSS", lambda t, s: s == "MESSAGE_LOSS", 5063, 14),
     ("scenario==COMPETING_CANDIDATES", lambda t, s: s == "COMPETING_CANDIDATES", 4580, 14),
 ]
@@ -264,7 +268,7 @@ if __name__ == "__main__":
     score("wrong quorum size (2-of-5 instead of 3-of-5)",
           mutant_kwargs=dict(mutant_wrong_quorum=True),
           local_fail={6}, hash_ok=False, decision_fail={35, 36},
-          negative_fail={38})
+          negative_fail={38}, verify_fail=True)
 
     score("ignores per-follower replication tracking",
           mutant_kwargs=dict(mutant_ignore_replication_tracking=True),
