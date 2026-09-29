@@ -44,12 +44,13 @@
 - [ ] At least one scored result depends on arrow direction, geometry, containment, plotted shape, scale, or measured interval length.
 - [ ] Rendering is deterministic/editable and has been manually checked at full resolution and platform-preview scale.
 - [ ] Normative-rule conservation diff confirms that no required rule disappeared when any panel/page was replaced.
-- [ ] 12–50 rubric criteria, weights -10 to +10.
+- [ ] 12–50 rubric criteria, weights -10 to +10, every criterion body 301 characters or fewer.
 - [ ] Criterion count is coverage-driven; no padding was added merely to reach 50.
 - [ ] Coverage ledger assigns every prompt clause, deliverable field/section, visual fact, and prohibition to a criterion ID.
 - [ ] Every requirement has coverage.
 - [ ] Every prohibition has its own affirmative negative trap.
 - [ ] Criteria are binary, atomic, self-contained, nonduplicative, and equivalent-tolerant.
+- [ ] Post-drafting atomicity/self-containment recheck run over every criterion (not just ones touched by the latest edit round) — atomicity and self-containment drift with every merge, trim, or reword.
 - [ ] Hide-the-prompt test passes: no row depends on `packet-defined`, `requested`, `displayed`, `specified`, `correctly`, or another unstated answer.
 - [ ] Every conjunction was split or documented as one named unitary answer object.
 - [ ] Pairwise MECE audit finds no duplicate positive, positive/negative mirror, or double charge.
@@ -63,6 +64,7 @@
 - [ ] Attachment filename is unique to this task revision and run; generator, prompt, lint, guide, and uploader all use that exact name.
 - [ ] Inspect the entire attachment boundary at full resolution: no internal path, draft/audit/generator footer, private note, or unintended provenance metadata remains; preserve every disclosure or attribution required by platform policy.
 - [ ] Inspect container metadata (EXIF/XMP/text chunks, author/software/comment fields, embedded thumbnails, and paths); remove only nonessential metadata and never claim detector evasion or conceal required attribution.
+- [ ] For any visual/graphical artifact (PDF or otherwise): metadata is a solution-leakage vector, not just a privacy concern — if Producer/Creator/Author/date/tEXt fields or vector-drawing-object coordinates survive, the model can read the answer straight out of the file and the task will not score below 50% no matter how sound the rubric is. Verify zero hits at the raw-byte level and zero vector drawing objects remain (rasterize diagrams to images), not by eye alone.
 - [ ] Canonical text copied; all numbers, panel letters, tuples, and hashes compared.
 
 ## Before full runs

@@ -4,11 +4,12 @@
 
 The rubric converts observable task requirements into fair binary checks. It does not define missing task semantics and must not be used to manufacture difficulty.
 
-The project source set used here requires 12–50 criteria, each weighted from -10 to +10. This is a range, not a quota: use only the rows needed for complete, nonduplicative coverage. Never pad a rubric to 50. The handbook contains the page-level citations and documented policy conflicts.
+The project source set used here requires 12–50 criteria, each weighted from -10 to +10, and each criterion body no longer than 301 characters (a hard platform limit observed on Task 06; write to it as a constraint from the first draft, not as a post-hoc trim). This is a range, not a quota: use only the rows needed for complete, nonduplicative coverage. Never pad a rubric to 50. The handbook contains the page-level citations and documented policy conflicts.
 
 ## Criterion construction formula
 
-A reliable positive criterion has this shape:
+A reliable positive criterion has this shape, and its full body must fit in
+301 characters:
 
 ```text
 <observable verb> <specific delivered object/result> <expected condition> <tolerance/equivalence if needed>.
@@ -87,6 +88,34 @@ For every conjunction, semicolon, slash, comma-separated list, or range:
 5. Never call a table atomic merely because the row limit is inconvenient.
 
 An answer vector is permissible only when all components belong to the same named record and are graded together as that record. Do not combine a metric vector with a separate safety conclusion, file-existence check, or causal explanation.
+
+### Post-drafting atomicity and self-containment recheck
+
+Atomicity and self-containment are entrance-fee properties, not one-time
+checks: they drift. Every merge done to free a row-slot, every wording
+change made to satisfy a linter, and every trim done to fix a
+double-charging finding can silently turn a previously atomic or
+self-contained criterion into a compound or referential one. Task 06's
+rubric went through ten linter-driven edit rounds after its initial draft;
+every one of them touched wording, not just weights.
+
+After the full criteria set is drafted — and again after *every* later
+edit round, not only the first pass — re-run this check on every single
+criterion, not a sample:
+
+1. Read the criterion body alone, with the prompt and attachment hidden.
+   Could two careful graders disagree because the expected answer is not
+   actually stated in the row? If yes, it is not self-contained; fix it
+   per the self-containment substitution test above.
+2. For every `and`, semicolon, comma-list, or slash in the row, ask
+   whether a response could satisfy one part and fail another. If yes and
+   the parts are not one named answer object, it is not atomic; split it.
+3. Record the pass/fail of both checks for every criterion ID, not just
+   the ones that were just edited — a merge two rounds ago can be broken
+   by an unrelated edit to a neighboring row that changed shared context.
+
+Do not treat "it passed this check when first drafted" as still true after
+any subsequent edit.
 
 ## Mandatory rubric construction workflow
 
@@ -474,11 +503,13 @@ content back, not by trusting the row index.
 - [ ] 12–50 criteria.
 - [ ] The chosen count follows coverage needs; no row exists merely to reach 50.
 - [ ] Every weight is between -10 and +10.
+- [ ] Every criterion body is 301 characters or fewer.
 - [ ] Every criterion begins with an observable verb.
-- [ ] Every criterion is binary and self-contained.
+- [ ] Every criterion is binary, atomic, and self-contained.
 - [ ] Hiding the prompt and attachment leaves every criterion independently gradeable from its own expected answer and the delivered files.
 - [ ] Independent behaviors are split.
 - [ ] Unitary answer objects remain intact.
+- [ ] The post-drafting atomicity and self-containment recheck was run over every criterion, including ones untouched by the most recent edit round.
 - [ ] Every retained multi-field row explicitly names its unitary object and has no unrelated conclusion attached.
 - [ ] No duplicate or positive/negative mirror.
 - [ ] Every row has been compared with every sibling for duplicate loss.

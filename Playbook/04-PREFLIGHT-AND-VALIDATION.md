@@ -55,6 +55,25 @@ Test the actual runtime, attachment, commands, and output workflow.
 
 Also inspect how the artifact was produced. Prefer deterministic editable rendering code, verify it at full resolution and platform-preview scale, and confirm that no unintended footer, private path, draft note, malformed glyph, or opaque generation artifact remains.
 
+**Metadata is a solution-leakage vector, not only a privacy concern.** A
+visual or graphical artifact — a PDF, image, or any other rendered file —
+can carry the actual answer inside data the model can read even when the
+rendered picture looks clean: Producer/Creator/Author/XMP/tEXt fields,
+embedded authoring paths, generation timestamps, and, for a PDF
+specifically, vector drawing objects whose exact coordinates encode the
+measurements the model is supposed to have to *measure* off the image. If
+any of this survives, the model does not need to solve the task at all —
+it reads the answer out of the file's metadata or vector layer — and the
+task will not score below 50%, full stop, regardless of how sound the
+rubric is. Strip all metadata (`set_metadata({})`, `del_xml_metadata()`,
+blank any embedded generator-tool header comment) and rasterize every
+diagram (flatten to an image XObject; zero vector drawing objects) before
+shipping any artifact with a visual or graphical component, in PDF form or
+any other form. Then verify at the raw-byte level, not by eye — grep the
+file for Producer/Creator/Author/dates/tEXt/iTXt and confirm zero hits,
+and confirm zero vector drawing objects remain — before it ever reaches
+the platform.
+
 ## The source-to-code audit
 
 Build a table like this for every material behavior:
@@ -362,6 +381,8 @@ Three independent Opus runs produced the same alternate baseline, recommendation
 - [ ] Every fault/stress mechanism activates in a certified ordinary run and has a retained witness.
 - [ ] Golden results reproduce cleanly.
 - [ ] Runtime works in the expected environment.
+- [ ] Every artifact with a visual/graphical component (PDF or otherwise) has had all metadata stripped and every diagram rasterized, verified at the raw-byte level (zero Producer/Creator/Author/date/tEXt hits, zero vector drawing objects) — not verified by eye alone.
+- [ ] Every rubric criterion body is 301 characters or fewer, and the post-drafting atomicity/self-containment recheck was run over every criterion.
 - [ ] Prompt, Ideal Flow, rubric, and artifact terminology match.
 - [ ] Platform text matches canonical files.
 - [ ] Pilot failure is genuine and fair.
