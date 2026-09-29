@@ -1,11 +1,20 @@
 # ATRIUM-9 rubric
 
-Positive total **281**; one negative trap **-8**. Exactly **50 criteria**
-(the platform maximum; not padded — see `07-MISTAKE-REGISTER.md` #38).
-Every weight is capped at 10 (the platform's per-criterion maximum).
-Criteria are binary. Accept equivalent correct work throughout: equivalent
-languages, source organization, output schemas, file layout, and formula
-notation.
+Positive total **283**; three negative criteria (**-8**, **-4**, **-4**).
+Exactly **50 criteria** (the platform maximum; not padded — see
+`07-MISTAKE-REGISTER.md` #38). Every weight is capped at 10 (the
+platform's per-criterion maximum). Criteria are binary. Accept equivalent
+correct work throughout: equivalent languages, source organization,
+output schemas, file layout, and formula notation.
+
+Two additional negative criteria (48, 49) were added after platform-linter
+review flagged two "positive-only" prohibitions that need a dedicated
+negative: verifier independence (previously only rewarded, never
+penalized, if violated) and the rule that a reassigned-away call must
+never be re-served by its original car. Criterion 18 was also reworded
+to remove ambiguous "must be compared as equal" framing the linter
+flagged as potentially contradicting the three fixed, distinct selection
+values in criteria 15-17.
 
 This revision consolidates a 61-criterion draft down to the 50-criterion
 cap by merging same-mechanism pairs into single AND-criteria (e.g. the two
@@ -54,7 +63,7 @@ evidence this weighting is built from.
 | 15 | +2 | Reports wait-optimal as `(active_cars=4, zoning=SPLIT, wait_timeout=50, power_budget=6)`, `avg_wait=8.1375` (±0.01), `net_energy=4116`. |
 | 16 | +2 | Reports energy-optimal as `(active_cars=2, zoning=TOP, wait_timeout=50, power_budget=6)`, `avg_wait=34.2875` (±0.01), `net_energy=2676`. |
 | 17 | +2 | Reports budget-constrained (min `avg_wait` s.t. `net_energy<=3800`) as `(active_cars=2, zoning=SPLIT, wait_timeout=50, power_budget=6)`, `avg_wait=21.70` (±0.01), `net_energy=2796`. |
-| 18 | +1 | Confirms the three selections need not agree — reports explicitly whether each pair agrees or diverges. |
+| 18 | +1 | Reports explicitly, for each pair among the three selections in criteria 15-17, whether it agrees (identical configuration) or diverges (different configuration); this packet's reference has all three diverge — the criterion tests the disclosure, not agreement itself. |
 | 19 | +4 | Reports `(2,TOP,50,6)`'s own row as `avg_wait=34.2875, net_energy=2676`. |
 | 20 | +4 | Reports `(4,GROUND,75,8)`'s row as `avg_wait=11.9625, net_energy=4428`. |
 | 21 | +4 | Reports `(4,GROUND,75,6)`'s row as `avg_wait=12.4000, net_energy=4380`. |
@@ -100,18 +109,18 @@ wait_timeout=50, power_budget=8, capacity=6)`.
 | 43 | +10 | Shows, in `(4,TOP,50,6)`: drawn power never exceeds 6 anywhere in the run. |
 | 44 | +10 | Matches the first 16 hex chars of the baseline's trace-integrity hash to `f544b2d2a1d0fb30`. |
 
-### Independent verification and decision/causal reconciliation (45-49, weight 11)
+### Independent verification and decision/causal reconciliation (45-47, weight 13)
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 45 | +1 | Delivers and executes a separately-coded verifier re-deriving the call table from the packet's formulas and checking a feasibility certificate against the accepted baseline trace; a wrapper importing the primary's state isn't independent. |
-| 46 | +2 | Both required adversarial mutations (boarding before arrival; power above budget) are rejected by the verifier, the offending tick identified for the second, and the original preserved and still accepted. |
-| 47 | +3 | Explains, citing the baseline trace's own numbers, why wait-optimal and energy-optimal diverge, AND what the budget-constrained selection trades away relative to wait-optimal (citing both selections' `avg_wait`). |
-| 48 | +3 | Explains, citing a concrete tick/car pair, one instance of the shared power budget delaying one car's action, AND why treating DWELL-to-CLOSING as automatic would understate that contention. |
-| 49 | +2 | Explains why a reassigned-away call must never later be served by that car, tied to the concrete failure (double-served passenger, phantom stop). |
+| 45 | +3 | Delivers a separately-coded verifier that re-derives the call table, accepts the delivered baseline trace as feasible, and rejects both required adversarial mutations (boarding before arrival; power above budget), identifying the offending tick, with the original preserved and accepted. |
+| 46 | +8 | Explains, citing the baseline trace's own numbers, why wait-optimal and energy-optimal diverge and what budget-constrained trades away, AND explains, citing a concrete tick/car pair, a power-budget delay and why treating DWELL-to-CLOSING as automatic would understate it. |
+| 47 | +2 | Explains why a reassigned-away call must never later be served by that car, tied to the concrete failure (double-served passenger, phantom stop). |
 
-### Negative trap (50)
+### Negative criteria (48-50)
 
 | # | Wt | Criterion |
 | --- | --- | --- |
+| 48 | −4 | Delivers a verifier that imports or wraps the primary implementation's internal state or classes rather than independently re-deriving the call table and re-simulating or checking a feasibility certificate. |
+| 49 | −4 | Simulator logic allows a call reassigned away from a car to later be boarded or served again by that same car, rather than permanently excluding it from that car's future assignments. |
 | 50 | −8 | Embeds precomputed sweep rows, selection values, or the trace-integrity hash as literals substituting for executing the delivered simulator. Immutable input constants (formulas, timing/power constants) don't trigger this; omission alone doesn't either. |

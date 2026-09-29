@@ -20,9 +20,12 @@ without weakening real coverage. Numbering:
   25-35  whole-sweep aggregate totals (3 grand totals + 8 partial sums) --
          each wrong under ALL THREE tested mutants; the main discriminator.
   36-44  baseline-trace witnesses + hash
-  45-46  independent verification
-  47-49  decision/causal reconciliation (merged)
-  50     negative trap
+  45     independent verification (merged: delivered, accepts baseline, rejects both mutations)
+  46-47  decision/causal reconciliation (46 merged from 4 explanation facts -- now
+         universal-fail, since each mutant fails a different piece of it)
+  48-49  negative criteria added for two prohibitions the platform linter required a
+         dedicated negative for (verifier independence; reassigned-away non-reuse)
+  50     negative trap (embedding precomputed values)
 """
 import itertools
 import hashlib
@@ -93,12 +96,20 @@ PW1_WEIGHT = 10  # criterion 42
 PW2_WEIGHT = 10  # criterion 43
 HASH_WEIGHT = 10  # criterion 44
 
-VERIFY_EXIST_WEIGHT = 1   # criterion 45: independent verifier delivered + accepts baseline
-VERIFY_MUTATION_WEIGHT = 2  # criterion 46: merged, both required adversarial mutations rejected
+VERIFY_WEIGHT = 3   # criterion 45: merged -- independent verifier delivered, accepts baseline,
+                     # and rejects both required adversarial mutations
 
-DECISION_AB_WEIGHT = 3   # criterion 47: merged wait/energy-divergence + budget-tradeoff explanation
-DECISION_POWER_WEIGHT = 3  # criterion 48: merged power-delay witness + door-closing-automatic explanation
-DECISION_REASSIGN_WEIGHT = 2  # criterion 49: reassignment-non-reuse explanation
+DECISION_MAIN_WEIGHT = 8   # criterion 46: merged wait/energy-divergence + budget-tradeoff +
+                           # power-delay-witness + door-closing-automatic explanation --
+                           # this merge makes it fail under ALL THREE mutants (each fails a
+                           # different piece of the combined explanation), so it moved from
+                           # two AlwaysPass-ish decision criteria to one universal discriminator
+DECISION_REASSIGN_WEIGHT = 2  # criterion 47: reassignment-non-reuse explanation
+
+# criteria 48-49: negative criteria added for the platform linter's "prohibition must have
+# a dedicated negative, not just a positive-only disqualifier" finding
+NEG_VERIFIER_WRAP_WEIGHT = 4   # criterion 48
+NEG_REASSIGN_REUSE_WEIGHT = 4  # criterion 49
 
 TOTAL = (sum(PACKAGE_WEIGHT) + PACKAGE2_WEIGHT + sum(LOCAL_WEIGHT.values())
          + SWEEP_SELECTION_WEIGHT * 3 + SWEEP_AGREE_WEIGHT
@@ -107,8 +118,9 @@ TOTAL = (sum(PACKAGE_WEIGHT) + PACKAGE2_WEIGHT + sum(LOCAL_WEIGHT.values())
          + PARTIAL_SUM_WEIGHT * len(PARTIAL_SUMS)
          + W1_WEIGHT + W23_WEIGHT + W3B_WEIGHT + W4_WEIGHT
          + W5_WEIGHT + W6_WEIGHT + PW1_WEIGHT + PW2_WEIGHT + HASH_WEIGHT
-         + VERIFY_EXIST_WEIGHT + VERIFY_MUTATION_WEIGHT
-         + DECISION_AB_WEIGHT + DECISION_POWER_WEIGHT + DECISION_REASSIGN_WEIGHT)
+         + VERIFY_WEIGHT
+         + DECISION_MAIN_WEIGHT + DECISION_REASSIGN_WEIGHT)
+NEGATIVE_TOTAL = 8 + NEG_VERIFIER_WRAP_WEIGHT + NEG_REASSIGN_REUSE_WEIGHT
 
 BASELINE_CFG = dict(active_cars=3, zoning="TOP", wait_timeout=50, capacity=6, power_budget=8)
 POWER_WITNESS_CFG = dict(active_cars=4, zoning="GROUND", wait_timeout=50, capacity=6, power_budget=6)
@@ -239,16 +251,19 @@ def score(name, sweep_kwargs=None, local_fail=(), decision_fail=(), verify_fail=
         earned += HASH_WEIGHT
 
     if 45 not in verify_fail:
-        earned += VERIFY_EXIST_WEIGHT
-    if 46 not in verify_fail:
-        earned += VERIFY_MUTATION_WEIGHT
+        earned += VERIFY_WEIGHT
 
+    if 46 not in decision_fail:
+        earned += DECISION_MAIN_WEIGHT
     if 47 not in decision_fail:
-        earned += DECISION_AB_WEIGHT
-    if 48 not in decision_fail:
-        earned += DECISION_POWER_WEIGHT
-    if 49 not in decision_fail:
         earned += DECISION_REASSIGN_WEIGHT
+
+    # criteria 48-49 (negative): neither tested mutant actually violates these
+    # two prohibitions (verifier independence / reassigned-away non-reuse) --
+    # they test a DIFFERENT, more severe failure mode than any of the three
+    # mechanism bugs below, so they never trigger here and cost 0 for all of
+    # canonical/T/C/Pw. They exist for coverage the linter required, not as a
+    # fourth discriminator.
 
     pct = 100 * earned / TOTAL
     print(f"{name}: {earned}/{TOTAL} = {pct:.1f}%  hash_match={h == REF_HASH16}  "
@@ -265,12 +280,12 @@ if __name__ == "__main__":
 
     score("timeout reassignment disabled",
           sweep_kwargs=dict(mutant_no_timeout=True),
-          local_fail={14}, hash_ok=False, decision_fail={47})
+          local_fail={14}, hash_ok=False, decision_fail={46})
 
     score("reassignment never compares cost (always switches)",
           sweep_kwargs=dict(mutant_no_cost_compare=True),
-          local_fail={14}, hash_ok=False, decision_fail={47})
+          local_fail={14}, hash_ok=False, decision_fail={46})
 
     score("power admission disabled",
           sweep_kwargs=dict(mutant_power_disabled=True),
-          local_fail={12}, hash_ok=False, decision_fail={48})
+          local_fail={12}, hash_ok=False, decision_fail={46})
