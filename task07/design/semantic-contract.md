@@ -78,10 +78,11 @@ and clears `voted_for` before evaluating this vote); (b) the recipient's
 `voted_for` is `None` or already equals the requester for this term; (c)
 log-completeness: requester's `last_log_term` is greater than the
 recipient's own, OR equal AND requester's `last_log_index >=` the
-recipient's own. If multiple `RequestVote`s from different candidates
-arrive at the same recipient on the same tick, evaluate them in ascending
-requester-node-ID order (the recipient can grant at most one; later ones
-this term are then rejected by rule (b)). A CANDIDATE that wins a
+recipient's own. Same-tick arrivals at one recipient are ordered by the
+general rule in S09; for two or more `RequestVote`s specifically, this
+always reduces to ascending requester-node-ID order (the recipient can
+grant at most one; later ones this term are then rejected by rule (b)).
+A CANDIDATE that wins a
 majority (>=3, itself included) becomes LEADER immediately upon reaching
 that majority (does not wait for all 5 responses): it initializes
 `next_index[j] = len(own log) + 1` and `match_index[j] = 0` for every
@@ -155,6 +156,16 @@ powered off); its persisted state (S02) is exactly as it was at the crash
 tick. On recovery (the window's end), it resumes as FOLLOWER with
 `election_elapsed` starting fresh at `0`, using its persisted state
 exactly as it was.
+
+**Same-tick delivery order (any message class, any pair):** if one node
+has two or more messages arriving on the same tick, process them in
+fixed message-class priority `PREVOTE_REQ, PREVOTE_RESP, VOTE_REQ,
+VOTE_RESP, APPEND_REQ, APPEND_RESP`, and within one class in ascending
+sender-node-ID order. This is the one general rule behind every
+same-tick ordering case in this contract (S05's concurrent-vote case is
+its VOTE_REQ-only special case); earlier messages in this order may
+mutate state (adopting a term, granting a vote) that later messages in
+the same tick then observe.
 
 ## S10 — Independent verification (safety invariants + certificate)
 

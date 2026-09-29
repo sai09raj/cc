@@ -301,8 +301,10 @@ A recipient grants a vote iff: the request's term is >= its own (adopting
 that term and stepping down first if strictly greater); its voted_for is
 None or already the requester this term; AND the requester's log is at
 least as up-to-date (higher last_log_term, or equal and last_log_index
->=). Concurrent same-tick requests from different candidates are
-evaluated in ascending requester-node-ID order. A CANDIDATE reaching a
+>=). If a node has two or more messages of any classes arriving on the
+same tick (item 8 covers the general rule), for two or more VOTE_REQs
+specifically this always reduces to ascending requester-node-ID order.
+A CANDIDATE reaching a
 real-vote majority (>=3/5) becomes LEADER immediately, initializing
 next_index[j]=len(own log)+1 and match_index[j]=0 for every other node j,
 and immediately starts replication (item 6). A split real vote (timeout
@@ -340,7 +342,13 @@ message classes/pairs/windows. A partition window (a tick range plus a
 whole duration. A crash window means the node sends and processes
 nothing at all for its whole duration; on recovery it resumes as
 FOLLOWER with election_elapsed at 0, using its persisted state exactly
-as it was at the crash tick. Client commands are broadcast to all 5
+as it was at the crash tick. If one node has two or more messages (any
+classes, any senders) arriving on the same tick, process them in fixed
+class priority PREVOTE_REQ, PREVOTE_RESP, VOTE_REQ, VOTE_RESP,
+APPEND_REQ, APPEND_RESP, and within one class in ascending sender-node-ID
+order; an earlier message in this order may mutate state (adopting a
+term, granting a vote) that a later one in the same tick then observes.
+Client commands are broadcast to all 5
 nodes at fixed ticks; only whichever node is LEADER at that exact tick
 appends the command, every other node ignores it. The 5 named scenarios,
 each its own full 2400-tick run: CLEAN (no faults); PARTITION

@@ -27,7 +27,7 @@ matching the lesson recorded in `Playbook/07-MISTAKE-REGISTER.md` #59.
 | --- | --- | --- |
 | 3 | +2 | A node reaching its own effective election timeout becomes PRECANDIDATE and requests pre-votes; it only becomes CANDIDATE (incrementing `current_term`) after winning a majority of pre-votes, never directly on timeout. |
 | 4 | +2 | Resets `election_elapsed` to 0 only on granting a vote, receiving a valid AppendEntries at term >= its own, or starting a fresh pre-vote round -- never merely from receiving any other message. |
-| 5 | +3 | Grants a real vote only when the requester's term is >= its own, `voted_for` allows it, AND the requester's log is at least as up-to-date (by the stated term-then-index rule); resolves same-tick concurrent requests in ascending requester-ID order. |
+| 5 | +3 | Grants a real vote only when the requester's term is >= its own, `voted_for` allows it, AND the requester's log is at least as up-to-date (by the stated term-then-index rule); resolves same-tick deliveries of any message classes by the packet's fixed class-then-sender-ID order. |
 | 6 | +6 | Uses exactly a 3-of-5 majority (itself included) for pre-vote success, real-election success, and leader commit-index advancement -- the same threshold in all three places. |
 | 7 | +6 | A leader tracks `next_index`/`match_index` independently per follower and sends at most `K=4` log entries per AppendEntries round, requiring multiple rounds to catch up a far-behind follower. |
 | 8 | +3 | A leader advances `commit_index` to index N only when a majority has `match_index >= N` AND the entry at N is from the leader's own current term -- never for an earlier-term entry merely because a majority already has it. |

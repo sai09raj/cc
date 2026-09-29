@@ -105,7 +105,10 @@ def independent_resimulate(base_timeout_name, script):
 
         due = [m for m in pending if m[0] == tick]
         pending[:] = [m for m in pending if m[0] != tick]
-        due.sort(key=lambda m: m[1])
+        # S09's general same-tick delivery order: by recipient, then fixed
+        # message-class priority, then ascending sender-node-ID -- NOT
+        # send/insertion order (m[1]), which the primary doesn't use either.
+        due.sort(key=lambda m: (m[2], REF.MSG_CLASS_ORDER[m[4][0]], m[3]))
         for _, _, dst, src, msg in due:
             s = state[dst]
             if s["crashed"]:

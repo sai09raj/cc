@@ -12,6 +12,11 @@ import copy
 NUM_NODES = 5
 NODE_NAMES = {0: "N0", 1: "N1", 2: "N2", 3: "N3", 4: "N4"}
 
+# S09's general same-tick delivery order: fixed message-class priority,
+# then ascending sender-node-ID within a class.
+MSG_CLASS_ORDER = {"PREVOTE_REQ": 0, "PREVOTE_RESP": 1, "VOTE_REQ": 2,
+                    "VOTE_RESP": 3, "APPEND_REQ": 4, "APPEND_RESP": 5}
+
 BASE_DELAY = 2
 HEARTBEAT_INTERVAL = 10
 BATCH_K = 4
@@ -283,7 +288,14 @@ class Engine:
                     node.role = FOLLOWER
                     node.election_elapsed = 0
 
-            for dst, src, msg in self.inbox.pop(tick, []):
+            # S09's general same-tick delivery order: group by recipient
+            # (order across different recipients never matters, since their
+            # state is independent), then fixed message-class priority,
+            # then ascending sender-node-ID within a class.
+            ordered = sorted(
+                self.inbox.pop(tick, []),
+                key=lambda item: (item[0], MSG_CLASS_ORDER[item[2][0]], item[1]))
+            for dst, src, msg in ordered:
                 self.deliver(tick, dst, src, msg)
 
             for cmd_tick, cmd_id in self.script.commands:
