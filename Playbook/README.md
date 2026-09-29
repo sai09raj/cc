@@ -161,3 +161,37 @@ The new permanent method is:
 6. archive exact score and trajectory evidence before calling the history complete.
 
 See [12-CASE-STUDY-TASK-04.md](12-CASE-STUDY-TASK-04.md) for the complete evidence and [00-START-HERE-EVERY-FUTURE-TASK.md](00-START-HERE-EVERY-FUTURE-TASK.md) for the permanent fresh-agent launch sequence.
+
+## The Task 06 discovery: real pilots can score below synthetic mutants
+
+Task 06 (ATRIUM-9, an exhaustive-sweep elevator-dispatch simulation) is a
+materially different task shape from Task 04's fault-injection timeline —
+a 144-configuration search with three competing selection objectives
+rather than a single production trace — and it confirms the same
+composition-over-scale method generalizes to that shape. Three real Opus
+4.8 Max pilot runs scored below 50%; two archived trajectories scored
+**20%** and **21%**, both lower than every one of the three synthetic
+plausible-wrong mutants used to calibrate the rubric before the pilot
+(31.2% / 36.5% / 30.1%). Both real runs independently built fully
+self-consistent, cross-language, independently-coded verifiers that agreed
+with their own primary implementation and correctly rejected both required
+adversarial mutations — and were still ~80% wrong against the actual
+reference values, because the real failure surface was the compounding
+interaction of many individually-correct-sounding dispatch rules over an
+80-call, 144-config run, not any single rule either model got visibly
+wrong.
+
+Two lessons this adds to the permanent method:
+
+1. Synthetic plausible-wrong mutants are a pre-pilot confidence check, not
+   the acceptance gate — always run the real pilot, and treat its score as
+   the evidence, even when the synthetic mutants already clear 50% with
+   margin.
+2. Never grade a model's own verifier's agreement with its own primary as
+   a correctness signal; grade every numeric fact against the external
+   reference. Both real Task 06 runs would have scored far higher under a
+   rubric that rewarded verifier-primary self-agreement.
+
+See [13-CASE-STUDY-TASK-06.md](13-CASE-STUDY-TASK-06.md) for the complete
+trajectory forensics, the ten-round platform-linter chronology, and the
+generalizable technique this task validates.

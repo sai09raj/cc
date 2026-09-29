@@ -233,6 +233,38 @@ Runs a workload that deviates from Panel E in any request operation,
 request address, phase count, or phase order.
 ```
 
+### A prohibition can hide inside a positive criterion, not just the prompt
+
+“Every prompt prohibition creates a trap obligation” above covers a
+standalone prompt sentence such as “do not assume X.” The same obligation
+also applies when a *rubric-authored* positive criterion bundles its own
+“must never,” “not automatic,” or “always X, not Y” clause into an AND
+alongside an unrelated positive fact. Task 06 shipped six instances of
+exactly this pattern across six separate linter rounds — verifier
+independence, reassignment non-reuse, per-tick search, equal-cost
+bouncing, shortened runs, and DWELL-to-CLOSING gating each started as a
+clause bundled inside a positive criterion, and each had to be split into
+its own dedicated negative one round at a time.
+
+Fix pattern, in order:
+
+1. Trim the bundled clause out of the positive criterion, keeping only its
+   core fact.
+2. Add a dedicated negative criterion stating the forbidden behavior
+   directly (`IF criterion is true, subtract weight`, per the polarity
+   check above).
+3. Check whether the trimmed positive's remaining wording (often a
+   leftover parenthetical) still restates the same fact the new negative
+   now owns — if so, trim that too, or the contradiction linter will flag
+   the fact as graded twice (see the next section).
+4. Pay for the new negative's row by merging a same-mechanism pair
+   elsewhere, never by exceeding the criteria cap.
+
+Run this as a systematic pass over every positive criterion during initial
+authoring — scanning for “must,” “never,” “always … not,” and “not
+automatic” inside AND-joined clauses — rather than waiting for the linter
+to surface each instance separately.
+
 ## Coverage passes
 
 ### Pass 1 — prompt clauses
@@ -300,6 +332,17 @@ The rubric must not depend on the frontier model making a semantic-reading mista
 Task 04 Revision E had 315 positive points. Mostly local criteria 2–31 carried 142, and a wrong integrated simulator still recovered about 30 points of headline selections. Its survival ceiling was therefore approximately `172/315 = 54.6%`. Two real runs scored 52 and 59 despite producing the wrong production trace. This was a rubric-topology failure, not evidence that local criteria were individually invalid.
 
 For a new task, change weights or criterion ownership before the first pilot if needed. After a run exists, do not retrofit grading to lower its score; create a prospective revision.
+
+Treat hand-picked synthetic mutant scores as a pre-pilot confidence check,
+not the acceptance evidence itself. Task 06's three synthetic mutants
+(timeout reassignment disabled, cost-compare disabled, power admission
+disabled) scored 31.2% / 36.5% / 30.1% against the frozen rubric; two real
+Opus 4.8 Max pilot runs against the same rubric scored 20% and 21% —
+*lower* than every synthetic mutant. That is the safe direction of
+surprise: the synthetic mutants under-estimated real difficulty rather
+than over-estimating it. Always run the real pilot even after synthetic
+mutants clear the bar with margin, and treat the real scores as the actual
+gate.
 
 ### Integrated conformance witnesses
 
@@ -409,10 +452,22 @@ Common non-contradictions include:
 - baseline/clean final p99 versus baseline/cut final p99;
 - robust-feasible set/count/recommendation over all scenarios versus clean-only population;
 - cycle-360 stage-7 checkpoint counts versus final-horizon summary counts;
-- same-cycle visibility versus newborn-control deferral under an explicit stage snapshot; and
-- a positive live-simulation requirement versus a negative trap for embedded precomputed tables.
+- same-cycle visibility versus newborn-control deferral under an explicit stage snapshot;
+- a positive live-simulation requirement versus a negative trap for embedded precomputed tables; and
+- two different multi-dimension sweep/config selections that legitimately share every dimension but one (Task 06's energy-optimal and budget-constrained rows both targeted `active_cars=2, wait_timeout=50, power_budget=6` and differed only in `zoning`; that partial overlap is the correct answer for two distinct objectives, not a contradiction).
 
 Use identical metric schemas across parallel scenario vectors unless a difference is intentional and explained. If the warning identifies a real mismatch, repair prompt, artifact, Ideal Flow, and rubric together. If it is false, record the exact namespaces and sibling ownership in the invalidation reason. Maintain a deterministic local contradiction matrix instead of repeatedly changing text to satisfy stochastic warnings.
+
+### Platform row numbers can drift from your source document
+
+On a platform where criteria can be added, deleted, and reordered through
+its own UI, the displayed row number for a given piece of criterion text
+can drift from this repo's sequential numbering — observed at least twice
+on Task 06 as mismatched row numbers over identical underlying content.
+Never give or follow a fix instruction keyed only to "row N." Always
+identify the criterion by exact quoted text to find and exact text to
+replace it with, and verify the edit landed by re-reading the changed
+content back, not by trusting the row index.
 
 ## Final rubric audit
 

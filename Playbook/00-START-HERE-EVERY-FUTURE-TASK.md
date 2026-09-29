@@ -64,8 +64,9 @@ No single obscure semantic should carry the task. A low score should still occur
 3. [01-END-TO-END-SOP.md](01-END-TO-END-SOP.md) through [04-PREFLIGHT-AND-VALIDATION.md](04-PREFLIGHT-AND-VALIDATION.md).
 4. [09-CASE-STUDY-TASK-03.md](09-CASE-STUDY-TASK-03.md), especially isolated probes versus integrated checkpoints.
 5. [12-CASE-STUDY-TASK-04.md](12-CASE-STUDY-TASK-04.md), especially trace forensics, score topology, and the limits of semantic-only failure.
-6. [06-COPY-PASTE-TEMPLATES.md](06-COPY-PASTE-TEMPLATES.md) and [QUICK-CHECKLIST.md](QUICK-CHECKLIST.md).
-7. Consult [05-CASE-STUDY-TASK-02.md](05-CASE-STUDY-TASK-02.md), [07-MISTAKE-REGISTER.md](07-MISTAKE-REGISTER.md), and [08-QMO-AND-COMMUNITY-GUIDANCE.md](08-QMO-AND-COMMUNITY-GUIDANCE.md) while designing and auditing.
+6. [13-CASE-STUDY-TASK-06.md](13-CASE-STUDY-TASK-06.md), especially the real-trajectory forensics showing a fully self-consistent, independently-verified model attempt still scoring 20-21%, and why exhaustive-sweep aggregates were the main discriminator.
+7. [06-COPY-PASTE-TEMPLATES.md](06-COPY-PASTE-TEMPLATES.md) and [QUICK-CHECKLIST.md](QUICK-CHECKLIST.md).
+8. Consult [05-CASE-STUDY-TASK-02.md](05-CASE-STUDY-TASK-02.md), [07-MISTAKE-REGISTER.md](07-MISTAKE-REGISTER.md), and [08-QMO-AND-COMMUNITY-GUIDANCE.md](08-QMO-AND-COMMUNITY-GUIDANCE.md) while designing and auditing.
 
 ## Mission for every new task
 
