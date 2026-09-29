@@ -8,12 +8,12 @@ file is the internal design source, not the artifact itself.
 
 One simulated day is exactly `1440` ticks of `1` minute each, `t=0` (00:00)
 through `t=1439` (23:59), run to completion with no early termination. Each
-of the 108 legal configurations (S08) is one continuous, independent
-1440-tick run — never a shortened or sampled run.
+of the 108 sweep rows (54 legal configurations x 2 day-types, S08) is one
+continuous, independent 1440-tick run — never a shortened or sampled run.
 
 ## S02 — Wet-well geometry and level state
 
-The wet well is a vertical tank of constant plan area `A = 12.0 m^2`.
+The wet well is a vertical tank of constant plan area `A = 60.0 m^2`.
 `level(t)` (meters, measured from the invert) is a single continuous state
 variable, carried tick-to-tick (never reset within a run):
 
@@ -42,12 +42,18 @@ materially different "workload" shape from a discrete arrival list.
 
 ## S03 — Pump curve and staging (the control loop)
 
-Three identical pumps A, B, C. Each pump's discharge while running is
-interpolated (m^3/min) from `level(t)` against its own curve:
+Three pumps A, B, C share one curve shape; each pump's discharge while
+running is interpolated (m^3/min) from `level(t)` against that curve, then
+scaled by its own capacity factor:
 
 | level (m) | 0.4 | 2.0 | 4.2 |
 |---|---|---|---|
-| Q_pump | 3.0 | 4.0 | 5.0 |
+| Q_pump (before scale) | 3.0 | 4.0 | 5.0 |
+
+Capacity scale: pumps A and B (the station's matched primary units) are
+`1.00`; pump C (the smaller reserve unit, always the first excluded as
+`duty_pump_count` drops — S08) is `0.85`. Pump C is therefore only ever at
+full roster strength when `duty_pump_count=3`.
 
 (Static lift decreases as the well fills, so discharge rises with level;
 linear interpolation between breakpoints, no extrapolation needed since
@@ -151,7 +157,10 @@ START minute:
 
 ## S08 — Sweep dimensions (the legal configuration space)
 
-Full Cartesian product, no exclusions, `3 x 3 x 3 x 2 x 2 = 108` legal
+`day_type` is weather, not a control setting — a station cannot choose which
+weather it gets, so it is never a free dimension a selection optimizes over.
+The legal configuration space is the station's actual control-setting
+choices, a full Cartesian product, no exclusions, `3 x 3 x 3 x 2 = 54` legal
 configurations:
 
 - `duty_pump_count` in `{1,2,3}` — how many of the 3 installed pumps are in
@@ -159,22 +168,34 @@ configurations:
   first excluded at `duty_pump_count=2`, etc.).
 - `rotation_policy` in `{STRICT_ALTERNATE, RUNTIME_BALANCED, FIXED_LEAD}`.
 - `deadband` in `{TIGHT, MEDIUM, WIDE}`.
-- `min_run_time` in `{SHORT=3, LONG=6}` ticks.
-- `day_type` in `{DRY, WET}`.
+- `min_run_time` in `{SHORT=8, LONG=15}` ticks.
+
+Every one of these 54 configurations is evaluated as a PAIR of full
+1440-tick runs, one per `day_type` (`DRY`, `WET`) — the sweep table has
+`54 x 2 = 108` rows (one per configuration-per-day-type), but a selection
+is always over the 54 configurations, scored by both of a configuration's
+own two rows together, never by picking whichever day happens to be
+cheaper.
 
 ## S09 — Three competing selection objectives
 
-Computed over the full 108-row sweep; the packet's reference has all three
-diverge:
+Computed over the 54 configurations (each represented by its DRY row and
+its WET row); the reference has all three diverge. For configuration `k`,
+`E(k) = energy_cost(k,DRY) + energy_cost(k,WET)` (combined two-day energy);
+`P(k) = max(peak_level(k,DRY), peak_level(k,WET))` (worst-day peak level);
+`imbalance(k) = max over {DRY,WET} of (that day's single highest per-pump
+run_minutes / that day's total fleet run_minutes)` (worst-day fleet
+run-time concentration — rotation policy changes WHICH pump does the work,
+not the aggregate energy or level trajectory, so this is the metric it
+actually controls); a configuration is FEASIBLE only if
+`overflow_volume(k,DRY) == 0 AND overflow_volume(k,WET) == 0`.
 
-1. **Energy-optimal**: among configurations with `overflow_volume == 0`,
-   minimize `total_energy_cost`.
-2. **Reliability-optimal**: minimize `peak_level` (the maximum `level(t)`
-   over the run) across ALL 108 configurations; ties broken by lower
-   `total_energy_cost`.
-3. **Wear-constrained**: among configurations with `overflow_volume == 0`
-   AND `max(pump starts across the 3 pumps) <= 15` (starts/pump/day
-   ceiling), minimize `total_energy_cost`.
+1. **Energy-optimal**: among FEASIBLE configurations, minimize `E(k)`.
+2. **Reliability-optimal**: minimize `P(k)` across ALL 54 configurations
+   (feasible or not); ties broken by lower `E(k)`.
+3. **Wear-balance-constrained**: among FEASIBLE configurations with
+   `imbalance(k) <= 0.80` (no single pump may account for more than 80% of
+   either day's fleet run-minutes), minimize `E(k)`.
 
 ## S10 — Independent verification (feasibility certificate)
 
