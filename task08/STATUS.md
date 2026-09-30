@@ -1,10 +1,11 @@
 # Task 08 — LEDGER-8
 
 Current active candidate: **LEDGER-8**, in `reference/`, `design/`,
-`platform/`. State: CONSOLIDATION ENGINE VERIFIED (balances, cross-checked
-byte-for-byte against a structurally independent auditor), SCORE-TOPOLOGY
-AUDITED with an honestly-documented margin caveat (below). NOT YET
-artifact-rendered or pilot-tested.
+`platform/`, `artifact/`. State: CONSOLIDATION ENGINE VERIFIED (balances,
+cross-checked byte-for-byte against a structurally independent auditor),
+SCORE-TOPOLOGY AUDITED with an honestly-documented margin caveat (below),
+FULL PLATFORM PACKAGE COMPLETE (rubric, prompt, ideal-flow, metadata-
+stripped PDF artifact). NOT YET pilot-tested.
 
 ## Why this task exists
 
@@ -76,12 +77,20 @@ real-pilot step runs for LEDGER-8.
   primary, correctly rejects both required adversarial mutations.
 - `reference/score_counterfactual.py` — score-topology audit, 7 mutants.
 - `design/architecture-attack.md`, `design/semantic-contract.md`.
-- `platform/rubric.md` — 46 criteria, positive total 139.
+- `platform/rubric.md` — 46 criteria, positive total 139, re-verified
+  (301-char cap, ≤10 weight cap, atomicity) after final edits.
+- `platform/prompt.md` — 460 words, zero internal hyphens (avoids the
+  platform's hyphen-stripping word-count linter, Playbook mistake #64),
+  explicitly requires executing the delivered engine/auditor and
+  delivering output files.
+- `platform/ideal-flow.md` — Analyze/Execute & Generate/Synthesize.
+- `artifact/ledger8.pdf` — 6 pages (4 rasterized figures: entity
+  ownership structure, full trial-balance table, FX rate table,
+  intercompany transaction facts; 2 text spec pages). Verified
+  byte-level: empty Info dict, null XMP, no PNG chunks, no tool/path
+  signatures, no leaked computed/derived values anywhere in extracted
+  text — only stated input constants.
 
 ## Remaining
 
-- `platform/prompt.md`, `platform/ideal-flow.md`.
-- `artifact/` — metadata-stripped PDF (entity ownership structure, FX
-  rate table, intercompany transaction flow; input constants only, no
-  leaked computed answers).
 - Real pilot run(s) (task #27-equivalent for this task).
