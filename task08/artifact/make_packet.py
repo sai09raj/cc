@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
-"""Builds ledger8.pdf, the LEDGER-8 engineering packet.
+"""Builds ledger8_v2.pdf, the LEDGER-8 engineering packet.
+
+Playbook mistake #46: never reuse an artifact filename across content
+revisions -- a browser, uploader, or platform cache can silently serve
+a stale version even after the bytes changed. REVISION below is the
+only thing to bump on a future content change; it drives the output
+filename, so every revision gets its own unique name automatically.
+That filename is also referenced by name in platform/prompt.md's first
+sentence ("...as specified in the attached {REVISION}.pdf") -- update
+that reference together with this one.
 
 Security/fairness requirement (explicit, non-negotiable, same discipline
 as every prior task's make_packet.py): all diagrams/tables are rendered
@@ -25,6 +34,8 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import fitz  # PyMuPDF
+
+REVISION = "ledger8_v2"  # bump this string on any future content change
 
 DPI = 300
 PAGE_W, PAGE_H = 612, 792  # US letter, points
@@ -426,7 +437,7 @@ def main():
         pass
     doc.xref_set_key(doc.pdf_catalog(), "Info", "null")
 
-    out_path = "/home/user/cc/task08/artifact/ledger8.pdf"
+    out_path = f"/home/user/cc/task08/artifact/{REVISION}.pdf"
     doc.save(out_path, garbage=4, deflate=True, clean=True)
     doc.close()
 

@@ -237,7 +237,11 @@ that no longer exists in that form.
   explicitly requires executing the delivered engine/auditor and
   delivering output files.
 - `platform/ideal-flow.md` — Analyze/Execute & Generate/Synthesize.
-- `artifact/ledger8.pdf` — 7 pages (4 rasterized figures: entity
+- `artifact/ledger8_v2.pdf` — renamed from `ledger8.pdf` per Playbook
+  mistake #46 (never reuse a filename across a content revision, since a
+  platform/browser cache can serve the stale bytes); referenced by name
+  in `platform/prompt.md`'s first sentence, updated together. 7 pages
+  (4 rasterized figures: entity
   ownership structure, full trial-balance table, FX rate table,
   intercompany transaction facts; 3 text spec pages, grew by one page
   after S11/CERTIFICATION was rewritten to be fully mechanical).
