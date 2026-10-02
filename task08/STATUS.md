@@ -1,13 +1,24 @@
 # Task 08 — LEDGER-8
 
+**STATUS: LIKELY NOT VIABLE AS A FRONTIER-STUMPING TASK, pending a
+decision below.** Four real pilots now exist. The first two (92%/94%,
+against the pre-fix packet) drove a real fix to a genuine certification-
+spec ambiguity bug (see "Critical finding" below). Two fresh pilots
+against the fixed packet (`ledger8_v2.pdf`) scored **98% and 100%** --
+both independently matched the correct trace-integrity hash this time,
+confirming the spec fix worked, and both got every other fact right too.
+This refutes the "should land under 50% in practice" expectation stated
+lower in this file: that was a guess, now tested and wrong. See "Fourth
+finding" below for the full assessment and the decision this raises.
+
 Current active candidate: **LEDGER-8**, in `reference/`, `design/`,
 `platform/`, `artifact/`. State: CONSOLIDATION ENGINE VERIFIED (balances,
 cross-checked byte-for-byte against a structurally independent auditor),
-SCORE-TOPOLOGY AUDITED with an honestly-documented margin caveat (below),
-FULL PLATFORM PACKAGE COMPLETE (rubric, prompt, ideal-flow, metadata-
-stripped PDF artifact). TWO REAL PILOTS RUN (see "Critical finding" below)
--- both scored 92-94%, which drove a real fix to the certification spec;
-re-pilot needed to confirm against the fixed packet.
+SCORE-TOPOLOGY AUDITED with an honestly-documented margin caveat (below,
+now known to be optimistic -- see "Fourth finding"), FULL PLATFORM
+PACKAGE COMPLETE (rubric, prompt, ideal-flow, metadata-stripped PDF
+artifact). FOUR REAL PILOTS RUN: 92%/94% (pre-fix packet, drove the
+certification-spec fix), 98%/100% (post-fix packet, "Fourth finding").
 
 ## Why this task exists
 
@@ -244,6 +255,63 @@ criterion's +2). Negative total unchanged (-41 named + -8 trap = -49).
 Reran `score_counterfactual.py`: canonical still scores 100% (now
 137/137), and all 7 mutant percentages shifted by only 0.2-0.5 points
 (smaller denominator) while staying within the documented 60-82% band.
+
+## Fourth finding: fixing the spec bug revealed the task is too easy
+
+Two fresh real pilots were run against the fixed packet (`ledger8_v2.pdf`,
+confirmed present in both trajectories). Both now independently compute
+the exact trace-integrity hash `cd5791e7dc01e208` -- proof the
+certification fix above actually works, three independent
+implementations (this reference's, and both pilots') now converging on
+byte-identical serialization. That was the whole point of the fix, and
+it worked.
+
+But both pilots also got every other fact right: every balance-sheet
+and income-statement value, the balance invariant, both adversarial
+mutation rejections (one pilot even built its auditor with "closed-form
+formulas instead of a posting ledger" -- a genuinely different method,
+not just different code), and all six deliverables. Scores: **98% and
+100%**.
+
+This is not a bug to patch. It directly tests, and refutes, the
+expectation stated in the "Score-topology finding" section above: that
+a real pilot would naturally combine several small mistakes and land
+under 50% even though no single synthetic mutant does. That expectation
+was reasonable to hold before testing it -- it's exactly what happened
+with QUORUM-7 (two real pilots at 31%/32% despite each being
+individually thorough) -- but it does not transfer to this task, and
+now there is direct evidence instead of an assumption. The honest
+reading: QUORUM-7's difficulty comes from a **cascading** state machine,
+where one early mistake corrupts most of the downstream trace, so even
+a careful implementation has many chances to go wrong somewhere in a
+2400-tick x 15-row sweep. LEDGER-8's facts are **largely independent**
+(this was already known and documented above, as the reason single
+mutants score 60-82% rather than near 0) -- and it turns out that
+independence cuts both ways: it also means a careful model can get each
+fact right in isolation, with no cascading failure mode to trip over,
+and nothing stops it from just... getting all of them right at once, as
+both pilots did.
+
+This is the same failure mode that got CISTERN-7 shelved earlier in
+this project (a well-specified task a frontier model solves too
+reliably), not a new one. Three ways to proceed, none of them a quick
+edit:
+(a) **Shelve LEDGER-8** and start a fresh task-09 candidate, applying
+    everything learned here (atomicity-tested rubrics from the start,
+    fully mechanical certification specs from the start) to a task
+    whose difficulty comes from genuine cascading/compounding
+    interdependence, the way QUORUM-7's does.
+(b) **Redesign LEDGER-8's architecture** to introduce real
+    interdependence -- e.g. a multi-period version where period 2's
+    opening balances depend on period 1's close, so an error in period
+    1 propagates and compounds, rather than one static snapshot where
+    every fact is independently derivable from the stated inputs.
+(c) **Accept it as-is and ship it anyway**, on the theory that even a
+    98-100%-scoring task has some evaluation value (distinguishing
+    models that get every single fact right from ones that don't) --
+    though this is a much weaker claim than "frontier-stumping," and
+    contradicts this project's own stated goal.
+This needs a decision before further work on LEDGER-8 continues.
 
 ## Deliverables so far
 
