@@ -85,12 +85,15 @@ They did. Confirmed by direct execution, not assumption:
   recomputation) -- an auditor could plausibly implement one correctly
   and not the other.
 
-Fixed by splitting these three criteria into seven atomic ones (new
-#20-21 for the two IC-account pairs, #22-24 for the three Investment
-accounts individually, #39-40 for the two auditor-rejection facts),
+Fixed by splitting these three criteria into seven atomic ones (now
+#19-20 for the two IC-account pairs, #21-23 for the three Investment
+accounts individually, #38-39 for the two auditor-rejection facts --
+numbering as of the final rubric after the second correction below),
 raising the criteria count from 46 to 50 (still within the platform's
-12-50 range) while keeping the exact same positive total (139) and
-negative total (-45). Re-running the fixed rubric against the same 7
+12-50 range) while keeping the exact same positive total (139). The
+negative total was -45 immediately after this first fix, before the
+second correction below changed it again. Re-running the fixed rubric
+against the same 7
 mutants (re-verified with `verify_fix.py`-style per-account checks, not
 just the aggregate score) confirms the new criteria now track each bug
 independently -- e.g. under "omit E4", the new `IC` trade-pair criterion
@@ -98,18 +101,48 @@ correctly fails while the new `IC` loan-pair criterion correctly still
 passes. The aggregate mutant percentages shifted up by 1-3 points
 (better partial credit for the correct half of a previously-bundled
 fact) but the overall 60-82% floor and discriminating shape are
-unchanged. Criteria #1 and #12 (package execution hygiene; E6 applied
-across all three subsidiaries) were reviewed under the same test but
-left unsplit -- they bundle facts from one coherent mechanism/delivery
-gate rather than facts shown to independently diverge under a real
-mutant, and splitting them would have pushed the criteria count past
-the platform's 50-criterion cap for a lower-confidence gain.
+unchanged. Criterion 1 (package execution hygiene) and criterion 11
+(E6 applied across all three subsidiaries) were reviewed under the same
+test but left unsplit -- they bundle facts from one coherent
+mechanism/delivery gate rather than facts shown to independently diverge
+under a real mutant, and splitting them would have pushed the criteria
+count past the platform's 50-criterion cap for a lower-confidence gain.
 
 A parallel audit of QUORUM-7's already-submitted rubric found a larger,
 higher-stakes version of the same issue (criteria 16-18, 19-28, and
 others, together carrying roughly 60% of that rubric's 197-point total,
 empirically confirmed to split under its own real mutants) -- but that
 rubric is already submitted and out of scope to edit.
+
+## Second correction: missing independence-prohibition negative
+
+While entering criteria into the platform, its own "Rubric Prohibition
+Criteria Check" linter caught a real gap (distinct from the atomicity
+splits above): criterion 1's independence requirement ("shares only
+immutable input constants with your primary implementation") had no
+dedicated negative criterion penalizing a submission whose auditor
+violates it -- the same hidden-prohibition pattern as Playbook mistake
+#59, and a gap QUORUM-7's own rubric does not have (its criterion #41
+already covers this for the verifier). A separate platform finding
+("Rubric Contradictory Criteria Check" on criteria 7/8, the E1/E2 pair)
+was reviewed and marked invalid -- both criteria reference "transfer
+price" because it is one immutable input constant stated in the packet,
+not a value derived by either entry, so the two criteria test
+independently-achievable facts and are not actually contradictory.
+
+Fixed by merging the old criterion 2 ("exactly one BS/IS, no
+duplicates") into criterion 1 (both are process/delivery-hygiene facts,
+the same category criterion 1 already bundled by deliberate prior
+decision) to free one slot within the platform's 50-criterion cap, then
+adding a new negative criterion 48 ("Delivers an auditor that shares
+anything beyond immutable input constants...", -4, mirroring QUORUM-7's
+#41). Net criteria count unchanged at 50; positive total unchanged at
+139; negative total rose from -45 to -49 (eight named negatives now
+total -41, plus the unchanged -8 trap). Criterion 1 was rewritten to fit
+the 301-char cap after the merge (298 chars). Re-ran
+`score_counterfactual.py` against all 7 mutants after the full
+renumbering -- every score is unchanged from before this round, confirming
+the renumbering didn't disturb any scoring logic.
 
 **This is an accepted, documented tradeoff**, not an oversight: offered
 the choice between (a) accepting this honest, higher threshold, (b)

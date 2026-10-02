@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Programmatic score-topology counterfactual scorer for LEDGER-8's
-rubric. Criterion numbering matches platform/rubric.md exactly (45
+rubric. Criterion numbering matches platform/rubric.md exactly (50
 criteria, <=10 weight, <=301 chars each). Uses ledger8_auditor.py's
 mutant hooks directly (not a separate reimplementation), since LEDGER-8
 has no sweep to run mutants across -- one static consolidation, scored
@@ -9,28 +9,28 @@ fact by fact against the frozen reference values.
 import ledger8_auditor as A
 from fractions import Fraction as F
 
-PACKAGE_WEIGHT = 3  # criteria 1-2
+PACKAGE_WEIGHT = 3  # criterion 1
 
 LOCAL_WEIGHT = {
-    3: 2, 4: 3, 5: 2, 6: 4, 7: 3, 8: 5, 9: 3, 10: 2, 11: 4, 12: 3, 13: 2, 14: 3,
+    2: 2, 3: 3, 4: 2, 5: 4, 6: 3, 7: 5, 8: 3, 9: 2, 10: 4, 11: 3, 12: 2, 13: 3,
 }
 
 BS_WEIGHT = {
-    15: 2, 16: 2, 17: 3, 18: 2, 19: 2, 20: 2, 21: 3, 22: 1, 23: 2, 24: 2,
-    25: 2, 26: 8, 27: 6, 28: 5,
+    14: 2, 15: 2, 16: 3, 17: 2, 18: 2, 19: 2, 20: 3, 21: 1, 22: 2, 23: 2,
+    24: 2, 25: 8, 26: 6, 27: 5,
 }
 REF_BS = {
-    15: ("Cash", 570250), 16: ("AR_Trade", 536400), 17: ("Inventory", 382800),
-    18: ("PPE_Net", 1746800), 19: ("AP_Trade", 323200), 25: ("CommonStock", 1000000),
-    26: ("RetainedEarnings", 1821300), 27: ("NCI_Equity", 91200), 28: ("CTA", 550),
+    14: ("Cash", 570250), 15: ("AR_Trade", 536400), 16: ("Inventory", 382800),
+    17: ("PPE_Net", 1746800), 18: ("AP_Trade", 323200), 24: ("CommonStock", 1000000),
+    25: ("RetainedEarnings", 1821300), 26: ("NCI_Equity", 91200), 27: ("CTA", 550),
 }
 IC_TRADE_ACCOUNTS = ["IC_Receivable", "IC_Payable"]
 IC_LOAN_ACCOUNTS = ["IC_LoanReceivable", "IC_LoanPayable"]
-INV_ACCOUNT = {22: "Inv_in_S1", 23: "Inv_in_S2", 24: "Inv_in_S3"}
+INV_ACCOUNT = {21: "Inv_in_S1", 22: "Inv_in_S2", 23: "Inv_in_S3"}
 
-IS_WEIGHT = {29: 2, 30: 3, 31: 4, 32: 2, 33: 5, 34: 5}
-REF_IS = {29: ("SalesExternal", 2619000), 30: ("SalesIC", 0),
-          31: ("COGS", 1687000), 32: ("OpEx", 553500)}
+IS_WEIGHT = {28: 2, 29: 3, 30: 4, 31: 2, 32: 5, 33: 5}
+REF_IS = {28: ("SalesExternal", 2619000), 29: ("SalesIC", 0),
+          30: ("COGS", 1687000), 31: ("OpEx", 553500)}
 REF_NET_INCOME = 378500
 REF_CONTROLLING_NI = 366300
 REF_NCI_NI = 12200
@@ -41,12 +41,12 @@ BALANCE_INVARIANT_WEIGHT = 6
 HASH_WEIGHT = 8
 REF_HASH16 = "ccf0131030c67a99"
 
-REJECT_A_WEIGHT = 2   # criterion 39: rejects unbalanced-entry mutation
-REJECT_B_METHOD_WEIGHT = 2  # criterion 40: methodology + rejects wrong-rate mutation + memo
-MEMO_E1E2_WEIGHT = 3
-MEMO_NCI_CTA_WEIGHT = 3
+REJECT_A_WEIGHT = 2   # criterion 38: rejects unbalanced-entry mutation
+REJECT_B_METHOD_WEIGHT = 2  # criterion 39: methodology + rejects wrong-rate mutation + memo
+MEMO_E1E2_WEIGHT = 3   # criterion 40
+MEMO_NCI_CTA_WEIGHT = 3  # criterion 41
 
-NEG_WEIGHT = {43: 4, 44: 6, 45: 4, 46: 5, 47: 5, 48: 5, 49: 8}
+NEG_WEIGHT = {42: 4, 43: 6, 44: 4, 45: 5, 46: 5, 47: 5, 48: 4, 49: 8}
 
 TOTAL = (PACKAGE_WEIGHT + sum(LOCAL_WEIGHT.values()) + sum(BS_WEIGHT.values())
          + sum(IS_WEIGHT.values()) + GRAND_ASSETS_WEIGHT + GRAND_LIAB_WEIGHT
@@ -68,9 +68,9 @@ def score(name, mutant_kwargs=None, local_fail=(), reject_a_fail=False,
             earned += wgt
 
     for cid, wgt in BS_WEIGHT.items():
-        if cid == 20:
+        if cid == 19:
             ok = all(final.get(a) == 0 for a in IC_TRADE_ACCOUNTS)
-        elif cid == 21:
+        elif cid == 20:
             ok = all(final.get(a) == 0 for a in IC_LOAN_ACCOUNTS)
         elif cid in INV_ACCOUNT:
             ok = final.get(INV_ACCOUNT[cid]) == 0
@@ -81,9 +81,9 @@ def score(name, mutant_kwargs=None, local_fail=(), reject_a_fail=False,
             earned += wgt
 
     for cid, wgt in IS_WEIGHT.items():
-        if cid == 33:
+        if cid == 32:
             ok = r["net_income"] == F(REF_NET_INCOME)
-        elif cid == 34:
+        elif cid == 33:
             ok = (r["controlling_net_income"] == F(REF_CONTROLLING_NI)
                   and r["nci_net_income"] == F(REF_NCI_NI))
         else:
@@ -127,29 +127,32 @@ if __name__ == "__main__":
     score("canonical (sanity, must be 100%)")
 
     score("omit E1 (intercompany sale not eliminated)",
-          mutant_kwargs=dict(mutant_skip_e1=True), local_fail={7},
-          hash_ok=False, negative_fail={43}, memo_e1e2_fail=True)
+          mutant_kwargs=dict(mutant_skip_e1=True), local_fail={6},
+          hash_ok=False, negative_fail={42}, memo_e1e2_fail=True)
 
     score("omit E2 (unrealized profit not deferred)",
-          mutant_kwargs=dict(mutant_skip_e2=True), local_fail={8},
-          hash_ok=False, negative_fail={44}, memo_e1e2_fail=True)
+          mutant_kwargs=dict(mutant_skip_e2=True), local_fail={7},
+          hash_ok=False, negative_fail={43}, memo_e1e2_fail=True)
 
     score("omit E4 (trade IC balance not eliminated)",
-          mutant_kwargs=dict(mutant_skip_e4=True), local_fail={10},
-          hash_ok=False, negative_fail={45})
+          mutant_kwargs=dict(mutant_skip_e4=True), local_fail={9},
+          hash_ok=False, negative_fail={44})
 
     score("omit E3 (intercompany loan not eliminated)",
-          mutant_kwargs=dict(mutant_skip_loan_elim=True), local_fail={9},
-          hash_ok=False, negative_fail={46})
+          mutant_kwargs=dict(mutant_skip_loan_elim=True), local_fail={8},
+          hash_ok=False, negative_fail={45})
 
     score("wrong NCI ownership percentage (70% instead of 80%)",
-          mutant_kwargs=dict(mutant_wrong_nci_pct=True), local_fail={14},
-          hash_ok=False, negative_fail={47}, memo_nci_cta_fail=True)
+          mutant_kwargs=dict(mutant_wrong_nci_pct=True), local_fail={13},
+          hash_ok=False, negative_fail={46}, memo_nci_cta_fail=True)
 
     score("wrong FX rate for S3 common stock",
-          mutant_kwargs=dict(mutant_wrong_translation_rate=True), local_fail={4},
-          hash_ok=False, negative_fail={48}, memo_nci_cta_fail=True)
+          mutant_kwargs=dict(mutant_wrong_translation_rate=True), local_fail={3},
+          hash_ok=False, negative_fail={47}, memo_nci_cta_fail=True)
 
     score("double-counts net income into retained earnings (closes it twice)",
           mutant_kwargs=dict(mutant_double_count_ni=True),
           hash_ok=False, negative_fail={49}, memo_nci_cta_fail=True)
+
+    score("auditor shares derived data with primary (violates independence)",
+          negative_fail={48})
