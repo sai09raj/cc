@@ -39,7 +39,7 @@ most of the downstream trace), LEDGER-8's facts are largely
 most other accounts -- cash, AR, PPE, and often net income itself --
 exactly correct. Empirically, even a mutant that breaks the fundamental
 balance invariant (closing net income into retained earnings twice) only
-diverges on 3 of the 50 criteria.
+diverges on 3 of the 49 criteria.
 
 After extensive genuine reweighting (not reverse-engineered to force a
 target -- see the explicit caveat in `platform/rubric.md`'s header),
@@ -220,6 +220,31 @@ don't match any real answer).
 gap** -- the old 92-94% scores are now stale evidence against a packet
 that no longer exists in that form.
 
+## Third correction: removed a redundant criterion
+
+While entering the rubric, the platform's "Rubric Overlapping Criteria"
+linter caught that criterion 12 ("every Investment-in-Subsidiary account
+eliminates to exactly zero") was a pure logical restatement of the three
+now-atomic value criteria (`Inv_in_S1`/`S2`/`S3` = 0, then numbered
+21/22/23): a submission passing all three has necessarily already
+satisfied the broader claim, and one failing any of them has necessarily
+already failed it. Unlike the atomicity correction above (splitting an
+over-bundled criterion into parts that *do* diverge independently under
+real mutants), this is the reverse case -- a broader criterion made
+redundant by atomic criteria that already existed alongside it.
+
+Checked whether a shortcut could defeat this (zero the investment
+accounts without genuinely running E6) and found it can't evade
+detection: E6 also drives `CommonStock`, `RetainedEarnings`, and
+`NCI_Equity`, each separately tested at higher weight, so a fake
+investment-zeroing would still be caught there. Removed criterion 12
+(old numbering), renumbered everything after it down by one. Criteria
+count: 50 -> 49. Positive total: 139 -> 137 (lost the removed
+criterion's +2). Negative total unchanged (-41 named + -8 trap = -49).
+Reran `score_counterfactual.py`: canonical still scores 100% (now
+137/137), and all 7 mutant percentages shifted by only 0.2-0.5 points
+(smaller denominator) while staying within the documented 60-82% band.
+
 ## Deliverables so far
 
 - `reference/ledger8_engine.py` — primary consolidation engine (dict/
@@ -229,7 +254,7 @@ that no longer exists in that form.
   primary, correctly rejects both required adversarial mutations.
 - `reference/score_counterfactual.py` — score-topology audit, 7 mutants.
 - `design/architecture-attack.md`, `design/semantic-contract.md`.
-- `platform/rubric.md` — 50 criteria, positive total 139, re-verified
+- `platform/rubric.md` — 49 criteria, positive total 137, re-verified
   (301-char cap, ≤10 weight cap, atomicity confirmed by mutant testing,
   not just inspection) after the atomicity correction above.
 - `platform/prompt.md` — 460 words, zero internal hyphens (avoids the
