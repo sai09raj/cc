@@ -1,15 +1,22 @@
 # Task 08 — LEDGER-8
 
-**STATUS: LIKELY NOT VIABLE AS A FRONTIER-STUMPING TASK, pending a
-decision below.** Four real pilots now exist. The first two (92%/94%,
-against the pre-fix packet) drove a real fix to a genuine certification-
-spec ambiguity bug (see "Critical finding" below). Two fresh pilots
-against the fixed packet (`ledger8_v2.pdf`) scored **98% and 100%** --
-both independently matched the correct trace-integrity hash this time,
-confirming the spec fix worked, and both got every other fact right too.
-This refutes the "should land under 50% in practice" expectation stated
-lower in this file: that was a guess, now tested and wrong. See "Fourth
-finding" below for the full assessment and the decision this raises.
+**SHELVED.** Four real pilots total: 92%/94% against the pre-fix packet
+(drove a real certification-spec fix, see "Critical finding" below),
+then 98%/100% against the fixed packet (see "Fourth finding" below). The
+task's facts are largely independent (by design, to break QUORUM-7's
+cascading-shape reuse) -- but that same independence means a careful
+model can get every fact right in isolation with nothing to trip over,
+the same failure mode that shelved CISTERN-7 earlier in this project.
+Not a packaging bug; replaced with **task-09** applying every lesson
+learned here (atomicity-tested rubrics and fully mechanical
+certification specs from first draft, not as after-the-fact patches) to
+a task whose difficulty comes from genuine cascading/compounding
+interdependence. See `task09/STATUS.md`.
+
+---
+
+The rest of this file is kept as the historical record of what was
+built, found, and fixed, for future reference.
 
 Current active candidate: **LEDGER-8**, in `reference/`, `design/`,
 `platform/`, `artifact/`. State: CONSOLIDATION ENGINE VERIFIED (balances,
