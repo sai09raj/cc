@@ -293,21 +293,29 @@ def consolidate():
     }
 
 
+CERT_ORDER = (BS_ASSET_ACCOUNTS + BS_LIAB_ACCOUNTS + BS_EQUITY_ACCOUNTS
+              + ["NCI_Equity", "CTA"] + IS_ACCOUNTS + ["NetIncome", "NCI_NetIncome"])
+
+
 def canonical_serialization(result):
     """S11: deterministic serialization of the final consolidated
-    balance sheet + income statement for hashing. One line per account,
-    sorted by name, amount as an exact decimal string (Fraction with a
-    denominator of 1 after all elimination arithmetic, since every input
-    and every rate is itself an exact decimal)."""
+    balance sheet + income statement for hashing, per the packet's
+    CERTIFICATION section: the literal header line `LEDGER8-CERT-V1`,
+    then one `AccountName=Value` line for each of the 25 named accounts
+    in CERT_ORDER (this fixed order, not alphabetical), every account
+    included even when its value is exactly 0, Value a plain base-10
+    integer (no currency symbol, no thousands separator, no decimal
+    point, a leading `-` only for a negative value)."""
     c = result["consolidated"]
-    lines = ["LEDGER8|CONSOLIDATED"]
-    for acct in sorted(ALL_BS):
-        lines.append(f"{acct}={c[acct]}")
-    lines.append(f"NCI_Equity={c['NCI_Equity']}")
-    for acct in sorted(IS_ACCOUNTS):
-        lines.append(f"IS_{acct}={c[acct]}")
-    lines.append(f"NetIncome={result['net_income']}")
-    lines.append(f"NCI_NetIncome={result['nci_net_income']}")
+    lines = ["LEDGER8-CERT-V1"]
+    for acct in CERT_ORDER:
+        if acct == "NetIncome":
+            v = result["net_income"]
+        elif acct == "NCI_NetIncome":
+            v = result["nci_net_income"]
+        else:
+            v = c[acct]
+        lines.append(f"{acct}={v}")
     return "\n".join(lines)
 
 

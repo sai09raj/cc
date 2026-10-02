@@ -98,7 +98,7 @@ negative criterion.
 | 34 | +8 | Reports total consolidated assets as `3236250` (exact). |
 | 35 | +5 | Reports total consolidated liabilities as `323200` (exact). |
 | 36 | +6 | Explicitly confirms the balance invariant (total assets = total liabilities + total equity) holds on the delivered consolidated balance sheet. |
-| 37 | +8 | Matches the first 16 hex characters of the trace-integrity hash (algorithm in the packet) to `ccf0131030c67a99`. |
+| 37 | +8 | Matches the first 16 hex characters of the trace-integrity hash (algorithm in the packet) to `cd5791e7dc01e208`. |
 
 ### Independent verification and memo (38-41, weight 10)
 

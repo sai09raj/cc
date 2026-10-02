@@ -216,15 +216,24 @@ def audit(mutant_double_count_ni=False, **mutant_kwargs):
 
 
 def canonical_serialization(final, net_income, nci_net_income, is_final=None):
-    lines = ["LEDGER8|CONSOLIDATED"]
-    for acct in sorted(REF.ALL_BS):
-        lines.append(f"{acct}={final[acct]}")
-    lines.append(f"NCI_Equity={final['NCI_Equity']}")
-    if is_final is not None:
-        for acct in sorted(REF.IS_ACCOUNTS):
-            lines.append(f"IS_{acct}={is_final[acct]}")
-    lines.append(f"NetIncome={net_income}")
-    lines.append(f"NCI_NetIncome={nci_net_income}")
+    """Per the packet's CERTIFICATION section: header `LEDGER8-CERT-V1`,
+    then one `AccountName=Value` line for each account in REF.CERT_ORDER
+    (the packet's fixed order, not alphabetical), every account included
+    even when 0. REF.CERT_ORDER is a stated structural constant (an
+    account-name ordering the packet specifies), not a derived value --
+    the same category as REF.ALL_BS/REF.IS_ACCOUNTS this auditor already
+    imports."""
+    lines = ["LEDGER8-CERT-V1"]
+    for acct in REF.CERT_ORDER:
+        if acct == "NetIncome":
+            v = net_income
+        elif acct == "NCI_NetIncome":
+            v = nci_net_income
+        elif acct in REF.IS_ACCOUNTS:
+            v = is_final[acct]
+        else:
+            v = final[acct]
+        lines.append(f"{acct}={v}")
     return "\n".join(lines)
 
 

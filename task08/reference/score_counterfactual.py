@@ -39,7 +39,7 @@ GRAND_ASSETS_WEIGHT, GRAND_LIAB_WEIGHT = 8, 5
 REF_TOTAL_ASSETS, REF_TOTAL_LIAB = 3236250, 323200
 BALANCE_INVARIANT_WEIGHT = 6
 HASH_WEIGHT = 8
-REF_HASH16 = "ccf0131030c67a99"
+REF_HASH16 = "cd5791e7dc01e208"
 
 REJECT_A_WEIGHT = 2   # criterion 38: rejects unbalanced-entry mutation
 REJECT_B_METHOD_WEIGHT = 2  # criterion 39: methodology + rejects wrong-rate mutation + memo

@@ -320,12 +320,28 @@ at the wrong one of the three stated rates). The auditor must reject
 both while still accepting the true original.
 
 10. CERTIFICATION
-Serialize the final consolidated balance sheet and income statement as
-one line per account, sorted by account name, each amount as an exact
-value (every input and every rate is an exact decimal, so every computed
-amount is exact -- never a rounded float), preceded by a header line,
-lines joined by \\n, UTF-8 encoded, hashed with SHA-256; report the first
-16 hex characters as the trace-integrity certificate.
+Build the serialization as exactly these lines, in this exact order,
+each line AccountName=Value with no spaces, no currency symbol, no
+thousands separator, no decimal point (every input and every rate is an
+exact decimal, so every computed amount is a plain integer -- never a
+rounded float), and a leading - only for a negative value:
+(1) the literal header line LEDGER8-CERT-V1;
+(2) one line for each of these 16 balance-sheet accounts, in exactly
+this order (not alphabetical), using the account name exactly as
+spelled here, and including every one even when its value is exactly 0:
+Cash, AR_Trade, IC_Receivable, IC_LoanReceivable, Inventory, Inv_in_S1,
+Inv_in_S2, Inv_in_S3, PPE_Net, AP_Trade, IC_Payable, IC_LoanPayable,
+CommonStock, RetainedEarnings, NCI_Equity, CTA;
+(3) one line for each of these 7 income-statement accounts, in exactly
+this order, same zero-inclusion rule: SalesExternal, SalesIC, COGS,
+OpEx, IC_InterestIncome, IC_InterestExpense, DividendIncomeIC;
+(4) two final lines, in order: NetIncome, then NCI_NetIncome.
+Example (illustrative numbers only, not this task's actual answer): if
+Cash were 100 and AR_Trade were 0, their lines would read exactly
+Cash=100 and AR_Trade=0.
+Join all 26 lines (the header plus 25 account lines) with a single \\n
+character, UTF-8 encode, hash with SHA-256; report the first 16 hex
+characters as the trace-integrity certificate.
 
 Deliver: consolidation engine source; independently-coded auditor
 source; the final consolidated balance sheet and income statement; a

@@ -5,7 +5,9 @@ Current active candidate: **LEDGER-8**, in `reference/`, `design/`,
 cross-checked byte-for-byte against a structurally independent auditor),
 SCORE-TOPOLOGY AUDITED with an honestly-documented margin caveat (below),
 FULL PLATFORM PACKAGE COMPLETE (rubric, prompt, ideal-flow, metadata-
-stripped PDF artifact). NOT YET pilot-tested.
+stripped PDF artifact). TWO REAL PILOTS RUN (see "Critical finding" below)
+-- both scored 92-94%, which drove a real fix to the certification spec;
+re-pilot needed to confirm against the fixed packet.
 
 ## Why this task exists
 
@@ -152,13 +154,76 @@ expectation, matching what QUORUM-7's own real pilots showed (two
 independent attempts scored 31%/32% despite being individually
 thorough), is that a **real** pilot run naturally combines several small
 mistakes rather than making one isolated clean error, and should still
-land under 50% in practice -- this is unconfirmed until task #27's
-real-pilot step runs for LEDGER-8.
+land under 50% in practice -- this expectation was wrong, as the next
+section shows; the real floor turned out to be a packaging bug, not a
+task-shape property.
+
+## Critical finding: real pilots scored 92-94% due to a certification spec bug
+
+Two real pilot runs against the (pre-fix) packet scored **94%** and
+**92%** -- nowhere near the 60-82% single-mutant floor, let alone the
+"should land under 50%" expectation above. Both trajectories were
+inspected directly (not just their final score).
+
+Both runs independently recovered and computed **every single dollar
+value correctly** -- matching this reference's own numbers exactly:
+total assets 3,236,250; liabilities 323,200; equity 2,913,050 (common
+stock 1,000,000, RE 1,821,300, CTA 550, NCI 91,200); net income 378,500
+(controlling 366,300, NCI 12,200). Both built genuinely independent
+auditors that correctly rejected both required adversarial mutations.
+Both delivered all six named products. In other words: both models
+solved the actual accounting problem perfectly.
+
+What they could not do was match the trace-integrity hash (criterion
+37, +8, the single highest-weighted criterion) -- and critically, **the
+two pilots didn't even match each other's hash**. Pulling the actual
+serialization code each one wrote confirmed why: the old S11/packet
+text ("one line per account, sorted by account name... preceded by a
+header line") never specified the exact account-name tokens, a header
+string, or whether zero-balance (eliminated) accounts should be
+included. Pilot 1 used keys like `BS::Cash`, `IS::Sales`, skipped every
+zero-balance account, and used a different header entirely. Pilot 2
+used keys like `Sales -- intercompany`, `Net income (total)`, with yet
+another header and its own spacing conventions. All three
+implementations (this reference's and both pilots') are internally
+consistent and individually defensible -- the packet simply never
+pinned down which one was required. A model that is 100% correct on the
+economics loses the hash criterion purely by guessing wrong on an
+underspecified formatting convention, worth +8/139 and single-handedly
+explaining both scores (139-8=131, 131/139=94.2%, matching pilot 1
+almost exactly; pilot 2 likely lost a few more points elsewhere).
+
+This is a packaging bug, not a task-difficulty finding, and unlike the
+score-topology margin (which was a disclosed, accepted tradeoff), this
+one is a straightforward defect: the single most heavily-weighted
+criterion in the whole rubric was not actually testable as specified.
+Fixed by rewriting S11 (both `design/semantic-contract.md` and the
+actual packet text in `artifact/make_packet.py`) to be fully mechanical:
+a literal header string, the 25 accounts in one fixed explicit order
+(not "sorted," which still requires guessing exact name casing), an
+explicit zero-inclusion rule, an explicit plain-integer value format,
+and a worked example using fake numbers (`Cash=100`, `AR_Trade=0` --
+verified these do not collide with any real computed value). Both
+`ledger8_engine.py` and the independently-coded `ledger8_auditor.py`
+were updated to the new fixed-order serialization (format only -- no
+computation logic changed) and re-verified to still agree byte-for-byte:
+new hash `cd5791e7dc01e208`, replacing `ccf0131030c67a99` everywhere
+(rubric criterion 37, `score_counterfactual.py`). Reran the full mutant
+suite after the change: all 8 scores (the original 7 plus the
+independence check) are numerically identical to before the hash-format
+change, confirming this was purely a serialization-format fix with zero
+effect on any correctness-based criterion. The PDF artifact was rebuilt
+and re-verified clean (metadata, no leaked values, fake example numbers
+don't match any real answer).
+
+**This needs a fresh real pilot to confirm the fix actually closes the
+gap** -- the old 92-94% scores are now stale evidence against a packet
+that no longer exists in that form.
 
 ## Deliverables so far
 
 - `reference/ledger8_engine.py` — primary consolidation engine (dict/
-  named-account style), balances verified, hash `ccf0131030c67a99`.
+  named-account style), balances verified, hash `cd5791e7dc01e208`.
 - `reference/ledger8_auditor.py` — independent auditor (flat
   general-ledger posting-list style), agrees byte-for-byte with the
   primary, correctly rejects both required adversarial mutations.
@@ -172,13 +237,17 @@ real-pilot step runs for LEDGER-8.
   explicitly requires executing the delivered engine/auditor and
   delivering output files.
 - `platform/ideal-flow.md` — Analyze/Execute & Generate/Synthesize.
-- `artifact/ledger8.pdf` — 6 pages (4 rasterized figures: entity
+- `artifact/ledger8.pdf` — 7 pages (4 rasterized figures: entity
   ownership structure, full trial-balance table, FX rate table,
-  intercompany transaction facts; 2 text spec pages). Verified
-  byte-level: empty Info dict, null XMP, no PNG chunks, no tool/path
-  signatures, no leaked computed/derived values anywhere in extracted
-  text — only stated input constants.
+  intercompany transaction facts; 3 text spec pages, grew by one page
+  after S11/CERTIFICATION was rewritten to be fully mechanical).
+  Verified byte-level: empty Info dict, null XMP, no PNG chunks, no
+  tool/path signatures, no leaked computed/derived values anywhere in
+  extracted text — only stated input constants and the fake-number
+  certification example (`Cash=100`, `AR_Trade=0`).
 
 ## Remaining
 
-- Real pilot run(s) (task #27-equivalent for this task).
+- Fresh real pilot run(s) against the fixed packet (the two existing
+  pilots, scored 94%/92%, were against the pre-fix certification spec
+  and are stale evidence now — see "Critical finding" above).
