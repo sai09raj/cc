@@ -4,7 +4,8 @@ import bms_engine as E
 import bms_verify as V
 
 PACKAGE_WEIGHT = 3           # 3 atomic rows, +1 each
-LOCAL_RULE_WEIGHT = 20       # 4 rule-statement criteria, +5 each
+LOCAL_RULE_WEIGHT = 20       # 5 rule-statement criteria (6/23/137 hysteresis
+                              # split into release+reset), weights sum to 20
 CHECKPOINT_WEIGHT = 5        # per checkpoint snapshot (unitary 6-field record), x7
 EVENT_WEIGHT = 2             # per transition/event tick, x4
 FINAL_STATE_WEIGHT = 6

@@ -1,7 +1,7 @@
 # CELLGUARD-10 rubric
 
 Positive total **117**; two negative criteria, **-4** (independence
-prohibition) and **-8** (negative trap). **29 criteria** (within the
+prohibition) and **-8** (negative trap). **30 criteria** (within the
 platform's 12-50 range). Every weight is capped at 10. Every criterion
 body is 301 characters or fewer. Criteria are binary. Accept equivalent
 correct work throughout: equivalent languages, source organization, and
@@ -25,10 +25,10 @@ confirmed by execution for all four (S07's mutant table). Adding a
 negative would score the same root-cause bug twice.
 
 Score-topology 4-bucket partition (plausible-wrong survival ceiling):
-package/existence = 3 (criteria 1-3); local rules = 20 (criteria 4-7);
-integrated production execution = 48 (criteria 8-19, the 8 checkpoint
+package/existence = 3 (criteria 1-3); local rules = 20 (criteria 4-8);
+integrated production execution = 48 (criteria 9-20, the 8 checkpoint
 records plus the 4 event ticks); final decision/causal reconciliation =
-46 (criteria 20-27: final state, hash, verifier x3, memo x3). A
+46 (criteria 21-28: final state, hash, verifier x3, memo x3). A
 submission granted perfect local-rule knowledge but wrong global
 execution keeps bucket 1+2 (23) and the three verifier criteria (15,
 tested via standalone crafted scenarios independent of the main trace),
@@ -49,16 +49,17 @@ mutant scores (14.5-31.6%, see S07) are the authoritative gate.
 | 2 | +1 | Executes the delivered engine and verifier end to end with a documented, reproducible command. |
 | 3 | +1 | Records the language/runtime tool version used, in a declared offline, dependency-free (stdlib-only) execution environment. |
 
-### Local rules (4-7, weight 20)
+### Local rules (4-8, weight 20)
 
 | # | Wt | Criterion |
 | --- | --- | --- |
 | 4 | +5 | During CV mode, the delivered engine reduces the CV regulation current by exactly 1.2 every tick, floored at zero -- it never holds the CV regulation current constant. |
 | 5 | +5 | In TAPER mode, the delivered engine always applies a heat contribution of 1 for that tick, never the derated or full-mode heat rate, regardless of temperature. |
-| 6 | +5 | The delivered engine releases a latched fault only after 4 consecutive ticks at or below temperature 520, resetting that counter immediately if temperature rises back above 520 while still latched. |
-| 7 | +5 | The delivered engine applies the 45-unit overcurrent clamp after thermal derating, not before, to every tick's delivered current. |
+| 6 | +3 | The delivered engine releases a latched fault only after 4 consecutive ticks at or below temperature 520, never fewer. |
+| 7 | +2 | The delivered engine's fault-release hysteresis counter resets to zero immediately if temperature rises back above 520 while the fault is still latched. |
+| 8 | +5 | The delivered engine applies the 45-unit overcurrent clamp after thermal derating, not before, to every tick's delivered current. |
 
-### Certified checkpoint facts (8-15, weight 40)
+### Certified checkpoint facts (9-16, weight 40)
 
 Each row is one unitary state-snapshot record (mode, state of charge,
 temperature, delivered current, terminal voltage, fault status) at a
@@ -67,40 +68,40 @@ requires.
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 8 | +5 | Reports the full state at t=161 exactly: mode=CV, soc=83.75, temp=561, current=25.0, voltage=4152.5, fault=False. |
-| 9 | +5 | Reports the full state at t=175 exactly: mode=CV, soc=88.53, temp=575, current=16.6, voltage=4198.0, fault=True. |
-| 10 | +5 | Reports the full state at t=206 exactly: mode=TAPER, soc=88.53, temp=513, current=0.0, voltage=4231.2, fault=False. |
-| 11 | +5 | Reports the full state at t=230 exactly: mode=TAPER, soc=89.13, temp=489, current=1.5, voltage=4231.8, fault=False. |
-| 12 | +5 | Reports the full state at t=250 exactly: mode=TAPER, soc=89.63, temp=469, current=1.5, voltage=4234.8, fault=False. |
-| 13 | +5 | Reports the full state at t=280 exactly: mode=TAPER, soc=90.63, temp=439, current=3.0, voltage=4237.8, fault=False. |
-| 14 | +5 | Reports the full state at t=300 exactly: mode=TAPER, soc=91.63, temp=419, current=3.0, voltage=4243.8, fault=False. |
-| 15 | +5 | Reports the full state at t=315 exactly: mode=TAPER, soc=92.38, temp=404, current=3.0, voltage=4248.3, fault=False. |
+| 9 | +5 | Reports the full state at t=161 exactly: mode=CV, soc=83.75, temp=561, current=25.0, voltage=4152.5, fault=False. |
+| 10 | +5 | Reports the full state at t=175 exactly: mode=CV, soc=88.53, temp=575, current=16.6, voltage=4198.0, fault=True. |
+| 11 | +5 | Reports the full state at t=206 exactly: mode=TAPER, soc=88.53, temp=513, current=0.0, voltage=4231.2, fault=False. |
+| 12 | +5 | Reports the full state at t=230 exactly: mode=TAPER, soc=89.13, temp=489, current=1.5, voltage=4231.8, fault=False. |
+| 13 | +5 | Reports the full state at t=250 exactly: mode=TAPER, soc=89.63, temp=469, current=1.5, voltage=4234.8, fault=False. |
+| 14 | +5 | Reports the full state at t=280 exactly: mode=TAPER, soc=90.63, temp=439, current=3.0, voltage=4237.8, fault=False. |
+| 15 | +5 | Reports the full state at t=300 exactly: mode=TAPER, soc=91.63, temp=419, current=3.0, voltage=4243.8, fault=False. |
+| 16 | +5 | Reports the full state at t=315 exactly: mode=TAPER, soc=92.38, temp=404, current=3.0, voltage=4248.3, fault=False. |
 
-### Certified event facts (16-19, weight 8)
-
-| # | Wt | Criterion |
-| --- | --- | --- |
-| 16 | +2 | Reports the CC-to-CV mode transition as occurring at exactly t=161. |
-| 17 | +2 | Reports the CV-to-TAPER mode transition as occurring at exactly t=196. |
-| 18 | +2 | Reports the fault latch engaging at exactly t=175. |
-| 19 | +2 | Reports the fault latch releasing at exactly t=206. |
-
-### Certification and independent verification (20-27, weight 38)
+### Certified event facts (17-20, weight 8)
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 20 | +6 | Reports the full state at t=320 (the final tick) exactly: mode=TAPER, soc=92.63, temp=399, current=3.0, voltage=4249.8, fault=False. |
-| 21 | +10 | Matches the first 16 hex characters of the trace-integrity hash (algorithm in the packet) to `f3bf4a132dfb66b5`. |
-| 22 | +5 | The independently-coded verifier accepts the true 320-tick trace's own correct checkpoint states in full. |
-| 23 | +5 | The independently-coded verifier rejects a claimed fault-release that reports the fault clearing after only 2 consecutive cool ticks instead of 4. |
-| 24 | +5 | The independently-coded verifier rejects a claimed delivered current that exceeds 45 as if the overcurrent clamp had never been applied. |
-| 25 | +5 | Explains in the memo, citing its own reported temperatures, why TAPER mode never uses the derated or full heat rate even while above the derate temperature. |
-| 26 | +5 | Explains in the memo, citing its own reported fault-latch tick numbers, why the fault released at t=206 and not at the first tick temperature dropped to or below 520. |
-| 27 | +5 | Explains in the memo, citing its own reported currents during the CC phase, why the overcurrent clamp is active on every CC-phase tick despite CC current (50) exceeding the clamp (45) by a fixed, constant margin. |
+| 17 | +2 | Reports the CC-to-CV mode transition as occurring at exactly t=161. |
+| 18 | +2 | Reports the CV-to-TAPER mode transition as occurring at exactly t=196. |
+| 19 | +2 | Reports the fault latch engaging at exactly t=175. |
+| 20 | +2 | Reports the fault latch releasing at exactly t=206. |
 
-### Negative criteria (28-29)
+### Certification and independent verification (21-28, weight 38)
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 28 | -4 | Delivers a verifier that imports or reuses the primary engine's computed per-tick state (rather than independently re-implementing the per-tick update rules in its own code) to decide checkpoint consistency. |
-| 29 | -8 | Embeds a precomputed final state, checkpoint value, event tick, or the trace-integrity hash, as a literal substituting for executing the delivered engine. Immutable input constants (circuit/model constants) don't trigger this. |
+| 21 | +6 | Reports the full state at t=320 (the final tick) exactly: mode=TAPER, soc=92.63, temp=399, current=3.0, voltage=4249.8, fault=False. |
+| 22 | +10 | Matches the first 16 hex characters of the trace-integrity hash (algorithm in the packet) to `f3bf4a132dfb66b5`. |
+| 23 | +5 | The independently-coded verifier accepts the true 320-tick trace's own correct checkpoint states in full. |
+| 24 | +5 | The independently-coded verifier rejects a claimed fault-release that reports the fault clearing after only 2 consecutive cool ticks instead of 4. |
+| 25 | +5 | The independently-coded verifier rejects a claimed delivered current that exceeds 45 as if the overcurrent clamp had never been applied. |
+| 26 | +5 | Explains in the memo, citing its own reported temperatures, why TAPER mode never uses the derated or full heat rate even while above the derate temperature. |
+| 27 | +5 | Explains in the memo, citing its own reported fault-latch tick numbers, why the fault released at t=206 and not at the first tick temperature dropped to or below 520. |
+| 28 | +5 | Explains in the memo, citing its own reported currents during the CC phase, why the overcurrent clamp is active on every CC-phase tick despite CC current (50) exceeding the clamp (45) by a fixed, constant margin. |
+
+### Negative criteria (29-30)
+
+| # | Wt | Criterion |
+| --- | --- | --- |
+| 29 | -4 | Delivers a verifier that imports or reuses the primary engine's computed per-tick state (rather than independently re-implementing the per-tick update rules in its own code) to decide checkpoint consistency. |
+| 30 | -8 | Embeds a precomputed final state, checkpoint value, event tick, or the trace-integrity hash, as a literal substituting for executing the delivered engine. Immutable input constants (circuit/model constants) don't trigger this. |
