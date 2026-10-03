@@ -1,7 +1,8 @@
 # TYPECHAIN-9 rubric
 
-Positive total **122**; two negative criteria, **-4** (independence
-prohibition) and **-8** (negative trap). **38 criteria** (within the
+Positive total **122**; three negative criteria, **-4** (independence
+prohibition), **-4** (eligibility-rule prohibition), and **-8**
+(negative trap). **39 criteria** (within the
 platform's 12-50 range). Every weight is capped at 10. Every criterion
 body is 301 characters or fewer. Criteria are binary. Accept equivalent
 correct work throughout: equivalent languages, source organization,
@@ -20,14 +21,25 @@ for the full score-topology audit, including a second, weaker mutant
 (76.2%) that was tested and honestly excluded as a non-discriminating
 scenario for this program's specific structure, rather than hidden.
 
-Redundancy note: no dedicated negative criterion restates "drops S02's
-exclusion rule" or "drops the occurs-check" as their own prohibitions,
-because both violations necessarily corrupt an already-tested value
-(the per-binding certificate facts below, and the independent-checker
-rejection criteria respectively) -- adding one would score the same
-root-cause bug twice. The one dedicated negative below (independence)
-is the one violation that can hide behind a correct-looking result, the
-same distinction LEDGER-8's own rubric needed a real pilot to learn.
+Redundancy note: S02 can be violated three distinct ways, and only two
+are redundant with the positive criteria. (1) Dropping the
+environment-exclusion clause (quantifying a variable still free in the
+enclosing environment) and (2) dropping the occurs-check both
+necessarily corrupt an already-tested value (confirmed by execution:
+the former cascades to 23/27 wrong bindings, the latter produces a real
+unification error) -- no dedicated negative needed for either, since
+one would score the same root-cause bug twice. (3) Applying standard
+ML's actual value restriction (treating a let-bound literal, pair, or
+list as generalization-eligible, not just lambdas and bare polymorphic
+aliases) is different in kind: confirmed by execution that it produces
+a byte-identical certificate and hash on this program (every non-lambda
+top-level binding already has a concrete type with no free variable to
+quantify, so broader eligibility changes nothing observable here). That
+violation can hide fully behind a correct-looking result, so it gets
+its own dedicated negative below, the same distinction LEDGER-8's own
+rubric needed a real pilot to learn, caught here before any pilot by
+testing all three ways S02 could be dropped, not just the one that was
+assumed load-bearing.
 
 Score-topology 4-bucket partition (run before platform entry, per the
 rubric guide's plausible-wrong survival ceiling): package/existence =
@@ -103,9 +115,10 @@ quantified variable remaining).
 | 35 | +4 | The independently-coded checker rejects an over-generalized claimed scheme (a binding that wrongly quantifies a type variable still free in its enclosing environment). |
 | 36 | +6 | Explains in the memo why each nested-let `keep` binding inside `mk1` through `mk10` may only generalize over its own argument's type variable, never over the outer parameter's, naming each binding's own reported type rather than a generic rule restatement. |
 
-### Negative criteria (37-38)
+### Negative criteria (37-39)
 
 | # | Wt | Criterion |
 | --- | --- | --- |
 | 37 | -4 | Delivers a checker that imports or reuses the primary engine's computed substitution, environment, or internal types (rather than independently implementing its own checking logic) to decide acceptance or rejection. |
-| 38 | -8 | Embeds a precomputed final type for any binding, or the trace-integrity hash, as a literal substituting for executing the delivered engine. Immutable input constants (the grammar, built-in operator signatures) don't trigger this. |
+| 38 | -4 | Treats a let-bound literal, pair, list, or other non-lambda, non-alias value form as generalization-eligible (standard ML's value restriction), rather than restricting eligibility to lambdas and bare polymorphic aliases as this packet requires. |
+| 39 | -8 | Embeds a precomputed final type for any binding, or the trace-integrity hash, as a literal substituting for executing the delivered engine. Immutable input constants (the grammar, built-in operator signatures) don't trigger this. |

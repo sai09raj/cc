@@ -163,6 +163,24 @@ rubric text referenced it.
   total. Criteria count 37->38, positive total still 122. Primary
   mutant re-verified by execution after the reweight: 23/122 = 18.9%
   (was 17.2% under the old 6/6 split), secondary unchanged at 76.2%.
+
+  **Platform linter finding (real, not false positive)**: Rubric
+  Prohibition Criteria Check flagged the prompt's "must not be assumed
+  from memory" (standard ML's value restriction) as positive-only,
+  needing a negative trap. The original Redundancy note's reasoning
+  didn't actually cover this case: S02 can be violated three ways, not
+  two. Dropping the environment-exclusion clause and dropping the
+  occurs-check both necessarily corrupt an already-tested value
+  (confirmed by execution) -- no negative needed for either. But
+  applying standard ML's actual value restriction is different: tested
+  by execution and confirmed to produce a **byte-identical certificate
+  and hash** on this specific program (every non-lambda top-level
+  binding already has a concrete type with no free variable to
+  quantify, so broader eligibility changes nothing observable). That
+  violation can hide fully behind a correct-looking result -- the
+  platform was right. Added a dedicated -4 negative (criterion 38).
+  39 criteria, positive total still 122, three negatives now (-4, -4,
+  -8).
 - `platform/prompt.md` — 468 words, zero internal hyphens (Playbook
   mistake #64).
 - `platform/ideal-flow.md` — Analyze/Execute & Generate/Synthesize.
