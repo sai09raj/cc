@@ -1,10 +1,43 @@
 # Task 09 — TYPECHAIN-9
 
-Current active candidate: **TYPECHAIN-9**, in `reference/`, `design/`,
-`platform/`, `artifact/`. State: SCORE-TOPOLOGY GATE PASSED (S08),
+**SHELVED.** Two real pilots (Opus 4.8) scored **99%** and **100%** against
+the frozen packet — confirmed genuine, full solves, not a rubric bug:
+both final certificate hashes matched the canonical `bb271eaf3a8043e6`
+exactly, both correctly implemented and passed both required adversarial
+mutations (occurs-check, over-generalization), both wrote the required
+"differs from standard ML's value restriction" memo section unprompted,
+and neither trajectory shows a `UnifyError` or any sign of conceptual
+confusion along the way — just ordinary incremental `SyntaxError`s during
+coding. See "Why real pilots solved this cleanly" below for the root
+cause. Replaced by task10, which targets many genuinely interacting rules
+(QUORUM-7's shape) rather than one cleanly-flagged deviation point. The
+rest of this file is kept as the historical record of what was built and
+verified before the real pilots ran.
+
+Former state when pilots were run: SCORE-TOPOLOGY GATE PASSED (S08),
 ENGINE AND INDEPENDENT CHECKER VERIFIED END TO END, FULL PLATFORM
 PACKAGE COMPLETE (rubric, prompt, ideal-flow, metadata-stripped PDF
-artifact). NOT YET pilot-tested.
+artifact).
+
+## Why real pilots solved this cleanly
+
+The cascading design (one global substitution) amplifies a *mistake*
+once made — confirmed working at the synthetic-mutant level (17.7%
+primary, well under the 33% target). But amplification only matters if
+the model actually makes the mistake, and this task's entire difficulty
+hinges on ONE clearly-flagged, mechanically simple predicate (the
+generalization-eligibility rule). Because the rule was stated
+unambiguously everywhere on purpose (prompt, ideal-flow, and PDF spec
+all independently and explicitly, per the mistake-#66 lesson learned
+from LEDGER-8's hash-ambiguity bug), a careful frontier model just reads
+it and implements it correctly — the cascade never triggers because the
+root-cause bug never happens. Making a spec maximally unambiguous (the
+right thing to do for grading fairness) can remove the only source of
+difficulty when the underlying task has just one clean deviation point.
+Contrast QUORUM-7 (31%/32% real pilots): difficulty comes from *many*
+interacting rules across a long simulation, so there's a much higher
+base-rate chance a careful model still gets at least one of them wrong.
+Logged as Playbook mistake #67.
 
 ## Why this task exists
 
