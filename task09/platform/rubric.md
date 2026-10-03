@@ -1,7 +1,7 @@
 # TYPECHAIN-9 rubric
 
 Positive total **122**; two negative criteria, **-4** (independence
-prohibition) and **-8** (negative trap). **35 criteria** (within the
+prohibition) and **-8** (negative trap). **37 criteria** (within the
 platform's 12-50 range). Every weight is capped at 10. Every criterion
 body is 301 characters or fewer. Criteria are binary. Accept equivalent
 correct work throughout: equivalent languages, source organization,
@@ -29,19 +29,32 @@ root-cause bug twice. The one dedicated negative below (independence)
 is the one violation that can hide behind a correct-looking result, the
 same distinction LEDGER-8's own rubric needed a real pilot to learn.
 
-### Package (1, weight 3)
+Score-topology 4-bucket partition (run before platform entry, per the
+rubric guide's plausible-wrong survival ceiling): package/existence =
+3 (criteria 1-3); local parsing/isolated rules = 10 (criterion 4);
+integrated production execution = 91 (criteria 5-31, the 27 certified
+facts, plus criterion 32, the hash); final decision/causal
+reconciliation = 18 (criteria 33-35). A submission granted perfect
+local-rule knowledge but wrong global execution still fails nearly all
+of bucket 3 (the same cascading structure the 17.2% mutant measured),
+putting worst-case survival at roughly (3+10+12+18)/122 ≈ 36% --
+under the 50% reject threshold.
+
+### Package (1-3, weight 3)
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 1 | +3 | Executes the delivered offline inference engine and checker with a documented, reproducible command, records tool versions in a declared offline, stdlib-only environment, and delivers all six named products as files. |
+| 1 | +1 | Delivers all six required files: the inference engine source, the independent checker source, the full 27-binding typing output, a findings report, certification evidence (both adversarial rejection results and the trace-integrity hash), and an engineering memo. |
+| 2 | +1 | Executes the delivered inference engine and checker end to end with a documented, reproducible command. |
+| 3 | +1 | Records the language/runtime tool version used, in a declared offline, dependency-free (stdlib-only) execution environment. |
 
-### Local semantics/rules (2, weight 10)
+### Local semantics/rules (4, weight 10)
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 2 | +10 | At every `let`, generalizes only when the bound expression is syntactically a lambda or a bare reference to an already-polymorphic binding, excluding from quantification any type variable still free in the enclosing environment -- never the standard ML value restriction. |
+| 4 | +10 | The delivered engine generalizes a `let`-bound name only when the bound expression is syntactically a lambda or a bare reference to an already-polymorphic binding, excluding from quantification any type variable still free in the enclosing environment -- never the standard ML value restriction. |
 
-### Certified program facts (3-29, weight 81)
+### Certified program facts (5-31, weight 81)
 
 Each binding's final type, exactly as this packet's S06 serialization
 format requires (fixed field order, full parenthesization, per-binding
@@ -51,46 +64,46 @@ quantified variable remaining).
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 3 | +3 | Reports `five` as `Int` (exact). |
-| 4 | +3 | Reports `mk1` as `forall t0 . (t0->(t0*t0))` (exact). |
-| 5 | +3 | Reports `r1` as `Int` (exact). |
-| 6 | +3 | Reports `mk2` as `forall t0 . (t0->(t0*t0))` (exact). |
-| 7 | +3 | Reports `r2` as `Int` (exact). |
-| 8 | +3 | Reports `mk3` as `forall t0 . (t0->List(t0))` (exact). |
-| 9 | +3 | Reports `r3` as `Int` (exact). |
-| 10 | +3 | Reports `mk4` as `forall t0 . (t0->(t0*t0))` (exact). |
-| 11 | +3 | Reports `r4` as `Int` (exact). |
-| 12 | +3 | Reports `mk5` as `forall t0 . (t0->(t0*t0))` (exact). |
-| 13 | +3 | Reports `r5` as `Int` (exact). |
-| 14 | +3 | Reports `mk6` as `forall t0 . (t0->List(t0))` (exact). |
-| 15 | +3 | Reports `r6` as `Int` (exact). |
-| 16 | +3 | Reports `mk7` as `forall t0 . (t0->(t0*t0))` (exact). |
-| 17 | +3 | Reports `r7` as `Int` (exact). |
-| 18 | +3 | Reports `mk8` as `forall t0 . (t0->(t0*t0))` (exact). |
-| 19 | +3 | Reports `r8` as `Int` (exact). |
-| 20 | +3 | Reports `mk9` as `forall t0 . (t0->List(t0))` (exact). |
-| 21 | +3 | Reports `r9` as `Int` (exact). |
-| 22 | +3 | Reports `mk10` as `forall t0 . (t0->(t0*t0))` (exact). |
-| 23 | +3 | Reports `r10` as `Int` (exact). |
-| 24 | +3 | Reports `wrap_in_list` as `forall t0 . (t0->List(t0))` (exact). |
-| 25 | +3 | Reports `list_of_r10` as `List(Int)` (exact). |
-| 26 | +3 | Reports `id` as `forall t0 . (t0->t0)` (exact). |
-| 27 | +3 | Reports `use_id_on_r10` as `Int` (exact). |
-| 28 | +3 | Reports `alias_id` as `forall t0 . (t0->t0)` (exact). |
-| 29 | +3 | Reports `use_alias_id_on_pair` as `(Int*Int)` (exact). |
+| 5 | +3 | Reports `five` as `Int` (exact). |
+| 6 | +3 | Reports `mk1` as `forall t0 . (t0->(t0*t0))` (exact). |
+| 7 | +3 | Reports `r1` as `Int` (exact). |
+| 8 | +3 | Reports `mk2` as `forall t0 . (t0->(t0*t0))` (exact). |
+| 9 | +3 | Reports `r2` as `Int` (exact). |
+| 10 | +3 | Reports `mk3` as `forall t0 . (t0->List(t0))` (exact). |
+| 11 | +3 | Reports `r3` as `Int` (exact). |
+| 12 | +3 | Reports `mk4` as `forall t0 . (t0->(t0*t0))` (exact). |
+| 13 | +3 | Reports `r4` as `Int` (exact). |
+| 14 | +3 | Reports `mk5` as `forall t0 . (t0->(t0*t0))` (exact). |
+| 15 | +3 | Reports `r5` as `Int` (exact). |
+| 16 | +3 | Reports `mk6` as `forall t0 . (t0->List(t0))` (exact). |
+| 17 | +3 | Reports `r6` as `Int` (exact). |
+| 18 | +3 | Reports `mk7` as `forall t0 . (t0->(t0*t0))` (exact). |
+| 19 | +3 | Reports `r7` as `Int` (exact). |
+| 20 | +3 | Reports `mk8` as `forall t0 . (t0->(t0*t0))` (exact). |
+| 21 | +3 | Reports `r8` as `Int` (exact). |
+| 22 | +3 | Reports `mk9` as `forall t0 . (t0->List(t0))` (exact). |
+| 23 | +3 | Reports `r9` as `Int` (exact). |
+| 24 | +3 | Reports `mk10` as `forall t0 . (t0->(t0*t0))` (exact). |
+| 25 | +3 | Reports `r10` as `Int` (exact). |
+| 26 | +3 | Reports `wrap_in_list` as `forall t0 . (t0->List(t0))` (exact). |
+| 27 | +3 | Reports `list_of_r10` as `List(Int)` (exact). |
+| 28 | +3 | Reports `id` as `forall t0 . (t0->t0)` (exact). |
+| 29 | +3 | Reports `use_id_on_r10` as `Int` (exact). |
+| 30 | +3 | Reports `alias_id` as `forall t0 . (t0->t0)` (exact). |
+| 31 | +3 | Reports `use_alias_id_on_pair` as `(Int*Int)` (exact). |
 
-### Certification and independent verification (30-33, weight 28)
-
-| # | Wt | Criterion |
-| --- | --- | --- |
-| 30 | +10 | Matches the first 16 hex characters of the trace-integrity hash (algorithm in the packet) to `bb271eaf3a8043e6`. |
-| 31 | +6 | The independently-coded checker rejects the self-application adversarial mutation (`(fun x (x x))`, requiring an infinite/cyclic type) while still accepting the true program. |
-| 32 | +6 | The independently-coded checker rejects an over-generalized claimed scheme (a binding that wrongly quantifies a type variable still free in its enclosing environment) while still accepting the true program's own correct schemes. |
-| 33 | +6 | Explains in the memo, citing the actual claimed types for `mk1` through `mk10`, why each nested-let `keep` binding may only be generalized over its own argument's type variable, never over the outer parameter's. |
-
-### Negative criteria (34-35)
+### Certification and independent verification (32-35, weight 28)
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 34 | -4 | Delivers a checker that imports or reuses the primary engine's computed substitution, environment, or internal types (rather than independently implementing its own checking logic) to decide acceptance or rejection. |
-| 35 | -8 | Embeds a precomputed final type for any binding, or the trace-integrity hash, as a literal substituting for executing the delivered engine. Immutable input constants (the grammar, built-in operator signatures) don't trigger this. |
+| 32 | +10 | Matches the first 16 hex characters of the trace-integrity hash (algorithm in the packet) to `bb271eaf3a8043e6`. |
+| 33 | +6 | The independently-coded checker rejects the self-application adversarial mutation (`(fun x (x x))`, requiring an infinite/cyclic type) while still accepting the true program. |
+| 34 | +6 | The independently-coded checker rejects an over-generalized claimed scheme (a binding that wrongly quantifies a type variable still free in its enclosing environment) while still accepting the true program's own correct schemes. |
+| 35 | +6 | Explains in the memo, citing the actual claimed types for `mk1` through `mk10`, why each nested-let `keep` binding may only be generalized over its own argument's type variable, never over the outer parameter's. |
+
+### Negative criteria (36-37)
+
+| # | Wt | Criterion |
+| --- | --- | --- |
+| 36 | -4 | Delivers a checker that imports or reuses the primary engine's computed substitution, environment, or internal types (rather than independently implementing its own checking logic) to decide acceptance or rejection. |
+| 37 | -8 | Embeds a precomputed final type for any binding, or the trace-integrity hash, as a literal substituting for executing the delivered engine. Immutable input constants (the grammar, built-in operator signatures) don't trigger this. |

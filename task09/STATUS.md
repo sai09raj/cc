@@ -111,11 +111,32 @@ rubric text referenced it.
 - `reference/score_counterfactual.py` — score-topology audit, verified
   primary mutant at 17.2%, well under the 33% target.
 - `design/architecture-attack.md`, `design/semantic-contract.md`.
-- `platform/rubric.md` — 35 criteria, positive total 122, negative
+- `platform/rubric.md` — 37 criteria, positive total 122, negative
   total -12 (one independence-prohibition negative learned proactively
   from the LEDGER-8 postmortem instead of waiting for a platform
   linter, one trap), re-verified (301-char cap, ≤10 weight cap,
   atomicity, positive total matches score_counterfactual.py exactly).
+  Re-audited against the full `03-RUBRIC-AND-LINTER-GUIDE.md` after a
+  real external task scored "2" (Fail, 20%+ moderate rubric errors) for
+  bundling independently-reachable facts into one row plus an unstated
+  term. Found one real instance of exactly that pattern here: the
+  original package criterion bundled reproducible-execution,
+  tool-version/environment recording, and six-file delivery into one
+  AND-joined row, and "six named products" wasn't self-contained (the
+  six weren't named in the criterion itself). Split into three atomic
+  +1 rows (criteria 1-3); package weight unchanged at 3, criteria count
+  35→37. Also ran the guide's 4-bucket score-topology survival-ceiling
+  check (not previously done explicitly, only the single 17.2% mutant
+  score): package/existence=3, local-rule=10, integrated execution=91,
+  decision/reconciliation=18; worst case (perfect local-rule knowledge,
+  wrong global execution) survives at roughly 36%, under the 50%
+  reject threshold, because this program's cascading structure corrupts
+  bucket 3 regardless of which specific bug caused the wrong execution.
+  Everything else in the guide's 30-item final audit checked out:
+  both explicit prompt prohibitions have dedicated traps, the
+  generalization-rule prohibition is correctly left untrapped (already
+  documented redundancy reasoning), no MECE/polarity/hash-discipline
+  violations found.
 - `platform/prompt.md` — 468 words, zero internal hyphens (Playbook
   mistake #64).
 - `platform/ideal-flow.md` — Analyze/Execute & Generate/Synthesize.
