@@ -21,7 +21,9 @@ GRAND_HASH_WEIGHT = 10
 VERIFY_ACCEPT_WEIGHT = 4  # independent checker accepts the true program's own types
 VERIFY_A_WEIGHT = 4      # independent checker rejects mutation A (occurs-check)
 VERIFY_B_WEIGHT = 4      # independent checker rejects mutation B (over-generalization)
-MEMO_WEIGHT = 6
+MEMO_WEIGHT = 6                  # explains the keep-binding generalization reasoning
+MEMO_DIVERGENCE_WEIGHT = 4       # explains divergence from standard ML's value restriction
+MEMO_SOUNDNESS_WEIGHT = 4        # explains soundness tied to later instantiations
 
 # Per-binding weight: 27 bindings, each worth a flat 3 points (one
 # binding -- RetainedEarnings-equivalent severity isn't meaningfully
@@ -30,7 +32,8 @@ MEMO_WEIGHT = 6
 BINDING_WEIGHT = 3
 
 TOTAL = (PACKAGE_WEIGHT + LOCAL_RULE_WEIGHT + GRAND_HASH_WEIGHT
-         + VERIFY_ACCEPT_WEIGHT + VERIFY_A_WEIGHT + VERIFY_B_WEIGHT + MEMO_WEIGHT
+         + VERIFY_ACCEPT_WEIGHT + VERIFY_A_WEIGHT + VERIFY_B_WEIGHT
+         + MEMO_WEIGHT + MEMO_DIVERGENCE_WEIGHT + MEMO_SOUNDNESS_WEIGHT
          + BINDING_WEIGHT * len(BINDINGS))
 
 
@@ -106,7 +109,7 @@ def score(name, mutant_kwargs=None, local_rule_fail=False, hash_ok=True,
     if not verify_b_fail:
         earned += VERIFY_B_WEIGHT
     if not memo_fail:
-        earned += MEMO_WEIGHT
+        earned += MEMO_WEIGHT + MEMO_DIVERGENCE_WEIGHT + MEMO_SOUNDNESS_WEIGHT
 
     pct = 100 * earned / TOTAL
     print(f"{name}: {earned}/{TOTAL} = {pct:.1f}%  "

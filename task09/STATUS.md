@@ -44,8 +44,8 @@ engine, not estimated:
 | Mutant | Score |
 |---|---|
 | canonical (sanity) | 100.0% |
-| drops S02's generalization-exclusion rule (primary) | **18.9%** |
-| drops only the alias-eligibility clause (secondary) | 76.2% |
+| drops S02's generalization-exclusion rule (primary) | **17.7%** |
+| drops only the alias-eligibility clause (secondary) | 71.5% |
 
 The primary mutant clears the <33% target with real margin. The
 secondary mutant was tested honestly and excluded from the scored
@@ -181,6 +181,25 @@ rubric text referenced it.
   platform was right. Added a dedicated -4 negative (criterion 38).
   39 criteria, positive total still 122, three negatives now (-4, -4,
   -8).
+
+  **Third pass, checked against a second, unrelated score-2 review**
+  (a hardware/controller-simulation task): that review named two
+  failure modes -- (a) an exact expected value impossible given the
+  packet's own stated constraints, entered by the rubric author instead
+  of generated from execution, and (b) a prompt-required explanation
+  with no owning criterion at all. Checked (a) by diffing all 27
+  per-binding type strings and the hash in rubric.md against a fresh
+  execution of typecheck_engine.py run right now: byte-for-byte match,
+  nothing hand-typed. Checked (b) against the prompt's memo paragraph,
+  which requires three explanations, and found the rubric only owned
+  one of them (criterion 36, the keep-binding generalization
+  reasoning) -- "why this differs from standard ML's value restriction
+  for several bindings" and "why each scheme is sound, tied to later
+  instantiations" had no owning criterion. Added two new memo criteria
+  (37, 38; +4 each) for exactly those two prompt clauses. 41 criteria,
+  positive total 122->130. Primary mutant re-verified by execution:
+  23/130 = 17.7% (was 18.9%), secondary 93/130 = 71.5% (was 76.2%) --
+  both still comfortably clear the targets.
 - `platform/prompt.md` — 468 words, zero internal hyphens (Playbook
   mistake #64).
 - `platform/ideal-flow.md` — Analyze/Execute & Generate/Synthesize.
