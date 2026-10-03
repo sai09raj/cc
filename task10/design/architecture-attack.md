@@ -174,6 +174,31 @@ in this project.
   lessons from this session's task09 rubric work).
 - `artifact/` — metadata-stripped, rasterized PDF packet.
 
+## Addendum: STA shelved, replaced by CELLGUARD-10
+
+STA (static timing analysis) was built in full and shelved at the S08
+gate — see `STATUS.md`. Its arcs were structurally independent
+(synchronous digital design deliberately breaks combinational
+dependency into per-stage analyses), so no single-bug mutant could be
+made to cascade, and no fair reweighting under the platform's
++-10-per-criterion cap could fix that. Logged as Playbook mistake #68.
+
+Replacement: **CELLGUARD-10**, a discrete-tick battery pack
+charge/thermal controller simulation (`reference/bms_engine.py`).
+Domain: Electrical Engineering, subdomain battery management system
+(BMS) charge control and thermal protection. Every tick's state (state
+of charge, temperature, voltage, charge mode, fault-latch status) is
+computed from the *previous* tick's state — genuine state-threading,
+confirmed empirically before further build: all 5 candidate single-rule
+mutants (drop thermal derating, drop fault-latch hysteresis, skip CV
+current taper-down, skip the overcurrent clamp, wrong TAPER-mode
+heating) corrupt 54-260 of 260 ticks each, not 1-2 arcs out of 14 like
+STA. Five genuinely different interacting rules — mode transition
+(CC/CV/TAPER), thermal derating, fault-latch hysteresis, overcurrent
+clamping, and per-mode heat generation — give the same "many interacting
+rules" property QUORUM-7 has, now paired with real cascading, which STA
+lacked.
+
 ## Next steps
 
 1. Write `design/semantic-contract.md` with the exact regime formulas,

@@ -1,4 +1,119 @@
-# Task 10 — STATIC10 (shelved before any rubric/platform work)
+# Task 10 — CELLGUARD-10 (active), STATIC10 (shelved, kept as record)
+
+Current active candidate: **CELLGUARD-10**, in `reference/`, `design/`,
+`platform/`, `artifact/`. State: SCORE-TOPOLOGY GATE PASSED (S08),
+ENGINE AND INDEPENDENT VERIFIER VERIFIED END TO END, FULL PLATFORM
+PACKAGE COMPLETE (rubric, prompt, ideal-flow, metadata-stripped PDF
+artifact). NOT YET pilot-tested; local blind pilot (Phase 8.5) planned
+before any platform submission.
+
+## CELLGUARD-10: discrete-tick battery charge/thermal controller
+
+A single battery pack, 320 fully deterministic ticks, every tick's
+state computed from the previous tick's state (genuine state-threading,
+not independent per-item facts — the property STATIC10 lacked). Ten
+per-tick update rules across five areas: mode transition (CC/CV/TAPER),
+thermal derating, overcurrent clamping, TAPER-mode's heat exception, and
+fault-latch hysteresis. Domain: Electrical Engineering.
+
+### Score-topology audit (S08 gate, run before the rubric was written)
+
+`reference/score_counterfactual.py`, scored against the actual executed
+engine over the full 320-tick trace, not estimated:
+
+| Mutant | Score |
+|---|---|
+| canonical (sanity) | 100.0% |
+| drop thermal derating | 15.4% |
+| fault releases instantly, no hysteresis | 24.8% |
+| CV current never decays, TAPER never reached | 21.4% |
+| skip overcurrent clamp | 14.5% |
+| TAPER uses full-heat rate, not TAPER-specific | 31.6% |
+
+All five clear the <33% target. Getting here required real tuning, not
+a first-try success — recorded honestly:
+
+- Two of the five rule-drop mutants were initially **silent** (zero
+  effect on the trace) when first implemented: a "same-tick vs
+  previous-tick voltage" CC→CV mutant turned out to read an identically
+  stale value either way (a loop-variable bug in the mutant itself, not
+  a real ambiguity), and the overcurrent clamp never bound because peak
+  CC current (50) never exceeded the original threshold (60). Fixed by
+  lowering `OVERCURRENT_MAX` to 45 (below CC current, so the clamp is
+  provably load-bearing on every CC-phase tick) and replacing the
+  voltage-timing mutant with a cleaner one (CV current never decays).
+- Initial checkpoint-based rubric weights (5 checkpoints clustered in
+  the first half of the trace, package/local/event weights set by
+  precedent) still left three mutants over 33% (40–66%, then 37–55%
+  after a first reweight). Root-caused per mutant: the checkpoints
+  simply didn't *land* after each mutant's divergence point — e.g. the
+  TAPER-heat-rate bug's effect is numerically small and slow to build
+  (first divergence at t=207, but checkpoints capped at t=250 then
+  showed only a few degrees' difference, not enough to fail hash-sized
+  scrutiny). Extending the simulation from 260 to 320 ticks revealed why
+  that specific mutant needed more room: the accumulated heat error
+  eventually pushes the mutant trajectory into a **second, spurious
+  fault-latch cycle** (t=268–299) that the canonical trace never enters
+  — a strong, late-arriving discriminator the shorter window couldn't
+  capture. Final weights: checkpoints dropped the two earliest (always-
+  matching, non-discriminating) ticks in favor of two later ones, event
+  weight reduced (mode/fault-transition *timing* turned out insensitive
+  to 2 of the 5 mutants), local-rule weight redistributed across 4
+  dedicated rule criteria instead of 3 so every mutant's root rule has
+  an owning criterion.
+
+## Independent verifier verified end to end
+
+`reference/bms_verify.py` — re-implements the ten per-tick update rules
+from scratch, in its own code, never importing `bms_engine`. Replays
+from t=1 to each of 5 checkpoint ticks independently and compares
+against the primary's claimed state.
+
+- **Accepts the true 320-tick trace in full** (all 5 checkpoints
+  consistent, confirmed by execution).
+- **Rejects both required adversarial mutations**: a claimed fault
+  release after 2 consecutive cool ticks instead of 4, and a claimed
+  delivered current above the overcurrent clamp as if never applied.
+
+## Deliverables
+
+- `reference/bms_engine.py` — primary engine, S01-S03, with 5 mutant
+  hooks for the score-topology audit.
+- `reference/bms_verify.py` — independent verifier (S04), re-coded from
+  scratch, verified to accept the true trace and reject both required
+  adversarial mutations.
+- `reference/score_counterfactual.py` — score-topology audit, all 5
+  mutants verified under 33% (14.5%-31.6%).
+- `design/architecture-attack.md` (with the STATIC10→CELLGUARD-10 pivot
+  addendum), `design/semantic-contract-cellguard.md`.
+- `platform/rubric.md` — 29 criteria, positive total 117, two negatives
+  (-4 independence, -8 trap), audited against the full
+  `03-RUBRIC-AND-LINTER-GUIDE.md` checklist from the first draft (every
+  checkpoint/event criterion states its own expected values explicitly,
+  all three memo topics from the prompt have an owning criterion, no
+  mechanism+value bundling, 4-bucket score-topology ceiling computed
+  explicitly at ~41%).
+- `platform/prompt.md` — 443 words, zero internal hyphens (mistake #64).
+- `platform/ideal-flow.md` — Analyze/Execute & Generate/Synthesize.
+- `artifact/cellguard10_v1.pdf` — 5 pages (3 rasterized figures:
+  constants table, per-tick rules, certificate-format worked example
+  with fake data; 2 text spec pages). Verified byte-level: empty
+  metadata (Info dict and XMP both blank), zero vector drawing objects
+  on every page, one raster image per figure page and zero on text
+  pages, no leaked computed values (no checkpoint state, no event tick,
+  no hash) anywhere in extracted text, no tool/path signatures in the
+  raw bytes.
+
+## Remaining
+
+- Local blind pilot (Phase 8.5, newly reinstated in the SOP this
+  session) before any platform submission.
+- Real pilot run(s) after that, if the blind pilot doesn't surface a
+  problem.
+
+---
+
+# STATIC10 (shelved before any rubric/platform work)
 
 **SHELVED at the S08 gate**, before writing any rubric or platform text —
 the cheapest possible point to catch this. Reference engine
