@@ -44,7 +44,7 @@ engine, not estimated:
 | Mutant | Score |
 |---|---|
 | canonical (sanity) | 100.0% |
-| drops S02's generalization-exclusion rule (primary) | **17.2%** |
+| drops S02's generalization-exclusion rule (primary) | **18.9%** |
 | drops only the alias-eligibility clause (secondary) | 76.2% |
 
 The primary mutant clears the <33% target with real margin. The
@@ -109,7 +109,7 @@ rubric text referenced it.
   verified to accept the true certificate and reject both required
   adversarial mutations.
 - `reference/score_counterfactual.py` — score-topology audit, verified
-  primary mutant at 17.2%, well under the 33% target.
+  primary mutant at 18.9%, well under the 33% target.
 - `design/architecture-attack.md`, `design/semantic-contract.md`.
 - `platform/rubric.md` — 37 criteria, positive total 122, negative
   total -12 (one independence-prohibition negative learned proactively
@@ -137,6 +137,32 @@ rubric text referenced it.
   generalization-rule prohibition is correctly left untrapped (already
   documented redundancy reasoning), no MECE/polarity/hash-discipline
   violations found.
+
+  **Second pass, against the verbatim score-2 review text** (read in
+  full, not paraphrased): that external task failed by bundling a local
+  mechanism description with an exact global trace value in one row
+  (C13-C24), requiring exact values for metrics the packet never
+  defined (C32/33/46/48), and bundling constants with a narrative
+  explanation so a right-value/wrong-explanation (or reverse) answer
+  couldn't be graded cleanly (C31). The first two patterns were already
+  structurally avoided here. The third was NOT: criterion 35 ("Explains
+  ..., citing the actual claimed types for mk1-mk10, why...") bundled
+  citation of already-tested values with explanation quality -- the
+  guide's own text says "do not combine a metric vector with a
+  separate... causal explanation." Reworded to drop the bundled
+  citation-accuracy gate, keeping only the causal explanation plus a
+  grounding requirement (must name its own reported type, not a generic
+  rule restatement) that doesn't re-gate on numeric correctness already
+  owned by criteria 6-24. Also found, on the same reread, that criteria
+  33/34 ("checker rejects mutation X while still accepting the true
+  program") bundled two independently-failable behaviors -- an
+  always-reject checker would wrongly fail both for the same reason
+  without this being visible. Split into three rows: accepts true
+  program (+4), rejects self-application (+4), rejects
+  over-generalization (+4) -- replacing the prior 6+6 split, same 12
+  total. Criteria count 37->38, positive total still 122. Primary
+  mutant re-verified by execution after the reweight: 23/122 = 18.9%
+  (was 17.2% under the old 6/6 split), secondary unchanged at 76.2%.
 - `platform/prompt.md` — 468 words, zero internal hyphens (Playbook
   mistake #64).
 - `platform/ideal-flow.md` — Analyze/Execute & Generate/Synthesize.

@@ -18,8 +18,9 @@ BINDINGS = E.parse_program(TEXT)
 PACKAGE_WEIGHT = 3
 LOCAL_RULE_WEIGHT = 10   # S02's stated generalization rule, as a single mechanism criterion
 GRAND_HASH_WEIGHT = 10
-VERIFY_A_WEIGHT = 6      # independent checker rejects mutation A (occurs-check)
-VERIFY_B_WEIGHT = 6      # independent checker rejects mutation B (over-generalization)
+VERIFY_ACCEPT_WEIGHT = 4  # independent checker accepts the true program's own types
+VERIFY_A_WEIGHT = 4      # independent checker rejects mutation A (occurs-check)
+VERIFY_B_WEIGHT = 4      # independent checker rejects mutation B (over-generalization)
 MEMO_WEIGHT = 6
 
 # Per-binding weight: 27 bindings, each worth a flat 3 points (one
@@ -29,7 +30,7 @@ MEMO_WEIGHT = 6
 BINDING_WEIGHT = 3
 
 TOTAL = (PACKAGE_WEIGHT + LOCAL_RULE_WEIGHT + GRAND_HASH_WEIGHT
-         + VERIFY_A_WEIGHT + VERIFY_B_WEIGHT + MEMO_WEIGHT
+         + VERIFY_ACCEPT_WEIGHT + VERIFY_A_WEIGHT + VERIFY_B_WEIGHT + MEMO_WEIGHT
          + BINDING_WEIGHT * len(BINDINGS))
 
 
@@ -76,7 +77,8 @@ CANONICAL_HASH = E.certificate_hash(CANONICAL_RESULTS)
 
 
 def score(name, mutant_kwargs=None, local_rule_fail=False, hash_ok=True,
-          verify_a_fail=False, verify_b_fail=False, memo_fail=False):
+          verify_accept_fail=False, verify_a_fail=False, verify_b_fail=False,
+          memo_fail=False):
     mutant_kwargs = mutant_kwargs or {}
     results = run_engine(**mutant_kwargs)
     lines = dict(l.split("=", 1) for l in
@@ -97,6 +99,8 @@ def score(name, mutant_kwargs=None, local_rule_fail=False, hash_ok=True,
     if hash_ok and h == CANONICAL_HASH:
         earned += GRAND_HASH_WEIGHT
 
+    if not verify_accept_fail:
+        earned += VERIFY_ACCEPT_WEIGHT
     if not verify_a_fail:
         earned += VERIFY_A_WEIGHT
     if not verify_b_fail:

@@ -1,7 +1,7 @@
 # TYPECHAIN-9 rubric
 
 Positive total **122**; two negative criteria, **-4** (independence
-prohibition) and **-8** (negative trap). **37 criteria** (within the
+prohibition) and **-8** (negative trap). **38 criteria** (within the
 platform's 12-50 range). Every weight is capped at 10. Every criterion
 body is 301 characters or fewer. Criteria are binary. Accept equivalent
 correct work throughout: equivalent languages, source organization,
@@ -14,7 +14,7 @@ reliably because its facts were largely independent). The task's
 single global substitution means a dropped generalization-exclusion
 rule corrupts most of the program, not just the one binding where the
 bug lives. Verified by actually running the real mutant (not
-estimated): dropping S02's exclusion rule scores **17.2%** against this
+estimated): dropping S02's exclusion rule scores **18.9%** against this
 exact rubric's weights -- well under the 33% target. See `STATUS.md`
 for the full score-topology audit, including a second, weaker mutant
 (76.2%) that was tested and honestly excluded as a non-discriminating
@@ -34,9 +34,10 @@ rubric guide's plausible-wrong survival ceiling): package/existence =
 3 (criteria 1-3); local parsing/isolated rules = 10 (criterion 4);
 integrated production execution = 91 (criteria 5-31, the 27 certified
 facts, plus criterion 32, the hash); final decision/causal
-reconciliation = 18 (criteria 33-35). A submission granted perfect
+reconciliation = 18 (criteria 33-36: checker accept/reject-A/reject-B,
+each now its own row, plus the memo). A submission granted perfect
 local-rule knowledge but wrong global execution still fails nearly all
-of bucket 3 (the same cascading structure the 17.2% mutant measured),
+of bucket 3 (the same cascading structure the 18.9% mutant measured),
 putting worst-case survival at roughly (3+10+12+18)/122 ≈ 36% --
 under the 50% reject threshold.
 
@@ -92,18 +93,19 @@ quantified variable remaining).
 | 30 | +3 | Reports `alias_id` as `forall t0 . (t0->t0)` (exact). |
 | 31 | +3 | Reports `use_alias_id_on_pair` as `(Int*Int)` (exact). |
 
-### Certification and independent verification (32-35, weight 28)
+### Certification and independent verification (32-36, weight 28)
 
 | # | Wt | Criterion |
 | --- | --- | --- |
 | 32 | +10 | Matches the first 16 hex characters of the trace-integrity hash (algorithm in the packet) to `bb271eaf3a8043e6`. |
-| 33 | +6 | The independently-coded checker rejects the self-application adversarial mutation (`(fun x (x x))`, requiring an infinite/cyclic type) while still accepting the true program. |
-| 34 | +6 | The independently-coded checker rejects an over-generalized claimed scheme (a binding that wrongly quantifies a type variable still free in its enclosing environment) while still accepting the true program's own correct schemes. |
-| 35 | +6 | Explains in the memo, citing the actual claimed types for `mk1` through `mk10`, why each nested-let `keep` binding may only be generalized over its own argument's type variable, never over the outer parameter's. |
+| 33 | +4 | The independently-coded checker accepts the true 27-binding program's own correct claimed types in full. |
+| 34 | +4 | The independently-coded checker rejects the self-application adversarial mutation (`(fun x (x x))`, requiring an infinite/cyclic type). |
+| 35 | +4 | The independently-coded checker rejects an over-generalized claimed scheme (a binding that wrongly quantifies a type variable still free in its enclosing environment). |
+| 36 | +6 | Explains in the memo why each nested-let `keep` binding inside `mk1` through `mk10` may only generalize over its own argument's type variable, never over the outer parameter's, naming each binding's own reported type rather than a generic rule restatement. |
 
-### Negative criteria (36-37)
+### Negative criteria (37-38)
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 36 | -4 | Delivers a checker that imports or reuses the primary engine's computed substitution, environment, or internal types (rather than independently implementing its own checking logic) to decide acceptance or rejection. |
-| 37 | -8 | Embeds a precomputed final type for any binding, or the trace-integrity hash, as a literal substituting for executing the delivered engine. Immutable input constants (the grammar, built-in operator signatures) don't trigger this. |
+| 37 | -4 | Delivers a checker that imports or reuses the primary engine's computed substitution, environment, or internal types (rather than independently implementing its own checking logic) to decide acceptance or rejection. |
+| 38 | -8 | Embeds a precomputed final type for any binding, or the trace-integrity hash, as a literal substituting for executing the delivered engine. Immutable input constants (the grammar, built-in operator signatures) don't trigger this. |
