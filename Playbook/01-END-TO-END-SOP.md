@@ -289,6 +289,48 @@ Every criterion must be objective, binary, observable, verb-led, self-contained,
 
 The task must be runnable in the model environment or explicitly provide a viable fallback. Test this before launching long runs.
 
+## Phase 8.5 — Local blind pilot (before any platform entry)
+
+### Purpose
+
+Strictly cheaper than Phase 10's one official pilot: it spends no
+external platform/target-model quota at all, using only a fresh
+subagent inside this project's own environment. It is not a substitute
+for Phase 10/11's real target-model pilots — synthetic mutants and a
+local blind pilot are both pre-pilot confidence checks, not acceptance
+evidence — but it catches the same class of problem (broken packaging,
+genuine ambiguity, or a task that's simply too tractable for a careful
+solver) before committing real pilot quota. Used for KILNWORKS/R3
+(task05, two rounds) and caught a real composition bug before any
+platform submission. Skipped for QUORUM-7, LEDGER-8, and TYPECHAIN-9 —
+the latter two each then spent two real external pilots discovering,
+expensively, a problem this step could plausibly have caught for free.
+
+### Actions
+
+1. Freeze the prompt and artifact exactly as they will be submitted.
+2. Spawn a fresh subagent with zero memory of this conversation and zero
+   access to `reference/`, `design/`, or `platform/rubric.md` — only the
+   frozen `prompt.md` (renamed, e.g. `prompt.txt`) and the artifact
+   file, in an isolated working directory.
+3. Instruct it to solve the task exactly as a real pilot would,
+   producing the same deliverables the prompt asks for.
+4. Score its submission against the real rubric; reconstruct and
+   re-execute its implementation on the frozen inputs; diff its trace
+   against the reference's own trace to find the first point of
+   divergence, if any.
+
+### Gate 8.5
+
+If the blind pilot solves the task cleanly (scores near 100%, or its
+trace matches the reference with no meaningful divergence), treat this
+exactly as Phase 10 treats a real pilot solving the task: redesign the
+architecture before spending any platform-entry effort or real pilot
+quota. Do not rationalize a clean blind-pilot solve as "the local model
+is just unusually strong" without first checking whether the same
+structural weakness (mistake #67: amplification without genuine
+likelihood of the triggering mistake) is present.
+
 ## Phase 9 — Create a platform-entry package
 
 ### Actions
