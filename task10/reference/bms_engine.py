@@ -120,11 +120,15 @@ def run():
 
 
 def serialize(rows):
+    # soc/current/voltage are fixed-width 2-decimal-place strings (e.g. "25.00",
+    # never "25" or "25.0") -- found genuinely ambiguous by the Phase 8.5 blind
+    # pilot (a bare round(x,2) str() conversion drops trailing zeros); fixed
+    # here and the ambiguity closed explicitly in the semantic contract.
     lines = ["CELLGUARD10-CERT-V1"]
     for r in rows:
         lines.append(
-            f"t={r['t']};mode={r['mode']};soc={r['soc']};temp={r['temp']};"
-            f"current={r['current']};voltage={r['voltage']};fault={r['fault']}"
+            f"t={r['t']};mode={r['mode']};soc={r['soc']:.2f};temp={r['temp']};"
+            f"current={r['current']:.2f};voltage={r['voltage']:.2f};fault={r['fault']}"
         )
     return "\n".join(lines) + "\n"
 

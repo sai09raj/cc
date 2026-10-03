@@ -39,9 +39,17 @@ a first-try success — recorded honestly:
   stale value either way (a loop-variable bug in the mutant itself, not
   a real ambiguity), and the overcurrent clamp never bound because peak
   CC current (50) never exceeded the original threshold (60). Fixed by
-  lowering `OVERCURRENT_MAX` to 45 (below CC current, so the clamp is
-  provably load-bearing on every CC-phase tick) and replacing the
+  lowering `OVERCURRENT_MAX` to 45 (below CC_CURRENT, so the clamp is
+  load-bearing at the start of the CC phase) and replacing the
   voltage-timing mutant with a cleaner one (CV current never decays).
+  Note (corrected after the blind pilot, see below): the clamp only
+  actually binds for t=1-50, before derating engages at t=51 and
+  already brings current to 25 (below the 45 clamp) for the rest of the
+  CC phase -- "load-bearing on every CC-phase tick" was never literally
+  true; the mutant's strength (320/320 ticks differ) comes from the 50
+  ticks of extra delivered current creating a permanent SoC/temperature
+  offset that then propagates through the rest of the simulation via
+  the usual state-threading, not from the clamp binding throughout.
 - Initial checkpoint-based rubric weights (5 checkpoints clustered in
   the first half of the trace, package/local/event weights set by
   precedent) still left three mutants over 33% (40–66%, then 37–55%
@@ -104,12 +112,78 @@ against the primary's claimed state.
   no hash) anywhere in extracted text, no tool/path signatures in the
   raw bytes.
 
+## Local blind pilot (Phase 8.5) — ran, found two real bugs, both fixed
+
+A cold subagent, given only the frozen `prompt.md` and `cellguard10_v1.pdf`
+in an isolated directory with zero access to `reference/`, `design/`, or
+`platform/rubric.md`, solved the task genuinely blind. Result: a model-
+quality, well-engineered solution (from-scratch independent verifier
+using a deliberately different implementation style — class-based replay
+with Decimal/round-half-up arithmetic vs. the primary's float arithmetic
+— both required adversarial tests correctly rejected, clean reproduction
+verified, all ambiguities honestly flagged rather than silently guessed
+past) that still diverged from canonical, for a real, fixable reason.
+
+**Bug 1 — hash mismatch despite every checkpoint value matching exactly.**
+All 9 reported state records (8 checkpoints + final) matched canonical
+byte-for-byte on every field, yet the certificate hash differed
+(`3e2d011d887d98d6` vs. the old canonical `f3bf4a132dfb66b5`). Root
+cause: the reference engine's `serialize()` used a bare `round(x, 2)`
+followed by Python's default float-to-string conversion, which drops
+trailing zeros (`25.0`, not `25.00`) — while S03's text ("rounded to
+exactly 2 decimal places") is genuinely ambiguous between that and
+fixed-width display. The blind pilot's reading (fixed 2-decimal width)
+is the more natural one and is what a real pilot would plausibly also
+do. Same failure class as mistake #66 (LEDGER-8's hash-serialization
+ambiguity), this time in a decimal-formatting rule rather than a
+field-order rule. Fixed: `serialize()` now uses `:.2f` formatting; new
+canonical hash `3e2d011d887d98d6` — confirmed by independently
+recomputing it after the fix and finding it matches the blind pilot's
+own hash exactly. All value strings in `rubric.md` and the artifact's
+Figure 3 updated to match; S03 states the fixed-width rule explicitly
+now.
+
+**Bug 2 — a factually false claim in the packet's own prose.** SPEC_TEXT,
+prompt.md, ideal-flow.md, and rubric criterion 28 all asserted the
+overcurrent clamp "binds on every CC-phase tick... by a fixed, constant
+margin independent of temperature." The blind pilot traced its own
+engine's incoming-temperature values and found this is false: derating
+engages at t=51 (temperature reaches 450), reducing current to 25
+*before* the clamp step runs — since 25 < 45, the clamp executes
+(structurally, every tick, as the rules require) but only *binds*
+(changes the value) for t=1-50; it's a no-op for the remaining 110 of
+160 CC-phase ticks. The pilot reported this as "a genuine tension...
+worth flagging to whoever owns the spec" rather than quietly bending
+its explanation to match the false premise — exactly the honest
+behavior this phase is meant to surface. Fixed: the overclaiming prose
+rewritten everywhere (SPEC_TEXT section 3, prompt.md, ideal-flow.md)
+to state the true, more interesting story; rubric criterion 28 rewritten
+to ask for the accurate explanation (which ticks it binds on, and why
+it stops) instead of asking the model to justify a false premise.
+
+**Four smaller judgment calls**, all resolved the same way the reference
+engine actually behaves (so none caused this run's divergence, but each
+was a real gap a different, equally defensible guess could exploit on a
+future run): whether the CV regulation current is available the same
+tick the CC→CV transition fires (yes); whether the CV→TAPER check and
+taper-down both read the pre-decay value (yes, same "previous value"
+convention as voltage); whether internal state carries full precision
+between ticks or rounds every tick (full precision; rounding is
+display-only); whether the hysteresis counter resets to zero at the
+instant of release (yes). All four now stated explicitly in S03a of the
+semantic contract and in SPEC_TEXT.
+
+Artifact rebuilt as `cellguard10_v2.pdf` (Playbook mistake #46: always
+rename on a content revision). Re-ran the full S08 gate after all fixes
+— see the table above, unchanged (the fixes only affect display
+formatting and prose accuracy, not the underlying per-tick computation
+the mutants exercise).
+
 ## Remaining
 
-- Local blind pilot (Phase 8.5, newly reinstated in the SOP this
-  session) before any platform submission.
-- Real pilot run(s) after that, if the blind pilot doesn't surface a
-  problem.
+- A second local blind pilot against the corrected packet, to confirm
+  the two bugs are actually closed and no new ones surface.
+- Real pilot run(s) after that.
 
 ---
 

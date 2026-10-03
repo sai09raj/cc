@@ -51,10 +51,12 @@ temperature, contrary to what a reader might assume given every other
 mode does follow that rule once hot. Explain why the fault latch
 released at the specific tick it did, not at the first tick temperature
 dropped to or below the release threshold, citing the required
-consecutive tick counter and what resets it. Explain why the overcurrent
-clamp is active on every tick of the CC phase despite CC mode current
-exceeding the clamp by a fixed margin, and confirm this is consistent
-with the clamp being applied after derating, not before. Report your
+consecutive tick counter and what resets it. Explain exactly which CC
+phase ticks the overcurrent clamp actually changes the delivered
+current on, and why it stops changing it once derating has engaged and
+already reduced current below the clamp -- confirm this with your own
+engine's own incoming temperature values, not an assumption that the
+clamp binds uniformly across the whole CC phase. Report your
 verifier's agreement on the true trace, both adversarial mutation
 rejection results, and the final trace integrity hash, reconciling all
 of it against the same ten update rules and the trace's actual

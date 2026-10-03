@@ -21,7 +21,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import fitz  # PyMuPDF
 
-REVISION = "cellguard10_v1"
+REVISION = "cellguard10_v2"
 DPI = 300
 PAGE_W, PAGE_H = 612, 792
 
@@ -114,16 +114,18 @@ def diagram_certificate_example():
         "Certificate format (S03), worked example with FAKE numbers\n"
         "(these do not correspond to any real tick of this model):\n\n"
         "CELLGUARD10-CERT-V1\n"
-        "t=1;mode=CC;soc=12.34;temp=317;current=50.0;voltage=3850.5;fault=False\n"
-        "t=2;mode=CC;soc=12.67;temp=321;current=50.0;voltage=3852.5;fault=False\n"
+        "t=1;mode=CC;soc=12.34;temp=317;current=50.00;voltage=3850.50;fault=False\n"
+        "t=2;mode=CC;soc=12.67;temp=321;current=50.00;voltage=3852.50;fault=False\n"
         "...\n"
-        "t=320;mode=TAPER;soc=77.10;temp=288;current=3.0;voltage=4150.9;fault=False\n\n"
+        "t=320;mode=TAPER;soc=77.10;temp=288;current=3.00;voltage=4150.90;fault=False\n\n"
         "Rules: one line per tick, t=1 through t=320, in order. soc/current/\n"
-        "voltage rounded to exactly 2 decimal places. temp is an integer\n"
-        "(0.1 degC units). fault is True or False (or a clearly equivalent\n"
-        "boolean rendering). Certificate hash: SHA-256 of the full text\n"
-        "(header through the t=320 line, newline-joined, trailing newline\n"
-        "included), first 16 hex characters."
+        "voltage are ALWAYS shown with exactly two digits after the decimal\n"
+        "point -- 50.00, never 50 or 50.0 -- even when the value is a whole\n"
+        "number or already has fewer significant decimal digits. temp is an\n"
+        "integer (0.1 degC units). fault is True or False (or a clearly\n"
+        "equivalent boolean rendering). Certificate hash: SHA-256 of the full\n"
+        "text (header through the t=320 line, newline-joined, trailing\n"
+        "newline included), first 16 hex characters."
     )
     ax.text(0.03, 0.95, example, fontsize=9.3, va="top", ha="left",
              transform=ax.transAxes, family="monospace")
@@ -150,11 +152,15 @@ latched, hysteresis counter 0, reference voltage BASE_VOLTAGE.
 The charge mode is CC, then CV, then TAPER, strictly one-way (never
 reverts). The CC to CV transition is evaluated against the PREVIOUS
 tick's reported voltage, never the current tick's own just-computed
-voltage. Once in CV mode, a regulation current value is tracked
-separately from the delivered current; it starts at CC_CURRENT and
-decays by CV_DECAY_STEP every tick (floored at zero, never negative).
-The CV to TAPER transition triggers once that regulation current falls
-to or below TAPER_CURRENT_THRESHOLD. In TAPER mode, delivered current
+voltage; on the tick that transition fires, the regulation current is
+available immediately, that same tick, set to CC_CURRENT -- it is not
+deferred to the next tick. Once in CV mode, a regulation current value
+is tracked separately from the delivered current and decays by
+CV_DECAY_STEP every tick (floored at zero, never negative). The CV to
+TAPER transition check, and that tick's own mode-commanded current, both
+read the regulation current as it enters the tick -- before that same
+tick's own decay step runs, the same "previous value" convention the
+voltage check above already uses. In TAPER mode, delivered current
 (before derating/clamping) is always the fixed TAPER_CURRENT.
 
 3. THERMAL DERATING AND THE OVERCURRENT CLAMP
@@ -162,13 +168,18 @@ to or below TAPER_CURRENT_THRESHOLD. In TAPER mode, delivered current
 If the pack's incoming temperature for a tick (its temperature before
 that tick's own heat/cool update) is at or above DERATE_TEMP, the
 mode-commanded current for that tick is multiplied by DERATE_FACTOR --
-in every mode, TAPER included. This derated (or undeprated) current is
-then capped at OVERCURRENT_MAX. The clamp is applied AFTER derating,
-never before: a tick whose mode-commanded current already exceeds
-OVERCURRENT_MAX is clamped regardless of whether derating also applied,
-and the clamp binds on every tick of the CC phase in this model, since
-CC_CURRENT (50) exceeds OVERCURRENT_MAX (45) by a constant margin
-independent of temperature.
+in every mode, TAPER included. The clamp step itself always executes,
+every tick, in every mode, AFTER derating, never before -- but it only
+changes the delivered value (binds) when the post-derate current still
+exceeds OVERCURRENT_MAX. In this model's CC phase, CC_CURRENT (50)
+exceeds OVERCURRENT_MAX (45), so the clamp binds and reduces delivered
+current to 45 for as long as derating has not yet engaged; once
+temperature reaches DERATE_TEMP partway through the CC phase, derating
+already brings current down to 25 before the clamp step runs, so the
+clamp executes but is a no-op for the remainder of the CC phase. Do not
+assume the clamp binds uniformly across the whole CC phase -- trace
+your own engine's incoming-temperature values to find exactly where
+derating engages.
 
 4. HEAT GENERATION
 
@@ -192,7 +203,9 @@ to be at or below FAULT_TEMP_LOW for FAULT_RELEASE_TICKS CONSECUTIVE
 ticks -- the counter increments only while temperature stays at or
 below FAULT_TEMP_LOW every tick in a row; a single tick where
 temperature rises back above FAULT_TEMP_LOW resets the counter to zero
-immediately, even if the pack had been close to releasing.
+immediately, even if the pack had been close to releasing. The instant
+the counter reaches FAULT_RELEASE_TICKS and the fault un-latches, the
+counter itself resets to zero in that same tick.
 
 6. STATE OF CHARGE AND VOLTAGE
 
@@ -202,6 +215,11 @@ plus state of charge times VOLT_PER_SOC_PCT, minus delivered current
 times IR_DROP_PER_UNIT -- this tick's own voltage, which becomes "the
 previous tick's voltage" for the NEXT tick's mode-transition check
 (section 2), never used for this same tick's own transition decision.
+Every state variable (state of charge, temperature, the CV regulation
+current, voltage) carries full, unrounded numeric precision from tick
+to tick; the certificate's 2-decimal-place rounding (Figure 3) is a
+display rule applied once at serialization, and never feeds back into
+the next tick's computation.
 
 7. INDEPENDENT VERIFICATION
 
@@ -226,8 +244,10 @@ adversarial rejection results plus the SHA-256 trace-integrity hash);
 and an engineering memo explaining, citing your own executed engine's
 actual reported values: why TAPER mode never follows the derated-heat
 rule even while hot; why the fault latch released at the specific tick
-it did, citing the consecutive-tick hysteresis counter; and why the
-overcurrent clamp is active on every tick of the CC phase. Base every
+it did, citing the consecutive-tick hysteresis counter; and exactly
+which CC-phase ticks the overcurrent clamp actually changes the
+delivered current on, and why it stops changing it partway through.
+Base every
 reported value on your own executed implementation -- never hand-derive
 or embed a precomputed state, checkpoint value, or hash as a substitute
 for running the delivered engine.

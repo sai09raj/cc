@@ -88,15 +88,51 @@ Then one line per tick, `t=1` through `t=320`, in order:
 t={t};mode={mode};soc={soc};temp={temp};current={current};voltage={voltage};fault={fault}
 ```
 
-`soc`, `current`, and `voltage` rounded to exactly 2 decimal places;
-`temp` is an integer (0.1 degC units, always integral under these
-constants); `fault` is `True` or `False` (Python-style capitalization,
-matching the reference engine's own `str()` output — any clearly
-equivalent boolean rendering, e.g. `true`/`false`, is accepted).
+`soc`, `current`, and `voltage` are fixed-width 2-decimal-place strings
+— ALWAYS exactly two digits after the decimal point (`50.00`, `25.00`,
+`0.00`), never a bare `50`, `50.0`, or any other width, even when the
+underlying value has zero or one significant decimal digits. (Found
+genuinely ambiguous by the Phase 8.5 blind pilot: "rounded to exactly 2
+decimal places" alone does not pin down whether trailing zeros are
+shown; a plain `round(x, 2)` followed by default string conversion
+drops them. This sentence is the fix — same discipline as mistake #66's
+hash-serialization lesson, applied to a decimal-formatting rule this
+time instead of a field-order/header rule.) `temp` is an integer (0.1
+degC units, always integral under these constants); `fault` is `True`
+or `False` (Python-style capitalization, matching the reference
+engine's own `str()` output — any clearly equivalent boolean rendering,
+e.g. `true`/`false`, is accepted).
 
 Certificate hash: SHA-256 of the full serialized text (header through
 the `t=320` line, newline-joined, trailing newline included), first 16
 hex characters.
+
+### S03a — Four additional clarifications (closed after the blind pilot
+flagged them as judgment calls it had to make; none caused a real
+divergence this run, since it guessed the same way the reference
+engine actually behaves, but a different, equally defensible guess
+could diverge on a future run)
+
+1. **CV regulation-current availability.** When the CC-to-CV transition
+   fires on a given tick (rule 1), that tick's own rule 2 reads the
+   regulation current immediately, in the same tick — it is not
+   deferred to the next tick. The first CV-mode tick's commanded
+   current is therefore `CC_CURRENT` itself, not already decayed.
+2. **CV-to-TAPER check and taper-down timing.** Both the mode-transition
+   check in rule 1 (comparing the regulation current against
+   `TAPER_CURRENT_THRESHOLD`) and the mode-commanded-current read in
+   rule 2 use the regulation current as it enters the tick, before that
+   tick's own rule-3 decay — the same "previous value, not this tick's
+   own update" convention rule 1 already states explicitly for voltage.
+3. **Internal precision.** Full (unrounded) numeric precision is carried
+   between ticks for every state variable. The 2-decimal-place rounding
+   in S03 is a certificate/display rule only, applied once at
+   serialization — it never feeds back into the next tick's
+   computation.
+4. **Hysteresis counter at release.** The moment the counter reaches
+   `FAULT_RELEASE_TICKS` and the fault un-latches (rule 8), the counter
+   itself resets to `0` in that same tick, not left at
+   `FAULT_RELEASE_TICKS`.
 
 ## S04 — Independent verification (independently re-coded, never
 importing or calling the primary's implementation)
