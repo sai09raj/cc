@@ -1,122 +1,118 @@
-# CELLGUARD-10 rubric
+# CELLGUARD-10 rubric (v2, two-cell hardened design)
 
-Positive total **117**; two negative criteria, **-4** (independence
-prohibition) and **-8** (negative trap). **30 criteria** (within the
+Positive total **122**; two negative criteria, **-4** (independence
+prohibition) and **-8** (negative trap). **32 criteria** (within the
 platform's 12-50 range). Every weight is capped at 10. Every criterion
 body is 301 characters or fewer. Criteria are binary. Accept equivalent
 correct work throughout: equivalent languages, source organization, and
 output schemas unambiguously equivalent to this packet's stated format.
 
-Blind-pilot note (Phase 8.5): a cold subagent with no access to the
-reference solution found two real packet bugs before any platform
-submission. (1) "Rounded to exactly 2 decimal places" was ambiguous --
-it computed a fully correct trace (every checkpoint, event, and final
-state here matched canonically) but a different, equally defensible
-string format (`25.0` vs `25.00`) produced a different hash. Fixed:
-S03 now states fixed-width 2-decimal display explicitly; hash and all
-value strings below updated. (2) The packet's own prose claimed the
-overcurrent clamp "binds on every CC-phase tick by a constant margin,"
-which the pilot correctly identified as false once derating engages
-partway through the CC phase (confirmed: binds only t=1-50, a no-op
-for t=51-160). Criterion 28 and the packet text were rewritten to ask
-for the accurate, more demanding story instead of restating a false
-premise. See `STATUS.md` for the full account.
+Hardening note: the single-cell design (v1-v3 of this packet) was fully
+solved, correctly, by two consecutive local blind pilots once its two
+packaging bugs were fixed (see `STATUS.md`) -- the same shape of signal
+that preceded TYPECHAIN-9's 99%/100% (Playbook mistake #67). Hardened
+by adding a sixth genuinely interacting rule (cell balancing between
+two series cells with different capacities) rather than just adding
+volume: a model that handled the original five rules correctly could
+still get the balancing direction backwards, apply it to the wrong
+cell, forget to re-evaluate it every tick, or collapse back to treating
+both cells identically. This is a reasoned hypothesis, not a claim of
+certainty (mistake #67's own lesson) -- a real pilot is still the
+authoritative test.
 
-Score-topology note: built around genuine state-threading (every tick's
-state is computed from the previous tick's), confirmed by actually
-running all five required single-rule mutants against this exact
-rubric's weights (not estimated): 15.4% / 24.8% / 21.4% / 14.5% / 31.6%
--- all under the 33% target. See `STATUS.md` and
-`design/semantic-contract-cellguard.md` S07 for the full audit,
-including the earlier shelved STATIC10 design that failed this same
-gate and could not be fixed by reweighting (Playbook mistake #68).
+Score-topology note: confirmed by actually running all six required
+single-rule mutants against this exact rubric's weights (not
+estimated): 14.8% / 23.8% / 16.4% / 18.0% / 30.3% / 13.9% -- all under
+the 33% target. The new balancing-drop mutant alone corrupts 300/320
+ticks, the second-strongest divergence after the overcurrent clamp. See
+`STATUS.md` and `design/semantic-contract-cellguard.md` S07/S08 for the
+full audit.
 
 Redundancy note: no dedicated negative criterion restates any of the
-four local rules (CV taper-down, TAPER heat exception, fault-release
-hysteresis, overcurrent-clamp ordering) as a "must never" prohibition,
-because dropping any one of them necessarily corrupts an already-tested
-value (the checkpoint/event/final-state/hash criteria below) --
-confirmed by execution for all four (S07's mutant table). Adding a
-negative would score the same root-cause bug twice.
+six local rules as a "must never" prohibition, because dropping any one
+necessarily corrupts an already-tested value (the checkpoint/event/
+final-state/hash criteria below) -- confirmed by execution for all six.
+Adding a negative would score the same root-cause bug twice.
 
 Score-topology 4-bucket partition (plausible-wrong survival ceiling):
-package/existence = 3 (criteria 1-3); local rules = 20 (criteria 4-8);
-integrated production execution = 48 (criteria 9-20, the 8 checkpoint
+package/existence = 3 (criteria 1-3); local rules = 20 (criteria 4-9);
+integrated production execution = 48 (criteria 10-21, the 8 checkpoint
 records plus the 4 event ticks); final decision/causal reconciliation =
-46 (criteria 21-28: final state, hash, verifier x3, memo x3). A
+51 (criteria 22-30: final state, hash, verifier x3, memo x4). A
 submission granted perfect local-rule knowledge but wrong global
 execution keeps bucket 1+2 (23) and the three verifier criteria (15,
 tested via standalone crafted scenarios independent of the main trace),
 but the memo criteria require citing the submission's own actual
 computed values, so a wrong execution plausibly also fails those, along
-with final state, hash, and most checkpoints/events (a few early ticks
-might coincidentally still match before the wrong execution's own
-divergence point, generously estimate 2 of 12). Worst-case survival:
-roughly (3+20+10+15)/117 ~ 41%, under the 50% reject threshold. This
-theoretical ceiling is secondary evidence; the five real executed
-mutant scores (14.5-31.6%, see S07) are the authoritative gate.
+with final state, hash, and most checkpoints/events (generously
+estimate 2 of 12 survive by coincidence). Worst-case survival: roughly
+(3+20+10+15)/122 ~ 39%, under the 50% reject threshold. This
+theoretical ceiling is secondary evidence; the six real executed mutant
+scores (13.9-30.3%, see above) are the authoritative gate.
 
 ### Package (1-3, weight 3)
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 1 | +1 | Delivers all six required files: the engine source, the independent verifier source, the full 320-tick state trace, a findings report, certification evidence (both adversarial rejection results and the trace-integrity hash), and an engineering memo. |
+| 1 | +1 | Delivers all six required files: the engine source, the independent verifier source, the full 320-tick two-cell state trace, a findings report, certification evidence (both adversarial rejection results and the trace-integrity hash), and an engineering memo. |
 | 2 | +1 | Executes the delivered engine and verifier end to end with a documented, reproducible command. |
 | 3 | +1 | Records the language/runtime tool version used, in a declared offline, dependency-free (stdlib-only) execution environment. |
 
-### Local rules (4-8, weight 20)
+### Local rules (4-9, weight 20)
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 4 | +5 | During CV mode, the delivered engine reduces the CV regulation current by exactly 1.2 every tick, floored at zero -- it never holds the CV regulation current constant. |
-| 5 | +5 | In TAPER mode, the delivered engine always applies a heat contribution of 1 for that tick, never the derated or full-mode heat rate, regardless of temperature. |
+| 4 | +3 | During CV mode, the delivered engine reduces the CV regulation current by exactly 1.2 every tick, floored at zero -- it never holds the CV regulation current constant. |
+| 5 | +3 | In TAPER mode, the delivered engine always applies a heat contribution of 1 for that tick, never the derated or full-mode heat rate, regardless of temperature. |
 | 6 | +3 | The delivered engine releases a latched fault only after 4 consecutive ticks at or below temperature 520, never fewer. |
 | 7 | +2 | The delivered engine's fault-release hysteresis counter resets to zero immediately if temperature rises back above 520 while the fault is still latched. |
-| 8 | +5 | The delivered engine applies the 45-unit overcurrent clamp after thermal derating, not before, to every tick's delivered current. |
+| 8 | +3 | The delivered engine applies the 45-unit overcurrent clamp after thermal derating, not before, to the shared base current each tick. |
+| 9 | +6 | The delivered engine recomputes, every tick, whether cell A or cell B currently leads in state of charge, and bleeds 8 units only from whichever cell is currently ahead, never a fixed cell. |
 
-### Certified checkpoint facts (9-16, weight 40)
+### Certified checkpoint facts (10-17, weight 40)
 
-Each row is one unitary state-snapshot record (mode, state of charge,
-temperature, delivered current, terminal voltage, fault status) at a
-single named tick, exactly as this packet's S03 serialization format
-requires.
-
-| # | Wt | Criterion |
-| --- | --- | --- |
-| 9 | +5 | Reports the full state at t=161 exactly: mode=CV, soc=83.75, temp=561, current=25.00, voltage=4152.50, fault=False. |
-| 10 | +5 | Reports the full state at t=175 exactly: mode=CV, soc=88.53, temp=575, current=16.60, voltage=4198.00, fault=True. |
-| 11 | +5 | Reports the full state at t=206 exactly: mode=TAPER, soc=88.53, temp=513, current=0.00, voltage=4231.20, fault=False. |
-| 12 | +5 | Reports the full state at t=230 exactly: mode=TAPER, soc=89.13, temp=489, current=1.50, voltage=4231.80, fault=False. |
-| 13 | +5 | Reports the full state at t=250 exactly: mode=TAPER, soc=89.63, temp=469, current=1.50, voltage=4234.80, fault=False. |
-| 14 | +5 | Reports the full state at t=280 exactly: mode=TAPER, soc=90.63, temp=439, current=3.00, voltage=4237.80, fault=False. |
-| 15 | +5 | Reports the full state at t=300 exactly: mode=TAPER, soc=91.63, temp=419, current=3.00, voltage=4243.80, fault=False. |
-| 16 | +5 | Reports the full state at t=315 exactly: mode=TAPER, soc=92.38, temp=404, current=3.00, voltage=4248.30, fault=False. |
-
-### Certified event facts (17-20, weight 8)
+Each row is one unitary state-snapshot record (mode, both cells' state
+of charge, temperature, both cells' delivered current, both cells'
+terminal voltage, fault status) at a single named tick, exactly as this
+packet's S03 serialization format requires.
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 17 | +2 | Reports the CC-to-CV mode transition as occurring at exactly t=161. |
-| 18 | +2 | Reports the CV-to-TAPER mode transition as occurring at exactly t=196. |
-| 19 | +2 | Reports the fault latch engaging at exactly t=175. |
-| 20 | +2 | Reports the fault latch releasing at exactly t=206. |
+| 10 | +5 | Reports the full state at t=175 exactly: mode=CV, soc_a=86.04, soc_b=84.57, temp=575, current_a=17.80, current_b=17.80, voltage_a=4180.63, voltage_b=4171.85, fault=True. |
+| 11 | +5 | Reports the full state at t=198 exactly: mode=TAPER, soc_a=86.04, soc_b=84.57, temp=529, current_a=0.00, current_b=0.00, voltage_a=4216.23, voltage_b=4207.45, fault=True. |
+| 12 | +5 | Reports the full state at t=206 exactly: mode=TAPER, soc_a=86.04, soc_b=84.57, temp=513, current_a=0.00, current_b=0.00, voltage_a=4216.23, voltage_b=4207.45, fault=False. |
+| 13 | +5 | Reports the full state at t=230 exactly: mode=TAPER, soc_a=86.64, soc_b=85.15, temp=489, current_a=1.50, current_b=1.50, voltage_a=4216.86, voltage_b=4207.88, fault=False. |
+| 14 | +5 | Reports the full state at t=250 exactly: mode=TAPER, soc_a=87.12, soc_b=85.62, temp=469, current_a=1.50, current_b=1.50, voltage_a=4219.71, voltage_b=4210.73, fault=False. |
+| 15 | +5 | Reports the full state at t=280 exactly: mode=TAPER, soc_a=88.06, soc_b=86.57, temp=439, current_a=3.00, current_b=3.00, voltage_a=4222.39, voltage_b=4213.45, fault=False. |
+| 16 | +5 | Reports the full state at t=300 exactly: mode=TAPER, soc_a=89.01, soc_b=87.53, temp=419, current_a=3.00, current_b=3.00, voltage_a=4228.07, voltage_b=4219.16, fault=False. |
+| 17 | +5 | Reports the full state at t=315 exactly: mode=TAPER, soc_a=89.70, soc_b=88.24, temp=404, current_a=0.00, current_b=3.00, voltage_a=4238.18, voltage_b=4223.45, fault=False. |
 
-### Certification and independent verification (21-28, weight 38)
-
-| # | Wt | Criterion |
-| --- | --- | --- |
-| 21 | +6 | Reports the full state at t=320 (the final tick) exactly: mode=TAPER, soc=92.63, temp=399, current=3.00, voltage=4249.80, fault=False. |
-| 22 | +10 | Matches the first 16 hex characters of the trace-integrity hash (algorithm in the packet) to `3e2d011d887d98d6`. |
-| 23 | +5 | The independently-coded verifier accepts the true 320-tick trace's own correct checkpoint states in full. |
-| 24 | +5 | The independently-coded verifier rejects a claimed fault-release that reports the fault clearing after only 2 consecutive cool ticks instead of 4. |
-| 25 | +5 | The independently-coded verifier rejects a claimed delivered current that exceeds 45 as if the overcurrent clamp had never been applied. |
-| 26 | +5 | Explains in the memo, citing its own reported temperatures, why TAPER mode never uses the derated or full heat rate even while above the derate temperature. |
-| 27 | +5 | Explains in the memo, citing its own reported fault-latch tick numbers, why the fault released at t=206 and not at the first tick temperature dropped to or below 520. |
-| 28 | +5 | Explains in the memo, citing its own reported currents, that the overcurrent clamp changes delivered current only for t=1 through t=50, and is a no-op for the rest of the CC phase once derating already brings current below it. |
-
-### Negative criteria (29-30)
+### Certified event facts (18-21, weight 8)
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 29 | -4 | Delivers a verifier that imports or reuses the primary engine's computed per-tick state (rather than independently re-implementing the per-tick update rules in its own code) to decide checkpoint consistency. |
-| 30 | -8 | Embeds a precomputed final state, checkpoint value, event tick, or the trace-integrity hash, as a literal substituting for executing the delivered engine. Immutable input constants (circuit/model constants) don't trigger this. |
+| 18 | +2 | Reports the CC-to-CV mode transition as occurring at exactly t=163. |
+| 19 | +2 | Reports the CV-to-TAPER mode transition as occurring at exactly t=198. |
+| 20 | +2 | Reports the fault latch engaging at exactly t=175. |
+| 21 | +2 | Reports the fault latch releasing at exactly t=206. |
+
+### Certification and independent verification (22-30, weight 51)
+
+| # | Wt | Criterion |
+| --- | --- | --- |
+| 22 | +6 | Reports the full state at t=320 (the final tick) exactly: mode=TAPER, soc_a=89.96, soc_b=88.48, temp=399, current_a=3.00, current_b=3.00, voltage_a=4233.76, voltage_b=4224.88, fault=False. |
+| 23 | +10 | Matches the first 16 hex characters of the trace-integrity hash (algorithm in the packet) to `bdce369d719f73af`. |
+| 24 | +5 | The independently-coded verifier accepts the true 320-tick trace's own correct checkpoint states in full. |
+| 25 | +5 | The independently-coded verifier rejects a claimed fault-release that reports the fault clearing after only 2 consecutive cool ticks instead of 4. |
+| 26 | +5 | The independently-coded verifier rejects a claimed state where both cells report identical delivered current throughout, as if cell balancing were never applied. |
+| 27 | +5 | Explains in the memo, citing its own reported temperatures, why TAPER mode never uses the derated or full heat rate even while above the derate temperature. |
+| 28 | +5 | Explains in the memo, citing its own reported fault-latch tick numbers, why the fault released at t=206 and not at the first tick temperature dropped to or below 520. |
+| 29 | +5 | Explains in the memo, citing its own reported currents, that the overcurrent clamp changes the shared base current only for t=1 through t=50, and is a no-op for the rest of the CC phase once derating already brings it below the clamp. |
+| 30 | +5 | Explains in the memo, citing at least two specific ticks where balancing activates and at least one where it deactivates, why it does not settle permanently once triggered. |
+
+### Negative criteria (31-32)
+
+| # | Wt | Criterion |
+| --- | --- | --- |
+| 31 | -4 | Delivers a verifier that imports or reuses the primary engine's computed per-tick state (rather than independently re-implementing the per-tick update rules in its own code) to decide checkpoint consistency. |
+| 32 | -8 | Embeds a precomputed final state, checkpoint value, event tick, or the trace-integrity hash, as a literal substituting for executing the delivered engine. Immutable input constants (circuit/model constants) don't trigger this. |

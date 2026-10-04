@@ -1,29 +1,29 @@
 #!/usr/bin/env python3
-"""CELLGUARD-10 score-topology counterfactual scorer (S08 gate)."""
+"""CELLGUARD-10 score-topology counterfactual scorer (S08 gate), two-cell model."""
 import bms_engine as E
 import bms_verify as V
 
-PACKAGE_WEIGHT = 3           # 3 atomic rows, +1 each
-LOCAL_RULE_WEIGHT = 20       # 5 rule-statement criteria (6/23/137 hysteresis
-                              # split into release+reset), weights sum to 20
-CHECKPOINT_WEIGHT = 5        # per checkpoint snapshot (unitary 6-field record), x7
+PACKAGE_WEIGHT = 3
+LOCAL_RULE_WEIGHT = 20       # 6 rule-statement criteria (balancing added), weights sum to 20
+CHECKPOINT_WEIGHT = 5        # per checkpoint snapshot (now 9 fields), x8
 EVENT_WEIGHT = 2             # per transition/event tick, x4
 FINAL_STATE_WEIGHT = 6
 HASH_WEIGHT = 10
 VERIFY_ACCEPT_WEIGHT = 5
 VERIFY_A_WEIGHT = 5
 VERIFY_B_WEIGHT = 5
-MEMO_WEIGHT_EACH = 5         # x3
+MEMO_WEIGHT_EACH = 5         # x4 (balancing explanation added)
 
-CHECKPOINT_TICKS = [161, 175, 206, 230, 250, 280, 300, 315]
+CHECKPOINT_TICKS = [175, 198, 206, 230, 250, 280, 300, 315]
 N_CHECKPOINTS = len(CHECKPOINT_TICKS)
 N_EVENTS = 4
 
 TOTAL = (PACKAGE_WEIGHT + LOCAL_RULE_WEIGHT + CHECKPOINT_WEIGHT * N_CHECKPOINTS
           + EVENT_WEIGHT * N_EVENTS + FINAL_STATE_WEIGHT + HASH_WEIGHT
           + VERIFY_ACCEPT_WEIGHT + VERIFY_A_WEIGHT + VERIFY_B_WEIGHT
-          + MEMO_WEIGHT_EACH * 3)
-FIELDS = ("mode", "soc", "temp", "current", "voltage", "fault")
+          + MEMO_WEIGHT_EACH * 4)
+
+FIELDS = ("mode", "soc_a", "soc_b", "temp", "current_a", "current_b", "voltage_a", "voltage_b", "fault")
 
 
 def run_engine(**mutants):
@@ -108,7 +108,7 @@ def score(name, mutant_kwargs=None, local_rule_fail=False,
     if not verify_b_fail:
         earned += VERIFY_B_WEIGHT
     if not memo_fail:
-        earned += MEMO_WEIGHT_EACH * 3
+        earned += MEMO_WEIGHT_EACH * 4
 
     pct = 100 * earned / TOTAL
     print(f"{name}: {earned}/{TOTAL} = {pct:.1f}%  checkpoints={correct_checkpoints}/{N_CHECKPOINTS}  "
@@ -123,7 +123,7 @@ if __name__ == "__main__":
 
     ok, r1 = V.accepts_true_program()
     rejA, r2 = V.adversarial_mutation_early_release()
-    rejB, r3 = V.adversarial_mutation_no_clamp()
+    rejB, r3 = V.adversarial_mutation_no_balancing()
     print(f"verifier: accepts true={ok}  rejects A={rejA}  rejects B={rejB}\n")
 
     score("canonical (sanity, must be 100%)")
@@ -142,8 +142,12 @@ if __name__ == "__main__":
 
     score("skip overcurrent clamp",
           mutant_kwargs=dict(no_overcurrent_clamp=True),
-          local_rule_fail=True, verify_b_fail=True, memo_fail=True)
+          local_rule_fail=True, memo_fail=True)
 
     score("TAPER uses full-heat rate, not TAPER-specific rate",
           mutant_kwargs=dict(taper_uses_full_heat=True),
           local_rule_fail=True, memo_fail=True)
+
+    score("drop cell balancing",
+          mutant_kwargs=dict(no_balancing=True),
+          local_rule_fail=True, verify_b_fail=True, memo_fail=True)

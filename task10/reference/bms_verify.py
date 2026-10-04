@@ -1,11 +1,11 @@
-"""CELLGUARD-10 independent verifier — S04/S05.
-
-Re-implements S02's per-tick update rules from scratch, in its own code,
-never importing or calling bms_engine. Replays from t=1 to each of five
-checkpoint ticks and compares its own computed state against the
-primary's claimed state at that tick.
+"""CELLGUARD-10 independent verifier — re-implements the eleven per-tick
+update rules (including cell balancing) from scratch, in its own code,
+never importing or calling bms_engine. Replays from t=1 to each of
+several checkpoint ticks and compares its own computed state against
+the primary's claimed state at that tick.
 """
-CAPACITY = 6000.0
+CAPACITY_A = 5700.0
+CAPACITY_B = 6300.0
 CC_CURRENT = 50.0
 CV_VOLTAGE_THRESHOLD = 4150.0
 CV_DECAY_STEP = 1.2
@@ -27,23 +27,26 @@ FAULT_TEMP_LOW = 520
 FAULT_RELEASE_TICKS = 4
 OVERCURRENT_MAX = 45.0
 
-CHECKPOINTS = [50, 100, 161, 175, 206]  # ordinary, ordinary, CC->CV, fault-engage, fault-release
+BALANCE_THRESHOLD = 1.5
+BALANCE_BLEED = 8.0
+
+CHECKPOINTS = [50, 100, 163, 175, 198, 206]
 
 
 def independently_simulate_to(target_tick, bug=None):
-    """bug: optional string naming a deliberate error, for S05's adversarial tests."""
-    soc = 0.0
+    """bug: optional string naming a deliberate error, for required adversarial tests."""
+    soc_a, soc_b = 0.0, 0.0
     temp = AMBIENT
     mode = "CC"
     cv_current = None
     fault_latched = False
     cool_counter = 0
-    voltage_prev = BASE_VOLTAGE
-    voltage_cur = BASE_VOLTAGE
+    va_prev, vb_prev = BASE_VOLTAGE, BASE_VOLTAGE
     state = None
 
     for t in range(1, target_tick + 1):
-        if mode == "CC" and voltage_prev >= CV_VOLTAGE_THRESHOLD:
+        ref_voltage = max(va_prev, vb_prev)
+        if mode == "CC" and ref_voltage >= CV_VOLTAGE_THRESHOLD:
             mode = "CV"
             cv_current = CC_CURRENT
         if mode == "CV" and cv_current <= TAPER_CURRENT_THRESHOLD:
@@ -58,17 +61,26 @@ def independently_simulate_to(target_tick, bug=None):
             mode_current = TAPER_CURRENT
 
         if fault_latched:
-            actual_current = 0.0
+            base_current = 0.0
         elif temp >= DERATE_TEMP:
-            actual_current = mode_current * DERATE_FACTOR
+            base_current = mode_current * DERATE_FACTOR
         else:
-            actual_current = mode_current
+            base_current = mode_current
+        base_current = min(base_current, OVERCURRENT_MAX)
 
-        actual_current = min(actual_current, OVERCURRENT_MAX)
+        cur_a, cur_b = base_current, base_current
+        diff = soc_a - soc_b
+        balance_threshold = 999.0 if bug == "no_balancing" else BALANCE_THRESHOLD
+        if base_current > 0 and abs(diff) >= balance_threshold:
+            if diff > 0:
+                cur_a = max(0.0, base_current - BALANCE_BLEED)
+            else:
+                cur_b = max(0.0, base_current - BALANCE_BLEED)
 
-        soc = min(100.0, soc + actual_current / CAPACITY * 100.0)
+        soc_a = min(100.0, soc_a + cur_a / CAPACITY_A * 100.0)
+        soc_b = min(100.0, soc_b + cur_b / CAPACITY_B * 100.0)
 
-        if actual_current <= 0:
+        if base_current <= 0:
             heat = 0
         elif mode == "TAPER":
             heat = HEAT_TAPER
@@ -91,26 +103,27 @@ def independently_simulate_to(target_tick, bug=None):
             else:
                 cool_counter = 0
 
-        voltage_cur = BASE_VOLTAGE + soc * VOLT_PER_SOC_PCT - actual_current * IR_DROP_PER_UNIT
-        if bug == "no_clamp" and t == target_tick:
-            # re-derive what current/voltage WOULD be without the clamp, for the adversarial test
-            pre_clamp = mode_current * (DERATE_FACTOR if (not fault_latched and temp >= DERATE_TEMP) else 1.0)
-            actual_current = pre_clamp
-            voltage_cur = BASE_VOLTAGE + soc * VOLT_PER_SOC_PCT - actual_current * IR_DROP_PER_UNIT
-        voltage_prev = voltage_cur
+        va_cur = BASE_VOLTAGE + soc_a * VOLT_PER_SOC_PCT - cur_a * IR_DROP_PER_UNIT
+        vb_cur = BASE_VOLTAGE + soc_b * VOLT_PER_SOC_PCT - cur_b * IR_DROP_PER_UNIT
+        va_prev, vb_prev = va_cur, vb_cur
 
         state = {
-            "t": t, "mode": mode, "soc": round(soc, 2), "temp": temp,
-            "current": round(actual_current, 2), "voltage": round(voltage_cur, 2),
+            "t": t, "mode": mode,
+            "soc_a": round(soc_a, 2), "soc_b": round(soc_b, 2), "temp": temp,
+            "current_a": round(cur_a, 2), "current_b": round(cur_b, 2),
+            "voltage_a": round(va_cur, 2), "voltage_b": round(vb_cur, 2),
             "fault": fault_latched,
         }
     return state
 
 
+FIELDS = ("mode", "soc_a", "soc_b", "temp", "current_a", "current_b", "voltage_a", "voltage_b", "fault")
+
+
 def check_checkpoint(claimed_row, checkpoint_tick):
     independent = independently_simulate_to(checkpoint_tick)
     mismatches = []
-    for key in ("mode", "soc", "temp", "current", "voltage", "fault"):
+    for key in FIELDS:
         if claimed_row.get(key) != independent[key]:
             mismatches.append((key, claimed_row.get(key), independent[key]))
     return (len(mismatches) == 0), mismatches
@@ -132,8 +145,7 @@ def accepts_true_program():
     for k in E.MUTANT:
         E.MUTANT[k] = False
     rows = E.run()
-    by_tick = {r["t"]: {k: v for k, v in r.items() if k in
-                         ("mode", "soc", "temp", "current", "voltage", "fault")} for r in rows}
+    by_tick = {r["t"]: {k: v for k, v in r.items() if k in FIELDS} for r in rows}
     return check_all_checkpoints(by_tick)
 
 
@@ -141,18 +153,16 @@ def adversarial_mutation_early_release():
     """A claimed row at the fault-release checkpoint (t=206) that reports the
     fault released after only 2 consecutive cool ticks, not 4. Verifier must reject."""
     bugged = independently_simulate_to(206, bug="early_release")
-    claimed_row = dict(bugged)
-    ok, mismatches = check_checkpoint(claimed_row, 206)
+    ok, mismatches = check_checkpoint(dict(bugged), 206)
     return (not ok), mismatches
 
 
-def adversarial_mutation_no_clamp():
-    """A claimed row at a CC-phase checkpoint (t=50) that reports delivered
-    current/voltage as if the overcurrent clamp were never applied. Verifier
-    must reject."""
-    bugged = independently_simulate_to(50, bug="no_clamp")
-    claimed_row = dict(bugged)
-    ok, mismatches = check_checkpoint(claimed_row, 50)
+def adversarial_mutation_no_balancing():
+    """A claimed row at t=50 (a tick where balancing is genuinely active in the
+    true trace) that reports both cells receiving identical current, as if
+    balancing were never applied. Verifier must reject."""
+    bugged = independently_simulate_to(50, bug="no_balancing")
+    ok, mismatches = check_checkpoint(dict(bugged), 50)
     return (not ok), mismatches
 
 
@@ -161,5 +171,5 @@ if __name__ == "__main__":
     print("accepts true program:", ok, "-", reason)
     rejA, reasonA = adversarial_mutation_early_release()
     print("rejects mutation A (early fault release):", rejA, "-", reasonA)
-    rejB, reasonB = adversarial_mutation_no_clamp()
-    print("rejects mutation B (overcurrent clamp skipped):", rejB, "-", reasonB)
+    rejB, reasonB = adversarial_mutation_no_balancing()
+    print("rejects mutation B (balancing skipped):", rejB, "-", reasonB)

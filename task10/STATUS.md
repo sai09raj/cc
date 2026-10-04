@@ -214,12 +214,58 @@ TYPECHAIN-9's 99%/100%. Phase 8.5's local blind pilots are a packaging
 and spec-ambiguity check, not a difficulty predictor — Phase 10/11's
 real pilot is still the only evidence that actually settles this.
 
+## Hardening: cell balancing added as a sixth interacting rule
+
+User chose to harden content rather than proceed to a real pilot after
+two clean blind-pilot solves. Rebuilt around a genuinely new dimension,
+not just more volume: the pack is now **two series-connected cells (A,
+B)** with different capacities (`CAPACITY_A=5700`, `CAPACITY_B=6300`),
+each with its own independently-tracked state of charge and voltage.
+Mode, temperature, and fault remain pack-level and shared. A new rule
+(S02.6): every tick, whichever cell currently leads in state of charge
+has 8 units bled from its delivered current (a passive balancing
+resistor); the lagging cell gets the full shared base current.
+Re-evaluated from scratch every tick — because the two capacities
+differ, which cell leads is not fixed for the whole run (confirmed:
+balancing is active 63 of 320 ticks, toggling on/off 122 times, not a
+one-time correction that then sits idle).
+
+This is qualitatively different from the five existing rules, which all
+operate on one shared pack-level state: a model that handled those five
+correctly could still get the balance direction backwards, apply it to
+the wrong cell, forget to re-decay the comparison each tick, or
+silently collapse back to treating both cells identically.
+
+Prototyped numerically first (per mistake #68's lesson — confirm the
+dynamics before writing the real engine): an initial design (fixed
+initial SoC offset, equal capacities) only exercised balancing for 4
+ticks total, then the gap froze and never moved again — too weak a
+test. Switched to differing capacities with equal starting SoC, which
+produces sustained, oscillating divergence throughout the run instead.
+
+Score-topology re-verified with all six mutants (five original plus
+drop-balancing): 14.8% / 23.8% / 16.4% / 18.0% / 30.3% / 13.9% — all
+clear 33%. The balancing-drop mutant alone corrupts 300/320 ticks
+(first divergence at t=21), the strongest single-rule divergence after
+the overcurrent clamp, confirming the new rule is genuinely
+load-bearing. Independent verifier rewritten with a new required
+adversarial test (claimed state with both cells receiving identical
+current, as if balancing were never applied) in place of the old
+clamp-bypass test, which no longer fit the two-cell state shape.
+
+Rubric rebuilt (32 criteria, positive total 122) applying the same
+discipline as every prior audit this session: all 9 checkpoint/event/
+final-state facts re-verified byte-for-byte against a fresh execution,
+all bodies ≤301 chars, the new balancing local-rule and memo criteria
+checked for atomicity/self-containment. Platform prompt rewritten for
+the two-cell model and trimmed to stay under the 500-word cap (454
+words, zero hyphens). Artifact rebuilt as `cellguard10_v4.pdf`
+(6 pages now: 3 figures, 3 text pages), re-verified byte-level clean.
+
 ## Remaining
 
-- Decide whether to proceed to a real platform pilot now (packaging is
-  clean; this is the authoritative next test) or invest further in
-  content hardening first, given two clean blind-pilot solves. Flagged
-  to the user as an open decision, not resolved here.
+- Third local blind pilot against the hardened two-cell packet, before
+  deciding whether to proceed to a real platform pilot.
 - Real pilot run(s), whichever path is chosen.
 
 ---

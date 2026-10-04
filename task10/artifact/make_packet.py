@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Builds cellguard10_v1.pdf, the CELLGUARD-10 engineering packet.
+"""Builds cellguard10_v4.pdf, the CELLGUARD-10 engineering packet
+(two-cell, hardened design).
 
 Playbook mistake #46: every content revision gets a unique filename.
 REVISION below drives the output filename, from the first draft.
@@ -21,7 +22,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import fitz  # PyMuPDF
 
-REVISION = "cellguard10_v3"
+REVISION = "cellguard10_v4"
 DPI = 300
 PAGE_W, PAGE_H = 612, 792
 
@@ -35,10 +36,11 @@ def render_png(fig):
 
 
 def diagram_constants():
-    fig, ax = plt.subplots(figsize=(8.2, 8.0))
+    fig, ax = plt.subplots(figsize=(8.2, 9.0))
     ax.axis("off")
     rows = [
-        ("CAPACITY", "6000", "charge units"),
+        ("CAPACITY_A", "5700", "cell A charge units"),
+        ("CAPACITY_B", "6300", "cell B charge units (manufacturing variance)"),
         ("CC_CURRENT", "50", "constant-current phase current"),
         ("CV_VOLTAGE_THRESHOLD", "4150", "mV; CC->CV transition point"),
         ("CV_DECAY_STEP", "1.2", "per tick, CV regulation current"),
@@ -58,76 +60,91 @@ def diagram_constants():
         ("FAULT_TEMP_LOW", "520", "0.1 degC; release eligible at/below"),
         ("FAULT_RELEASE_TICKS", "4", "consecutive cool ticks to release"),
         ("OVERCURRENT_MAX", "45", "hard clamp, applied after derating"),
+        ("BALANCE_THRESHOLD", "1.5", "%; SoC gap that triggers balancing"),
+        ("BALANCE_BLEED", "8", "units diverted from the leading cell"),
     ]
     tbl = ax.table(cellText=rows, colLabels=["Constant", "Value", "Meaning"],
                     loc="center", cellLoc="left", colLoc="left")
     tbl.auto_set_font_size(False)
-    tbl.set_fontsize(8.5)
-    tbl.scale(1, 1.35)
+    tbl.set_fontsize(8.2)
+    tbl.scale(1, 1.3)
     tbl.auto_set_column_width([0, 1, 2])
     ax.set_title("Model constants (fixed packet input)", fontsize=12, pad=14)
     return fig
 
 
 def diagram_rules():
-    fig, ax = plt.subplots(figsize=(8.2, 8.6))
+    fig, ax = plt.subplots(figsize=(8.5, 9.4))
     ax.axis("off")
     steps = [
-        "1. Mode transition: CC->CV if PREVIOUS tick's voltage >= CV_VOLTAGE_THRESHOLD.\n"
-        "   CV->TAPER if CV regulation current <= TAPER_CURRENT_THRESHOLD. One-way only.",
+        "1. Mode transition (shared, pack-level): CC->CV if max(PREVIOUS tick's\n"
+        "   voltage_a, voltage_b) >= CV_VOLTAGE_THRESHOLD. CV->TAPER if CV\n"
+        "   regulation current <= TAPER_CURRENT_THRESHOLD. One-way only.",
         "2. Mode-commanded current: CC_CURRENT / CV regulation current / TAPER_CURRENT.",
         "3. CV taper-down: in CV mode only, after step 2, reduce CV regulation\n"
-        "   current by CV_DECAY_STEP (floor 0), for next tick's step 1/2 check.",
-        "4. Thermal derating and fault gating: if fault latched, current=0.\n"
-        "   Else if INCOMING temperature >= DERATE_TEMP, current *= DERATE_FACTOR\n"
-        "   (applies in every mode, TAPER included). Else current unmodified.",
-        "5. Overcurrent clamp: cap current at OVERCURRENT_MAX. Applied AFTER\n"
-        "   derating (step 4), never before.",
-        "6. Heat generation: 0 if current is 0. Else, in TAPER mode: ALWAYS\n"
-        "   HEAT_TAPER, regardless of temperature -- this packet's own\n"
-        "   exception, not the derated-heat rule other modes follow when hot.\n"
-        "   Else if incoming temp >= DERATE_TEMP: HEAT_DERATED. Else: HEAT_FULL.",
-        "7. Temperature update: temp = incoming temp + heat - COOL_PER_TICK.",
-        "8. Fault-latch hysteresis: latch if not already latched and NEW temp\n"
-        "   >= FAULT_TEMP_HIGH. If latched: release only after\n"
-        "   FAULT_RELEASE_TICKS CONSECUTIVE ticks at/below FAULT_TEMP_LOW --\n"
-        "   a single tick back above FAULT_TEMP_LOW resets the counter to 0.",
-        "9. State of charge: soc = min(100, soc_prev + current / CAPACITY * 100).",
-        "10. Terminal voltage: voltage = BASE_VOLTAGE + soc*VOLT_PER_SOC_PCT\n"
-        "    - current*IR_DROP_PER_UNIT. This tick's own voltage (step 1 of\n"
-        "    the NEXT tick reads it as the previous tick's voltage).",
+        "   current by CV_DECAY_STEP (floor 0). Unconditional -- not gated by\n"
+        "   fault status (see section 2).",
+        "4. Thermal derating and fault gating -> BASE current (shared): if fault\n"
+        "   latched, base=0. Else if INCOMING temp >= DERATE_TEMP, base =\n"
+        "   mode-current * DERATE_FACTOR (every mode, TAPER included). Else\n"
+        "   base = mode-current unmodified.",
+        "5. Overcurrent clamp: cap BASE current at OVERCURRENT_MAX. Applied\n"
+        "   AFTER derating, before balancing.",
+        "6. CELL BALANCING (per cell, the new rule): diff = soc_a - soc_b, using\n"
+        "   EACH cell's own PREVIOUS-tick SoC. If base>0 and |diff|>=\n"
+        "   BALANCE_THRESHOLD: the HIGHER-SoC cell gets\n"
+        "   max(0, base - BALANCE_BLEED); the other cell gets the full base\n"
+        "   current, unchanged. Otherwise both cells get the same base current.\n"
+        "   Re-evaluated every tick -- which cell leads can change over the run.",
+        "7. Heat generation (shared, driven by BASE current, not either cell's\n"
+        "   post-balancing current): 0 if base=0. Else, in TAPER mode: ALWAYS\n"
+        "   HEAT_TAPER, regardless of temperature. Else if incoming temp >=\n"
+        "   DERATE_TEMP: HEAT_DERATED. Else: HEAT_FULL.",
+        "8. Temperature update: temp = incoming temp + heat - COOL_PER_TICK.",
+        "9. Fault-latch hysteresis: latch if not already latched and NEW temp\n"
+        "   >= FAULT_TEMP_HIGH. Release only after FAULT_RELEASE_TICKS\n"
+        "   CONSECUTIVE ticks at/below FAULT_TEMP_LOW -- one tick back above\n"
+        "   resets the counter to 0.",
+        "10. State of charge (per cell): soc_x = min(100, soc_x_prev +\n"
+        "    current_x / CAPACITY_X * 100) -- each cell uses its OWN capacity.",
+        "11. Terminal voltage (per cell): voltage_x = BASE_VOLTAGE +\n"
+        "    soc_x*VOLT_PER_SOC_PCT - current_x*IR_DROP_PER_UNIT. Each cell's\n"
+        "    own voltage feeds step 1's NEXT-tick max() check.",
     ]
-    y = 0.97
+    y = 0.975
     for s in steps:
-        ax.text(0.02, y, s, fontsize=9.2, va="top", ha="left",
+        ax.text(0.02, y, s, fontsize=8.6, va="top", ha="left",
                  transform=ax.transAxes, family="monospace")
-        y -= 0.095
+        y -= 0.088
     ax.set_title("Per-tick update rules, in order (applied every tick, t=1..320)",
                  fontsize=11, pad=10)
     return fig
 
 
 def diagram_certificate_example():
-    fig, ax = plt.subplots(figsize=(8.2, 5.0))
+    fig, ax = plt.subplots(figsize=(8.2, 5.4))
     ax.axis("off")
     example = (
         "Certificate format (S03), worked example with FAKE numbers\n"
         "(these do not correspond to any real tick of this model):\n\n"
-        "CELLGUARD10-CERT-V1\n"
-        "t=1;mode=CC;soc=12.34;temp=317;current=50.00;voltage=3850.50;fault=False\n"
-        "t=2;mode=CC;soc=12.67;temp=321;current=50.00;voltage=3852.50;fault=False\n"
+        "CELLGUARD10-CERT-V2\n"
+        "t=1;mode=CC;soc_a=12.34;soc_b=11.90;temp=317;current_a=50.00;\n"
+        "  current_b=50.00;voltage_a=3850.50;voltage_b=3846.10;fault=False\n"
+        "t=2;mode=CC;soc_a=12.67;soc_b=12.05;temp=321;current_a=42.00;\n"
+        "  current_b=50.00;voltage_a=3852.50;voltage_b=3847.20;fault=False\n"
         "...\n"
-        "t=320;mode=TAPER;soc=77.10;temp=288;current=3.00;voltage=4150.90;fault=False\n\n"
-        "Rules: one line per tick, t=1 through t=320, in order. soc/current/\n"
-        "voltage are ALWAYS shown with exactly two digits after the decimal\n"
-        "point -- 50.00, never 50 or 50.0 -- even when the value is a whole\n"
-        "number or already has fewer significant decimal digits. temp is an\n"
-        "integer (0.1 degC units). fault is True or False (or a clearly\n"
-        "equivalent boolean rendering). Certificate hash: SHA-256 of the full\n"
-        "text (header through the t=320 line, newline-joined, trailing\n"
-        "newline included), first 16 hex characters."
+        "t=320;mode=TAPER;soc_a=77.10;soc_b=76.55;temp=288;current_a=3.00;\n"
+        "  current_b=3.00;voltage_a=4150.90;voltage_b=4145.10;fault=False\n\n"
+        "Rules: one line per tick, t=1 through t=320, in order. soc_a/soc_b/\n"
+        "current_a/current_b/voltage_a/voltage_b are ALWAYS shown with exactly\n"
+        "two digits after the decimal point -- 50.00, never 50 or 50.0. temp is\n"
+        "an integer (0.1 degC units). fault is True or False. Certificate hash:\n"
+        "SHA-256 of the full text (header through the t=320 line, newline-\n"
+        "joined, trailing newline included), first 16 hex characters. (Tick 2's\n"
+        "example shows current_a != current_b -- balancing is active that\n"
+        "tick, bleeding cell A; this is a fake illustration, not real data.)"
     )
-    ax.text(0.03, 0.95, example, fontsize=9.3, va="top", ha="left",
+    ax.text(0.03, 0.96, example, fontsize=8.8, va="top", ha="left",
              transform=ax.transAxes, family="monospace")
     ax.set_title("Figure 3 worked example (fake data)", fontsize=11, pad=10)
     return fig
@@ -138,72 +155,97 @@ CELLGUARD-10 ENGINEERING PACKET
 
 1. OVERVIEW
 
-A single battery pack is simulated across 320 discrete ticks under a
-charge and thermal controller. Every tick's state (charge mode, state
-of charge, temperature, delivered current, terminal voltage, fault
-latch status) is computed from the immediately preceding tick's state.
-Figure 1 lists every fixed model constant. Figure 2 lists the ten
-per-tick update rules, in their required order. Initial state, before
-tick 1: state of charge 0, temperature AMBIENT, mode CC, fault not
-latched, hysteresis counter 0, reference voltage BASE_VOLTAGE.
+A battery pack of two series-connected cells, A and B, is simulated
+across 320 discrete ticks under a shared charge and thermal controller.
+Mode, temperature, and fault-latch status are pack-level, shared
+between both cells. State of charge and terminal voltage are tracked
+independently per cell -- the two cells have different capacities
+(manufacturing variance, Figure 1) and can receive different delivered
+current on any given tick (section 2, cell balancing). Figure 1 lists
+every fixed model constant. Figure 2 lists the eleven per-tick update
+rules, in their required order. Initial state, before tick 1: state of
+charge 0 for both cells, temperature AMBIENT, mode CC, fault not
+latched, hysteresis counter 0, reference voltage BASE_VOLTAGE for both
+cells.
 
 2. CHARGE MODE SEQUENCE
 
 The charge mode is CC, then CV, then TAPER, strictly one-way (never
-reverts). The CC to CV transition is evaluated against the PREVIOUS
-tick's reported voltage, never the current tick's own just-computed
-voltage; on the tick that transition fires, the regulation current is
-available immediately, that same tick, set to CC_CURRENT -- it is not
-deferred to the next tick. Once in CV mode, a regulation current value
-is tracked separately from the delivered current and decays by
-CV_DECAY_STEP every tick (floored at zero, never negative). The CV to
-TAPER transition check, and that tick's own mode-commanded current, both
-read the regulation current as it enters the tick -- before that same
-tick's own decay step runs, the same "previous value" convention the
-voltage check above already uses. In TAPER mode, delivered current
-(before derating/clamping) is always the fixed TAPER_CURRENT. The CV
-regulation-current decay is unconditional for every CV-mode tick -- it
-is not gated by whether a fault is latched, which only zeroes the
-delivered current (section 5), never the regulation current. The CV to
-TAPER transition can therefore fire, and does in this model, on a tick
-where the fault is still latched and delivered current is zero -- do
-not assume mode progression pauses during a fault.
+reverts), and is shared by both cells. The CC to CV transition is
+evaluated against the PREVIOUS tick's reported voltage, taken as
+whichever of the two cells' voltages is higher (the pack regulates to
+protect against either cell overvoltage) -- never the current tick's
+own just-computed voltage. On the tick that transition fires, the
+regulation current is available immediately, that same tick, set to
+CC_CURRENT. Once in CV mode, a regulation current value is tracked
+separately from delivered current and decays by CV_DECAY_STEP every
+tick (floored at zero, never negative) -- this decay is unconditional
+for every CV-mode tick, not gated by whether a fault is latched, which
+only zeroes delivered current (section 5), never the regulation
+current. The CV to TAPER transition check, and that tick's own
+mode-commanded current, both read the regulation current as it enters
+the tick, before that same tick's own decay. In TAPER mode, the
+mode-commanded current (before derating/clamping/balancing) is always
+the fixed TAPER_CURRENT.
 
 3. THERMAL DERATING AND THE OVERCURRENT CLAMP
 
-If the pack's incoming temperature for a tick (its temperature before
-that tick's own heat/cool update) is at or above DERATE_TEMP, the
-mode-commanded current for that tick is multiplied by DERATE_FACTOR --
-in every mode, TAPER included. The clamp step itself always executes,
-every tick, in every mode, AFTER derating, never before -- but it only
-changes the delivered value (binds) when the post-derate current still
+If the pack's incoming temperature for a tick is at or above
+DERATE_TEMP, the mode-commanded current for that tick is multiplied by
+DERATE_FACTOR -- in every mode, TAPER included -- producing a single,
+shared BASE current (before either cell's individual balancing
+adjustment). The clamp step always executes, every tick, AFTER
+derating, capping the base current at OVERCURRENT_MAX -- but it only
+changes the value (binds) when the post-derate base current still
 exceeds OVERCURRENT_MAX. In this model's CC phase, CC_CURRENT (50)
-exceeds OVERCURRENT_MAX (45), so the clamp binds and reduces delivered
-current to 45 for as long as derating has not yet engaged; once
-temperature reaches DERATE_TEMP partway through the CC phase, derating
-already brings current down to 25 before the clamp step runs, so the
-clamp executes but is a no-op for the remainder of the CC phase. Do not
-assume the clamp binds uniformly across the whole CC phase -- trace
-your own engine's incoming-temperature values to find exactly where
-derating engages.
+exceeds OVERCURRENT_MAX (45), so the clamp binds for as long as
+derating has not yet engaged; once temperature reaches DERATE_TEMP
+partway through the CC phase, derating already brings the base current
+down to 25 before the clamp step runs, so the clamp executes but is a
+no-op for the remainder of the CC phase. Do not assume the clamp binds
+uniformly across the whole CC phase -- trace your own engine's
+incoming-temperature values to find exactly where derating engages.
 
-4. HEAT GENERATION
+4. CELL BALANCING
 
-If delivered current is zero (fault latched), no heat is generated that
-tick. TAPER mode is an exception to the derating-sensitive heat rule
-that every other mode follows: a TAPER-mode tick always generates
-HEAT_TAPER, regardless of whether incoming temperature is at or above
-DERATE_TEMP. Only CC and CV mode ticks follow the general rule: incoming
-temperature at or above DERATE_TEMP generates HEAT_DERATED; otherwise
-HEAT_FULL. Temperature is then updated by adding that tick's heat and
-subtracting COOL_PER_TICK.
+After the clamp (section 3) produces a single shared base current, each
+cell's OWN delivered current is decided independently. Compute
+diff = soc_a - soc_b using each cell's state of charge as it entered
+the tick (before this tick's own update). If the base current is
+greater than zero and the absolute value of diff is at or above
+BALANCE_THRESHOLD, a passive bleed resistor activates on whichever cell
+is currently ahead: that cell's delivered current becomes the base
+current minus BALANCE_BLEED (floored at zero); the other, lagging cell
+receives the full, unmodified base current. If the base current is
+zero, or the two cells' states of charge are within BALANCE_THRESHOLD
+of each other, both cells receive the same, unmodified base current.
+This condition is re-evaluated from scratch every single tick -- it is
+not a one-time decision, and because the two cells' capacities differ,
+which cell is ahead is not fixed for the whole run. Do not assume
+balancing, once triggered, stays active for the rest of the run, and
+do not assume it always bleeds the same cell.
 
-5. FAULT LATCH
+5. HEAT GENERATION
+
+Heat is a single, shared, pack-level quantity, driven by the shared
+base current (section 3), not by either cell's individual
+post-balancing current -- balancing redistributes current between
+cells, it does not change the total the pack is drawing for thermal
+purposes. If the base current is zero (fault latched), no heat is
+generated that tick. TAPER mode is an exception to the derating-
+sensitive heat rule that every other mode follows: a TAPER-mode tick
+always generates HEAT_TAPER, regardless of whether incoming temperature
+is at or above DERATE_TEMP. Only CC and CV mode ticks follow the
+general rule: incoming temperature at or above DERATE_TEMP generates
+HEAT_DERATED; otherwise HEAT_FULL. Temperature is then updated by
+adding that tick's heat and subtracting COOL_PER_TICK.
+
+6. FAULT LATCH
 
 If the pack is not currently fault-latched and the NEW temperature
 (after this tick's own update) is at or above FAULT_TEMP_HIGH, the
 fault latches immediately and the release-hysteresis counter resets to
-zero. While latched, the pack delivers zero current every tick
+zero. While latched, both cells deliver zero current every tick
 (regardless of mode) until released. Release requires the temperature
 to be at or below FAULT_TEMP_LOW for FAULT_RELEASE_TICKS CONSECUTIVE
 ticks -- the counter increments only while temperature stays at or
@@ -213,50 +255,55 @@ immediately, even if the pack had been close to releasing. The instant
 the counter reaches FAULT_RELEASE_TICKS and the fault un-latches, the
 counter itself resets to zero in that same tick.
 
-6. STATE OF CHARGE AND VOLTAGE
+7. STATE OF CHARGE AND VOLTAGE (PER CELL)
 
-State of charge increases each tick by delivered current divided by
-CAPACITY, times 100, capped at 100. Terminal voltage is BASE_VOLTAGE
-plus state of charge times VOLT_PER_SOC_PCT, minus delivered current
-times IR_DROP_PER_UNIT -- this tick's own voltage, which becomes "the
-previous tick's voltage" for the NEXT tick's mode-transition check
-(section 2), never used for this same tick's own transition decision.
-Every state variable (state of charge, temperature, the CV regulation
-current, voltage) carries full, unrounded numeric precision from tick
-to tick; the certificate's 2-decimal-place rounding (Figure 3) is a
-display rule applied once at serialization, and never feeds back into
-the next tick's computation.
+Each cell's state of charge increases each tick by that cell's own
+delivered current (after balancing, section 4) divided by that cell's
+OWN capacity (CAPACITY_A or CAPACITY_B -- they differ), times 100,
+capped at 100. Each cell's terminal voltage is BASE_VOLTAGE plus that
+cell's own state of charge times VOLT_PER_SOC_PCT, minus that cell's
+own delivered current times IR_DROP_PER_UNIT -- that cell's own voltage
+for this tick, which feeds the MAX() in section 2's NEXT-tick
+mode-transition check. Every state variable (both cells' state of
+charge, temperature, the CV regulation current, both cells' voltage)
+carries full, unrounded numeric precision from tick to tick; the
+certificate's 2-decimal-place rounding (Figure 3) is a display rule
+applied once at serialization, and never feeds back into the next
+tick's computation.
 
-7. INDEPENDENT VERIFICATION
+8. INDEPENDENT VERIFICATION
 
-Deliver a separately coded verifier that re-implements these ten rules
-itself, from scratch, in its own code -- never importing, calling, or
-reading any state computed by the primary engine. It must check the
-primary's claimed state at several checkpoint ticks by independently
-replaying the simulation from tick 1 up to each checkpoint using only
-its own logic. Run two required adversarial mutations against it: a
-claimed fault release after only two consecutive cool ticks instead of
-four, and a claimed delivered current above OVERCURRENT_MAX as if the
-clamp were never applied. The verifier must reject both while still
-accepting the true trace's own correct checkpoint states.
+Deliver a separately coded verifier that re-implements these eleven
+rules itself, from scratch, in its own code -- never importing,
+calling, or reading any state computed by the primary engine. It must
+check the primary's claimed state at several checkpoint ticks by
+independently replaying the simulation from tick 1 up to each
+checkpoint using only its own logic. Run the two required adversarial
+mutations against it: a claimed fault release after only two
+consecutive cool ticks instead of four, and a claimed state where both
+cells report identical delivered current throughout, as if cell
+balancing were never applied. Confirm the verifier rejects both while
+still accepting the true trace's own correct checkpoint states.
 
-8. CERTIFICATION
+9. CERTIFICATION
 
 See Figure 3 for the exact, fully mechanical certificate serialization
 format and a worked example using fake numbers. Deliver six products as
 files: the engine source; the independent verifier source; the full
-320-tick state trace; a findings report; certification evidence (both
-adversarial rejection results plus the SHA-256 trace-integrity hash);
-and an engineering memo explaining, citing your own executed engine's
-actual reported values: why TAPER mode never follows the derated-heat
-rule even while hot; why the fault latch released at the specific tick
-it did, citing the consecutive-tick hysteresis counter; and exactly
-which CC-phase ticks the overcurrent clamp actually changes the
-delivered current on, and why it stops changing it partway through.
-Base every
-reported value on your own executed implementation -- never hand-derive
-or embed a precomputed state, checkpoint value, or hash as a substitute
-for running the delivered engine.
+320-tick, two-cell state trace; a findings report; certification
+evidence (both adversarial rejection results plus the SHA-256
+trace-integrity hash); and an engineering memo explaining, citing your
+own executed engine's actual reported values: why TAPER mode never
+follows the derated-heat rule even while hot; why the fault latch
+released at the specific tick it did, citing the consecutive-tick
+hysteresis counter; exactly which CC-phase ticks the overcurrent clamp
+actually changes the delivered current on, and why it stops changing it
+partway through; and why cell balancing activates and deactivates
+repeatedly across the run rather than settling permanently once
+triggered. Base every reported value on your own executed
+implementation; never hand-derive or embed a precomputed state,
+checkpoint value, or hash as a substitute for running the delivered
+engine.
 """
 
 
@@ -264,7 +311,7 @@ def build_text_pages(doc):
     blocks = SPEC_TEXT.split("\n\n")
     margin = 44
     rect = fitz.Rect(margin, margin, PAGE_W - margin, PAGE_H - margin)
-    fontsize = 8.0
+    fontsize = 7.6
 
     def fits(text, fs):
         tmp = fitz.open()
