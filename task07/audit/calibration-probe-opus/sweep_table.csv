@@ -1,0 +1,16 @@
+setting,scenario,base_timeout,anchor_tick,fault_window,first_leader,leader_elections,leaders_seq,final_max_term,final_roles,prevote_rounds,real_elections,msgs_sent_total,sent_PREVOTE_REQ,sent_PREVOTE_RESP,sent_VOTE_REQ,sent_VOTE_RESP,sent_APPEND_REQ,sent_APPEND_RESP,msgs_delivered,msgs_dropped,cmds_appended,commit_index_min_final,commit_index_max_final,crash_to_new_leader_ticks,engine_selfcheck_election_safety,engine_selfcheck_log_matching_final,trace_sha256_16,clean_first_leader_stable,minority,minority_term_at_window_start,minority_max_term_in_run,leader_changes_after_window_start,new_leader_after_crash
+SHORT,CLEAN,150,158,-,N0@t158/term1,1,N0@t158/T1,1,LFFFF,1,1,1816,4,4,4,4,900,900,1816,0,44,44,44,,True,True,db1caaf1553c46ef,True,,,,,
+SHORT,PARTITION,150,158,"[358,758)",N0@t158/term1,1,N0@t158/T1,1,LFFFF,3,1,1746,12,6,4,4,900,820,1660,86,44,44,44,,True,True,80136ded3684b69d,True,"N3,N4","1,1","1,1",0,
+SHORT,CRASH_RECOVER,150,158,"[358,658)",N0@t158/term1,2,N0@t158/T1;N1@t530/T2,2,FLFFF,2,2,1681,8,7,8,7,832,819,1666,15,41,41,41,172,True,True,2e4ac4be4b403284,True,,,,,N1@t530/term2
+SHORT,MESSAGE_LOSS,150,158,"[358,758)",N0@t158/term1,1,N0@t158/T1,1,LFFFF,2,1,1784,8,8,4,4,900,860,1784,40,44,44,44,,True,True,9c4a792fa835f4bf,True,,,,,
+SHORT,COMPETING_CANDIDATES,150,158,"[358,858)",N0@t158/term1,1,N0@t158/T1,1,LFFFF,5,1,1736,20,8,4,4,900,800,1624,112,44,44,44,,True,True,ae2c87566f412eec,True,"N2,N3","1,1","1,1",0,
+MEDIUM,CLEAN,250,258,-,N0@t258/term1,1,N0@t258/T1,1,LFFFF,1,1,1736,4,4,4,4,860,860,1736,0,42,42,42,,True,True,fb63edeec1b2bc55,True,,,,,
+MEDIUM,PARTITION,250,258,"[458,858)",N0@t258/term1,1,N0@t258/T1,1,LFFFF,3,1,1666,12,6,4,4,860,780,1580,86,42,42,42,,True,True,7cdc4e3d9a3d4ff8,True,"N3,N4","1,1","1,1",0,
+MEDIUM,CRASH_RECOVER,250,258,"[458,758)",N0@t258/term1,2,N0@t258/T1;N1@t730/T2,2,FLFFF,2,2,1531,8,7,8,7,752,749,1526,5,37,37,37,272,True,True,08fdbf69bdcafd41,True,,,,,N1@t730/term2
+MEDIUM,MESSAGE_LOSS,250,258,"[458,858)",N0@t258/term1,1,N0@t258/T1,1,LFFFF,2,1,1704,8,8,4,4,860,820,1704,40,42,42,42,,True,True,32c00a4da9aa5533,True,,,,,
+MEDIUM,COMPETING_CANDIDATES,250,258,"[458,958)",N0@t258/term1,1,N0@t258/T1,1,LFFFF,3,1,1646,12,6,4,4,860,760,1540,106,42,42,42,,True,True,6423cc09f80ebb68,True,"N2,N3","1,1","1,1",0,
+LONG,CLEAN,400,408,-,N0@t408/term1,1,N0@t408/T1,1,LFFFF,1,1,1616,4,4,4,4,800,800,1616,0,39,39,39,,True,True,da67d866899d6f5e,True,,,,,
+LONG,PARTITION,400,408,"[608,1008)",N0@t408/term1,1,N0@t408/T1,1,LFFFF,1,1,1536,4,4,4,4,800,720,1456,80,39,39,39,,True,True,e424d186320f806d,True,"N3,N4","1,1","1,1",0,
+LONG,CRASH_RECOVER,400,408,"[608,908)",N0@t408/term1,2,N0@t408/T1;N1@t1030/T2,2,FLFFF,2,2,1296,8,8,8,8,632,632,1296,0,31,31,31,422,True,True,7eeb0d1ee6e48c1f,True,,,,,N1@t1030/term2
+LONG,MESSAGE_LOSS,400,408,"[608,1008)",N0@t408/term1,1,N0@t408/T1,1,LFFFF,1,1,1576,4,4,4,4,800,760,1576,40,39,39,39,,True,True,b1f4141415e269ea,True,,,,,
+LONG,COMPETING_CANDIDATES,400,408,"[608,1108)",N0@t408/term1,1,N0@t408/T1,1,LFFFF,3,1,1526,12,6,4,4,800,700,1420,106,39,39,39,,True,True,92c17de30ee821b9,True,"N2,N3","1,1","1,1",0,

@@ -1,0 +1,28 @@
+{
+  "_comment": "Immutable input constants transcribed/measured from quorum7.pdf. The ONLY thing shared between engine and verifier. Items marked ASSUMED are not in the packet; see MEMO.md section 'Ambiguities'.",
+  "num_nodes": 5,
+  "run_ticks": 2400,
+  "base_timeout": {"SHORT": 150, "MEDIUM": 250, "LONG": 400},
+  "timeout_stagger_per_node_id": 20,
+  "setting_order": ["SHORT", "MEDIUM", "LONG"],
+  "scenario_order": ["CLEAN", "PARTITION", "CRASH_RECOVER", "MESSAGE_LOSS", "COMPETING_CANDIDATES"],
+  "heartbeat_interval": 10,
+  "batch_k": 4,
+  "base_delivery_delay": 2,
+  "majority": 3,
+  "class_priority": ["PREVOTE_REQ", "PREVOTE_RESP", "VOTE_REQ", "VOTE_RESP", "APPEND_REQ", "APPEND_RESP"],
+  "fault_windows_rel_anchor": {
+    "_comment": "Figure 4, half-open [start, end) offsets relative to the anchor tick (CLEAN's own first leader tick, same setting).",
+    "PARTITION": {"start": 200, "end": 600, "sides": [[0, 1, 2], [3, 4]]},
+    "CRASH_RECOVER": {"start": 200, "end": 500, "crash": "CLEAN_FIRST_LEADER"},
+    "MESSAGE_LOSS": {"start": 200, "end": 600},
+    "COMPETING_CANDIDATES": {"start": 200, "end": 700, "sides": [[2, 3], [0, 1, 4]]}
+  },
+  "message_loss_overrides_ASSUMED": [
+    {"action": "DROP", "class": "APPEND_REQ", "to": 4},
+    {"action": "DUPLICATE", "class": "APPEND_RESP", "from": 1, "extra_copy_delay": 1},
+    {"action": "DELAY", "class": "APPEND_REQ", "to": 3, "extra_delay": 6}
+  ],
+  "client_schedule_ASSUMED": {"first_tick": 50, "every": 50, "last_tick": 2399},
+  "certificate": {"baseline_setting": "MEDIUM", "baseline_scenario": "PARTITION", "header": "QUORUM7|MEDIUM|PARTITION", "hex_chars": 16}
+}

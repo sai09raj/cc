@@ -40,13 +40,24 @@ regardless of rule count. Rule count, nonlocal consequences, sweep
 aggregates, and figure-only constants were all necessary-looking but none
 was sufficient.
 
-Open question being checked before redesigning: whether the `opus`-alias
-probe is harsher than the real target model. A calibration probe is
-running on the frozen QUORUM-7 packet, which real Opus 4.8 Max pilots
-scored at 31% and 32%. If the alias also solves QUORUM-7 cleanly, the
-local gate is stricter than the real platform and this result needs
-re-reading; if the alias also fails QUORUM-7, the gate is calibrated and
-TENURE-11 is genuinely too easy.
+## Calibration probe result (QUORUM-7 packet, `opus` alias)
+
+Run to check whether the local probe is harsher than the real target.
+Result: it is not. On QUORUM-7 the alias diverged from the reference the
+same way both real Opus 4.8 Max pilots did: the same off-reference LONG
+crash latency (422 vs 419) and LONG message totals in the same direction
+and size (alias 7550; real pilots 7578 and 7638; reference 7355). Together
+with CELLGUARD-10 (alias and real target both 121/122), the alias tracks
+the real target closely enough to use as the gate. TENURE-11's clean solve
+therefore stands as a genuine "too easy".
+
+The calibration also exposed that QUORUM-7's packet omits the client
+command schedule, the MESSAGE_LOSS override list, and the definition of
+"message count" — the very facts its 100-point aggregate block depends on
+(details in `task07/STATUS.md`, Playbook mistake #71). So QUORUM-7's
+31%/32% is not clean evidence that composition over scale defeats the
+target model, and the template TENURE-11 was built on is weaker than it
+looked. ATRIUM-9 (task06, 20%/21%) has not yet been audited the same way.
 
 ---
 

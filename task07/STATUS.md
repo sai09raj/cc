@@ -1,9 +1,57 @@
 # Task 07 — QUORUM-7
 
-Current active candidate: **QUORUM-7**, in `reference/`, `design/`, `platform/`,
+## FAIRNESS FINDING (found during task11 calibration) — NOT submission-ready as packaged
+
+An `opus`-alias blind pilot on the frozen `quorum7.pdf` packet (run to
+calibrate the local difficulty probe; deliverables in
+`audit/calibration-probe-opus/`) reported three facts the packet never
+specifies. Each was then confirmed against the packet text, every figure,
+and the reference code:
+
+1. **Client command schedule is missing.** The packet says only that client
+   commands "are broadcast to all 5 nodes at fixed ticks". The reference
+   hard-codes five commands at t = 300, 600, 900, 1500, 2000
+   (`reference/scenarios.py`, `COMMANDS`). Every `commit_index` value and
+   every commit-sum criterion depends on this schedule.
+2. **MESSAGE_LOSS overrides are missing.** The packet says only "targeted
+   DROP/DUPLICATE/DELAY overrides". The reference applies DROP to N0→N3
+   APPEND_REQ, DUPLICATE ×3 to N1→N2 VOTE_REQ, and DELAY 15 to N0→N4
+   APPEND_REQ.
+3. **"Message count" is undefined.** The reference increments the count only
+   after the partition check, so messages blocked by a partition are never
+   counted, while messages discarded by a DROP override are counted
+   (`quorum_sim.py` lines 133–138). The packet defines neither. The
+   calibration pilot counted every send; its PARTITION rows came out about
+   +86 and its COMPETING_CANDIDATES rows about +110 above the reference,
+   while CLEAN rows matched exactly.
+
+Criteria 19–28 (100 of 197 positive points) are message sums and commit
+sums, so they rest directly on items 1 and 3. The two real pilots' LONG
+totals (7578, 7638 vs reference 7355) are consistent with the same
+counting difference; the calibration pilot got 7550. Both real pilots also
+converged on the same alternate baseline hash `d75121e3abb34538` and the
+same LONG crash latency 422 (reference 419), and the calibration pilot
+reproduced the 422. Identical rival results across independent runs are
+the playbook's convergence alarm (mistake #6); it was recorded at the time
+but not acted on.
+
+**Consequence:** the 31%/32% real-pilot scores cannot be taken as evidence of
+legitimate difficulty. A substantial part of the lost score is attributable
+to hidden semantics (Playbook mistake #4, the Task 02 Revision C failure).
+If this packet has already been submitted, it carries this defect. A fair
+revision must state the command schedule, the override list, and the
+message-count definition, then be re-piloted; given the calibration
+pilot's otherwise-correct reconstruction, a fair revision would very
+likely score far higher.
+
+The rest of this file is the original record.
+
+---
+
+Original state line: **QUORUM-7**, in `reference/`, `design/`, `platform/`,
 `artifact/quorum7.pdf`. State: SCORE-TOPOLOGY AUDITED (canonical 100%, three
 mutants 25.9%/27.9%/32.0%), TWO REAL TARGET-MODEL PILOT RUNS COMPLETE, BOTH
-SCORED WELL UNDER THE ACCEPTANCE BAR. SUBMISSION-READY.
+SCORED WELL UNDER THE ACCEPTANCE BAR. SUBMISSION-READY (superseded above).
 
 CISTERN-7 (wastewater lift-station, same simulate+sweep+verify meta-shape as
 KILNWORKS/ATRIUM-9) was shelved after a shape-reuse finding — see

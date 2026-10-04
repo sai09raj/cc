@@ -1,0 +1,36 @@
+{
+  "feasibility": {
+    "SHORT": {
+      "engine_selfcheck": true,
+      "independent_verifier": true
+    },
+    "MEDIUM": {
+      "engine_selfcheck": true,
+      "independent_verifier": true
+    },
+    "LONG": {
+      "engine_selfcheck": true,
+      "independent_verifier": true
+    }
+  },
+  "criteria": {
+    "SHORT": {
+      "crash_to_new_leader_ticks(CRASH_RECOVER)": 172,
+      "total_msgs_sent_all_5_scenarios": 8763
+    },
+    "MEDIUM": {
+      "crash_to_new_leader_ticks(CRASH_RECOVER)": 272,
+      "total_msgs_sent_all_5_scenarios": 8283
+    },
+    "LONG": {
+      "crash_to_new_leader_ticks(CRASH_RECOVER)": 422,
+      "total_msgs_sent_all_5_scenarios": 7550
+    }
+  },
+  "recovery_optimal": "SHORT",
+  "overhead_optimal": "LONG",
+  "selections_agree": false,
+  "disclosure": "The two selections DIVERGE: recovery-optimal=SHORT, overhead-optimal=LONG.",
+  "engine_and_verifier_agree_on_selections_and_criteria": true,
+  "tie_break": "none needed (all criteria values distinct); rule would be setting order SHORT<MEDIUM<LONG"
+}
