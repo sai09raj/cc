@@ -1,6 +1,49 @@
 # Task 11
 
-## Array-cable optimization: FAILED the early difficulty gate
+## Current: 64-turbine array-cable task PASSED the early difficulty gate
+
+First design in this project to fail the `opus` probe fairly.
+
+**Scale-up.** The 48-turbine probe's exact method enumerated every
+connected turbine group one feeder can carry (409,517 at capacity 8,
+reproduced by `opt-prototype/count_sets.py`). Counts grow about 4.1x per
+unit of capacity: about 2.5 million groups of size 9 alone on 64 turbines,
+extrapolating to roughly 3.8 billion up to size 14. Cable capacities were
+raised to 4/8/14 (prices 100/160/245 per metre); the author's
+capacity-indexed CP-SAT model still certifies (64 turbines in 166 s, 72 in
+1726 s; `opt-prototype/scaleq-certification.txt`).
+
+**Certified optima, 64-turbine set** (`opt-prototype/scen64.json`), CP-SAT
+OPTIMAL and each recomputed by the stdlib checker: S1 (6 bays) 5,878,715
+(209 s); S2 (5 bays) 5,921,875 (2396 s); S3 (C1 unavailable, 6 bays)
+8,075,675 (865 s); S4 (alternative platform, 6 bays) 7,480,955 (418 s).
+Zero-gap SCIP second certification running.
+
+**Probe 3** (`opus` alias, standard library only, ~2 h budget; archived in
+`audit/probe-3-opus-cable64/`) built its own dual-simplex LP branch and
+bound plus simulated annealing and **neither proved nor found the optimum
+in any scenario**. Its layouts and lower bounds are all valid:
+
+| Scenario | Probe best | Certified optimum | Over | Probe lower bound |
+|---|---|---|---|---|
+| S1 | 5,948,945 | 5,878,715 | +70,230 (+1.19%) | 5,746,429 |
+| S2 | 5,948,945 | 5,921,875 | +27,070 (+0.46%) | 5,756,599 |
+| S3 | 8,105,915 | 8,075,675 | +30,240 (+0.37%) | 7,985,015 |
+| S4 | 7,841,955 | 7,480,955 | +361,000 (+4.83%) | 7,256,158 |
+
+It found the rules complete; its ambiguity list changes nothing (the
+boundary pair T40–T50 is exactly 1300.0 m, allowed under both readings).
+It judged a full optimality proof out of reach in ~2 h with home-made
+methods, so the final task should grade finding the optimum and reporting
+a valid bound, not proving optimality.
+
+**Next:** second certification; semantic contract; packet with genuine
+visual content; prompt; rubric with score topology; Phase 8.5 blind pilot
+on the full packet.
+
+---
+
+## Array-cable optimization at 48 turbines: FAILED the early difficulty gate
 
 The `opus`-alias probe proved all four optima exactly in about 56 minutes,
 using only the standard library: it wrote a C++17 branch-and-price-and-cut
