@@ -1,0 +1,6 @@
+S3 {'status': 'OPTIMAL', 'obj': 4758405, 'bound': 4758405, 'time': 5.4} exact agree True
+S1 {'status': 'OPTIMAL', 'obj': 4732590, 'bound': 4732590, 'time': 54.7} exact agree True
+S2 {'status': 'OPTIMAL', 'obj': 4759920, 'bound': 4759920, 'time': 52.3} exact agree True
+S4 {'status': 'OPTIMAL', 'obj': 6667570, 'bound': 6667570, 'time': 158.8} exact agree True
+
+[exited with code 0]

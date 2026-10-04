@@ -27,9 +27,12 @@ Prototype (`opt-prototype/`), author side only:
 | Optima (48-turbine set) | S1 4,732,590; S2 4,759,920; S3 4,758,405; S4 6,667,570, all CP-SAT OPTIMAL and each recomputed exactly by a separate stdlib checker (`check.py`) |
 
 OR-Tools is installed only in a private author virtualenv; the system
-Python the probes use has no solver libraries. A second, independent exact
-certification (different formulation or engine) is still owed before any
-optimum is used for grading.
+Python the probes use has no solver libraries. Second certification done:
+SCIP (LP-based branch and bound) with the relative MIP gap set to 0
+reproduces all four optima with bound equal to cost (S1 55 s, S2 52 s,
+S3 5 s, S4 159 s; `opt-prototype/scip-exact-certification.txt`). SCIP's
+default 0.01% tolerance had accepted S3 with a 453-unit gap, which is why
+the zero-gap rerun was needed.
 
 Gate: an `opus`-alias probe on the text-only problem (`probe-prompt.txt`,
 `field.json`) is running. If it proves all four optima, this direction
