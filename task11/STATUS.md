@@ -1,6 +1,21 @@
 # Task 11
 
-## Current direction: offshore array-cable layout optimization (prototype, probe running)
+## Array-cable optimization: FAILED the early difficulty gate
+
+The `opus`-alias probe proved all four optima exactly in about 56 minutes,
+using only the standard library: it wrote a C++17 branch-and-price-and-cut
+solver with its own dual simplex, after its first (capacity-indexed arc)
+formulation stalled at a 1.6–3.2% root gap and it switched to a
+set-partitioning column-generation bound. Reported costs 4,732,590 /
+4,759,920 / 4,758,405 / 6,667,570 match the CP-SAT and zero-gap SCIP
+certified optima exactly; the exact search itself took 0–7 s per scenario.
+It found the rules complete and fair. Deliverables archived in
+`audit/probe-2-opus-cable/`.
+
+So fully specified exact optimization at a size the author can certify is
+also within reach of the target model. The prototype record follows.
+
+## Array-cable prototype record
 
 After TENURE-11 failed and the calibration audits showed that no fully
 specified simulation in this project has held the target model below 50%

@@ -1,0 +1,15 @@
+S4: compiler g++ 13.3.0, C++ 201703
+S4: n=48 Q=8 K=7 candidate cables=175 (turbine-turbine 127), crossing pairs=370
+greedy (Esau-Williams) infeasible: feeders
+greedy (capacitated Prim) dead end, no feasible layout
+greedy (cost-aware Esau-Williams) dead end, no feasible layout
+greedy (sweep+Prim) best 7345070 (strip order, 6 groups, start 0)
+SA upper bound 6706640 (40.0s)
+arc formulation root LP 6451995.546 (0.2s)
+feeder sets 409517; set-partitioning LP bound 6596295.786 -> 6596296 (9.4s, 15 CG rounds)
+  target 6706640 (gap 110343): 55211 sets, 205770 trees
+    [51s] nodes 1 depth 0 UB 6706640 lpcols 48 rows 49
+    root bound 6597265.652 (LP cols 3998, rows 69)
+    [53.6s] incumbent 6667570 (node 10)
+  target 6706640 done: nodes 37, solution, 6.9s
+RESULT S4 optimum 6667570 feeders 7 proven_lb 6667570 | greedy: EW -1 costEW -1 capPrim -1 sweep 7345070 | SA 6706640 | arcLP 6451995.5 spLP 6596295.8 | time: SA 40.0 bound 9.4 exact 7.4 total 57.5
