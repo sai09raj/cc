@@ -1,11 +1,29 @@
-# Task 10 — CELLGUARD-10 (active), STATIC10 (shelved, kept as record)
+# Task 10 — CELLGUARD-10 (SHELVED), STATIC10 (shelved, kept as record)
 
-Current active candidate: **CELLGUARD-10**, in `reference/`, `design/`,
-`platform/`, `artifact/`. State: SCORE-TOPOLOGY GATE PASSED (S08),
-ENGINE AND INDEPENDENT VERIFIER VERIFIED END TO END, FULL PLATFORM
-PACKAGE COMPLETE (rubric, prompt, ideal-flow, metadata-stripped PDF
-artifact). NOT YET pilot-tested; local blind pilot (Phase 8.5) planned
-before any platform submission.
+**SHELVED, never submitted to a real platform pilot.** Five consecutive
+clean solves: four local blind pilots (three Sonnet-tier, one `opus`
+alias) and one run by the user against the platform's actual target
+model (Opus 4.8 Max), graded from the uploaded deliverable bundle at
+121/122 — functionally 122/122, since the single missed point
+(criterion 3, tool version) was a rubric/prompt mismatch in this
+packet, not a solver error. Every pilot modeled all six interacting
+rules correctly; the target model also correctly resolved an ambiguity
+fixed only one round earlier. Shelved by user decision rather than
+spending a real pilot slot to confirm what five solves already show.
+
+**Root cause (see the round-5 section and the "Remaining" note below
+for detail):** a single deterministic forward simulation, however many
+rules it has, is solved by faithful transcription of a fully-specified
+rule list into code. Each rule is locally stated, the order is given
+explicitly in Figure 2, and execution does the rest — there is no step
+where the solver must *infer* something the packet does not hand over.
+More rules and more state-threading (mistakes #67, #68) raise the
+amount of transcription but not its difficulty for a model that
+transcribes reliably. Recorded as Playbook mistake #70.
+
+Everything below is kept as the historical record. Do not reuse the
+"fully-specified forward simulation, solved by transcription" shape for
+a future task without an inference step the packet does not resolve.
 
 ## CELLGUARD-10: discrete-tick battery charge/thermal controller
 

@@ -326,7 +326,15 @@ If the blind pilot solves the task cleanly (scores near 100%, or its
 trace matches the reference with no meaningful divergence), treat this
 exactly as Phase 10 treats a real pilot solving the task: redesign the
 architecture before spending any platform-entry effort or real pilot
-quota. Do not rationalize a clean blind-pilot solve as "the local model
+quota. This holds even when the same pilot also surfaces packaging
+bugs; fix those, but do not count the fix as progress on difficulty
+(mistake #70).
+
+Run at least one blind pilot on the stronger `opus` model alias, and
+run it as early as the engine and a draft artifact exist, before the
+rubric and platform text are written. On CELLGUARD-10 the `opus`-alias
+pilot and the user-run Opus 4.8 Max pilot graded identically (121/122),
+while three Sonnet-tier pilots had found fewer spec gaps. Do not rationalize a clean blind-pilot solve as "the local model
 is just unusually strong" without first checking whether the same
 structural weakness (mistake #67: amplification without genuine
 likelihood of the triggering mistake) is present.
