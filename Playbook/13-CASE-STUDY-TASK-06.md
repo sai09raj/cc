@@ -1,5 +1,15 @@
 # Case Study — Task 06 ATRIUM-9
 
+> **Correction (later audit):** the packet never states the busy-car
+> assignment cost, the `avg_wait` definition, the per-tick stage order,
+> the timeout threshold and reset rule, the direction and selection
+> tie-breaks, or when the run ends, all of which the reference uses, and
+> the reference does not implement the packet's reassignment ban. An
+> `opus`-alias blind pilot reproduced the real pilots' failure pattern
+> from those gaps. The 20%/21% below are therefore not clean evidence of
+> difficulty, and the "what worked" conclusions should be read with that
+> in mind. See `task06/audit/code-source-audit.md` and mistake #71.
+
 ## Status and evidence boundary
 
 ATRIUM-9 (task06, Building Systems / Vertical Transportation Engineering)

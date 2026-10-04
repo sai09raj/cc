@@ -1,0 +1,369 @@
+{
+  "wait_optimal": {
+    "key": "min avg_wait, tie-break net_energy",
+    "config": {
+      "active_cars": 4,
+      "zoning": "SPLIT",
+      "wait_timeout": 50,
+      "capacity": 6,
+      "power_budget": 8
+    },
+    "avg_wait": 15.1375,
+    "net_energy": 5484,
+    "max_wait": 50,
+    "end_tick": 791,
+    "exact_key_ties": [
+      {
+        "active_cars": 4,
+        "zoning": "SPLIT",
+        "wait_timeout": 50,
+        "capacity": 6,
+        "power_budget": 8
+      },
+      {
+        "active_cars": 4,
+        "zoning": "SPLIT",
+        "wait_timeout": 50,
+        "capacity": 6,
+        "power_budget": 10
+      },
+      {
+        "active_cars": 4,
+        "zoning": "SPLIT",
+        "wait_timeout": 50,
+        "capacity": 6,
+        "power_budget": 12
+      },
+      {
+        "active_cars": 4,
+        "zoning": "SPLIT",
+        "wait_timeout": 75,
+        "capacity": 6,
+        "power_budget": 8
+      },
+      {
+        "active_cars": 4,
+        "zoning": "SPLIT",
+        "wait_timeout": 75,
+        "capacity": 6,
+        "power_budget": 10
+      },
+      {
+        "active_cars": 4,
+        "zoning": "SPLIT",
+        "wait_timeout": 75,
+        "capacity": 6,
+        "power_budget": 12
+      },
+      {
+        "active_cars": 4,
+        "zoning": "SPLIT",
+        "wait_timeout": 100,
+        "capacity": 6,
+        "power_budget": 8
+      },
+      {
+        "active_cars": 4,
+        "zoning": "SPLIT",
+        "wait_timeout": 100,
+        "capacity": 6,
+        "power_budget": 10
+      },
+      {
+        "active_cars": 4,
+        "zoning": "SPLIT",
+        "wait_timeout": 100,
+        "capacity": 6,
+        "power_budget": 12
+      },
+      {
+        "active_cars": 4,
+        "zoning": "SPLIT",
+        "wait_timeout": 125,
+        "capacity": 6,
+        "power_budget": 8
+      },
+      {
+        "active_cars": 4,
+        "zoning": "SPLIT",
+        "wait_timeout": 125,
+        "capacity": 6,
+        "power_budget": 10
+      },
+      {
+        "active_cars": 4,
+        "zoning": "SPLIT",
+        "wait_timeout": 125,
+        "capacity": 6,
+        "power_budget": 12
+      }
+    ]
+  },
+  "energy_optimal": {
+    "key": "min net_energy, tie-break avg_wait",
+    "config": {
+      "active_cars": 2,
+      "zoning": "SPLIT",
+      "wait_timeout": 50,
+      "capacity": 6,
+      "power_budget": 6
+    },
+    "avg_wait": 43.325,
+    "net_energy": 2952,
+    "max_wait": 182,
+    "end_tick": 866,
+    "exact_key_ties": [
+      {
+        "active_cars": 2,
+        "zoning": "SPLIT",
+        "wait_timeout": 50,
+        "capacity": 6,
+        "power_budget": 6
+      },
+      {
+        "active_cars": 2,
+        "zoning": "SPLIT",
+        "wait_timeout": 50,
+        "capacity": 6,
+        "power_budget": 8
+      },
+      {
+        "active_cars": 2,
+        "zoning": "SPLIT",
+        "wait_timeout": 50,
+        "capacity": 6,
+        "power_budget": 10
+      },
+      {
+        "active_cars": 2,
+        "zoning": "SPLIT",
+        "wait_timeout": 50,
+        "capacity": 6,
+        "power_budget": 12
+      },
+      {
+        "active_cars": 2,
+        "zoning": "SPLIT",
+        "wait_timeout": 75,
+        "capacity": 6,
+        "power_budget": 6
+      },
+      {
+        "active_cars": 2,
+        "zoning": "SPLIT",
+        "wait_timeout": 75,
+        "capacity": 6,
+        "power_budget": 8
+      },
+      {
+        "active_cars": 2,
+        "zoning": "SPLIT",
+        "wait_timeout": 75,
+        "capacity": 6,
+        "power_budget": 10
+      },
+      {
+        "active_cars": 2,
+        "zoning": "SPLIT",
+        "wait_timeout": 75,
+        "capacity": 6,
+        "power_budget": 12
+      },
+      {
+        "active_cars": 2,
+        "zoning": "SPLIT",
+        "wait_timeout": 100,
+        "capacity": 6,
+        "power_budget": 6
+      },
+      {
+        "active_cars": 2,
+        "zoning": "SPLIT",
+        "wait_timeout": 100,
+        "capacity": 6,
+        "power_budget": 8
+      },
+      {
+        "active_cars": 2,
+        "zoning": "SPLIT",
+        "wait_timeout": 100,
+        "capacity": 6,
+        "power_budget": 10
+      },
+      {
+        "active_cars": 2,
+        "zoning": "SPLIT",
+        "wait_timeout": 100,
+        "capacity": 6,
+        "power_budget": 12
+      },
+      {
+        "active_cars": 2,
+        "zoning": "SPLIT",
+        "wait_timeout": 125,
+        "capacity": 6,
+        "power_budget": 6
+      },
+      {
+        "active_cars": 2,
+        "zoning": "SPLIT",
+        "wait_timeout": 125,
+        "capacity": 6,
+        "power_budget": 8
+      },
+      {
+        "active_cars": 2,
+        "zoning": "SPLIT",
+        "wait_timeout": 125,
+        "capacity": 6,
+        "power_budget": 10
+      },
+      {
+        "active_cars": 2,
+        "zoning": "SPLIT",
+        "wait_timeout": 125,
+        "capacity": 6,
+        "power_budget": 12
+      }
+    ]
+  },
+  "budget_constrained": {
+    "key": "min avg_wait s.t. net_energy <= 3800, tie-break net_energy",
+    "config": {
+      "active_cars": 2,
+      "zoning": "TOP",
+      "wait_timeout": 50,
+      "capacity": 6,
+      "power_budget": 6
+    },
+    "avg_wait": 37.3,
+    "net_energy": 2988,
+    "max_wait": 130,
+    "end_tick": 875,
+    "exact_key_ties": [
+      {
+        "active_cars": 2,
+        "zoning": "TOP",
+        "wait_timeout": 50,
+        "capacity": 6,
+        "power_budget": 6
+      },
+      {
+        "active_cars": 2,
+        "zoning": "TOP",
+        "wait_timeout": 50,
+        "capacity": 6,
+        "power_budget": 8
+      },
+      {
+        "active_cars": 2,
+        "zoning": "TOP",
+        "wait_timeout": 50,
+        "capacity": 6,
+        "power_budget": 10
+      },
+      {
+        "active_cars": 2,
+        "zoning": "TOP",
+        "wait_timeout": 50,
+        "capacity": 6,
+        "power_budget": 12
+      },
+      {
+        "active_cars": 2,
+        "zoning": "TOP",
+        "wait_timeout": 75,
+        "capacity": 6,
+        "power_budget": 6
+      },
+      {
+        "active_cars": 2,
+        "zoning": "TOP",
+        "wait_timeout": 75,
+        "capacity": 6,
+        "power_budget": 8
+      },
+      {
+        "active_cars": 2,
+        "zoning": "TOP",
+        "wait_timeout": 75,
+        "capacity": 6,
+        "power_budget": 10
+      },
+      {
+        "active_cars": 2,
+        "zoning": "TOP",
+        "wait_timeout": 75,
+        "capacity": 6,
+        "power_budget": 12
+      },
+      {
+        "active_cars": 2,
+        "zoning": "TOP",
+        "wait_timeout": 100,
+        "capacity": 6,
+        "power_budget": 6
+      },
+      {
+        "active_cars": 2,
+        "zoning": "TOP",
+        "wait_timeout": 100,
+        "capacity": 6,
+        "power_budget": 8
+      },
+      {
+        "active_cars": 2,
+        "zoning": "TOP",
+        "wait_timeout": 100,
+        "capacity": 6,
+        "power_budget": 10
+      },
+      {
+        "active_cars": 2,
+        "zoning": "TOP",
+        "wait_timeout": 100,
+        "capacity": 6,
+        "power_budget": 12
+      },
+      {
+        "active_cars": 2,
+        "zoning": "TOP",
+        "wait_timeout": 125,
+        "capacity": 6,
+        "power_budget": 6
+      },
+      {
+        "active_cars": 2,
+        "zoning": "TOP",
+        "wait_timeout": 125,
+        "capacity": 6,
+        "power_budget": 8
+      },
+      {
+        "active_cars": 2,
+        "zoning": "TOP",
+        "wait_timeout": 125,
+        "capacity": 6,
+        "power_budget": 10
+      },
+      {
+        "active_cars": 2,
+        "zoning": "TOP",
+        "wait_timeout": 125,
+        "capacity": 6,
+        "power_budget": 12
+      }
+    ]
+  },
+  "feasible_count_under_ceiling": 48,
+  "energy_ceiling": 3800,
+  "tie_break_rule": "The packet's two-level keys leave exact ties (wait_timeout and, below 4 cars, power_budget never change the outcome). Residual ties are resolved by canonical sweep order: active_cars ascending, zoning in packet order SPLIT<GROUND<TOP, wait_timeout ascending, power_budget ascending (i.e. the least-investment member of the tie set). All tied configurations are listed in exact_key_ties.",
+  "sweep_totals": {
+    "rows": 144,
+    "sum_net_energy": 625380,
+    "sum_total_wait": 322732,
+    "total_reassignments": 12,
+    "total_power_denials": 2740,
+    "total_capacity_leftbehind": 0
+  }
+}

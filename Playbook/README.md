@@ -162,6 +162,20 @@ The new permanent method is:
 
 See [12-CASE-STUDY-TASK-04.md](12-CASE-STUDY-TASK-04.md) for the complete evidence and [00-START-HERE-EVERY-FUTURE-TASK.md](00-START-HERE-EVERY-FUTURE-TASK.md) for the permanent fresh-agent launch sequence.
 
+## Correction (task11 calibration): Task 06 and Task 07 are not clean difficulty evidence
+
+Code→source audits plus `opus`-alias blind pilots on the frozen packets
+showed that both ATRIUM-9 (task06, 20%/21%) and QUORUM-7 (task07, 31%/32%)
+graded facts their packets never specify: ATRIUM-9's busy-car assignment
+cost, `avg_wait` definition, stage order, timeout semantics, tie-breaks and
+run end; QUORUM-7's command schedule, loss overrides and message-count
+definition. The blind pilot reproduced each task's real-pilot failure
+pattern. Their low scores are substantially hidden-semantics failures
+(mistakes #4, #71), and the "composition over scale" lesson drawn from
+them below is unproven. Every fully specified simulation built in this
+project (TYPECHAIN-9, CELLGUARD-10, TENURE-11) was solved. See
+`task06/audit/code-source-audit.md` and `task07/STATUS.md`.
+
 ## The Task 06 discovery: real pilots can score below synthetic mutants
 
 Task 06 (ATRIUM-9, an exhaustive-sweep elevator-dispatch simulation) is a

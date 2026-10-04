@@ -34,6 +34,33 @@ different unstated rules) cannot be read as legitimate difficulty evidence.
 This is the same failure class as QUORUM-7 (Playbook mistakes #4 and #71)
 and Task 02 Revision C.
 
-An `opus`-alias blind pilot on the frozen packet is running to confirm from
-the solver side which of these gaps actually change a careful solver's
-answer.
+## Solver-side confirmation (`opus`-alias blind pilot, frozen packet)
+
+Deliverables archived in `audit/calibration-probe-opus/`. The pilot built a
+simulator and an independent verifier that agree on all 144 runs, and it
+listed 20 ambiguities. Those that line up with the gaps above:
+
+| Gap | Pilot's reading | Reference |
+|---|---|---|
+| H1 busy-car cost | travel distance only, no stop overhead | distance + 7 ticks per committed stop in range |
+| H2 avg_wait | board − arrival averaged over 80 calls (matches by luck) | same |
+| H3 stage order | rollover → timeout → assignment → power → energy | completions → assignment → retry → timeout → power → energy |
+| H4 timeout | `> timeout`, age reset only on reassignment | `≥ timeout`, age also reset when no switch happens |
+| H5 direction tie-break | lower floor first, then UP | nearest, then DOWN before UP |
+| H7 run end | when the 80th call alights (showed the alternative changes the hash and the energy-optimal pick) | first tick all calls done and all cars closed and uncommitted |
+
+It also found gaps the code audit had not listed: no tie-break for the
+three selections (12–16 configurations tie exactly on each key), and
+whether "ahead" includes the car's own floor (it used strictly ahead; the
+reference uses `>=`, inclusive).
+
+Its results match the real pilots' failure pattern: wait-optimal
+(4, SPLIT, 50, 8) with avg_wait 15.14, the same configuration real
+trajectory 20 chose (15.25; trajectory 21 had 15.89), against the
+reference's (4, SPLIT, 50, 6) at 8.1375; energy-optimal (2, SPLIT), the
+same as trajectory 20. This is the second calibration (after QUORUM-7)
+showing the `opus` alias fails where and how the real target model fails.
+
+**Conclusion:** ATRIUM-9's 20% and 21% are substantially explained by
+unstated rules, like QUORUM-7's 31% and 32%. Neither task is evidence that
+a fully specified simulation holds the target model below 50%.
