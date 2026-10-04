@@ -180,10 +180,24 @@ the single-cell design flagged it; still applies here)
    unmodified base current (post-clamp); only the higher cell's
    delivered current is reduced. There is no mechanism that increases
    either cell's current above the shared base current.
-8. **The balance direction can flip.** Because capacities differ
-   (`CAPACITY_A != CAPACITY_B`), which cell is ahead is not fixed for
-   the whole run — `diff`'s sign can change over time, and the rule
-   must be re-evaluated, and can bleed either cell, on different ticks.
+8. **Which cell leads follows from the capacities, and is not given as
+   a separate fact.** The cell with the SMALLER capacity gains state of
+   charge faster from equal current (same current, smaller denominator
+   in the percentage), so it structurally becomes, and stays, the
+   leading cell once an imbalance first opens — balancing only ever
+   narrows the gap back toward the threshold, it never reverses which
+   cell is ahead. **Correction, found by a Phase 8.5 blind pilot against
+   this hardened design**: an earlier draft of this document claimed the
+   lead "is not fixed for the whole run" and "can flip" — false for this
+   specific constant set and 320-tick horizon, confirmed by execution
+   (cell A, the smaller-capacity cell, leads at every one of the 63
+   active ticks; retuning threshold/bleed/capacities across several
+   combinations never produced a flip, since the mechanism is
+   structurally one-directional). The rule itself must still be
+   evaluated fresh every tick from each cell's own running SoC (not
+   hardcoded to "cell A" as a shortcut) and the comparison's sign must
+   still be computed, not assumed — but do not expect, or design a
+   check around, the leader actually changing mid-run.
 
 ## S04 — Independent verification (independently re-coded, never
 importing or calling the primary's implementation)

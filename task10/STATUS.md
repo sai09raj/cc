@@ -262,10 +262,103 @@ the two-cell model and trimmed to stay under the 500-word cap (454
 words, zero hyphens). Artifact rebuilt as `cellguard10_v4.pdf`
 (6 pages now: 3 figures, 3 text pages), re-verified byte-level clean.
 
+## Round 3: third local blind pilot against the hardened two-cell packet
+
+Ran a fresh, cold subagent (zero access to `design/`, `reference/`, or
+`platform/`, only the frozen `prompt.md` and `cellguard10_v4.pdf`) per
+Phase 8.5. Result: a clean solve. Its reported hash, all 8 checkpoint
+records, all 4 event ticks, the final-tick state, and both verifier
+adversarial-rejection results matched a fresh execution of the
+reference engine exactly, byte-for-byte. Its memo correctly reconciled
+TAPER heat, fault-release hysteresis, the overcurrent clamp's narrow
+active window, and cell balancing's repeated activation/deactivation —
+the same four stories required by criteria 27-30.
+
+This is the **third consecutive clean local-blind-pilot solve** of this
+content (round 1 after its two packaging-bug fixes, round 2, and now
+round 3). Recorded honestly, not as pure reassurance: this is the same
+signal shape — repeated clean solves on sequential hardening passes —
+that preceded TYPECHAIN-9's eventual 99%/100% real-pilot failure
+(mistake #67). A local blind pilot is not a difficulty predictor; it
+only catches packaging/spec bugs, and it has now done that three times
+running. It is not evidence that a real pilot will also fail to solve
+this content — only evidence that the packet is no longer obviously
+broken.
+
+**New finding (packet-correctness bug, not a solving-skill gap):** the
+pilot's own findings report noted, as an honest observation rather than
+a complaint, that in its executed trace cell A (the smaller-capacity
+cell) was the only cell ever bled across the full run — it never saw
+the lead flip to cell B, despite the packet's own prose (S03c item 8,
+and the matching `make_packet.py` SPEC_TEXT section 4) explicitly
+telling solvers not to assume a fixed leader and that "which cell is
+ahead is not fixed for the whole run."
+
+Verified this independently by direct execution before trusting the
+pilot's framing (same discipline as every other finding this project):
+computed `leaders = {r['t']: 'A' if ... else 'B' ...}` across all 320
+ticks where `current_a != current_b` (63 active ticks) — every single
+one shows cell A, never cell B. Then ran 5 retuning experiments varying
+`CAPACITY_A`/`CAPACITY_B`, `BALANCE_THRESHOLD`, and `BALANCE_BLEED`
+across different combinations to check whether this was just an
+unlucky constant choice fixable by retuning — all 5 still showed
+`leaders: {'A'}` with zero flips. Concluded this is a **structural,
+not incidental, property of the rule**: with a constant shared current,
+the smaller-capacity cell always gains state-of-charge percentage
+faster than the larger one (same numerator, smaller denominator), so
+once an imbalance opens it structurally becomes, and stays, the
+leading cell — balancing only ever narrows the gap back toward the
+threshold, it can never reverse which cell is ahead. No retuning of
+these three constants changes that direction; it would need either
+equal capacities (which collapses the rule to the single-cell case) or
+a capacity relationship that changes mid-run (which this packet's
+fixed-constant model doesn't have).
+
+This is the same category of bug as mistake #69 (a packet's own prose
+overclaiming a consequence of its stated rules, discovered only by an
+independently-reasoning solver executing far enough to check the
+claim) — not a hand-typed wrong number, but an assumption about
+runtime behavior nobody traced before asserting it. Fixed by rewriting
+the claim everywhere it appeared: `design/semantic-contract-cellguard.md`
+S03c item 8, and `artifact/make_packet.py` SPEC_TEXT section 4. Both now
+state the true story — the leading cell is *derived* from which
+capacity is smaller, must still be computed fresh every tick rather
+than hardcoded, but for this packet's fixed constants the lead does not
+flip across the run. Checked `platform/rubric.md`, `platform/prompt.md`,
+and `platform/ideal-flow.md` via targeted grep for the same false
+claim: none of the three contained it — they only state the separate,
+confirmed-true claim that balancing itself toggles on and off
+repeatedly (122 transitions), which is unaffected and needed no change.
+Criterion 9 and criterion 30 in `platform/rubric.md` were specifically
+re-examined against this finding and judged still accurate as written,
+since both describe the *mechanism* (recompute fresh every tick, don't
+hardcode a cell) without asserting an observed flip.
+
+No engine, constant, or computed value changed — this was a
+prose-only fix. Re-ran `bms_verify.py` and `score_counterfactual.py`
+after the fix to confirm: canonical hash, all 8 checkpoints, all 4
+events, and all 6 mutant scores (14.8% / 23.8% / 16.4% / 18.0% / 30.3%
+/ 13.9%) are byte-identical to the pre-fix run, as expected. Artifact
+rebuilt as `cellguard10_v5.pdf` (per mistake #46 — always rename on any
+content revision) and re-verified byte-level clean: empty Info dict,
+zero XMP bytes, zero vector drawings, exactly one raster image on each
+of the 3 figure pages, no filesystem paths or tool signatures in the
+raw bytes, and none of the solution's computed values (hash, final
+state, any checkpoint) present anywhere in the extracted text.
+`platform/prompt.md` filename reference updated to match
+(`cellguard10_v5.pdf`), word count re-confirmed at 454 (still under the
+500 cap) and hyphen count still 0.
+
 ## Remaining
 
-- Third local blind pilot against the hardened two-cell packet, before
-  deciding whether to proceed to a real platform pilot.
+- This is the third round of fixes driven by local blind pilots, each
+  one catching a real, confirmed bug rather than a false alarm. Decide
+  next: proceed to a real platform pilot now, run a fourth local blind
+  pilot, or harden further. Given three consecutive clean content
+  solves, a fourth local pilot is unlikely to teach much more than
+  "still not obviously broken" — the open question a local pilot
+  structurally cannot answer is whether the six-rule interaction is
+  hard enough for Opus-tier solving, only a real pilot can.
 - Real pilot run(s), whichever path is chosen.
 
 ---

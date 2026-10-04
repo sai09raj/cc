@@ -22,7 +22,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import fitz  # PyMuPDF
 
-REVISION = "cellguard10_v4"
+REVISION = "cellguard10_v5"
 DPI = 300
 PAGE_W, PAGE_H = 612, 792
 
@@ -220,10 +220,16 @@ receives the full, unmodified base current. If the base current is
 zero, or the two cells' states of charge are within BALANCE_THRESHOLD
 of each other, both cells receive the same, unmodified base current.
 This condition is re-evaluated from scratch every single tick -- it is
-not a one-time decision, and because the two cells' capacities differ,
-which cell is ahead is not fixed for the whole run. Do not assume
-balancing, once triggered, stays active for the rest of the run, and
-do not assume it always bleeds the same cell.
+not a one-time decision, and balancing does not stay active for the
+rest of the run once triggered: it switches on and off repeatedly as
+the gap crosses the threshold in each direction. Which cell ends up
+being the one bled is not given to you directly -- it follows from
+which capacity is smaller (the smaller-capacity cell gains state of
+charge faster from the same current, so it is the one that pulls ahead
+and gets bled). Do not assume this without checking the two capacity
+values yourself, and do not hardcode a cell rather than computing the
+comparison fresh every tick -- even though, for this packet's fixed
+capacities, the same cell ends up leading for the whole run.
 
 5. HEAT GENERATION
 
