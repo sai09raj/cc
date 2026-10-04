@@ -21,7 +21,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import fitz  # PyMuPDF
 
-REVISION = "cellguard10_v2"
+REVISION = "cellguard10_v3"
 DPI = 300
 PAGE_W, PAGE_H = 612, 792
 
@@ -161,7 +161,13 @@ TAPER transition check, and that tick's own mode-commanded current, both
 read the regulation current as it enters the tick -- before that same
 tick's own decay step runs, the same "previous value" convention the
 voltage check above already uses. In TAPER mode, delivered current
-(before derating/clamping) is always the fixed TAPER_CURRENT.
+(before derating/clamping) is always the fixed TAPER_CURRENT. The CV
+regulation-current decay is unconditional for every CV-mode tick -- it
+is not gated by whether a fault is latched, which only zeroes the
+delivered current (section 5), never the regulation current. The CV to
+TAPER transition can therefore fire, and does in this model, on a tick
+where the fault is still latched and delivered current is zero -- do
+not assume mode progression pauses during a fault.
 
 3. THERMAL DERATING AND THE OVERCURRENT CLAMP
 

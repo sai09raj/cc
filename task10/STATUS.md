@@ -179,11 +179,48 @@ rename on a content revision). Re-ran the full S08 gate after all fixes
 formatting and prose accuracy, not the underlying per-tick computation
 the mutants exercise).
 
+## Second local blind pilot (Phase 8.5, round 2) — clean solve, bugs confirmed closed
+
+A fresh cold subagent, same isolation (zero access to reference/design/
+rubric), given only `prompt.md` and `cellguard10_v3.pdf`. Result: exact
+match to canonical on everything. Hash `3e2d011d887d98d6` — identical.
+All 8 checkpoints and the final state matched field-for-field, including
+the 2-decimal format (`25.00`, not `25.0`). All 4 event ticks matched.
+Verifier correctly accepted the true trace and rejected both required
+adversarial mutations. The rewritten memo criterion (overcurrent-clamp
+explanation) was answered correctly and precisely: independently
+confirmed via its own code that the clamp binds on exactly t=1-50
+("contiguous, count=50") and is a structural no-op for the rest of the
+CC phase — exactly the corrected story, not the old false premise.
+
+One more honest judgment call surfaced, again causing no divergence
+(this pilot resolved it the same way the reference engine does) but
+real and worth closing: the CV regulation-current taper-down (rule 3)
+is unconditional for CV-mode ticks, not gated by the fault latch — so
+the CV-to-TAPER mode transition can fire, and does fire in this model
+at t=196, while the fault is still latched (release isn't until t=206).
+Closed explicitly in S03b of the semantic contract and in SPEC_TEXT
+section 2. Artifact rebuilt as `cellguard10_v3.pdf`; gate re-verified
+unchanged.
+
+**Honest caveat, not just good news**: two cold blind pilots in a row
+have now fully solved CELLGUARD-10 once the packaging bugs were fixed —
+correctly implementing all five interacting rules with zero computation
+errors. That is real validation the packet is finally clean, but it is
+*not* evidence the content difficulty will hold against a real target-
+model pilot; it is the same shape of signal (a careful solver reading
+an unambiguous spec and just getting it right) that preceded
+TYPECHAIN-9's 99%/100%. Phase 8.5's local blind pilots are a packaging
+and spec-ambiguity check, not a difficulty predictor — Phase 10/11's
+real pilot is still the only evidence that actually settles this.
+
 ## Remaining
 
-- A second local blind pilot against the corrected packet, to confirm
-  the two bugs are actually closed and no new ones surface.
-- Real pilot run(s) after that.
+- Decide whether to proceed to a real platform pilot now (packaging is
+  clean; this is the authoritative next test) or invest further in
+  content hardening first, given two clean blind-pilot solves. Flagged
+  to the user as an open decision, not resolved here.
+- Real pilot run(s), whichever path is chosen.
 
 ---
 

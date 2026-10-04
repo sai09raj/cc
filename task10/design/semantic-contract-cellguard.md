@@ -134,6 +134,23 @@ could diverge on a future run)
    itself resets to `0` in that same tick, not left at
    `FAULT_RELEASE_TICKS`.
 
+### S03b — One more clarification (closed after a second blind pilot,
+against the corrected packet, matched canonical exactly on every field
+but flagged this as the judgment call most likely to cause a future
+divergence)
+
+5. **CV taper-down runs even while a fault is latched.** Rule 3 (CV
+   regulation-current decay) is unconditional for every CV-mode tick —
+   it is not gated by the fault-latch check in rule 4, which only zeroes
+   the *delivered* current, not the regulation current. Consequently the
+   CV-to-TAPER mode transition (rule 1) can fire, and does fire in this
+   model (at t=196), while the fault is still latched (release is not
+   until t=206) — the pack's charge *mode* keeps advancing even on ticks
+   where it delivers zero current. This is the literal consequence of
+   applying the ten rules in their stated order every tick, with no
+   exception for a latched fault; do not assume mode progression pauses
+   during a fault.
+
 ## S04 — Independent verification (independently re-coded, never
 importing or calling the primary's implementation)
 
