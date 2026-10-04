@@ -265,8 +265,11 @@ TYPECHAIN-9's 99%/100%. The two-cell hardening adds a *sixth* genuinely
 interacting rule (not just more volume): cell balancing requires
 tracking two independent, diverging state threads simultaneously,
 conditionally routing different current to each based on a comparison
-that must be re-evaluated every tick, with no guarantee which cell leads
-at any given point (S03c.8). This is qualitatively different from the
+that must be re-evaluated every tick rather than hardcoded to one cell
+(S03c.8 — the comparison's outcome follows from which capacity is
+smaller, and does not flip across this packet's fixed-constant run,
+but a solver must still compute it fresh each tick, not assume it).
+This is qualitatively different from the
 five existing rules, which all operate on one shared pack-level state —
 a model that handled those five correctly could still plausibly get the
 balancing direction backwards, apply it to the wrong cell, forget to

@@ -349,16 +349,147 @@ state, any checkpoint) present anywhere in the extracted text.
 (`cellguard10_v5.pdf`), word count re-confirmed at 454 (still under the
 500 cap) and hyphen count still 0.
 
+## Round 4: fourth local blind pilot, run on a different (stronger) model
+
+User asked to run the next local blind pilot specifically on "Opus 4.8
+Max," the real platform's target model. That exact model/deployment
+name is not invocable from this environment — the `Agent` tool's model
+override only accepts generic aliases (`sonnet`/`opus`/`haiku`/`fable`)
+that resolve to whatever this harness currently defaults to, which does
+not verifiably match the platform's Opus 4.8 Max. Surfaced this
+mismatch explicitly rather than silently substituting and reporting it
+as a match; user chose to run with the `opus` alias anyway, as the
+closest available stand-in, understood as informative but not a
+verified same-model comparison.
+
+Result: another clean solve, and the strongest one yet. Hash, all
+checkpoints, all events, final state, and all three verifier results
+matched exactly. More notably, its independent verifier used **exact
+rational arithmetic** (not floating point) specifically to rule out
+rounding/threshold ambiguity, and it cross-checked that choice against
+a floating-point implementation across all 320 ticks before trusting
+either — a more rigorous validation approach than any of the three
+Sonnet-tier pilots used. This is the **fourth consecutive clean
+content solve** (three Sonnet, one Opus-alias) — the pattern is now a
+clear yellow flag on its own terms regardless of model tier, though
+still not proof a real Opus 4.8 Max pilot will also solve it cleanly.
+
+**Findings — three new, confirmed packet-correctness bugs**, none
+previously caught by any of the three Sonnet-tier pilots:
+
+1. **Figure 2's own diagram image still had the stale, false claim**
+   ("...which cell leads can change over the run") that round 3 had
+   already corrected in the surrounding prose (S03c.8 and SPEC_TEXT
+   section 4) but not in `make_packet.py`'s `diagram_rules()` function
+   — a separate code path building the rendered image shown in Figure
+   2. Root cause: my round-3 grep search found this file as a match (3
+   files total) but I only viewed and fixed one specific line range
+   inside it, rather than checking the whole file for every
+   occurrence — an incomplete-fix process bug on my part, not a new
+   content bug. Also removed a leftover draft artifact in the same
+   diagram text, "(per cell, the new rule)," which has no business
+   being in a frozen packet. Re-grepped the entire `task10/` tree
+   afterward with broader patterns (`can change`, `leads can`,
+   `lead can`, `no guarantee which cell`, `the new rule`) to confirm no
+   further occurrences survive in any platform- or solver-facing file.
+   Also corrected one occurrence in `design/semantic-contract-cellguard.md`'s
+   S08 rationale section ("no guarantee which cell leads at any given
+   point") that was similarly missed in round 3 because it wasn't
+   literally the S03c.8 clarification text itself, just referencing it
+   inaccurately.
+
+2. **TAPER heat rule's "always" was genuinely ambiguous against the
+   fault-latch zero-heat rule.** SPEC_TEXT section 5 stated the
+   zero-current/zero-heat rule (fault latched → no heat) in one
+   sentence, then a separate sentence claiming TAPER mode "always
+   generates HEAT_TAPER, regardless of... DERATE_TEMP" — read as two
+   independent facts rather than an explicit precedence order, a
+   reader could reasonably conclude TAPER's "always" overrides even the
+   zero-current case during a fault-latched TAPER tick. It doesn't:
+   confirmed via the reference engine (`bms_engine.py` lines 98-101)
+   that the zero-current check runs first, unconditionally, before the
+   TAPER check. The pilot found this by testing the alternate reading
+   explicitly and discovering it changes the hash entirely — a genuine,
+   not hypothetical, scoring-affecting ambiguity (same risk class as
+   mistake #69: a packet's own wording can be read two structurally
+   different ways with no textual signal for which is intended).
+   Figure 2's diagram text already had unambiguous explicit ordering
+   ("0 if base=0. Else, in TAPER mode...") and needed no change; fixed
+   SPEC_TEXT section 5 to make the same precedence explicit in prose,
+   stating directly that the zero-current rule is evaluated first and
+   takes priority over every mode-specific heat rule including TAPER's.
+
+3. **CV-decay-on-the-transition-tick was only inferable, not stated.**
+   Whether the regulation current decays on the very tick CC→CV fires
+   (as opposed to starting decay only from the following tick) followed
+   only from tracing Figure 2's step 2/step 3 ordering (mode is already
+   CV by step 2, so step 3's "in CV mode, after step 2" decay applies
+   that same tick) — confirmed correct against the reference engine
+   (`bms_engine.py` lines 70-73), but the SPEC_TEXT prose never said so
+   directly; the pilot got it right but flagged it as "only implied."
+   Added one explicit sentence to SPEC_TEXT section 2 stating plainly
+   that decay begins on the transition tick itself, with no grace tick.
+
+**One additional hardening, not a correctness bug:** the pilot also
+flagged that Figure 2's rendered diagram had two rules' text visually
+overlapping (step 6's longer block running into step 7's text) — a
+legibility defect from the original rendering code using a fixed
+per-step vertical decrement (`y -= 0.088`) regardless of how many lines
+each step's text actually occupied. Rewrote `diagram_rules()` to
+measure each step's actual rendered height via matplotlib's renderer
+and advance by exactly that height plus a fixed gap, which eliminates
+overlap regardless of future text-length changes to any step. Rebuilt
+Figure 2 and visually confirmed (rendered to PNG, read back) that all
+11 steps are now fully legible with no overlap.
+
+**Also strengthened, pre-emptively, two things the pilot raised as
+risk** rather than confirmed bugs: (a) Figure 3's fake worked example
+used numbers that quietly violate this packet's own formulas (an
+impossible CC current of 50.00 under the 45 clamp, a voltage that
+doesn't follow from its own stated SoC) — already labeled "fake," and
+the pilot correctly treated it as format-only and was not actually
+misled, but strengthened the disclaimer to state explicitly and
+up-front that the fake numbers deliberately do not satisfy the
+packet's formulas and must never be used to validate an
+implementation's logic. (b) Figure 3's two-line visual wrap of each
+certificate record (an artifact of fitting the figure to page width)
+could be misread as part of the actual format; the existing "one line
+per tick" rule already resolved this correctly for every pilot so far,
+but added an explicit parenthetical stating the wrap is a display-only
+artifact of the figure and the real certificate has no line break
+there.
+
+No engine, constant, or computed value changed in any of this — all
+fixes are prose/diagram-rendering only. Re-ran `bms_verify.py` and
+`score_counterfactual.py`: canonical hash, all 8 checkpoints, all 4
+events, and all 6 mutant scores are byte-identical to every prior
+round. Artifact rebuilt as `cellguard10_v6.pdf` and re-verified
+byte-level clean (empty metadata, zero XMP, zero vector drawings, one
+raster image per figure page, no path/tool signatures, no leaked
+solution values — including checked specifically for the *alternate*
+hashes the ambiguous readings above would have produced, to make sure
+none of them leaked into the packet either). `platform/prompt.md`
+filename reference updated to `cellguard10_v6.pdf`, word count
+re-confirmed 454/500, hyphen count still 0.
+
 ## Remaining
 
-- This is the third round of fixes driven by local blind pilots, each
-  one catching a real, confirmed bug rather than a false alarm. Decide
-  next: proceed to a real platform pilot now, run a fourth local blind
-  pilot, or harden further. Given three consecutive clean content
-  solves, a fourth local pilot is unlikely to teach much more than
-  "still not obviously broken" — the open question a local pilot
-  structurally cannot answer is whether the six-rule interaction is
-  hard enough for Opus-tier solving, only a real pilot can.
+- This is the fourth round of fixes driven by local blind pilots —
+  three on Sonnet, one on a stronger model (`opus` alias, not verified
+  to be the platform's exact Opus 4.8 Max) — and every round so far has
+  caught at least one real, confirmed bug, including two (the TAPER
+  heat ambiguity and the still-live Figure 2 contradiction) that three
+  prior clean solves had missed. That argues for at least one more
+  round before trusting the packet is actually clean, independent of
+  the separate question of whether the content is hard enough.
+- Decide next: proceed to a real platform pilot now, run a fifth local
+  blind pilot (ideally on the same stronger-model stand-in, now that it
+  has proven more thorough at finding spec gaps than three Sonnet-tier
+  runs combined), or harden the content further. Four consecutive clean
+  *content* solves (all six rules correctly modeled, every time) is a
+  real yellow flag on real-pilot difficulty specifically — a local
+  pilot cannot resolve that question regardless of which model runs it;
+  only a real pilot can.
 - Real pilot run(s), whichever path is chosen.
 
 ---

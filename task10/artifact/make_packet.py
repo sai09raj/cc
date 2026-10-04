@@ -22,7 +22,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import fitz  # PyMuPDF
 
-REVISION = "cellguard10_v5"
+REVISION = "cellguard10_v6"
 DPI = 300
 PAGE_W, PAGE_H = 612, 792
 
@@ -90,12 +90,13 @@ def diagram_rules():
         "   base = mode-current unmodified.",
         "5. Overcurrent clamp: cap BASE current at OVERCURRENT_MAX. Applied\n"
         "   AFTER derating, before balancing.",
-        "6. CELL BALANCING (per cell, the new rule): diff = soc_a - soc_b, using\n"
-        "   EACH cell's own PREVIOUS-tick SoC. If base>0 and |diff|>=\n"
-        "   BALANCE_THRESHOLD: the HIGHER-SoC cell gets\n"
-        "   max(0, base - BALANCE_BLEED); the other cell gets the full base\n"
-        "   current, unchanged. Otherwise both cells get the same base current.\n"
-        "   Re-evaluated every tick -- which cell leads can change over the run.",
+        "6. CELL BALANCING (per cell): diff = soc_a - soc_b, using EACH cell's\n"
+        "   own PREVIOUS-tick SoC. If base>0 and |diff|>= BALANCE_THRESHOLD:\n"
+        "   the HIGHER-SoC cell gets max(0, base - BALANCE_BLEED); the other\n"
+        "   cell gets the full base current, unchanged. Otherwise both cells\n"
+        "   get the same base current. Re-evaluated every tick -- compute the\n"
+        "   comparison fresh, do not hardcode a cell (for this packet's fixed\n"
+        "   capacities the same cell ends up ahead for the whole run).",
         "7. Heat generation (shared, driven by BASE current, not either cell's\n"
         "   post-balancing current): 0 if base=0. Else, in TAPER mode: ALWAYS\n"
         "   HEAT_TAPER, regardless of temperature. Else if incoming temp >=\n"
@@ -111,11 +112,25 @@ def diagram_rules():
         "    soc_x*VOLT_PER_SOC_PCT - current_x*IR_DROP_PER_UNIT. Each cell's\n"
         "    own voltage feeds step 1's NEXT-tick max() check.",
     ]
+    # Dynamic, measured spacing (not a fixed per-step decrement) -- a fixed
+    # decrement assumed a uniform line count per step and let longer steps
+    # (e.g. step 6) visually overlap the following step's text. Measure
+    # each step's actual rendered height and advance by exactly that much,
+    # so step length can never cause a collision regardless of line count.
+    fig.canvas.draw()
+    renderer = fig.canvas.get_renderer()
+    inv = ax.transAxes.inverted()
     y = 0.975
+    gap = 0.012
     for s in steps:
-        ax.text(0.02, y, s, fontsize=8.6, va="top", ha="left",
-                 transform=ax.transAxes, family="monospace")
-        y -= 0.088
+        t = ax.text(0.02, y, s, fontsize=8.6, va="top", ha="left",
+                     transform=ax.transAxes, family="monospace")
+        fig.canvas.draw()
+        bbox = t.get_window_extent(renderer=renderer)
+        top_frac = inv.transform((bbox.x0, bbox.y1))[1]
+        bot_frac = inv.transform((bbox.x0, bbox.y0))[1]
+        height_frac = abs(top_frac - bot_frac)
+        y -= height_frac + gap
     ax.set_title("Per-tick update rules, in order (applied every tick, t=1..320)",
                  fontsize=11, pad=10)
     return fig
@@ -125,8 +140,11 @@ def diagram_certificate_example():
     fig, ax = plt.subplots(figsize=(8.2, 5.4))
     ax.axis("off")
     example = (
-        "Certificate format (S03), worked example with FAKE numbers\n"
-        "(these do not correspond to any real tick of this model):\n\n"
+        "Certificate format (S03), worked example with FAKE numbers. These\n"
+        "numbers do not correspond to any real tick of this model, and\n"
+        "deliberately do NOT satisfy this packet's own formulas (clamp,\n"
+        "voltage, etc) -- they illustrate the TEXT FORMAT only. Never use\n"
+        "them to sanity-check or validate your own implementation's logic:\n\n"
         "CELLGUARD10-CERT-V2\n"
         "t=1;mode=CC;soc_a=12.34;soc_b=11.90;temp=317;current_a=50.00;\n"
         "  current_b=50.00;voltage_a=3850.50;voltage_b=3846.10;fault=False\n"
@@ -135,9 +153,13 @@ def diagram_certificate_example():
         "...\n"
         "t=320;mode=TAPER;soc_a=77.10;soc_b=76.55;temp=288;current_a=3.00;\n"
         "  current_b=3.00;voltage_a=4150.90;voltage_b=4145.10;fault=False\n\n"
-        "Rules: one line per tick, t=1 through t=320, in order. soc_a/soc_b/\n"
-        "current_a/current_b/voltage_a/voltage_b are ALWAYS shown with exactly\n"
-        "two digits after the decimal point -- 50.00, never 50 or 50.0. temp is\n"
+        "(The two-space-indented continuation above is only this figure\n"
+        "wrapping for page width -- the actual certificate has NO line break\n"
+        "there; see the one-line rule below.)\n\n"
+        "Rules: one line per tick, t=1 through t=320, in order, with no\n"
+        "internal line break regardless of length. soc_a/soc_b/current_a/\n"
+        "current_b/voltage_a/voltage_b are ALWAYS shown with exactly two\n"
+        "digits after the decimal point -- 50.00, never 50 or 50.0. temp is\n"
         "an integer (0.1 degC units). fault is True or False. Certificate hash:\n"
         "SHA-256 of the full text (header through the t=320 line, newline-\n"
         "joined, trailing newline included), first 16 hex characters. (Tick 2's\n"
@@ -184,7 +206,11 @@ for every CV-mode tick, not gated by whether a fault is latched, which
 only zeroes delivered current (section 5), never the regulation
 current. The CV to TAPER transition check, and that tick's own
 mode-commanded current, both read the regulation current as it enters
-the tick, before that same tick's own decay. In TAPER mode, the
+the tick, before that same tick's own decay. This applies starting on
+the very tick the CC-to-CV transition itself fires: mode is already CV
+by the time that tick reads and decays the regulation current, so there
+is no grace tick before decay begins -- the first CV tick both uses
+CC_CURRENT and immediately decays it by CV_DECAY_STEP for the next tick. In TAPER mode, the
 mode-commanded current (before derating/clamping/balancing) is always
 the fixed TAPER_CURRENT.
 
@@ -237,13 +263,18 @@ Heat is a single, shared, pack-level quantity, driven by the shared
 base current (section 3), not by either cell's individual
 post-balancing current -- balancing redistributes current between
 cells, it does not change the total the pack is drawing for thermal
-purposes. If the base current is zero (fault latched), no heat is
-generated that tick. TAPER mode is an exception to the derating-
-sensitive heat rule that every other mode follows: a TAPER-mode tick
-always generates HEAT_TAPER, regardless of whether incoming temperature
-is at or above DERATE_TEMP. Only CC and CV mode ticks follow the
-general rule: incoming temperature at or above DERATE_TEMP generates
-HEAT_DERATED; otherwise HEAT_FULL. Temperature is then updated by
+purposes. This zero-current rule takes priority over every other heat
+rule below, including TAPER's: if the base current is zero that tick
+for ANY reason (fault latched, in any mode including TAPER), heat is
+zero that tick, full stop -- evaluate this rule first. Only once base
+current is confirmed nonzero does mode matter: TAPER mode is then an
+exception to the derating-sensitive heat rule that CC and CV follow --
+a nonzero-current TAPER-mode tick generates HEAT_TAPER regardless of
+whether incoming temperature is at or above DERATE_TEMP ("always" here
+means TAPER ignores the temperature check, not that it overrides the
+zero-current rule above). CC and CV mode ticks with nonzero current
+follow the general rule: incoming temperature at or above DERATE_TEMP
+generates HEAT_DERATED; otherwise HEAT_FULL. Temperature is then updated by
 adding that tick's heat and subtracting COOL_PER_TICK.
 
 6. FAULT LATCH
