@@ -1,0 +1,6 @@
+S1 primary platform, all cables, 6 bays OPTIMAL 5878715.0 5878715.0 209.3 checker 5878715
+S2 primary platform, all cables, 5 bays OPTIMAL 5921875.0 5921875.0 2396.4 checker 5921875
+S3 primary platform, C1 unavailable, 6 bays OPTIMAL 8075675.0 8075675.0 864.8 checker 8075675
+S4 alternative platform, all cables, 6 bays OPTIMAL 7480955.0 7480955.0 417.6 checker 7480955
+
+[exited with code 0]

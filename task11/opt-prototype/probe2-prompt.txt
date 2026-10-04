@@ -1,0 +1,26 @@
+You are designing the inter-array cable layout of an offshore wind farm. The file field.json gives the position of each of 64 turbines (T01 to T64) and of two candidate offshore substation platforms, all as integer (x, y) coordinates in metres. The rules below are the complete specification.
+
+LAYOUT RULES
+1. A layout gives each turbine exactly one outgoing cable, to either another turbine or the substation, such that following outgoing cables from any turbine always reaches the substation. The cables therefore form trees rooted at the substation.
+2. The load of a cable is the number of turbines whose power flows through it: the turbine it leaves plus every turbine upstream of that turbine.
+3. Every cable is a straight segment between the two points it joins. Its length in metres is the Euclidean distance, rounded to the nearest integer with exact halves rounded up.
+4. A cable between two turbines may be at most 1300 metres long. A cable from a turbine to the substation has no length limit.
+5. No two cables may cross. Two cables cross if their segments share any point other than an endpoint they have in common; two collinear cables that overlap along a stretch also count as crossing, even if they share an endpoint.
+6. The number of cables that end at the substation is limited by its feeder bays (the limit depends on the scenario).
+7. Each cable is built from exactly one cable type. A cable may only use a type whose capacity is at least its load, and it always uses the cheapest such type available in the scenario. Cable cost = length x that type's price per metre.
+
+CABLE TYPES (capacity in turbines, price per metre)
+C1: 4 turbines, 100. C2: 8 turbines, 160. C3: 14 turbines, 245.
+
+SCENARIOS
+S1: primary platform, all three cable types, at most 6 feeder bays.
+S2: primary platform, all three cable types, at most 5 feeder bays.
+S3: primary platform, only C2 and C3 available, at most 6 feeder bays.
+S4: alternative platform, all three cable types, at most 6 feeder bays.
+
+THE TASK
+For each scenario, find a layout of minimum total cable cost and prove that no feasible layout is cheaper. Report the minimum cost for each scenario as an exact integer.
+
+Use only the Python standard library (or another language's standard library). No third-party packages, no external solvers, no network access. Write your own algorithms.
+
+Deliver, as files: the optimizer source; an independent checker, coded separately, that validates any layout against every rule above and recomputes its cost; for each scenario the optimal layout (each turbine's outgoing cable endpoint and cable type) and its cost; the evidence that each reported cost is optimal (for example a matching lower bound and how it was obtained); and an engineering memo explaining your method, how the scenarios' optima differ and why, and how much a simple greedy layout would have cost by comparison. Give reproduction commands and record the language and runtime version you used.
