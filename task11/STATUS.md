@@ -1,4 +1,45 @@
-# Task 11 — TENURE-11 (generational garbage-collector tuning)
+# Task 11
+
+## Current direction: offshore array-cable layout optimization (prototype, probe running)
+
+After TENURE-11 failed and the calibration audits showed that no fully
+specified simulation in this project has held the target model below 50%
+(see the calibration section further down, and Playbook mistake #71), the
+user chose to try difficulty that lives in *solving* rather than reading:
+an exact combinatorial optimization, fully specified, standard library
+only, whose optimum must be found and proven.
+
+Problem: connect 48 turbines to an offshore substation with cable trees;
+cable types C1/C2/C3 (capacity 3/5/8 turbines, price 100/145/210 per
+metre); a cable uses the cheapest type whose capacity covers its load;
+turbine-to-turbine spans at most 1300 m; no two cables may cross; a feeder
+bay limit at the substation. Four scenarios (bay limits, a missing cable
+type, an alternative platform). This is a capacitated minimum spanning tree
+with step costs and a non-crossing constraint.
+
+Prototype (`opt-prototype/`), author side only:
+
+| Finding | Evidence |
+|---|---|
+| A plain single-flow CP-SAT model cannot certify 30-turbine compact layouts | 15–21% optimality gap after 300 s on 4 cores; on one instance its best layout (2,765,585) was not optimal |
+| A capacity-indexed model certifies them quickly | 30–36 turbines in 0.3–6 s; 48 turbines in 1–32 s per scenario |
+| Simple heuristics miss the optimum | Esau–Williams 12% above optimal on a 30-turbine instance, plus local search still 2% above; 4% above on a 36-turbine scenario |
+| Optima (48-turbine set) | S1 4,732,590; S2 4,759,920; S3 4,758,405; S4 6,667,570, all CP-SAT OPTIMAL and each recomputed exactly by a separate stdlib checker (`check.py`) |
+
+OR-Tools is installed only in a private author virtualenv; the system
+Python the probes use has no solver libraries. A second, independent exact
+certification (different formulation or engine) is still owed before any
+optimum is used for grading.
+
+Gate: an `opus`-alias probe on the text-only problem (`probe-prompt.txt`,
+`field.json`) is running. If it proves all four optima, this direction
+fails too; if it cannot prove them or reports a non-optimal cost, check
+whether that is legitimate difficulty or a fairness problem (unwinnable
+within reason), then decide.
+
+---
+
+# TENURE-11 (generational garbage-collector tuning) — shelved
 
 **State: FAILED the early difficulty gate.** The `opus`-alias blind pilot
 solved the draft packet cleanly in about 10 minutes. Per Gate 8.5 and
