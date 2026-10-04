@@ -38,7 +38,7 @@ methods, so the final task should grade finding the optimum and reporting
 a valid bound, not proving optimality.
 
 **Built since:** semantic contract (`design/array-semantic-contract.md`);
-packet `artifact/array11_v1.pdf` (platforms and cable catalogue only in
+packet `artifact/array11_v2.pdf` (v1 plus full metadata strip: ICC profile, file ID, Info) (platforms and cable catalogue only in
 rasterized figures, metadata stripped); `platform/array-prompt.md` (388
 words, no hyphens); `platform/array-rubric.md` (29 criteria, 96 positive
 points; a run with no optimum caps at 26/96 = 27%; two unpaired optima

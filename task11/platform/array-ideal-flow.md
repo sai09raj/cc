@@ -45,15 +45,19 @@ runtime version and the reproduction commands.
 ## Synthesize
 
 ```text
-Using your own reported costs, write the engineering memo. Losing one
-bay at P costs 43,160: the 64 turbines must ride on five feeders, so
-lightly loaded strings merge onto fuller feeders. Removing C1 costs
-2,196,960: cables carrying 4 or fewer turbines make up most of the
-cable length, and each such metre now costs 160 instead of 100, partly
-offset by reshaping the layout. Moving to platform A costs 1,602,240:
-A lies at the western edge of the field rather than near its centre,
-so feeders and the heavily loaded cables near the platform run much
-farther. Losing one bay at A costs 35,745. Compare the S1 layout with a
-simple greedy layout's cost, and state each scenario's remaining gap
-honestly.
+Write the engineering memo from your own executed results. State the
+amount of each change and explain its cause. Losing one bay at platform
+P costs 43,160 (S2 against S1): the 64 turbines must ride on five
+feeders, so lightly loaded strings merge onto fuller, more heavily
+loaded feeders. Losing one bay at platform A costs 35,745 (S5 against
+S4): the same merging, here two lightly loaded feeders combining into
+one. Removing C1 costs 2,196,960 (S3 against S1): cables carrying 4 or
+fewer turbines, which make up most of the cable length, must now use
+the 160 per metre type instead of the 100 per metre type, partly offset
+by reshaping the layout. Moving to platform A costs 1,602,240 (S4
+against S1): A lies at the western edge of the field rather than near
+its centre, so cables must run much farther to reach it. Compare the S1
+layout with a simple greedy layout's cost, report every scenario's
+feeders used, lower bound, bound method and gap, and call a cost proven
+optimal only where the bound equals it.
 ```

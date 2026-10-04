@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 import fitz  # PyMuPDF
 
-REVISION = "array11_v1"
+REVISION = "array11_v2"
 HERE = os.path.dirname(os.path.abspath(__file__))
 FIELD = json.load(open(os.path.join(HERE, "..", "opt-prototype", "field64.json")))
 DPI = 300
@@ -165,10 +165,21 @@ def main():
         doc.del_xml_metadata()
     except Exception:
         pass
+    # Plain DeviceRGB images: the library's embedded ICC profile names its vendor.
+    for page in doc:
+        for img in page.get_images(full=True):
+            doc.xref_set_key(img[0], "ColorSpace", "/DeviceRGB")
+    tmp = os.path.join(HERE, f".{REVISION}.tmp.pdf")
+    doc.save(tmp, garbage=4, deflate=True, clean=True)
+    doc.close()
+    doc = fitz.open(tmp)
+    doc.xref_set_key(-1, "Info", "null")
+    doc.xref_set_key(-1, "ID", "null")
     doc.xref_set_key(doc.pdf_catalog(), "Info", "null")
     out = os.path.join(HERE, f"{REVISION}.pdf")
-    doc.save(out, garbage=4, deflate=True, clean=True)
+    doc.save(out, garbage=4, deflate=True, clean=True, no_new_id=True)
     doc.close()
+    os.remove(tmp)
     raw = open(out, "rb").read()
     start = raw.find(b"% Written by")
     if start != -1:
