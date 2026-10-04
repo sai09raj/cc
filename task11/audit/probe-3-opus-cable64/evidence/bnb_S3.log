@@ -1,0 +1,26 @@
+n=64 K=6 Q=14 arcs=414 cols=5446 rows=551 cliques=358 UBin=8105915
+root LP bound (safe) 7958921.978 status 0 rows 1063
+  t=31s nodes=7 open=8 globalLB=7963000.3 inc=8105916
+  t=63s nodes=17 open=18 globalLB=7968816.0 inc=8105916
+  t=97s nodes=29 open=30 globalLB=7971419.2 inc=8105916
+  t=132s nodes=39 open=40 globalLB=7972521.2 inc=8105916
+  t=163s nodes=49 open=50 globalLB=7975129.3 inc=8105916
+  t=194s nodes=55 open=56 globalLB=7977883.9 inc=8105916
+  t=226s nodes=61 open=62 globalLB=7978312.3 inc=8105916
+  t=261s nodes=67 open=68 globalLB=7978458.4 inc=8105916
+  t=293s nodes=74 open=75 globalLB=7978800.5 inc=8105916
+  t=327s nodes=83 open=84 globalLB=7980049.9 inc=8105916
+  t=361s nodes=95 open=96 globalLB=7980745.5 inc=8105916
+  t=395s nodes=103 open=104 globalLB=7981124.1 inc=8105916
+  t=431s nodes=111 open=112 globalLB=7982271.6 inc=8105916
+  t=469s nodes=117 open=118 globalLB=7982924.2 inc=8105916
+  t=505s nodes=125 open=126 globalLB=7983519.1 inc=8105916
+  t=543s nodes=131 open=132 globalLB=7983727.9 inc=8105916
+  t=575s nodes=138 open=139 globalLB=7983806.2 inc=8105916
+  t=609s nodes=145 open=146 globalLB=7983963.4 inc=8105916
+  t=643s nodes=155 open=156 globalLB=7984504.1 inc=8105916
+  t=674s nodes=163 open=164 globalLB=7984766.6 inc=8105916
+  t=711s nodes=171 open=172 globalLB=7984980.9 inc=8105916
+done: nodes=174 leaves=0 maxdepth=0 iters=305627 time=728.9s timed_out=1 rows_final=1063
+global lower bound at stop: 7985014.201
+result: INCOMPLETE best=-1

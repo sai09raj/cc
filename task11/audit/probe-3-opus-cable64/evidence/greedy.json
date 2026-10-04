@@ -1,0 +1,26 @@
+{
+ "S1": {
+  "esau_williams": 6177435,
+  "sweep_equal_sectors": 6757700,
+  "sweep_random_sector_sizes": 6410160,
+  "checker": "VALID S1 cost=6410160 feeders=6 max_load=14"
+ },
+ "S2": {
+  "esau_williams": "infeasible (ended with 6 feeders > 5)",
+  "sweep_equal_sectors": 6615955,
+  "sweep_random_sector_sizes": 6483945,
+  "checker": "VALID S2 cost=6483945 feeders=5 max_load=14"
+ },
+ "S3": {
+  "esau_williams": "infeasible (ended with 7 feeders > 6)",
+  "sweep_equal_sectors": 8688315,
+  "sweep_random_sector_sizes": 8268705,
+  "checker": "VALID S3 cost=8268705 feeders=6 max_load=14"
+ },
+ "S4": {
+  "esau_williams": "infeasible (ended with 8 feeders > 6)",
+  "sweep_equal_sectors": "no feasible rotation",
+  "sweep_random_sector_sizes": 8264435,
+  "checker": "VALID S4 cost=8264435 feeders=6 max_load=14"
+ }
+}
