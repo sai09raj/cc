@@ -1,0 +1,4 @@
+{'n': 64, 'mf': 6, 'status': 'OPTIMAL', 'obj': 5878715.0, 'bound': 5878715.0, 't': 166.1, 'checker': 5878715}
+{'n': 72, 'mf': 7, 'status': 'OPTIMAL', 'obj': 6794960.0, 'bound': 6794960.0, 't': 1725.5, 'checker': 6794960}
+
+[exited with code 0]
