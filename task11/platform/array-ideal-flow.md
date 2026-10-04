@@ -31,7 +31,7 @@ optimal (for example an LP relaxation of a capacity indexed arc
 formulation solved by a home made simplex, used for bounds and inside a
 branch and bound). Push the search until the layout cost meets the
 bound where possible. Results: S1 5,878,715; S2 5,921,875; S3
-8,075,675; S4 7,480,955; S5 S5_COST. Report for each scenario the
+8,075,675; S4 7,480,955; S5 7,516,700. Report for each scenario the
 layout, the cost, the feeders used, the best lower bound, how it was
 obtained and the gap, calling a cost proven optimal only when the bound
 equals it. Build a separately coded checker that recomputes loads,
@@ -53,7 +53,7 @@ cable length, and each such metre now costs 160 instead of 100, partly
 offset by reshaping the layout. Moving to platform A costs 1,602,240:
 A lies at the western edge of the field rather than near its centre,
 so feeders and the heavily loaded cables near the platform run much
-farther. Losing one bay at A costs S5_DIFF. Compare the S1 layout with a
+farther. Losing one bay at A costs 35,745. Compare the S1 layout with a
 simple greedy layout's cost, and state each scenario's remaining gap
 honestly.
 ```

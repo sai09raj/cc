@@ -46,11 +46,12 @@ for orientation only and the prose says so.
 | S2 | primary | C1, C2, C3 | 5 | 5,921,875 |
 | S3 | primary | C2, C3 | 6 | 8,075,675 |
 | S4 | alternative | C1, C2, C3 | 6 | 7,480,955 |
-| S5 | alternative | C1, C2, C3 | 5 | certification running |
+| S5 | alternative | C1, C2, C3 | 5 | 7,516,700 |
 
 Certification: capacity-indexed CP-SAT (OPTIMAL, bound = cost), cost
-recomputed by the separate stdlib checker; second certification by
-zero-gap SCIP running.
+recomputed by the separate stdlib checker (S1–S4 209–2396 s; S5 1888 s,
+`opt-prototype/scen64-s5-certification.txt`); second certification of
+S1–S4 by zero-gap SCIP running.
 
 ## A04 — What the solver must deliver (graded)
 

@@ -44,12 +44,13 @@ words, no hyphens); `platform/array-rubric.md` (29 criteria, 96 positive
 points; a run with no optimum caps at 26/96 = 27%; two unpaired optima
 reach 47.9%); `platform/array-ideal-flow.md`.
 
-**Running:** S5 certification (platform A, 5 bays; CP-SAT, up to 7000 s);
-zero-gap SCIP second certification of S1 to S4; Phase 8.5 `opus` blind
-pilot on the frozen packet (PDF plus prompt only, ~2 h budget).
-S5_COST / S5_DIFF placeholders in rubric and Ideal Flow are filled once
-S5 certifies; if it cannot, S5 is dropped and the packet rebuilt as
-array11_v2.
+**S5 certified:** platform A, 5 bays, 7,516,700 (CP-SAT OPTIMAL, bound
+equal, 1888 s, stdlib checker agrees; `opt-prototype/scen64-s5-certification.txt`).
+S5 against S4 = 35,745. Rubric and Ideal Flow filled in.
+
+**Running:** zero-gap SCIP second certification of S1 to S4; Phase 8.5
+`opus` blind pilot on the frozen packet (PDF plus prompt only, ~2 h
+budget).
 
 ---
 

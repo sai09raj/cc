@@ -78,7 +78,7 @@ minimum is the task.
 | 18 | +10 | Reports the S2 cost (platform P, all cable types, 5 feeder bays) as exactly 5,921,875. |
 | 19 | +10 | Reports the S3 cost (platform P, cable types C2 and C3 only, 6 feeder bays) as exactly 8,075,675. |
 | 20 | +10 | Reports the S4 cost (platform A, all cable types, 6 feeder bays) as exactly 7,480,955. |
-| 21 | +10 | Reports the S5 cost (platform A, all cable types, 5 feeder bays) as exactly S5_COST. |
+| 21 | +10 | Reports the S5 cost (platform A, all cable types, 5 feeder bays) as exactly 7,516,700. |
 
 ## Cost differences (22-25, weight 20)
 
@@ -87,15 +87,15 @@ minimum is the task.
 | 22 | +5 | States that losing one feeder bay at platform P (S2 against S1) costs exactly 43,160. |
 | 23 | +5 | States that removing cable type C1 (S3 against S1) costs exactly 2,196,960. |
 | 24 | +5 | States that moving to platform A (S4 against S1) costs exactly 1,602,240. |
-| 25 | +5 | States that losing one feeder bay at platform A (S5 against S4) costs exactly S5_DIFF. |
+| 25 | +5 | States that losing one feeder bay at platform A (S5 against S4) costs exactly 35,745. |
 
 ## Negative criteria (26-29)
 
 | # | Wt | Criterion |
 | --- | --- | --- |
 | 26 | -10 | Uses a third party package or external solver (for example OR-Tools, PuLP, SciPy, NetworkX, Gurobi, CBC, HiGHS) to compute any layout, cost or bound. |
-| 27 | -8 | Calls a scenario cost optimal or proven optimal while it exceeds that scenario's minimum: S1 5,878,715; S2 5,921,875; S3 8,075,675; S4 7,480,955; S5 S5_COST. |
-| 28 | -6 | Reports a cost below the true minimum for any scenario (S1 5,878,715; S2 5,921,875; S3 8,075,675; S4 7,480,955; S5 S5_COST), which no valid layout can achieve. |
+| 27 | -8 | Calls a scenario cost optimal or proven optimal while it exceeds that scenario's minimum: S1 5,878,715; S2 5,921,875; S3 8,075,675; S4 7,480,955; S5 7,516,700. |
+| 28 | -6 | Reports a cost below the true minimum for any scenario (S1 5,878,715; S2 5,921,875; S3 8,075,675; S4 7,480,955; S5 7,516,700), which no valid layout can achieve. |
 | 29 | -5 | The checker imports, calls or copies code from the optimizer instead of being separately coded. |
 
 ## Reverse coverage
