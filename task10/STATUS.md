@@ -472,25 +472,94 @@ none of them leaked into the packet either). `platform/prompt.md`
 filename reference updated to `cellguard10_v6.pdf`, word count
 re-confirmed 454/500, hyphen count still 0.
 
+## Round 5: user-run pilot, reported as the platform's actual Opus 4.8 Max
+
+User ran the frozen `prompt.md` + `cellguard10_v6.pdf` packet themselves,
+outside this session, against the model they identified as the
+platform's actual target ("Opus 4.8 Max") — not the generic `opus`
+alias this session can invoke. This closes the model-identity gap round
+4 flagged: unlike every prior round, this one is reported to be the
+real target model, not a stand-in.
+
+Graded the full submitted deliverable bundle (uploaded as a zip:
+engine source, independent verifier source, full certificate, full-
+precision CSV, findings report, certification evidence doc, engineering
+memo, README, and raw execution transcripts) against all 32 rubric
+criteria with the same rigor as round 4 — not just the pasted summary
+text initially shared. Verified independently, not taken on trust:
+
+- Diffed the submitted `cellguard_certificate.txt` against a freshly
+  generated canonical trace — byte-identical, all 320 lines.
+- Read the submitted engine and verifier source in full. The engine's
+  rule 7 (heat) comment explicitly states the zero-current-first,
+  TAPER-ignores-temperature precedence — the exact ambiguity round 4's
+  fix resolved, read and implemented correctly. The verifier is a
+  genuinely from-scratch re-implementation (no import of the engine;
+  confirmed by reading the full file), with both adversarial mutations
+  built from the verifier's own independent replay logic, not reused
+  from the engine's mutation hooks.
+- Cross-checked the two adversarial-mutation divergence points (t=204
+  for early fault release, t=21 for uniform current) against canonical
+  — both exact.
+
+**Score: 121/122 (99.2%)** — identical to round 4's opus-alias score,
+and missing the exact same single criterion (package criterion 3, tool
+version). Every local rule, all 8 checkpoints, all 4 events, final
+state, hash, all 3 verifier criteria, and all 4 memo criteria confirmed
+correct by direct inspection of the actual files, not just the
+submitted summary.
+
+**That both independently-run pilots missed the identical criterion
+led to finding a real bug in this packet, not a solving gap**: grepped
+`prompt.md`, `ideal-flow.md`, and the PDF's `SPEC_TEXT` for any mention
+of recording a tool/runtime version or declaring an offline,
+dependency-free environment, and found none. Criterion 3 ("Records the
+language/runtime tool version used, in a declared offline,
+dependency-free (stdlib-only) execution environment") was scoring
+solvers down for something the packet never asked them to do — a
+rubric/prompt mismatch, the same class of unfairness this project has
+flagged before (the "Rubric Prohibition Criteria Check" pattern from
+earlier tasks). Neither solver could plausibly have known to record
+this. Fixed by adding an explicit instruction to both `prompt.md`
+("record the exact language and runtime version you used, in a
+declared offline, dependency free execution environment") and
+`ideal-flow.md`'s Execute & Generate section, matching language.
+`prompt.md` re-confirmed at 472/500 words, 0 hyphens. No PDF rebuild
+needed (the artifact never discussed tool versioning; this was prompt-
+only), no engine/value change, so no re-run of the S08 audit was
+needed either.
+
+**Net effect of this round**: with the packaging bug fixed, the
+real-target-model pilot's result is effectively a clean, near-perfect
+solve (121/122, and the 1-point miss was never a fair test to begin
+with — correcting for it, this is functionally 122/122). Combined with
+four prior clean local solves, this is the strongest and most direct
+evidence yet that this content, as currently hardened, is not clearing
+the real-pilot difficulty bar — not a proxy signal anymore, but
+(reportedly) the actual target model solving it cleanly end to end,
+including correctly resolving an ambiguity fix made only one round
+earlier.
+
 ## Remaining
 
-- This is the fourth round of fixes driven by local blind pilots —
-  three on Sonnet, one on a stronger model (`opus` alias, not verified
-  to be the platform's exact Opus 4.8 Max) — and every round so far has
-  caught at least one real, confirmed bug, including two (the TAPER
-  heat ambiguity and the still-live Figure 2 contradiction) that three
-  prior clean solves had missed. That argues for at least one more
-  round before trusting the packet is actually clean, independent of
-  the separate question of whether the content is hard enough.
-- Decide next: proceed to a real platform pilot now, run a fifth local
-  blind pilot (ideally on the same stronger-model stand-in, now that it
-  has proven more thorough at finding spec gaps than three Sonnet-tier
-  runs combined), or harden the content further. Four consecutive clean
-  *content* solves (all six rules correctly modeled, every time) is a
-  real yellow flag on real-pilot difficulty specifically — a local
-  pilot cannot resolve that question regardless of which model runs it;
-  only a real pilot can.
-- Real pilot run(s), whichever path is chosen.
+- **Recommendation: do not spend a real platform pilot slot on this
+  content as currently hardened.** Five consecutive clean solves (four
+  local, one reported as the real target model via an uploaded,
+  independently-graded bundle) is no longer a yellow flag — if the
+  model-identity claim is accurate, it's a direct result. Spending a
+  real pilot now would very likely reproduce TYPECHAIN-9's 99%/100%
+  outcome, for the same underlying reason mistake #67 and #68 already
+  named: six genuinely-interacting rules is necessary but has not
+  proven sufficient on its own against a model of this strength.
+- Next real decision: harden substantially further (a seventh
+  interacting rule, or a mechanism change deep enough to not just be
+  "more of the same six"), or treat task10 as heading toward the same
+  shelve-and-pivot outcome as STATIC10 and TYPECHAIN-9, documented
+  honestly rather than forcing a pilot spend to confirm what five
+  solves already indicate.
+- If a real pilot is still run despite this, treat any score at or
+  above ~50% as expected, not surprising, given this evidence — not as
+  new information requiring a fresh root-cause investigation.
 
 ---
 

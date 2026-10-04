@@ -36,9 +36,10 @@ cells report identical current throughout as if balancing were never
 applied. Confirm the verifier rejects both while still accepting the
 true trace's own correct checkpoint states. Deliver engine source,
 verifier source, the full 320 tick two-cell trace, certification
-evidence, and a memo. Equivalent languages and source organization all
-pass; exactly one physically valid trace exists for this fixed model
-under these rules.
+evidence, and a memo, recording the exact language and runtime version
+used in a declared offline, dependency free execution environment.
+Equivalent languages and source organization all pass; exactly one
+physically valid trace exists for this fixed model under these rules.
 ```
 
 ## Synthesize
