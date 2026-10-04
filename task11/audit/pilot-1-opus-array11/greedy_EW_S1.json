@@ -1,0 +1,543 @@
+{
+ "scenario": "S1",
+ "platform": "P",
+ "platform_xy": [
+  3200,
+  3000
+ ],
+ "feeder_bays_B": 6,
+ "cable_types": [
+  {
+   "type": "C1",
+   "capacity": 4,
+   "price_per_m": 100
+  },
+  {
+   "type": "C2",
+   "capacity": 8,
+   "price_per_m": 160
+  },
+  {
+   "type": "C3",
+   "capacity": 14,
+   "price_per_m": 245
+  }
+ ],
+ "total_cost": 6177435,
+ "feeders_used": 6,
+ "cables": [
+  {
+   "from": "T01",
+   "to": "T10",
+   "type": "C1",
+   "load": 1,
+   "length_m": 780,
+   "cost": 78000
+  },
+  {
+   "from": "T02",
+   "to": "T07",
+   "type": "C1",
+   "load": 1,
+   "length_m": 812,
+   "cost": 81200
+  },
+  {
+   "from": "T03",
+   "to": "T11",
+   "type": "C1",
+   "load": 1,
+   "length_m": 800,
+   "cost": 80000
+  },
+  {
+   "from": "T04",
+   "to": "T05",
+   "type": "C1",
+   "load": 2,
+   "length_m": 762,
+   "cost": 76200
+  },
+  {
+   "from": "T05",
+   "to": "T14",
+   "type": "C1",
+   "load": 3,
+   "length_m": 724,
+   "cost": 72400
+  },
+  {
+   "from": "T06",
+   "to": "T16",
+   "type": "C1",
+   "load": 1,
+   "length_m": 809,
+   "cost": 80900
+  },
+  {
+   "from": "T07",
+   "to": "T15",
+   "type": "C1",
+   "load": 2,
+   "length_m": 601,
+   "cost": 60100
+  },
+  {
+   "from": "T08",
+   "to": "T13",
+   "type": "C1",
+   "load": 1,
+   "length_m": 526,
+   "cost": 52600
+  },
+  {
+   "from": "T09",
+   "to": "T04",
+   "type": "C1",
+   "load": 1,
+   "length_m": 625,
+   "cost": 62500
+  },
+  {
+   "from": "T10",
+   "to": "T16",
+   "type": "C1",
+   "load": 2,
+   "length_m": 931,
+   "cost": 93100
+  },
+  {
+   "from": "T11",
+   "to": "T17",
+   "type": "C1",
+   "load": 2,
+   "length_m": 766,
+   "cost": 76600
+  },
+  {
+   "from": "T12",
+   "to": "T19",
+   "type": "C1",
+   "load": 3,
+   "length_m": 741,
+   "cost": 74100
+  },
+  {
+   "from": "T13",
+   "to": "T12",
+   "type": "C1",
+   "load": 2,
+   "length_m": 668,
+   "cost": 66800
+  },
+  {
+   "from": "T14",
+   "to": "T17",
+   "type": "C1",
+   "load": 4,
+   "length_m": 882,
+   "cost": 88200
+  },
+  {
+   "from": "T15",
+   "to": "T21",
+   "type": "C1",
+   "load": 3,
+   "length_m": 792,
+   "cost": 79200
+  },
+  {
+   "from": "T16",
+   "to": "T24",
+   "type": "C1",
+   "load": 4,
+   "length_m": 1003,
+   "cost": 100300
+  },
+  {
+   "from": "T17",
+   "to": "T25",
+   "type": "C2",
+   "load": 7,
+   "length_m": 744,
+   "cost": 119040
+  },
+  {
+   "from": "T18",
+   "to": "T26",
+   "type": "C1",
+   "load": 1,
+   "length_m": 810,
+   "cost": 81000
+  },
+  {
+   "from": "T19",
+   "to": "T27",
+   "type": "C1",
+   "load": 4,
+   "length_m": 724,
+   "cost": 72400
+  },
+  {
+   "from": "T20",
+   "to": "T28",
+   "type": "C1",
+   "load": 1,
+   "length_m": 778,
+   "cost": 77800
+  },
+  {
+   "from": "T21",
+   "to": "T27",
+   "type": "C1",
+   "load": 4,
+   "length_m": 965,
+   "cost": 96500
+  },
+  {
+   "from": "T22",
+   "to": "T29",
+   "type": "C1",
+   "load": 1,
+   "length_m": 744,
+   "cost": 74400
+  },
+  {
+   "from": "T23",
+   "to": "T25",
+   "type": "C1",
+   "load": 1,
+   "length_m": 743,
+   "cost": 74300
+  },
+  {
+   "from": "T24",
+   "to": "T28",
+   "type": "C2",
+   "load": 6,
+   "length_m": 600,
+   "cost": 96000
+  },
+  {
+   "from": "T25",
+   "to": "T32",
+   "type": "C3",
+   "load": 13,
+   "length_m": 1166,
+   "cost": 285670
+  },
+  {
+   "from": "T26",
+   "to": "T30",
+   "type": "C1",
+   "load": 3,
+   "length_m": 635,
+   "cost": 63500
+  },
+  {
+   "from": "T27",
+   "to": "PLATFORM",
+   "type": "C3",
+   "load": 11,
+   "length_m": 608,
+   "cost": 148960
+  },
+  {
+   "from": "T28",
+   "to": "PLATFORM",
+   "type": "C2",
+   "load": 8,
+   "length_m": 1809,
+   "cost": 289440
+  },
+  {
+   "from": "T29",
+   "to": "T27",
+   "type": "C1",
+   "load": 2,
+   "length_m": 591,
+   "cost": 59100
+  },
+  {
+   "from": "T30",
+   "to": "T25",
+   "type": "C1",
+   "load": 4,
+   "length_m": 967,
+   "cost": 96700
+  },
+  {
+   "from": "T31",
+   "to": "T24",
+   "type": "C1",
+   "load": 1,
+   "length_m": 589,
+   "cost": 58900
+  },
+  {
+   "from": "T32",
+   "to": "PLATFORM",
+   "type": "C3",
+   "load": 14,
+   "length_m": 691,
+   "cost": 169295
+  },
+  {
+   "from": "T33",
+   "to": "T26",
+   "type": "C1",
+   "load": 1,
+   "length_m": 709,
+   "cost": 70900
+  },
+  {
+   "from": "T34",
+   "to": "PLATFORM",
+   "type": "C2",
+   "load": 5,
+   "length_m": 1502,
+   "cost": 240320
+  },
+  {
+   "from": "T35",
+   "to": "PLATFORM",
+   "type": "C3",
+   "load": 14,
+   "length_m": 206,
+   "cost": 50470
+  },
+  {
+   "from": "T36",
+   "to": "T41",
+   "type": "C1",
+   "load": 2,
+   "length_m": 651,
+   "cost": 65100
+  },
+  {
+   "from": "T37",
+   "to": "T34",
+   "type": "C1",
+   "load": 4,
+   "length_m": 1093,
+   "cost": 109300
+  },
+  {
+   "from": "T38",
+   "to": "T35",
+   "type": "C2",
+   "load": 8,
+   "length_m": 750,
+   "cost": 120000
+  },
+  {
+   "from": "T39",
+   "to": "PLATFORM",
+   "type": "C3",
+   "load": 12,
+   "length_m": 1048,
+   "cost": 256760
+  },
+  {
+   "from": "T40",
+   "to": "T36",
+   "type": "C1",
+   "load": 1,
+   "length_m": 930,
+   "cost": 93000
+  },
+  {
+   "from": "T41",
+   "to": "T39",
+   "type": "C2",
+   "load": 7,
+   "length_m": 803,
+   "cost": 128480
+  },
+  {
+   "from": "T42",
+   "to": "T37",
+   "type": "C1",
+   "load": 1,
+   "length_m": 950,
+   "cost": 95000
+  },
+  {
+   "from": "T43",
+   "to": "T38",
+   "type": "C2",
+   "load": 6,
+   "length_m": 1032,
+   "cost": 165120
+  },
+  {
+   "from": "T44",
+   "to": "T35",
+   "type": "C2",
+   "load": 5,
+   "length_m": 948,
+   "cost": 151680
+  },
+  {
+   "from": "T45",
+   "to": "T39",
+   "type": "C1",
+   "load": 4,
+   "length_m": 668,
+   "cost": 66800
+  },
+  {
+   "from": "T46",
+   "to": "T37",
+   "type": "C1",
+   "load": 2,
+   "length_m": 862,
+   "cost": 86200
+  },
+  {
+   "from": "T47",
+   "to": "T41",
+   "type": "C1",
+   "load": 4,
+   "length_m": 816,
+   "cost": 81600
+  },
+  {
+   "from": "T48",
+   "to": "T38",
+   "type": "C1",
+   "load": 1,
+   "length_m": 789,
+   "cost": 78900
+  },
+  {
+   "from": "T49",
+   "to": "T43",
+   "type": "C2",
+   "load": 5,
+   "length_m": 640,
+   "cost": 102400
+  },
+  {
+   "from": "T50",
+   "to": "T47",
+   "type": "C1",
+   "load": 1,
+   "length_m": 644,
+   "cost": 64400
+  },
+  {
+   "from": "T51",
+   "to": "T44",
+   "type": "C1",
+   "load": 4,
+   "length_m": 671,
+   "cost": 67100
+  },
+  {
+   "from": "T52",
+   "to": "T59",
+   "type": "C1",
+   "load": 1,
+   "length_m": 671,
+   "cost": 67100
+  },
+  {
+   "from": "T53",
+   "to": "T46",
+   "type": "C1",
+   "load": 1,
+   "length_m": 700,
+   "cost": 70000
+  },
+  {
+   "from": "T54",
+   "to": "T45",
+   "type": "C1",
+   "load": 3,
+   "length_m": 767,
+   "cost": 76700
+  },
+  {
+   "from": "T55",
+   "to": "T51",
+   "type": "C1",
+   "load": 2,
+   "length_m": 725,
+   "cost": 72500
+  },
+  {
+   "from": "T56",
+   "to": "T47",
+   "type": "C1",
+   "load": 2,
+   "length_m": 949,
+   "cost": 94900
+  },
+  {
+   "from": "T57",
+   "to": "T49",
+   "type": "C1",
+   "load": 4,
+   "length_m": 801,
+   "cost": 80100
+  },
+  {
+   "from": "T58",
+   "to": "T51",
+   "type": "C1",
+   "load": 1,
+   "length_m": 803,
+   "cost": 80300
+  },
+  {
+   "from": "T59",
+   "to": "T61",
+   "type": "C1",
+   "load": 2,
+   "length_m": 835,
+   "cost": 83500
+  },
+  {
+   "from": "T60",
+   "to": "T62",
+   "type": "C1",
+   "load": 1,
+   "length_m": 573,
+   "cost": 57300
+  },
+  {
+   "from": "T61",
+   "to": "T57",
+   "type": "C1",
+   "load": 3,
+   "length_m": 752,
+   "cost": 75200
+  },
+  {
+   "from": "T62",
+   "to": "T54",
+   "type": "C1",
+   "load": 2,
+   "length_m": 780,
+   "cost": 78000
+  },
+  {
+   "from": "T63",
+   "to": "T56",
+   "type": "C1",
+   "load": 1,
+   "length_m": 685,
+   "cost": 68500
+  },
+  {
+   "from": "T64",
+   "to": "T55",
+   "type": "C1",
+   "load": 1,
+   "length_m": 946,
+   "cost": 94600
+  }
+ ],
+ "note": "Esau-Williams greedy"
+}

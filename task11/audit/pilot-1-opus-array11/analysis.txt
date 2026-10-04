@@ -1,0 +1,47 @@
+== S1  cost 5878715  feeders 6  LB 5611567  gap 267148 (4.54%)
+   C1: 54 cables,  43944 m, cost  4394400
+   C2:  6 cables,   5824 m, cost   931840
+   C3:  4 cables,   2255 m, cost   552475
+   total length 52023 m; feeder loads [8, 8, 8, 13, 13, 14]; feeder lengths [206, 608, 691, 734, 1048, 1120] (sum 4407 m)
+   load-weighted length sum(load*len) = 179181
+   SA restarts (stage 1): [5883445, 5883545, 5883545, 5896245, 5896605, 5900615, 5908995, 5945425]
+   Esau-Williams greedy: 6177435
+   time: heuristic 164 s, lower bound 9 s
+== S2  cost 5921875  feeders 5  LB 5619119  gap 302756 (5.11%)
+   C1: 54 cables,  44812 m, cost  4481200
+   C2:  5 cables,   3971 m, cost   635360
+   C3:  5 cables,   3287 m, cost   805315
+   total length 52070 m; feeder loads [12, 13, 13, 13, 13]; feeder lengths [206, 608, 691, 734, 1048] (sum 3287 m)
+   load-weighted length sum(load*len) = 178280
+   SA restarts (stage 1): [5921875, 5930335, 5930335, 5949815, 5954155, 5970755, 5981860, 6016545]
+   Esau-Williams greedy: None
+   time: heuristic 247 s, lower bound 10 s
+== S3  cost 8075675  feeders 6  LB 7870100  gap 205575 (2.55%)
+   C2: 60 cables,  47020 m, cost  7523200
+   C3:  4 cables,   2255 m, cost   552475
+   total length 49275 m; feeder loads [7, 8, 8, 13, 14, 14]; feeder lengths [206, 608, 691, 734, 1048, 1120] (sum 4407 m)
+   load-weighted length sum(load*len) = 198054
+   SA restarts (stage 1): [8075675, 8075675, 8075675, 8075675, 8075675, 8079155, 8079155, 8112775]
+   Esau-Williams greedy: None
+   time: heuristic 168 s, lower bound 15 s
+== S4  cost 7535670  feeders 5  LB 6898889  gap 636781 (8.45%)
+   C1: 44 cables,  35639 m, cost  3563900
+   C2: 11 cables,   9410 m, cost  1505600
+   C3:  9 cables,  10066 m, cost  2466170
+   total length 55115 m; feeder loads [8, 14, 14, 14, 14]; feeder lengths [683, 843, 1340, 1424, 2259] (sum 6549 m)
+   load-weighted length sum(load*len) = 279241
+   SA restarts (stage 1): [7570115, 7577265, 7590495, 7600075, 7604680, 7674455, 7676150, 7687095]
+   Esau-Williams greedy: None
+   time: heuristic 260 s, lower bound 6 s
+   (S5 bound taken from S4's bound 6898889; own Lagrangian bound 6898120)
+== S5  cost 7535670  feeders 5  LB 6898889  gap 636781 (8.45%)
+   C1: 44 cables,  35639 m, cost  3563900
+   C2: 11 cables,   9410 m, cost  1505600
+   C3:  9 cables,  10066 m, cost  2466170
+   total length 55115 m; feeder loads [8, 14, 14, 14, 14]; feeder lengths [683, 843, 1340, 1424, 2259] (sum 6549 m)
+   load-weighted length sum(load*len) = 279241
+   SA restarts (stage 1): [7676440, 7718165, 7725595, 7763825, 7770835, 7775755, 7782950, 7844000]
+   Esau-Williams greedy: None
+   time: heuristic 337 s, lower bound 6 s
+platform P (3200, 3000): sum of straight-line turbine distances 157890 m, mean 2467 m, max 4301 m
+platform A (-700, 2700): sum of straight-line turbine distances 258245 m, mean 4035 m, max 7147 m

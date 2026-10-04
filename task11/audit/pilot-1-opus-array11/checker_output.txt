@@ -1,0 +1,13 @@
+layout_S1.json: VALID  scenario=S1  recomputed_cost=5878715  feeders=6
+layout_S2.json: VALID  scenario=S2  recomputed_cost=5921875  feeders=5
+layout_S3.json: VALID  scenario=S3  recomputed_cost=8075675  feeders=6
+layout_S4.json: VALID  scenario=S4  recomputed_cost=7535670  feeders=5
+layout_S5.json: VALID  scenario=S5  recomputed_cost=7535670  feeders=5
+broken_crossing.json: INVALID  scenario=S1  recomputed_cost=5984715  feeders=6
+    violated rule -> CROSSING: cable T02-T15 crosses cable T07-T12
+broken_capacity.json: INVALID  scenario=S1  recomputed_cost=5835275  feeders=6
+    violated rule -> CAPACITY: cable T19-T27 carries load 8 but type C1 has capacity 4
+broken_length.json: INVALID  scenario=S1  recomputed_cost=5968815  feeders=6
+    violated rule -> LENGTH: turbine-to-turbine cable T01-T02 is 1681 m > 1300 m
+greedy_EW_S1.json: VALID  scenario=S1  recomputed_cost=6177435  feeders=6
+checker exit status: 1 (1 expected because the three broken layouts are rejected)
