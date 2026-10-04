@@ -1,0 +1,10 @@
+Fig1: major ticks at px [370.5, 1039.5, 1709.5]; old bar edges px 371.0..2156.0; span = 128.07 KiB -> OLD_SIZE = 128 KiB
+Fig2: 0-byte tick px 371.5, 28.80 px/byte; bar vertical edges [372.0, 832.0] -> HEADER = 15.99 bytes
+Fig3: gridline rows at x=1953: [784, 785, 786, 787, 984, 985, 986, 987, 1184, 1185, 1186, 1187]
+Fig3: TEMP     bar top y=1035.5 -> base payload 24.03 bytes; dots=0
+Fig3: SESSION  bar top y=586.5 -> base payload 95.96 bytes; dots=1
+Fig3: BLOB     bar top y=586.5 -> base payload 95.96 bytes; dots=0
+Fig3: ENTRY    bar top y=835.5 -> base payload 56.07 bytes; dots=1
+Fig3: NODE     bar top y=935.5 -> base payload 40.05 bytes; dots=1
+Fig3: REG      bar top y=486.5 -> base payload 111.98 bytes; dots=4
+Fig4: long ticks [366.5, 954.5, 1542.5, 2130.5]; phase box edges px [366.5, 660.5, 1542.5, 1983.5, 2277.5] -> ops [0.0, 4000.0, 16000.0, 22000.0, 26000.0]

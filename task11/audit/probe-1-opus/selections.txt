@@ -1,0 +1,14 @@
+cost_optimal: idx=91 EDEN=49152 SURV=24576 T=3 PT=768 total_pause=147851 max_pause=2244 footprint=98304
+latency_optimal_under_budget: idx=92 EDEN=49152 SURV=24576 T=3 PT=1024 total_pause=173865 max_pause=1867 footprint=98304
+footprint_optimal_under_ceiling: idx=54 EDEN=32768 SURV=8192 T=3 PT=off total_pause=317818 max_pause=2396 footprint=49152
+latency candidates (total<=220000): 20
+footprint candidates (max<=2400): 34
+n_configs: 96
+n_feasible: 84
+oom_configs: [{'idx': 0, 'eden': 16384, 'surv': 8192, 'T': 1, 'pt': 'off', 'oom_op': 1089}, {'idx': 1, 'eden': 16384, 'surv': 8192, 'T': 1, 'pt': '768', 'oom_op': 17214}, {'idx': 2, 'eden': 16384, 'surv': 8192, 'T': 1, 'pt': '1024', 'oom_op': 2882}, {'idx': 12, 'eden': 16384, 'surv': 24576, 'T': 1, 'pt': 'off', 'oom_op': 1089}, {'idx': 13, 'eden': 16384, 'surv': 24576, 'T': 1, 'pt': '768', 'oom_op': 17214}, {'idx': 14, 'eden': 16384, 'surv': 24576, 'T': 1, 'pt': '1024', 'oom_op': 2882}, {'idx': 24, 'eden': 24576, 'surv': 8192, 'T': 1, 'pt': 'off', 'oom_op': 16404}, {'idx': 26, 'eden': 24576, 'surv': 8192, 'T': 1, 'pt': '1024', 'oom_op': 1116}, {'idx': 36, 'eden': 24576, 'surv': 24576, 'T': 1, 'pt': 'off', 'oom_op': 16404}, {'idx': 38, 'eden': 24576, 'surv': 24576, 'T': 1, 'pt': '1024', 'oom_op': 1116}, {'idx': 48, 'eden': 32768, 'surv': 8192, 'T': 1, 'pt': 'off', 'oom_op': 17386}, {'idx': 60, 'eden': 32768, 'surv': 24576, 'T': 1, 'pt': 'off', 'oom_op': 17386}]
+sum_total_pause_feasible: 22936277
+sum_major_feasible: 6449
+sum_minor_feasible: 11504
+sum_copied_feasible: 158850216
+sum_promoted_feasible: 216580000
+sum_pretenured_feasible: 95636288

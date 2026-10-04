@@ -1,10 +1,56 @@
 # Task 11 — TENURE-11 (generational garbage-collector tuning)
 
-**State: draft packet built; early `opus`-alias difficulty probe running.**
-No rubric, Ideal Flow, or platform text yet, by design. Per mistake #70
-and the updated Phase 8.5, the architecture has to survive one strong-model
-blind pilot before any of that is written. A clean content solve on the
-probe means redesign, not packaging fixes.
+**State: FAILED the early difficulty gate.** The `opus`-alias blind pilot
+solved the draft packet cleanly in about 10 minutes. Per Gate 8.5 and
+mistake #70 this means the architecture is reopened, not patched. No rubric
+or platform text was written, so nothing else was spent on it.
+
+## Early probe result (probe 1, `opus` alias, `tenure11_v1.pdf`)
+
+Deliverables archived in `audit/probe-1-opus/`. Verified by me, not taken
+from the probe's own report:
+
+- Its baseline GC log is **byte-identical** to `reference/goldens/baseline_gclog.txt`
+  (287 events, hash `21792195d928aa2b`).
+- All 84 feasible sweep rows match the reference on every metric; the same
+  12 configurations end in OOM at the same operation indexes.
+- All three selections and all four whole-sweep sums match exactly.
+- Every figure-only constant was measured correctly by pixel measurement
+  (old-generation size, header length, all six base payloads, slot counts,
+  phase boundaries), each within 0.1 of the round value.
+- It built a second implementation in JavaScript with a different data
+  model (real copies with forwarding pointers) and both agreed on all 96
+  rows; both adversarial logs were rejected.
+
+Its ambiguity list is useful for any future revision, but none of the
+items changed its answer: on every one it chose the reading the reference
+uses. The selections being within a few units of their cut-offs did not
+matter, because its numbers were exact.
+
+## What this falsifies
+
+The design bet was that roughly 40 interacting policy micro-rules across
+a 96-configuration sweep would not survive exact transcription, which is
+the mechanism credited for ATRIUM-9 (20/21%) and QUORUM-7 (31/32%).
+TENURE-11 had every blast-radius property the prototype gate checked
+(each single-rule slip changes 96/96 rows) and the model simply made no
+slips. The packet was complete and unambiguous, and a complete,
+procedural spec of a deterministic simulation is transcribed correctly
+regardless of rule count. Rule count, nonlocal consequences, sweep
+aggregates, and figure-only constants were all necessary-looking but none
+was sufficient.
+
+Open question being checked before redesigning: whether the `opus`-alias
+probe is harsher than the real target model. A calibration probe is
+running on the frozen QUORUM-7 packet, which real Opus 4.8 Max pilots
+scored at 31% and 32%. If the alias also solves QUORUM-7 cleanly, the
+local gate is stricter than the real platform and this result needs
+re-reading; if the alias also fails QUORUM-7, the gate is calibrated and
+TENURE-11 is genuinely too easy.
+
+---
+
+Historical record of the build follows.
 
 ## What is built
 

@@ -1,0 +1,20 @@
+== verifier on TRUE baseline log (+ hash file, + all 96 sweep rows) ==
+note: recomputed baseline: 287 events, hash 21792195d928aa2b
+note: submitted log: 287 events, hash 21792195d928aa2b
+note: sweep rows recomputed and matched: 96/96 (all)
+VERDICT: ACCEPT
+exit=0
+
+== verifier on ADVERSARIAL log 1 (promote only when new age > T) ==
+note: recomputed baseline: 287 events, hash 21792195d928aa2b
+note: submitted log: 285 events, hash 051f94b582dcb620
+FAIL: log differs from recomputation at line 4: submitted "3;m;349;8160;20864;23;0;0;56720;865" expected "3;m;349;8176;21184;23;0;0;57040;875"
+VERDICT: REJECT (1 problem(s))
+exit=1
+
+== verifier on ADVERSARIAL log 2 (depth-first evacuation) ==
+note: recomputed baseline: 287 events, hash 21792195d928aa2b
+note: submitted log: 288 events, hash f13b448283bc4b0a
+FAIL: log differs from recomputation at line 2: submitted "1;m;112;8152;14088;0;0;0;14088;607" expected "1;m;112;8192;14048;0;0;0;14048;607"
+VERDICT: REJECT (1 problem(s))
+exit=1
