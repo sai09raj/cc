@@ -1,0 +1,92 @@
+{
+ "budget": 220000,
+ "ceiling": 2400,
+ "baseline": [
+  24576,
+  8192,
+  2,
+  0
+ ],
+ "selections": {
+  "cost_optimal": [
+   49152,
+   24576,
+   3,
+   768
+  ],
+  "latency_optimal_under_budget": [
+   49152,
+   24576,
+   3,
+   1024
+  ],
+  "footprint_optimal_under_ceiling": [
+   32768,
+   8192,
+   3,
+   0
+  ],
+  "n_feasible": 84,
+  "n_under_budget": 20,
+  "n_under_ceiling": 34
+ },
+ "selected_rows": {
+  "cost_optimal": {
+   "oom": false,
+   "oom_op": null,
+   "minor": 56,
+   "major": 58,
+   "copied": 1335864,
+   "promoted": 727176,
+   "pretenured": 2080480,
+   "pause_total": 147851,
+   "pause_max": 2244,
+   "old_peak": 129240
+  },
+  "latency_optimal_under_budget": {
+   "oom": false,
+   "oom_op": null,
+   "minor": 74,
+   "major": 61,
+   "copied": 1787064,
+   "promoted": 1726168,
+   "pretenured": 1186496,
+   "pause_total": 173865,
+   "pause_max": 1867,
+   "old_peak": 103944
+  },
+  "footprint_optimal_under_ceiling": {
+   "oom": false,
+   "oom_op": null,
+   "minor": 149,
+   "major": 80,
+   "copied": 1216968,
+   "promoted": 3947728,
+   "pretenured": 0,
+   "pause_total": 317818,
+   "pause_max": 2396,
+   "old_peak": 119928
+  }
+ },
+ "baseline_metrics": {
+  "oom": false,
+  "oom_op": null,
+  "minor": 202,
+  "major": 85,
+  "copied": 1649360,
+  "promoted": 4211208,
+  "pretenured": 0,
+  "pause_total": 353097,
+  "pause_max": 2639,
+  "old_peak": 121712
+ },
+ "baseline_events": 287,
+ "baseline_hash16": "21792195d928aa2b",
+ "aggregates": {
+  "oom_configs": 12,
+  "sum_pause_total_feasible": 22936277,
+  "sum_major_feasible": 6449,
+  "sum_copied_feasible": 158850216,
+  "sum_promoted_feasible": 216580000
+ }
+}
