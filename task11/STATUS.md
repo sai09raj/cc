@@ -1,5 +1,13 @@
 # Task 11
 
+## ARRAY-11 real pilot round 1: PASSED (platform rule)
+
+Six real runs on `array11_v2.pdf` + `platform/array-prompt.md` + rubric
+v2: five ended with "claude cli timed out after 9000s", which the
+platform counts as valid stumps (more than three of six), one completed
+at 98% (full solve with optimality proofs in 1 h 45 min, own Node.js
+branch and bound). Evidence and notes in `audit/real-pilot-1/`.
+
 ## Current: 64-turbine array-cable task PASSED the early difficulty gate
 
 First design in this project to fail the `opus` probe fairly.

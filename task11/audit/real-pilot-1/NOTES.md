@@ -24,3 +24,12 @@ This is a genuine, clean solve of the full task, including the
 optimality proofs the author needed CP-SAT for. The optimization
 difficulty does not hold against the real target when it finishes.
 Five timeouts are a time-limit effect, not evidence of difficulty.
+
+## Platform outcome (per the task author)
+
+The five timeouts were "claude cli timed out after 9000s" errors. The
+platform counts that error as a valid stump, and with more than three of
+six runs stumped this way the task passes the difficulty requirement.
+The one completed run (98%) remains a full solve; the stumps come from
+the 9000 s (2.5 h) limit, since the full solve takes about 1 h 45 min
+with branch and bound and runs that search longer exceed the limit.
