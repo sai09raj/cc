@@ -1,0 +1,2216 @@
+# COHERE-12 trace P1 Q=2 B=2
+# format: <cycle> <event> ...
+1 ST C1 L2 I->IS_D
+1 MSG 1 GetS C1->D0 L2 v=None ack=0 req=1
+1 ST C2 L3 I->IM_AD
+1 MSG 2 GetM C2->D1 L3 v=None ack=0 req=2
+1 ST C3 L0 I->IM_AD
+1 MSG 3 GetM C3->D0 L0 v=None ack=0 req=3
+1 ST C5 L0 I->IS_D
+1 MSG 4 GetS C5->D0 L0 v=None ack=0 req=5
+1 ST C6 L2 I->IS_D
+1 MSG 5 GetS C6->D0 L2 v=None ack=0 req=6
+1 ST C7 L0 I->IM_AD
+1 MSG 6 GetM C7->D0 L0 v=None ack=0 req=7
+3 MSG 7 Data D0->C1 L2 v=0 ack=0 req=1
+3 DIRREQ D0 GetS C1 L2 I->S
+4 ST C0 L2 I->IM_AD
+4 MSG 8 GetM C0->D0 L2 v=None ack=0 req=0
+5 MSG 9 Data D0->C0 L2 v=0 ack=1 req=0
+5 MSG 10 Inv D0->C1 L2 v=None ack=0 req=0
+5 DIRREQ D0 GetM C0 L2 S->M
+5 ST C1 L2 IS_D->S
+5 LD C1 L2 val=0 miss lat=4
+5 ST C4 L1 I->IS_D
+5 MSG 11 GetS C4->D1 L1 v=None ack=0 req=4
+6 MSG 12 Data D0->C5 L0 v=0 ack=0 req=5
+6 DIRREQ D0 GetS C5 L0 I->S
+6 MSG 13 Data D1->C2 L3 v=0 ack=0 req=2
+6 DIRREQ D1 GetM C2 L3 I->M
+6 ST C0 L2 IM_AD->IM_A
+7 MSG 14 InvAck C1->C0 L2 v=None ack=0 req=0
+7 ST C1 L2 S->I
+8 MSG 15 Data D0->C3 L0 v=0 ack=1 req=3
+8 MSG 16 Inv D0->C5 L0 v=None ack=0 req=3
+8 DIRREQ D0 GetM C3 L0 S->M
+8 ST C1 L1 I->IS_D
+8 MSG 17 GetS C1->D1 L1 v=None ack=0 req=1
+9 MSG 18 FwdGetS D0->C0 L2 v=None ack=0 req=6
+9 DIRREQ D0 GetS C6 L2 M->S_D
+9 ST C0 L2 IM_A->M
+9 STORE C0 L2 val=1
+10 MSG 19 Data C0->C6 L2 v=1 ack=0 req=6
+10 MSG 20 Data C0->D0 L2 v=1 ack=0 req=6
+10 ST C0 L2 M->S
+10 ST C0 L1 I->IS_D
+10 MSG 21 GetS C0->D1 L1 v=None ack=0 req=0
+11 DIR D0 L2 S_D->S mem=1
+12 MSG 22 FwdGetM D0->C3 L0 v=None ack=0 req=7
+12 DIRREQ D0 GetM C7 L0 M->M
+12 ST C2 L3 IM_AD->M
+12 STORE C2 L3 val=2001
+12 ST C5 L0 IS_D->S
+12 LD C5 L0 val=0 miss lat=11
+13 ST C5 L2 I->IS_D
+13 MSG 23 GetS C5->D0 L2 v=None ack=0 req=5
+14 MSG 24 Data D1->C4 L1 v=0 ack=0 req=4
+14 DIRREQ D1 GetS C4 L1 I->S
+15 ST C3 L0 IM_AD->IM_A
+15 MSG 25 InvAck C5->C3 L0 v=None ack=0 req=3
+15 ST C5 L0 S->I
+16 MSG 26 Data D1->C1 L1 v=0 ack=0 req=1
+16 DIRREQ D1 GetS C1 L1 S->S
+17 ST C6 L2 IS_D->S
+17 LD C6 L2 val=1 miss lat=16
+18 MSG 27 Data D0->C5 L2 v=1 ack=0 req=5
+18 DIRREQ D0 GetS C5 L2 S->S
+18 LD C6 L2 val=1 hit
+19 ST C6 L1 I->IS_D
+19 MSG 28 GetS C6->D1 L1 v=None ack=0 req=6
+21 MSG 29 Data D1->C0 L1 v=0 ack=0 req=0
+21 DIRREQ D1 GetS C0 L1 S->S
+21 ST C2 L2 I->IS_D
+21 MSG 30 GetS C2->D0 L2 v=None ack=0 req=2
+23 MSG 31 Data D1->C6 L1 v=0 ack=0 req=6
+23 DIRREQ D1 GetS C6 L1 S->S
+23 ST C4 L1 IS_D->S
+23 LD C4 L1 val=0 miss lat=18
+24 ST C3 L0 IM_A->M
+24 STORE C3 L0 val=3001
+24 MSG 32 Data C3->C7 L0 v=3001 ack=0 req=7
+24 ST C3 L0 M->I
+24 ST C4 L0 I->IM_AD
+24 MSG 33 GetM C4->D0 L0 v=None ack=0 req=4
+24 ST C5 L2 IS_D->S
+24 LD C5 L2 val=1 miss lat=11
+25 ST C3 L1 I->IS_D
+25 MSG 34 GetS C3->D1 L1 v=None ack=0 req=3
+26 MSG 35 Data D0->C2 L2 v=1 ack=0 req=2
+26 DIRREQ D0 GetS C2 L2 S->S
+26 ST C1 L1 IS_D->S
+26 LD C1 L1 val=0 miss lat=18
+27 MSG 36 FwdGetM D0->C7 L0 v=None ack=0 req=4
+27 DIRREQ D0 GetM C4 L0 M->M
+27 LD C1 L1 val=0 hit
+27 ST C5 L2 S->SM_AD
+27 MSG 37 GetM C5->D0 L2 v=None ack=0 req=5
+27 ST C6 L1 IS_D->S
+27 LD C6 L1 val=0 miss lat=8
+27 ST C7 L0 IM_AD->M
+27 STORE C7 L0 val=7001
+28 MSG 38 Data D1->C3 L1 v=0 ack=0 req=3
+28 DIRREQ D1 GetS C3 L1 S->S
+28 ST C1 L2 I->IM_AD
+28 MSG 39 GetM C1->D0 L2 v=None ack=0 req=1
+28 LD C6 L2 val=1 hit
+28 LD C7 L0 val=7001 hit
+29 ST C6 L0 I->IS_D
+29 MSG 40 GetS C6->D0 L0 v=None ack=0 req=6
+29 STORE C7 L0 val=7002
+30 MSG 41 Data D0->C1 L2 v=1 ack=4 req=1
+30 MSG 42 Inv D0->C0 L2 v=None ack=0 req=1
+30 MSG 43 Inv D0->C2 L2 v=None ack=0 req=1
+30 MSG 44 Inv D0->C5 L2 v=None ack=0 req=1
+30 MSG 45 Inv D0->C6 L2 v=None ack=0 req=1
+30 DIRREQ D0 GetM C1 L2 S->M
+30 ST C7 L4 I->IM_AD
+30 MSG 46 GetM C7->D0 L4 v=None ack=0 req=7
+31 MSG 47 InvAck C0->C1 L2 v=None ack=0 req=1
+31 ST C0 L2 S->I
+31 ST C2 L2 IS_D->S
+31 LD C2 L2 val=1 miss lat=10
+31 ST C3 L1 IS_D->S
+31 LD C3 L1 val=0 miss lat=6
+32 ST C0 L1 IS_D->S
+32 LD C0 L1 val=0 miss lat=22
+32 ST C1 L2 IM_AD->IM_A
+32 ST C2 L3 M->MI_A
+32 MSG 48 PutM C2->D1 L3 v=2001 ack=0 req=2
+32 ST C3 L0 I->IS_D
+32 MSG 49 GetS C3->D0 L0 v=None ack=0 req=3
+33 MSG 50 FwdGetM D0->C1 L2 v=None ack=0 req=5
+33 DIRREQ D0 GetM C5 L2 M->M
+33 ST C0 L1 S->SM_AD
+33 MSG 51 GetM C0->D1 L1 v=None ack=0 req=0
+33 ST C2 L2 S->SI_A
+33 MSG 52 PutS C2->D0 L2 v=None ack=0 req=2
+36 MSG 53 FwdGetS D0->C4 L0 v=None ack=0 req=6
+36 DIRREQ D0 GetS C6 L0 M->S_D
+37 MSG 54 InvAck C2->C1 L2 v=None ack=0 req=1
+37 ST C2 L2 SI_A->II_A
+37 MSG 55 Data C7->C4 L0 v=7002 ack=0 req=4
+37 ST C7 L0 M->I
+38 MSG 56 PutAck D0->C2 L2 v=None ack=0 req=2
+38 DIRREQ D0 PutS C2 L2 M->M
+38 MSG 57 PutAck D1->C2 L3 v=None ack=0 req=2
+38 DIRREQ D1 PutM C2 L3 M->I
+39 MSG 58 InvAck C5->C1 L2 v=None ack=0 req=1
+39 ST C5 L2 SM_AD->IM_AD
+41 MSG 59 InvAck C6->C1 L2 v=None ack=0 req=1
+41 ST C6 L2 S->I
+43 ST C2 L2 II_A->I
+43 ST C2 L6 I->IS_D
+43 MSG 60 GetS C2->D0 L6 v=None ack=0 req=2
+44 ST C2 L3 MI_A->I
+46 MSG 61 Data D1->C0 L1 v=0 ack=4 req=0
+46 MSG 62 Inv D1->C1 L1 v=None ack=0 req=0
+46 MSG 63 Inv D1->C3 L1 v=None ack=0 req=0
+46 MSG 64 Inv D1->C4 L1 v=None ack=0 req=0
+46 MSG 65 Inv D1->C6 L1 v=None ack=0 req=0
+46 DIRREQ D1 GetM C0 L1 S->M
+46 ST C4 L0 IM_AD->M
+46 STORE C4 L0 val=4001
+46 MSG 66 Data C4->C6 L0 v=4001 ack=0 req=6
+46 MSG 67 Data C4->D0 L0 v=4001 ack=0 req=6
+46 ST C4 L0 M->S
+47 ST C4 L6 I->IS_D
+47 MSG 68 GetS C4->D0 L6 v=None ack=0 req=4
+48 REFUSE 60 GetS C2 L6 at D0
+48 DIR D0 L0 S_D->S mem=4001
+48 MSG 69 Data D0->C3 L0 v=4001 ack=0 req=3
+48 DIRREQ D0 GetS C3 L0 S->S
+48 MSG 70 Nack D0->C2 L6 v=None ack=0 req=2 rtype=GetS
+48 ST C1 L2 IM_A->M
+48 STORE C1 L2 val=1001
+48 MSG 71 Data C1->C5 L2 v=1001 ack=0 req=5
+48 ST C1 L2 M->I
+49 MSG 72 Data D0->C7 L4 v=0 ack=0 req=7
+49 DIRREQ D0 GetM C7 L4 I->M
+49 MSG 73 InvAck C3->C0 L1 v=None ack=0 req=0
+49 ST C3 L1 S->I
+50 MSG 74 Data D0->C4 L6 v=0 ack=0 req=4
+50 DIRREQ D0 GetS C4 L6 I->S
+51 ST C6 L0 IS_D->S
+51 LD C6 L0 val=4001 miss lat=22
+52 ST C1 L0 I->IM_AD
+52 MSG 75 GetM C1->D0 L0 v=None ack=0 req=1
+52 ST C4 L6 IS_D->S
+52 LD C4 L6 val=0 miss lat=5
+52 ST C5 L2 IM_AD->M
+52 STORE C5 L2 val=5001
+53 ST C5 L1 I->IM_AD
+53 MSG 76 GetM C5->D1 L1 v=None ack=0 req=5
+53 MSG 77 InvAck C6->C0 L1 v=None ack=0 req=0
+53 ST C6 L1 S->I
+54 MSG 78 Data D0->C1 L0 v=4001 ack=3 req=1
+54 MSG 79 Inv D0->C3 L0 v=None ack=0 req=1
+54 MSG 80 Inv D0->C4 L0 v=None ack=0 req=1
+54 MSG 81 Inv D0->C6 L0 v=None ack=0 req=1
+54 DIRREQ D0 GetM C1 L0 S->M
+54 NACK C2 GetS L6 k=1 retry=56
+55 ST C3 L0 IS_D->S
+55 LD C3 L0 val=4001 miss lat=23
+56 ST C1 L0 IM_AD->IM_A
+56 MSG 82 GetS C2->D0 L6 v=None ack=0 req=2
+56 MSG 83 InvAck C4->C1 L0 v=None ack=0 req=1
+56 ST C4 L0 S->I
+57 ST C0 L1 SM_AD->SM_A
+57 MSG 84 InvAck C1->C0 L1 v=None ack=0 req=0
+57 ST C1 L1 S->I
+57 MSG 85 InvAck C4->C0 L1 v=None ack=0 req=0
+57 ST C4 L1 S->I
+58 ST C6 L0 S->SM_AD
+58 MSG 86 GetM C6->D0 L0 v=None ack=0 req=6
+59 MSG 87 FwdGetM D1->C0 L1 v=None ack=0 req=5
+59 DIRREQ D1 GetM C5 L1 M->M
+60 ST C3 L4 I->IS_D
+60 MSG 88 GetS C3->D0 L4 v=None ack=0 req=3
+60 ST C7 L4 IM_AD->M
+60 STORE C7 L4 val=7003
+61 MSG 89 Data D0->C2 L6 v=0 ack=0 req=2
+61 DIRREQ D0 GetS C2 L6 S->S
+61 ST C0 L1 SM_A->M
+61 STORE C0 L1 val=2
+61 ST C7 L0 I->IS_D
+61 MSG 90 GetS C7->D0 L0 v=None ack=0 req=7
+62 MSG 91 InvAck C3->C1 L0 v=None ack=0 req=1
+62 ST C3 L0 S->I
+63 MSG 92 InvAck C6->C1 L0 v=None ack=0 req=1
+63 ST C6 L0 SM_AD->IM_AD
+64 ST C4 L2 I->IM_AD
+64 MSG 93 GetM C4->D0 L2 v=None ack=0 req=4
+65 MSG 94 FwdGetM D0->C1 L0 v=None ack=0 req=6
+65 DIRREQ D0 GetM C6 L0 M->M
+66 MSG 95 FwdGetM D0->C5 L2 v=None ack=0 req=4
+66 DIRREQ D0 GetM C4 L2 M->M
+66 ST C2 L6 IS_D->S
+66 LD C2 L6 val=0 miss lat=23
+67 MSG 96 FwdGetS D0->C7 L4 v=None ack=0 req=3
+67 DIRREQ D0 GetS C3 L4 M->S_D
+69 ST C1 L0 IM_A->M
+69 STORE C1 L0 val=1002
+69 MSG 97 Data C1->C6 L0 v=1002 ack=0 req=6
+69 ST C1 L0 M->I
+70 ST C1 L2 I->IS_D
+70 MSG 98 GetS C1->D0 L2 v=None ack=0 req=1
+71 MSG 99 Data C0->C5 L1 v=2 ack=0 req=5
+71 ST C0 L1 M->I
+71 ST C0 L2 I->IS_D
+71 MSG 100 GetS C0->D0 L2 v=None ack=0 req=0
+72 REFUSE 100 GetS C0 L2 at D0
+72 MSG 101 FwdGetS D0->C6 L0 v=None ack=0 req=7
+72 DIRREQ D0 GetS C7 L0 M->S_D
+72 MSG 102 Nack D0->C0 L2 v=None ack=0 req=0 rtype=GetS
+72 MSG 103 Data C5->C4 L2 v=5001 ack=0 req=4
+72 ST C5 L2 M->I
+73 MSG 104 FwdGetS D0->C4 L2 v=None ack=0 req=1
+73 DIRREQ D0 GetS C1 L2 M->S_D
+73 NACK C0 GetS L2 k=1 retry=75
+73 ST C2 L2 I->IS_D
+73 MSG 105 GetS C2->D0 L2 v=None ack=0 req=2
+74 ST C6 L0 IM_AD->M
+74 STORE C6 L0 val=6001
+75 MSG 106 GetS C0->D0 L2 v=None ack=0 req=0
+75 ST C4 L2 IM_AD->M
+75 STORE C4 L2 val=4002
+75 MSG 107 Data C4->C1 L2 v=4002 ack=0 req=1
+75 MSG 108 Data C4->D0 L2 v=4002 ack=0 req=1
+75 ST C4 L2 M->S
+75 LD C6 L0 val=6001 hit
+76 ST C6 L3 I->IM_AD
+76 MSG 109 GetM C6->D1 L3 v=None ack=0 req=6
+77 DIR D0 L2 S_D->S mem=4002
+77 MSG 110 Data D0->C0 L2 v=4002 ack=0 req=0
+77 DIRREQ D0 GetS C0 L2 S->S
+77 ST C5 L1 IM_AD->M
+77 STORE C5 L1 val=5002
+78 MSG 111 Data D0->C2 L2 v=4002 ack=0 req=2
+78 DIRREQ D0 GetS C2 L2 S->S
+78 ST C0 L2 IS_D->S
+78 LD C0 L2 val=4002 miss lat=7
+78 ST C4 L6 S->SM_AD
+78 MSG 112 GetM C4->D0 L6 v=None ack=0 req=4
+78 MSG 113 Data C7->C3 L4 v=7003 ack=0 req=3
+78 MSG 114 Data C7->D0 L4 v=7003 ack=0 req=3
+78 ST C7 L4 M->S
+79 ST C0 L4 I->IS_D
+79 MSG 115 GetS C0->D0 L4 v=None ack=0 req=0
+79 MSG 116 Data C6->C7 L0 v=6001 ack=0 req=7
+79 MSG 117 Data C6->D0 L0 v=6001 ack=0 req=7
+79 ST C6 L0 M->S
+80 MSG 118 Data D0->C4 L6 v=0 ack=1 req=4
+80 MSG 119 Inv D0->C2 L6 v=None ack=0 req=4
+80 DIRREQ D0 GetM C4 L6 S->M
+80 MSG 120 Data D1->C6 L3 v=2001 ack=0 req=6
+80 DIRREQ D1 GetM C6 L3 I->M
+81 ST C3 L4 IS_D->S
+81 LD C3 L4 val=7003 miss lat=21
+82 ST C1 L2 IS_D->S
+82 LD C1 L2 val=4002 miss lat=12
+82 ST C4 L6 SM_AD->SM_A
+83 ST C1 L1 I->IS_D
+83 MSG 121 GetS C1->D1 L1 v=None ack=0 req=1
+83 ST C2 L2 IS_D->S
+83 LD C2 L2 val=4002 miss lat=10
+83 ST C7 L0 IS_D->S
+83 LD C7 L0 val=6001 miss lat=22
+84 ST C6 L3 IM_AD->M
+84 STORE C6 L3 val=6002
+85 MSG 122 InvAck C2->C4 L6 v=None ack=0 req=4
+85 ST C2 L6 S->I
+85 ST C5 L0 I->IS_D
+85 MSG 123 GetS C5->D0 L0 v=None ack=0 req=5
+86 DIR D0 L0 S_D->S mem=6001
+86 ST C2 L1 I->IS_D
+86 MSG 124 GetS C2->D1 L1 v=None ack=0 req=2
+86 ST C3 L2 I->IS_D
+86 MSG 125 GetS C3->D0 L2 v=None ack=0 req=3
+89 DIR D0 L4 S_D->S mem=7003
+89 MSG 126 Data D0->C0 L4 v=7003 ack=0 req=0
+89 DIRREQ D0 GetS C0 L4 S->S
+89 ST C6 L4 I->IS_D
+89 MSG 127 GetS C6->D0 L4 v=None ack=0 req=6
+89 ST C7 L0 S->SM_AD
+89 MSG 128 GetM C7->D0 L0 v=None ack=0 req=7
+90 MSG 129 Data D0->C5 L0 v=6001 ack=0 req=5
+90 DIRREQ D0 GetS C5 L0 S->S
+90 ST C0 L4 IS_D->S
+90 LD C0 L4 val=7003 miss lat=11
+91 MSG 130 FwdGetS D1->C5 L1 v=None ack=0 req=1
+91 DIRREQ D1 GetS C1 L1 M->S_D
+92 ST C0 L0 I->IS_D
+92 MSG 131 GetS C0->D0 L0 v=None ack=0 req=0
+92 ST C4 L6 SM_A->M
+92 STORE C4 L6 val=4003
+93 MSG 132 Data D0->C3 L2 v=4002 ack=0 req=3
+93 DIRREQ D0 GetS C3 L2 S->S
+94 MSG 133 Data D0->C0 L0 v=6001 ack=0 req=0
+94 DIRREQ D0 GetS C0 L0 S->S
+95 ST C0 L0 IS_D->S
+95 LD C0 L0 val=6001 miss lat=3
+96 MSG 134 Data D0->C6 L4 v=7003 ack=0 req=6
+96 DIRREQ D0 GetS C6 L4 S->S
+96 ST C0 L2 S->SM_AD
+96 MSG 135 GetM C0->D0 L2 v=None ack=0 req=0
+96 ST C5 L0 IS_D->S
+96 LD C5 L0 val=6001 miss lat=11
+97 MSG 136 Data D0->C0 L2 v=4002 ack=4 req=0
+97 MSG 137 Inv D0->C1 L2 v=None ack=0 req=0
+97 MSG 138 Inv D0->C2 L2 v=None ack=0 req=0
+97 MSG 139 Inv D0->C3 L2 v=None ack=0 req=0
+97 MSG 140 Inv D0->C4 L2 v=None ack=0 req=0
+97 DIRREQ D0 GetM C0 L2 S->M
+97 MSG 141 Data C5->C1 L1 v=5002 ack=0 req=1
+97 MSG 142 Data C5->D1 L1 v=5002 ack=0 req=1
+97 ST C5 L1 M->S
+98 ST C0 L2 SM_AD->SM_A
+99 MSG 143 InvAck C1->C0 L2 v=None ack=0 req=0
+99 ST C1 L2 S->I
+99 MSG 144 InvAck C4->C0 L2 v=None ack=0 req=0
+99 ST C4 L2 S->I
+100 MSG 145 Data D0->C7 L0 v=6001 ack=3 req=7
+100 MSG 146 Inv D0->C0 L0 v=None ack=0 req=7
+100 MSG 147 Inv D0->C5 L0 v=None ack=0 req=7
+100 MSG 148 Inv D0->C6 L0 v=None ack=0 req=7
+100 DIRREQ D0 GetM C7 L0 S->M
+100 ST C3 L2 IS_D->S
+100 LD C3 L2 val=4002 miss lat=14
+100 ST C4 L0 I->IM_AD
+100 MSG 149 GetM C4->D0 L0 v=None ack=0 req=4
+101 MSG 150 InvAck C0->C7 L0 v=None ack=0 req=7
+101 ST C0 L0 S->I
+101 ST C1 L1 IS_D->S
+101 LD C1 L1 val=5002 miss lat=18
+101 ST C3 L0 I->IS_D
+101 MSG 151 GetS C3->D0 L0 v=None ack=0 req=3
+102 MSG 152 FwdGetM D0->C7 L0 v=None ack=0 req=4
+102 DIRREQ D0 GetM C4 L0 M->M
+103 DIR D1 L1 S_D->S mem=5002
+103 MSG 153 Data D1->C2 L1 v=5002 ack=0 req=2
+103 DIRREQ D1 GetS C2 L1 S->S
+103 MSG 154 InvAck C2->C0 L2 v=None ack=0 req=0
+103 ST C2 L2 S->I
+103 ST C6 L4 IS_D->S
+103 LD C6 L4 val=7003 miss lat=14
+104 LD C5 L1 val=5002 hit
+104 LD C6 L3 val=6002 hit
+105 ST C5 L3 I->IS_D
+105 MSG 155 GetS C5->D1 L3 v=None ack=0 req=5
+105 ST C6 L0 S->SM_AD
+105 MSG 156 GetM C6->D0 L0 v=None ack=0 req=6
+106 MSG 157 InvAck C3->C0 L2 v=None ack=0 req=0
+106 ST C3 L2 S->I
+108 MSG 158 InvAck C5->C7 L0 v=None ack=0 req=7
+108 ST C5 L0 S->I
+109 MSG 159 FwdGetS D0->C4 L0 v=None ack=0 req=3
+109 DIRREQ D0 GetS C3 L0 M->S_D
+109 ST C2 L1 IS_D->S
+109 LD C2 L1 val=5002 miss lat=23
+110 ST C2 L2 I->IM_AD
+110 MSG 160 GetM C2->D0 L2 v=None ack=0 req=2
+110 MSG 161 InvAck C6->C7 L0 v=None ack=0 req=7
+110 ST C6 L0 SM_AD->IM_AD
+110 ST C7 L0 SM_AD->SM_A
+111 MSG 162 FwdGetS D1->C6 L3 v=None ack=0 req=5
+111 DIRREQ D1 GetS C5 L3 M->S_D
+113 ST C0 L2 SM_A->M
+113 STORE C0 L2 val=3
+114 ST C0 L0 I->IS_D
+114 MSG 163 GetS C0->D0 L0 v=None ack=0 req=0
+115 REFUSE 163 GetS C0 L0 at D0
+115 MSG 164 Nack D0->C0 L0 v=None ack=0 req=0 rtype=GetS
+115 MSG 165 Data C6->C5 L3 v=6002 ack=0 req=5
+115 MSG 166 Data C6->D1 L3 v=6002 ack=0 req=5
+115 ST C6 L3 M->S
+115 ST C7 L0 SM_A->M
+115 STORE C7 L0 val=7004
+115 MSG 167 Data C7->C4 L0 v=7004 ack=0 req=4
+115 ST C7 L0 M->I
+116 NACK C0 GetS L0 k=1 retry=118
+116 ST C7 L2 I->IM_AD
+116 MSG 168 GetM C7->D0 L2 v=None ack=0 req=7
+117 ST C5 L3 IS_D->S
+117 LD C5 L3 val=6002 miss lat=12
+118 MSG 169 GetS C0->D0 L0 v=None ack=0 req=0
+118 ST C1 L0 I->IS_D
+118 MSG 170 GetS C1->D0 L0 v=None ack=0 req=1
+118 ST C5 L2 I->IS_D
+118 MSG 171 GetS C5->D0 L2 v=None ack=0 req=5
+119 REFUSE 169 GetS C0 L0 at D0
+119 MSG 172 Nack D0->C0 L0 v=None ack=0 req=0 rtype=GetS
+119 DIR D1 L3 S_D->S mem=6002
+120 REFUSE 170 GetS C1 L0 at D0
+120 MSG 173 Nack D0->C1 L0 v=None ack=0 req=1 rtype=GetS
+120 NACK C0 GetS L0 k=2 retry=124
+122 NACK C1 GetS L0 k=1 retry=124
+123 REFUSE 171 GetS C5 L2 at D0
+123 MSG 174 Nack D0->C5 L2 v=None ack=0 req=5 rtype=GetS
+124 MSG 175 GetS C0->D0 L0 v=None ack=0 req=0
+124 MSG 176 GetS C1->D0 L0 v=None ack=0 req=1
+124 ST C4 L0 IM_AD->M
+124 STORE C4 L0 val=4004
+124 MSG 177 Data C4->C3 L0 v=4004 ack=0 req=3
+124 MSG 178 Data C4->D0 L0 v=4004 ack=0 req=3
+124 ST C4 L0 M->S
+125 REFUSE 175 GetS C0 L0 at D0
+125 MSG 179 Nack D0->C0 L0 v=None ack=0 req=0 rtype=GetS
+125 ST C4 L1 I->IM_AD
+125 MSG 180 GetM C4->D1 L1 v=None ack=0 req=4
+126 REFUSE 176 GetS C1 L0 at D0
+126 DIR D0 L0 S_D->S mem=4004
+126 MSG 181 Data D0->C6 L0 v=4004 ack=2 req=6
+126 MSG 182 Inv D0->C3 L0 v=None ack=0 req=6
+126 MSG 183 Inv D0->C4 L0 v=None ack=0 req=6
+126 DIRREQ D0 GetM C6 L0 S->M
+126 MSG 184 Nack D0->C1 L0 v=None ack=0 req=1 rtype=GetS
+126 NACK C0 GetS L0 k=3 retry=134
+127 MSG 185 FwdGetM D0->C0 L2 v=None ack=0 req=2
+127 DIRREQ D0 GetM C2 L2 M->M
+128 MSG 186 FwdGetM D0->C2 L2 v=None ack=0 req=7
+128 DIRREQ D0 GetM C7 L2 M->M
+128 MSG 187 Data C0->C2 L2 v=3 ack=0 req=2
+128 ST C0 L2 M->I
+128 MSG 188 InvAck C4->C6 L0 v=None ack=0 req=6
+128 ST C4 L0 S->I
+129 NACK C1 GetS L0 k=2 retry=133
+129 NACK C5 GetS L2 k=1 retry=131
+131 MSG 189 GetS C5->D0 L2 v=None ack=0 req=5
+133 MSG 190 GetS C1->D0 L0 v=None ack=0 req=1
+133 ST C2 L2 IM_AD->M
+133 STORE C2 L2 val=2002
+133 ST C6 L0 IM_AD->IM_A
+134 MSG 191 Data D1->C4 L1 v=5002 ack=3 req=4
+134 MSG 192 Inv D1->C1 L1 v=None ack=0 req=4
+134 MSG 193 Inv D1->C2 L1 v=None ack=0 req=4
+134 MSG 194 Inv D1->C5 L1 v=None ack=0 req=4
+134 DIRREQ D1 GetM C4 L1 S->M
+134 MSG 195 GetS C0->D0 L0 v=None ack=0 req=0
+134 LD C2 L2 val=2002 hit
+135 MSG 196 FwdGetS D0->C6 L0 v=None ack=0 req=1
+135 DIRREQ D0 GetS C1 L0 M->S_D
+135 MSG 197 Data C2->C7 L2 v=2002 ack=0 req=7
+135 ST C2 L2 M->I
+135 LD C2 L1 val=5002 hit
+136 ST C3 L0 IS_D->S
+136 LD C3 L0 val=4004 miss lat=35
+136 MSG 198 InvAck C3->C6 L0 v=None ack=0 req=6
+136 ST C3 L0 S->I
+137 ST C3 L2 I->IM_AD
+137 MSG 199 GetM C3->D0 L2 v=None ack=0 req=3
+140 ST C6 L0 IM_A->M
+140 STORE C6 L0 val=6003
+140 ST C7 L2 IM_AD->M
+140 STORE C7 L2 val=7005
+141 LD C6 L0 val=6003 hit
+141 ST C7 L0 I->IS_D
+141 MSG 200 GetS C7->D0 L0 v=None ack=0 req=7
+142 MSG 201 InvAck C2->C4 L1 v=None ack=0 req=4
+142 ST C2 L1 S->I
+142 MSG 202 Data C6->C1 L0 v=6003 ack=0 req=1
+142 MSG 203 Data C6->D0 L0 v=6003 ack=0 req=1
+142 ST C6 L0 M->S
+142 LD C6 L4 val=7003 hit
+143 ST C2 L1 I->IM_AD
+143 MSG 204 GetM C2->D1 L1 v=None ack=0 req=2
+143 ST C4 L1 IM_AD->IM_A
+143 MSG 205 InvAck C5->C4 L1 v=None ack=0 req=4
+143 ST C5 L1 S->I
+143 ST C6 L0 S->SI_A
+143 MSG 206 PutS C6->D0 L0 v=None ack=0 req=6
+144 REFUSE 199 GetM C3 L2 at D0
+144 MSG 207 Nack D0->C3 L2 v=None ack=0 req=3 rtype=GetM
+144 ST C6 L4 S->SI_A
+144 MSG 208 PutS C6->D0 L4 v=None ack=0 req=6
+145 MSG 209 InvAck C1->C4 L1 v=None ack=0 req=4
+145 ST C1 L1 S->I
+148 MSG 210 FwdGetM D1->C4 L1 v=None ack=0 req=2
+148 DIRREQ D1 GetM C2 L1 M->M
+148 ST C1 L0 IS_D->S
+148 LD C1 L0 val=6003 miss lat=30
+149 ST C1 L6 I->IM_AD
+149 MSG 211 GetM C1->D0 L6 v=None ack=0 req=1
+150 DIR D0 L0 S_D->S mem=6003
+150 MSG 212 Data D0->C0 L0 v=6003 ack=0 req=0
+150 DIRREQ D0 GetS C0 L0 S->S
+150 ST C4 L1 IM_A->M
+150 STORE C4 L1 val=4005
+151 REFUSE 211 GetM C1 L6 at D0
+151 MSG 213 FwdGetS D0->C7 L2 v=None ack=0 req=5
+151 DIRREQ D0 GetS C5 L2 M->S_D
+151 MSG 214 Nack D0->C1 L6 v=None ack=0 req=1 rtype=GetM
+151 ST C0 L0 IS_D->S
+151 LD C0 L0 val=6003 miss lat=37
+151 NACK C3 GetM L2 k=1 retry=153
+151 ST C4 L0 I->IS_D
+151 MSG 215 GetS C4->D0 L0 v=None ack=0 req=4
+152 MSG 216 PutAck D0->C6 L0 v=None ack=0 req=6
+152 DIRREQ D0 PutS C6 L0 S->S
+152 ST C0 L4 S->SI_A
+152 MSG 217 PutS C0->D0 L4 v=None ack=0 req=0
+153 REFUSE 217 PutS C0 L4 at D0
+153 MSG 218 PutAck D0->C6 L4 v=None ack=0 req=6
+153 DIRREQ D0 PutS C6 L4 S->S
+153 MSG 219 Nack D0->C0 L4 v=None ack=0 req=0 rtype=PutS
+153 ST C0 L0 S->SI_A
+153 MSG 220 PutS C0->D0 L0 v=None ack=0 req=0
+153 NACK C1 GetM L6 k=1 retry=155
+153 MSG 221 GetM C3->D0 L2 v=None ack=0 req=3
+154 REFUSE 220 PutS C0 L0 at D0
+154 MSG 222 Data D0->C7 L0 v=6003 ack=0 req=7
+154 DIRREQ D0 GetS C7 L0 S->S
+154 MSG 223 Nack D0->C0 L0 v=None ack=0 req=0 rtype=PutS
+154 NACK C0 PutS L4 k=1 retry=156
+155 MSG 224 Data D0->C4 L0 v=6003 ack=0 req=4
+155 DIRREQ D0 GetS C4 L0 S->S
+155 NACK C0 PutS L0 k=1 retry=157
+155 MSG 225 GetM C1->D0 L6 v=None ack=0 req=1
+156 MSG 226 PutS C0->D0 L4 v=None ack=0 req=0
+157 MSG 227 FwdGetM D0->C4 L6 v=None ack=0 req=1
+157 DIRREQ D0 GetM C1 L6 M->M
+157 MSG 228 PutS C0->D0 L0 v=None ack=0 req=0
+157 ST C4 L0 IS_D->S
+157 LD C4 L0 val=6003 miss lat=6
+157 MSG 229 Data C4->C2 L1 v=4005 ack=0 req=2
+157 ST C4 L1 M->I
+158 MSG 230 PutAck D0->C0 L4 v=None ack=0 req=0
+158 DIRREQ D0 PutS C0 L4 S->S
+158 LD C4 L0 val=6003 hit
+159 MSG 231 PutAck D0->C0 L0 v=None ack=0 req=0
+159 DIRREQ D0 PutS C0 L0 S->S
+159 ST C0 L4 SI_A->I
+159 ST C0 L1 I->IS_D
+159 MSG 232 GetS C0->D1 L1 v=None ack=0 req=0
+159 MSG 233 Data C4->C1 L6 v=4003 ack=0 req=1
+159 ST C4 L6 M->I
+159 ST C4 L1 I->IS_D
+159 MSG 234 GetS C4->D1 L1 v=None ack=0 req=4
+160 ST C0 L0 SI_A->I
+160 ST C6 L0 SI_A->I
+160 ST C6 L1 I->IS_D
+160 MSG 235 GetS C6->D1 L1 v=None ack=0 req=6
+162 ST C6 L4 SI_A->I
+162 MSG 236 Data C7->C5 L2 v=7005 ack=0 req=5
+162 MSG 237 Data C7->D0 L2 v=7005 ack=0 req=5
+162 ST C7 L2 M->S
+164 MSG 238 FwdGetS D1->C2 L1 v=None ack=0 req=6
+164 DIRREQ D1 GetS C6 L1 M->S_D
+164 ST C2 L1 IM_AD->M
+164 STORE C2 L1 val=2003
+164 ST C7 L0 IS_D->S
+164 LD C7 L0 val=6003 miss lat=23
+166 ST C1 L6 IM_AD->M
+166 STORE C1 L6 val=1003
+166 ST C7 L4 S->SI_A
+166 MSG 239 PutS C7->D0 L4 v=None ack=0 req=7
+167 LD C1 L0 val=6003 hit
+167 ST C2 L0 I->IS_D
+167 MSG 240 GetS C2->D0 L0 v=None ack=0 req=2
+167 ST C7 L0 S->SI_A
+167 MSG 241 PutS C7->D0 L0 v=None ack=0 req=7
+168 ST C1 L0 S->SM_AD
+168 MSG 242 GetM C1->D0 L0 v=None ack=0 req=1
+168 ST C5 L2 IS_D->S
+168 LD C5 L2 val=7005 miss lat=50
+169 ST C5 L1 I->IM_AD
+169 MSG 243 GetM C5->D1 L1 v=None ack=0 req=5
+170 MSG 244 Data C2->C6 L1 v=2003 ack=0 req=6
+170 MSG 245 Data C2->D1 L1 v=2003 ack=0 req=6
+170 ST C2 L1 M->S
+172 REFUSE 240 GetS C2 L0 at D0
+172 MSG 246 Nack D0->C2 L0 v=None ack=0 req=2 rtype=GetS
+172 ST C6 L1 IS_D->S
+172 LD C6 L1 val=2003 miss lat=12
+173 ST C6 L0 I->IM_AD
+173 MSG 247 GetM C6->D0 L0 v=None ack=0 req=6
+174 DIR D0 L2 S_D->S mem=7005
+174 MSG 248 Data D0->C3 L2 v=7005 ack=2 req=3
+174 MSG 249 Inv D0->C5 L2 v=None ack=0 req=3
+174 MSG 250 Inv D0->C7 L2 v=None ack=0 req=3
+174 DIRREQ D0 GetM C3 L2 S->M
+175 REFUSE 243 GetM C5 L1 at D1
+175 MSG 251 Data D0->C1 L0 v=6003 ack=2 req=1
+175 MSG 252 Inv D0->C4 L0 v=None ack=0 req=1
+175 MSG 253 Inv D0->C7 L0 v=None ack=0 req=1
+175 DIRREQ D0 GetM C1 L0 S->M
+175 DIR D1 L1 S_D->S mem=2003
+175 MSG 254 Data D1->C0 L1 v=2003 ack=0 req=0
+175 DIRREQ D1 GetS C0 L1 S->S
+175 MSG 255 Nack D1->C5 L1 v=None ack=0 req=5 rtype=GetM
+176 MSG 256 Data D1->C4 L1 v=2003 ack=0 req=4
+176 DIRREQ D1 GetS C4 L1 S->S
+177 MSG 257 PutAck D0->C7 L4 v=None ack=0 req=7
+177 DIRREQ D0 PutS C7 L4 S->S
+177 ST C1 L0 SM_AD->SM_A
+177 NACK C2 GetS L0 k=1 retry=179
+177 MSG 258 InvAck C4->C1 L0 v=None ack=0 req=1
+177 ST C4 L0 S->I
+178 MSG 259 PutAck D0->C7 L0 v=None ack=0 req=7
+178 DIRREQ D0 PutS C7 L0 M->M
+179 MSG 260 GetS C2->D0 L0 v=None ack=0 req=2
+180 MSG 261 FwdGetM D0->C1 L0 v=None ack=0 req=6
+180 DIRREQ D0 GetM C6 L0 M->M
+181 ST C3 L2 IM_AD->IM_A
+182 NACK C5 GetM L1 k=1 retry=184
+182 MSG 262 InvAck C5->C3 L2 v=None ack=0 req=3
+182 ST C5 L2 S->I
+184 MSG 263 FwdGetS D0->C6 L0 v=None ack=0 req=2
+184 DIRREQ D0 GetS C2 L0 M->S_D
+184 MSG 264 GetM C5->D1 L1 v=None ack=0 req=5
+186 ST C0 L1 IS_D->S
+186 LD C0 L1 val=2003 miss lat=27
+186 ST C4 L1 IS_D->S
+186 LD C4 L1 val=2003 miss lat=27
+187 LD C0 L1 val=2003 hit
+187 ST C4 L0 I->IS_D
+187 MSG 265 GetS C4->D0 L0 v=None ack=0 req=4
+187 MSG 266 InvAck C7->C3 L2 v=None ack=0 req=3
+187 ST C7 L2 S->I
+188 LD C0 L1 val=2003 hit
+188 MSG 267 InvAck C7->C1 L0 v=None ack=0 req=1
+188 ST C7 L0 SI_A->II_A
+189 ST C0 L0 I->IS_D
+189 MSG 268 GetS C0->D0 L0 v=None ack=0 req=0
+189 ST C7 L4 SI_A->I
+189 ST C7 L5 I->IM_AD
+189 MSG 269 GetM C7->D1 L5 v=None ack=0 req=7
+190 MSG 270 Data D1->C5 L1 v=2003 ack=4 req=5
+190 MSG 271 Inv D1->C0 L1 v=None ack=0 req=5
+190 MSG 272 Inv D1->C2 L1 v=None ack=0 req=5
+190 MSG 273 Inv D1->C4 L1 v=None ack=0 req=5
+190 MSG 274 Inv D1->C6 L1 v=None ack=0 req=5
+190 DIRREQ D1 GetM C5 L1 S->M
+190 ST C7 L0 II_A->I
+191 MSG 275 Data D1->C7 L5 v=0 ack=0 req=7
+191 DIRREQ D1 GetM C7 L5 I->M
+191 ST C3 L2 IM_A->M
+191 STORE C3 L2 val=3002
+192 LD C3 L2 val=3002 hit
+192 ST C7 L5 IM_AD->M
+192 STORE C7 L5 val=7006
+193 LD C3 L2 val=3002 hit
+193 ST C7 L2 I->IM_AD
+193 MSG 276 GetM C7->D0 L2 v=None ack=0 req=7
+194 LD C3 L2 val=3002 hit
+195 ST C3 L0 I->IM_AD
+195 MSG 277 GetM C3->D0 L0 v=None ack=0 req=3
+196 ST C5 L1 IM_AD->IM_A
+198 ST C1 L0 SM_A->M
+198 STORE C1 L0 val=1004
+198 MSG 278 Data C1->C6 L0 v=1004 ack=0 req=6
+198 ST C1 L0 M->I
+198 MSG 279 InvAck C2->C5 L1 v=None ack=0 req=5
+198 ST C2 L1 S->I
+198 MSG 280 InvAck C6->C5 L1 v=None ack=0 req=5
+198 ST C6 L1 S->I
+199 ST C1 L0 I->IS_D
+199 MSG 281 GetS C1->D0 L0 v=None ack=0 req=1
+201 REFUSE 281 GetS C1 L0 at D0
+201 MSG 282 Nack D0->C1 L0 v=None ack=0 req=1 rtype=GetS
+202 REFUSE 277 GetM C3 L0 at D0
+202 MSG 283 Nack D0->C3 L0 v=None ack=0 req=3 rtype=GetM
+202 MSG 284 InvAck C0->C5 L1 v=None ack=0 req=5
+202 ST C0 L1 S->I
+202 MSG 285 InvAck C4->C5 L1 v=None ack=0 req=5
+202 ST C4 L1 S->I
+203 NACK C1 GetS L0 k=1 retry=205
+203 ST C6 L0 IM_AD->M
+203 STORE C6 L0 val=6004
+203 MSG 286 Data C6->C2 L0 v=6004 ack=0 req=2
+203 MSG 287 Data C6->D0 L0 v=6004 ack=0 req=2
+203 ST C6 L0 M->S
+204 ST C6 L6 I->IS_D
+204 MSG 288 GetS C6->D0 L6 v=None ack=0 req=6
+205 MSG 289 GetS C1->D0 L0 v=None ack=0 req=1
+205 ST C2 L0 IS_D->S
+205 LD C2 L0 val=6004 miss lat=38
+206 REFUSE 276 GetM C7 L2 at D0
+206 MSG 290 Nack D0->C7 L2 v=None ack=0 req=7 rtype=GetM
+206 ST C2 L0 S->SM_AD
+206 MSG 291 GetM C2->D0 L0 v=None ack=0 req=2
+207 REFUSE 289 GetS C1 L0 at D0
+207 MSG 292 Nack D0->C1 L0 v=None ack=0 req=1 rtype=GetS
+209 NACK C1 GetS L0 k=2 retry=213
+209 NACK C3 GetM L0 k=1 retry=211
+209 ST C5 L1 IM_A->M
+209 STORE C5 L1 val=5003
+210 DIR D0 L0 S_D->S mem=6004
+210 MSG 293 Data D0->C4 L0 v=6004 ack=0 req=4
+210 DIRREQ D0 GetS C4 L0 S->S
+210 ST C5 L4 I->IM_AD
+210 MSG 294 GetM C5->D0 L4 v=None ack=0 req=5
+211 REFUSE 291 GetM C2 L0 at D0
+211 MSG 295 Data D0->C0 L0 v=6004 ack=0 req=0
+211 DIRREQ D0 GetS C0 L0 S->S
+211 MSG 296 Nack D0->C2 L0 v=None ack=0 req=2 rtype=GetM
+211 MSG 297 GetM C3->D0 L0 v=None ack=0 req=3
+212 MSG 298 FwdGetS D0->C1 L6 v=None ack=0 req=6
+212 DIRREQ D0 GetS C6 L6 M->S_D
+212 ST C0 L0 IS_D->S
+212 LD C0 L0 val=6004 miss lat=23
+212 ST C4 L0 IS_D->S
+212 LD C4 L0 val=6004 miss lat=25
+213 ST C0 L1 I->IS_D
+213 MSG 299 GetS C0->D1 L1 v=None ack=0 req=0
+213 MSG 300 GetS C1->D0 L0 v=None ack=0 req=1
+213 ST C4 L0 S->SM_AD
+213 MSG 301 GetM C4->D0 L0 v=None ack=0 req=4
+214 MSG 302 Data C1->C6 L6 v=1003 ack=0 req=6
+214 MSG 303 Data C1->D0 L6 v=1003 ack=0 req=6
+214 ST C1 L6 M->S
+215 MSG 304 Data D0->C5 L4 v=7003 ack=1 req=5
+215 MSG 305 Inv D0->C3 L4 v=None ack=0 req=5
+215 DIRREQ D0 GetM C5 L4 S->M
+216 DIR D0 L6 S_D->S mem=1003
+216 MSG 306 Data D0->C1 L0 v=6004 ack=0 req=1
+216 DIRREQ D0 GetS C1 L0 S->S
+216 NACK C2 GetM L0 k=1 retry=218
+216 NACK C7 GetM L2 k=1 retry=218
+217 MSG 307 Data D0->C4 L0 v=6004 ack=4 req=4
+217 MSG 308 Inv D0->C0 L0 v=None ack=0 req=4
+217 MSG 309 Inv D0->C1 L0 v=None ack=0 req=4
+217 MSG 310 Inv D0->C2 L0 v=None ack=0 req=4
+217 MSG 311 Inv D0->C6 L0 v=None ack=0 req=4
+217 DIRREQ D0 GetM C4 L0 S->M
+218 MSG 312 FwdGetM D0->C4 L0 v=None ack=0 req=3
+218 DIRREQ D0 GetM C3 L0 M->M
+218 MSG 313 InvAck C0->C4 L0 v=None ack=0 req=4
+218 ST C0 L0 S->I
+218 ST C1 L0 IS_D->S
+218 LD C1 L0 val=6004 miss lat=19
+218 MSG 314 GetM C2->D0 L0 v=None ack=0 req=2
+218 MSG 315 GetM C7->D0 L2 v=None ack=0 req=7
+219 ST C1 L0 S->SM_AD
+219 MSG 316 GetM C1->D0 L0 v=None ack=0 req=1
+219 ST C4 L0 SM_AD->SM_A
+219 ST C6 L6 IS_D->S
+219 LD C6 L6 val=1003 miss lat=15
+220 MSG 317 InvAck C1->C4 L0 v=None ack=0 req=4
+220 ST C1 L0 SM_AD->IM_AD
+220 ST C6 L3 S->SI_A
+220 MSG 318 PutS C6->D1 L3 v=None ack=0 req=6
+221 MSG 319 FwdGetM D0->C3 L0 v=None ack=0 req=1
+221 DIRREQ D0 GetM C1 L0 M->M
+221 ST C5 L4 IM_AD->IM_A
+221 ST C6 L6 S->SI_A
+221 MSG 320 PutS C6->D0 L6 v=None ack=0 req=6
+223 MSG 321 FwdGetM D0->C1 L0 v=None ack=0 req=2
+223 DIRREQ D0 GetM C2 L0 M->M
+223 MSG 322 FwdGetS D1->C5 L1 v=None ack=0 req=0
+223 DIRREQ D1 GetS C0 L1 M->S_D
+224 MSG 323 PutAck D1->C6 L3 v=None ack=0 req=6
+224 DIRREQ D1 PutS C6 L3 S->S
+224 MSG 324 InvAck C2->C4 L0 v=None ack=0 req=4
+224 ST C2 L0 SM_AD->IM_AD
+224 MSG 325 InvAck C3->C5 L4 v=None ack=0 req=5
+224 ST C3 L4 S->I
+227 MSG 326 InvAck C6->C4 L0 v=None ack=0 req=4
+227 ST C6 L0 S->I
+228 MSG 327 PutAck D0->C6 L6 v=None ack=0 req=6
+228 DIRREQ D0 PutS C6 L6 S->S
+228 ST C6 L3 SI_A->I
+228 ST C6 L2 I->IS_D
+228 MSG 328 GetS C6->D0 L2 v=None ack=0 req=6
+229 MSG 329 FwdGetM D0->C3 L2 v=None ack=0 req=7
+229 DIRREQ D0 GetM C7 L2 M->M
+230 MSG 330 Data C5->C0 L1 v=5003 ack=0 req=0
+230 MSG 331 Data C5->D1 L1 v=5003 ack=0 req=0
+230 ST C5 L1 M->S
+232 ST C4 L0 SM_A->M
+232 STORE C4 L0 val=4006
+232 MSG 332 Data C4->C3 L0 v=4006 ack=0 req=3
+232 ST C4 L0 M->I
+233 ST C4 L1 I->IS_D
+233 MSG 333 GetS C4->D1 L1 v=None ack=0 req=4
+233 ST C5 L4 IM_A->M
+233 STORE C5 L4 val=5004
+234 ST C5 L1 S->SI_A
+234 MSG 334 PutS C5->D1 L1 v=None ack=0 req=5
+235 ST C0 L1 IS_D->S
+235 LD C0 L1 val=5003 miss lat=22
+235 ST C5 L4 M->MI_A
+235 MSG 335 PutM C5->D0 L4 v=5004 ack=0 req=5
+235 ST C6 L6 SI_A->I
+236 MSG 336 FwdGetS D0->C7 L2 v=None ack=0 req=6
+236 DIRREQ D0 GetS C6 L2 M->S_D
+236 DIR D1 L1 S_D->S mem=5003
+236 ST C0 L0 I->IS_D
+236 MSG 337 GetS C0->D0 L0 v=None ack=0 req=0
+236 MSG 338 Data C3->C7 L2 v=3002 ack=0 req=7
+236 ST C3 L2 M->I
+237 MSG 339 FwdGetS D0->C2 L0 v=None ack=0 req=0
+237 DIRREQ D0 GetS C0 L0 M->S_D
+239 ST C7 L2 IM_AD->M
+239 STORE C7 L2 val=7007
+240 MSG 340 PutAck D0->C5 L4 v=None ack=0 req=5
+240 DIRREQ D0 PutM C5 L4 M->I
+240 MSG 341 PutAck D1->C5 L1 v=None ack=0 req=5
+240 DIRREQ D1 PutS C5 L1 S->S
+242 MSG 342 Data D1->C4 L1 v=5003 ack=0 req=4
+242 DIRREQ D1 GetS C4 L1 S->S
+244 ST C3 L0 IM_AD->M
+244 STORE C3 L0 val=3003
+244 MSG 343 Data C3->C1 L0 v=3003 ack=0 req=1
+244 ST C3 L0 M->I
+244 ST C7 L0 I->IS_D
+244 MSG 344 GetS C7->D0 L0 v=None ack=0 req=7
+245 ST C3 L0 I->IS_D
+245 MSG 345 GetS C3->D0 L0 v=None ack=0 req=3
+246 ST C5 L4 MI_A->I
+246 ST C5 L0 I->IM_AD
+246 MSG 346 GetM C5->D0 L0 v=None ack=0 req=5
+246 MSG 347 Data C7->C6 L2 v=7007 ack=0 req=6
+246 MSG 348 Data C7->D0 L2 v=7007 ack=0 req=6
+246 ST C7 L2 M->S
+247 ST C5 L1 SI_A->I
+249 ST C1 L0 IM_AD->M
+249 STORE C1 L0 val=1005
+249 MSG 349 Data C1->C2 L0 v=1005 ack=0 req=2
+249 ST C1 L0 M->I
+250 ST C1 L1 I->IS_D
+250 MSG 350 GetS C1->D1 L1 v=None ack=0 req=1
+250 ST C6 L2 IS_D->S
+250 LD C6 L2 val=7007 miss lat=22
+251 ST C4 L1 IS_D->S
+251 LD C4 L1 val=5003 miss lat=18
+251 ST C6 L0 I->IS_D
+251 MSG 351 GetS C6->D0 L0 v=None ack=0 req=6
+252 ST C2 L0 IM_AD->M
+252 STORE C2 L0 val=2004
+252 MSG 352 Data C2->C0 L0 v=2004 ack=0 req=0
+252 MSG 353 Data C2->D0 L0 v=2004 ack=0 req=0
+252 ST C2 L0 M->S
+252 ST C4 L2 I->IS_D
+252 MSG 354 GetS C4->D0 L2 v=None ack=0 req=4
+253 ST C2 L1 I->IS_D
+253 MSG 355 GetS C2->D1 L1 v=None ack=0 req=2
+254 REFUSE 354 GetS C4 L2 at D0
+254 MSG 356 Nack D0->C4 L2 v=None ack=0 req=4 rtype=GetS
+255 REFUSE 344 GetS C7 L0 at D0
+255 MSG 357 Nack D0->C7 L0 v=None ack=0 req=7 rtype=GetS
+256 NACK C4 GetS L2 k=1 retry=258
+257 ST C0 L0 IS_D->S
+257 LD C0 L0 val=2004 miss lat=21
+258 DIR D0 L2 S_D->S mem=7007
+258 MSG 358 Data D1->C1 L1 v=5003 ack=0 req=1
+258 DIRREQ D1 GetS C1 L1 S->S
+258 ST C0 L7 I->IS_D
+258 MSG 359 GetS C0->D1 L7 v=None ack=0 req=0
+258 MSG 360 GetS C4->D0 L2 v=None ack=0 req=4
+259 REFUSE 351 GetS C6 L0 at D0
+259 DIR D0 L0 S_D->S mem=2004
+259 MSG 361 Data D0->C5 L0 v=2004 ack=2 req=5
+259 MSG 362 Inv D0->C0 L0 v=None ack=0 req=5
+259 MSG 363 Inv D0->C2 L0 v=None ack=0 req=5
+259 DIRREQ D0 GetM C5 L0 S->M
+259 MSG 364 Nack D0->C6 L0 v=None ack=0 req=6 rtype=GetS
+259 MSG 365 Data D1->C2 L1 v=5003 ack=0 req=2
+259 DIRREQ D1 GetS C2 L1 S->S
+260 MSG 366 FwdGetS D0->C5 L0 v=None ack=0 req=3
+260 DIRREQ D0 GetS C3 L0 M->S_D
+260 MSG 367 InvAck C0->C5 L0 v=None ack=0 req=5
+260 ST C0 L0 S->I
+261 MSG 368 Data D0->C4 L2 v=7007 ack=0 req=4
+261 DIRREQ D0 GetS C4 L2 S->S
+263 ST C4 L2 IS_D->S
+263 LD C4 L2 val=7007 miss lat=11
+264 LD C4 L1 val=5003 hit
+265 ST C2 L1 IS_D->S
+265 LD C2 L1 val=5003 miss lat=12
+265 ST C4 L0 I->IS_D
+265 MSG 369 GetS C4->D0 L0 v=None ack=0 req=4
+265 ST C5 L0 IM_AD->IM_A
+265 NACK C7 GetS L0 k=1 retry=267
+267 MSG 370 InvAck C2->C5 L0 v=None ack=0 req=5
+267 ST C2 L0 S->I
+267 NACK C6 GetS L0 k=1 retry=269
+267 MSG 371 GetS C7->D0 L0 v=None ack=0 req=7
+268 MSG 372 Data D1->C0 L7 v=0 ack=0 req=0
+268 DIRREQ D1 GetS C0 L7 I->S
+268 ST C1 L1 IS_D->S
+268 LD C1 L1 val=5003 miss lat=18
+269 ST C1 L0 I->IS_D
+269 MSG 373 GetS C1->D0 L0 v=None ack=0 req=1
+269 MSG 374 GetS C6->D0 L0 v=None ack=0 req=6
+273 ST C2 L2 I->IM_AD
+273 MSG 375 GetM C2->D0 L2 v=None ack=0 req=2
+274 ST C5 L0 IM_A->M
+274 STORE C5 L0 val=5005
+274 MSG 376 Data C5->C3 L0 v=5005 ack=0 req=3
+274 MSG 377 Data C5->D0 L0 v=5005 ack=0 req=3
+274 ST C5 L0 M->S
+275 ST C5 L2 I->IM_AD
+275 MSG 378 GetM C5->D0 L2 v=None ack=0 req=5
+276 REFUSE 374 GetS C6 L0 at D0
+276 MSG 379 Nack D0->C6 L0 v=None ack=0 req=6 rtype=GetS
+278 REFUSE 371 GetS C7 L0 at D0
+278 REFUSE 375 GetM C2 L2 at D0
+278 MSG 380 Nack D0->C7 L0 v=None ack=0 req=7 rtype=GetS
+278 MSG 381 Nack D0->C2 L2 v=None ack=0 req=2 rtype=GetM
+279 ST C0 L7 IS_D->S
+279 LD C0 L7 val=0 miss lat=21
+280 DIR D0 L0 S_D->S mem=5005
+280 MSG 382 Data D0->C4 L0 v=5005 ack=0 req=4
+280 DIRREQ D0 GetS C4 L0 S->S
+280 LD C0 L7 val=0 hit
+281 MSG 383 Data D0->C1 L0 v=5005 ack=0 req=1
+281 DIRREQ D0 GetS C1 L0 S->S
+281 ST C0 L2 I->IS_D
+281 MSG 384 GetS C0->D0 L2 v=None ack=0 req=0
+282 MSG 385 Data D0->C5 L2 v=7007 ack=3 req=5
+282 MSG 386 Inv D0->C4 L2 v=None ack=0 req=5
+282 MSG 387 Inv D0->C6 L2 v=None ack=0 req=5
+282 MSG 388 Inv D0->C7 L2 v=None ack=0 req=5
+282 DIRREQ D0 GetM C5 L2 S->M
+282 ST C4 L0 IS_D->S
+282 LD C4 L0 val=5005 miss lat=17
+283 MSG 389 FwdGetS D0->C5 L2 v=None ack=0 req=0
+283 DIRREQ D0 GetS C0 L2 M->S_D
+283 ST C1 L0 IS_D->S
+283 LD C1 L0 val=5005 miss lat=14
+283 ST C3 L0 IS_D->S
+283 LD C3 L0 val=5005 miss lat=38
+283 LD C4 L1 val=5003 hit
+283 NACK C6 GetS L0 k=2 retry=287
+284 ST C1 L0 S->SM_AD
+284 MSG 390 GetM C1->D0 L0 v=None ack=0 req=1
+284 NACK C2 GetM L2 k=1 retry=286
+284 ST C3 L2 I->IS_D
+284 MSG 391 GetS C3->D0 L2 v=None ack=0 req=3
+284 MSG 392 InvAck C4->C5 L2 v=None ack=0 req=5
+284 ST C4 L2 S->I
+284 ST C4 L6 I->IS_D
+284 MSG 393 GetS C4->D0 L6 v=None ack=0 req=4
+286 MSG 394 Data D0->C1 L0 v=5005 ack=3 req=1
+286 MSG 395 Inv D0->C3 L0 v=None ack=0 req=1
+286 MSG 396 Inv D0->C4 L0 v=None ack=0 req=1
+286 MSG 397 Inv D0->C5 L0 v=None ack=0 req=1
+286 DIRREQ D0 GetM C1 L0 S->M
+286 MSG 398 GetM C2->D0 L2 v=None ack=0 req=2
+287 MSG 399 Data D0->C4 L6 v=1003 ack=0 req=4
+287 DIRREQ D0 GetS C4 L6 S->S
+287 MSG 400 GetS C6->D0 L0 v=None ack=0 req=6
+288 ST C1 L0 SM_AD->SM_A
+288 MSG 401 InvAck C4->C1 L0 v=None ack=0 req=1
+288 ST C4 L0 S->I
+288 ST C5 L2 IM_AD->IM_A
+288 NACK C7 GetS L0 k=2 retry=292
+289 ST C4 L6 IS_D->S
+289 LD C4 L6 val=1003 miss lat=5
+290 MSG 402 InvAck C6->C5 L2 v=None ack=0 req=5
+290 ST C6 L2 S->I
+292 MSG 403 GetS C7->D0 L0 v=None ack=0 req=7
+293 ST C4 L1 S->SM_AD
+293 MSG 404 GetM C4->D1 L1 v=None ack=0 req=4
+294 REFUSE 400 GetS C6 L0 at D0
+294 MSG 405 Nack D0->C6 L0 v=None ack=0 req=6 rtype=GetS
+294 MSG 406 InvAck C3->C1 L0 v=None ack=0 req=1
+294 ST C3 L0 S->I
+294 MSG 407 InvAck C5->C1 L0 v=None ack=0 req=1
+294 ST C5 L0 S->I
+294 MSG 408 InvAck C7->C5 L2 v=None ack=0 req=5
+294 ST C7 L2 S->I
+299 ST C1 L0 SM_A->M
+299 STORE C1 L0 val=1006
+300 ST C1 L2 I->IM_AD
+300 MSG 409 GetM C1->D0 L2 v=None ack=0 req=1
+300 ST C5 L2 IM_A->M
+300 STORE C5 L2 val=5006
+300 MSG 410 Data C5->C0 L2 v=5006 ack=0 req=0
+300 MSG 411 Data C5->D0 L2 v=5006 ack=0 req=0
+300 ST C5 L2 M->S
+301 LD C5 L2 val=5006 hit
+301 NACK C6 GetS L0 k=3 retry=309
+302 REFUSE 409 GetM C1 L2 at D0
+302 MSG 412 Nack D0->C1 L2 v=None ack=0 req=1 rtype=GetM
+302 MSG 413 Data D1->C4 L1 v=5003 ack=3 req=4
+302 MSG 414 Inv D1->C0 L1 v=None ack=0 req=4
+302 MSG 415 Inv D1->C1 L1 v=None ack=0 req=4
+302 MSG 416 Inv D1->C2 L1 v=None ack=0 req=4
+302 DIRREQ D1 GetM C4 L1 S->M
+302 ST C5 L3 S->SI_A
+302 MSG 417 PutS C5->D1 L3 v=None ack=0 req=5
+303 REFUSE 403 GetS C7 L0 at D0
+303 MSG 418 Nack D0->C7 L0 v=None ack=0 req=7 rtype=GetS
+303 ST C5 L2 S->SI_A
+303 MSG 419 PutS C5->D0 L2 v=None ack=0 req=5
+304 NACK C1 GetM L2 k=1 retry=306
+305 ST C0 L2 IS_D->S
+305 LD C0 L2 val=5006 miss lat=24
+306 DIR D0 L2 S_D->S mem=5006
+306 MSG 420 Data D0->C3 L2 v=5006 ack=0 req=3
+306 DIRREQ D0 GetS C3 L2 S->S
+306 MSG 421 GetM C1->D0 L2 v=None ack=0 req=1
+307 MSG 422 Data D0->C2 L2 v=5006 ack=3 req=2
+307 MSG 423 Inv D0->C0 L2 v=None ack=0 req=2
+307 MSG 424 Inv D0->C3 L2 v=None ack=0 req=2
+307 MSG 425 Inv D0->C5 L2 v=None ack=0 req=2
+307 DIRREQ D0 GetM C2 L2 S->M
+308 MSG 426 PutAck D0->C5 L2 v=None ack=0 req=5
+308 DIRREQ D0 PutS C5 L2 M->M
+308 MSG 427 PutAck D1->C5 L3 v=None ack=0 req=5
+308 DIRREQ D1 PutS C5 L3 S->I
+308 MSG 428 InvAck C0->C2 L2 v=None ack=0 req=2
+308 ST C0 L2 S->I
+309 MSG 429 FwdGetM D0->C2 L2 v=None ack=0 req=1
+309 DIRREQ D0 GetM C1 L2 M->M
+309 MSG 430 GetS C6->D0 L0 v=None ack=0 req=6
+311 MSG 431 InvAck C2->C4 L1 v=None ack=0 req=4
+311 ST C2 L1 S->I
+311 ST C4 L1 SM_AD->SM_A
+312 ST C0 L4 I->IM_AD
+312 MSG 432 GetM C0->D0 L4 v=None ack=0 req=0
+312 ST C2 L2 IM_AD->IM_A
+313 MSG 433 Data D0->C0 L4 v=5004 ack=0 req=0
+313 DIRREQ D0 GetM C0 L4 I->M
+313 ST C3 L2 IS_D->S
+313 LD C3 L2 val=5006 miss lat=29
+313 NACK C7 GetS L0 k=3 retry=321
+314 ST C0 L4 IM_AD->M
+314 STORE C0 L4 val=4
+314 MSG 434 InvAck C0->C4 L1 v=None ack=0 req=4
+314 ST C0 L1 S->I
+314 MSG 435 InvAck C1->C4 L1 v=None ack=0 req=4
+314 ST C1 L1 S->I
+314 ST C3 L3 I->IS_D
+314 MSG 436 GetS C3->D1 L3 v=None ack=0 req=3
+314 ST C5 L3 SI_A->I
+314 ST C5 L7 I->IM_AD
+314 MSG 437 GetM C5->D1 L7 v=None ack=0 req=5
+315 ST C0 L0 I->IS_D
+315 MSG 438 GetS C0->D0 L0 v=None ack=0 req=0
+316 MSG 439 FwdGetS D0->C1 L0 v=None ack=0 req=6
+316 DIRREQ D0 GetS C6 L0 M->S_D
+316 MSG 440 InvAck C3->C2 L2 v=None ack=0 req=2
+316 ST C3 L2 S->I
+316 MSG 441 InvAck C5->C2 L2 v=None ack=0 req=2
+316 ST C5 L2 SI_A->II_A
+317 MSG 442 Data D1->C3 L3 v=6002 ack=0 req=3
+317 DIRREQ D1 GetS C3 L3 I->S
+317 ST C5 L2 II_A->I
+318 MSG 443 Data C1->C6 L0 v=1006 ack=0 req=6
+318 MSG 444 Data C1->D0 L0 v=1006 ack=0 req=6
+318 ST C1 L0 M->S
+319 ST C4 L1 SM_A->M
+319 STORE C4 L1 val=4007
+320 DIR D0 L0 S_D->S mem=1006
+320 MSG 445 Data D0->C0 L0 v=1006 ack=0 req=0
+320 DIRREQ D0 GetS C0 L0 S->S
+320 MSG 446 Data D1->C5 L7 v=0 ack=1 req=5
+320 MSG 447 Inv D1->C0 L7 v=None ack=0 req=5
+320 DIRREQ D1 GetM C5 L7 S->M
+320 ST C2 L2 IM_A->M
+320 STORE C2 L2 val=2005
+320 MSG 448 Data C2->C1 L2 v=2005 ack=0 req=1
+320 ST C2 L2 M->I
+320 ST C3 L3 IS_D->S
+320 LD C3 L3 val=6002 miss lat=6
+320 LD C4 L1 val=4007 hit
+321 ST C0 L0 IS_D->S
+321 LD C0 L0 val=1006 miss lat=6
+321 ST C3 L0 I->IS_D
+321 MSG 449 GetS C3->D0 L0 v=None ack=0 req=3
+321 MSG 450 GetS C7->D0 L0 v=None ack=0 req=7
+322 ST C0 L2 I->IM_AD
+322 MSG 451 GetM C0->D0 L2 v=None ack=0 req=0
+322 ST C4 L3 I->IS_D
+322 MSG 452 GetS C4->D1 L3 v=None ack=0 req=4
+323 MSG 453 FwdGetM D0->C1 L2 v=None ack=0 req=0
+323 DIRREQ D0 GetM C0 L2 M->M
+323 ST C1 L2 IM_AD->M
+323 STORE C1 L2 val=1007
+323 ST C2 L0 I->IS_D
+323 MSG 454 GetS C2->D0 L0 v=None ack=0 req=2
+323 ST C6 L0 IS_D->S
+323 LD C6 L0 val=1006 miss lat=72
+324 LD C1 L0 val=1006 hit
+324 ST C6 L6 I->IS_D
+324 MSG 455 GetS C6->D0 L6 v=None ack=0 req=6
+325 MSG 456 Data C1->C0 L2 v=1007 ack=0 req=0
+325 ST C1 L2 M->I
+325 ST C1 L2 I->IM_AD
+325 MSG 457 GetM C1->D0 L2 v=None ack=0 req=1
+326 ST C5 L7 IM_AD->IM_A
+327 ST C0 L2 IM_AD->M
+327 STORE C0 L2 val=5
+328 MSG 458 FwdGetM D0->C0 L2 v=None ack=0 req=1
+328 DIRREQ D0 GetM C1 L2 M->M
+329 MSG 459 Data D0->C3 L0 v=1006 ack=0 req=3
+329 DIRREQ D0 GetS C3 L0 S->S
+329 MSG 460 Data C0->C1 L2 v=5 ack=0 req=1
+329 ST C0 L2 M->I
+330 MSG 461 Data D0->C2 L0 v=1006 ack=0 req=2
+330 DIRREQ D0 GetS C2 L0 S->S
+331 MSG 462 Data D1->C4 L3 v=6002 ack=0 req=4
+331 DIRREQ D1 GetS C4 L3 S->S
+332 MSG 463 InvAck C0->C5 L7 v=None ack=0 req=5
+332 ST C0 L7 S->I
+332 ST C1 L2 IM_AD->M
+332 STORE C1 L2 val=1008
+333 MSG 464 Data D0->C6 L6 v=1003 ack=0 req=6
+333 DIRREQ D0 GetS C6 L6 S->S
+333 ST C0 L2 I->IM_AD
+333 MSG 465 GetM C0->D0 L2 v=None ack=0 req=0
+334 MSG 466 Data D0->C7 L0 v=1006 ack=0 req=7
+334 DIRREQ D0 GetS C7 L0 S->S
+335 MSG 467 FwdGetM D0->C1 L2 v=None ack=0 req=0
+335 DIRREQ D0 GetM C0 L2 M->M
+336 ST C2 L0 IS_D->S
+336 LD C2 L0 val=1006 miss lat=13
+336 ST C3 L0 IS_D->S
+336 LD C3 L0 val=1006 miss lat=15
+337 MSG 468 Data C1->C0 L2 v=1008 ack=0 req=0
+337 ST C1 L2 M->I
+337 ST C2 L1 I->IS_D
+337 MSG 469 GetS C2->D1 L1 v=None ack=0 req=2
+337 ST C3 L3 S->SM_AD
+337 MSG 470 GetM C3->D1 L3 v=None ack=0 req=3
+338 ST C1 L5 I->IS_D
+338 MSG 471 GetS C1->D1 L5 v=None ack=0 req=1
+338 ST C5 L7 IM_A->M
+338 STORE C5 L7 val=5007
+339 ST C0 L2 IM_AD->M
+339 STORE C0 L2 val=6
+339 ST C5 L2 I->IM_AD
+339 MSG 472 GetM C5->D0 L2 v=None ack=0 req=5
+340 MSG 473 Data D1->C3 L3 v=6002 ack=1 req=3
+340 MSG 474 Inv D1->C4 L3 v=None ack=0 req=3
+340 DIRREQ D1 GetM C3 L3 S->M
+340 LD C0 L0 val=1006 hit
+340 ST C4 L3 IS_D->S
+340 LD C4 L3 val=6002 miss lat=18
+340 ST C6 L6 IS_D->S
+340 LD C6 L6 val=1003 miss lat=16
+341 ST C0 L0 S->SM_AD
+341 MSG 475 GetM C0->D0 L0 v=None ack=0 req=0
+341 ST C4 L6 S->SI_A
+341 MSG 476 PutS C4->D0 L6 v=None ack=0 req=4
+341 ST C6 L0 S->SM_AD
+341 MSG 477 GetM C6->D0 L0 v=None ack=0 req=6
+342 MSG 478 Data D0->C0 L0 v=1006 ack=5 req=0
+342 MSG 479 Inv D0->C1 L0 v=None ack=0 req=0
+342 MSG 480 Inv D0->C2 L0 v=None ack=0 req=0
+342 MSG 481 Inv D0->C3 L0 v=None ack=0 req=0
+342 MSG 482 Inv D0->C6 L0 v=None ack=0 req=0
+342 MSG 483 Inv D0->C7 L0 v=None ack=0 req=0
+342 DIRREQ D0 GetM C0 L0 S->M
+342 MSG 484 FwdGetS D1->C4 L1 v=None ack=0 req=2
+342 DIRREQ D1 GetS C2 L1 M->S_D
+342 ST C4 L3 S->SI_A
+342 MSG 485 PutS C4->D1 L3 v=None ack=0 req=4
+343 MSG 486 PutAck D0->C4 L6 v=None ack=0 req=4
+343 DIRREQ D0 PutS C4 L6 S->S
+343 ST C0 L0 SM_AD->SM_A
+343 ST C3 L3 SM_AD->SM_A
+344 MSG 487 FwdGetM D0->C0 L2 v=None ack=0 req=5
+344 DIRREQ D0 GetM C5 L2 M->M
+344 MSG 488 InvAck C1->C0 L0 v=None ack=0 req=0
+344 ST C1 L0 S->I
+344 ST C7 L0 IS_D->S
+344 LD C7 L0 val=1006 miss lat=100
+345 MSG 489 Data C0->C5 L2 v=6 ack=0 req=5
+345 ST C0 L2 M->I
+345 ST C4 L6 SI_A->I
+345 ST C4 L2 I->IM_AD
+345 MSG 490 GetM C4->D0 L2 v=None ack=0 req=4
+345 LD C7 L0 val=1006 hit
+346 MSG 491 FwdGetS D1->C7 L5 v=None ack=0 req=1
+346 DIRREQ D1 GetS C1 L5 M->S_D
+346 ST C7 L0 S->SM_AD
+346 MSG 492 GetM C7->D0 L0 v=None ack=0 req=7
+347 MSG 493 FwdGetM D0->C5 L2 v=None ack=0 req=4
+347 DIRREQ D0 GetM C4 L2 M->M
+347 MSG 494 Data C7->C1 L5 v=7006 ack=0 req=1
+347 MSG 495 Data C7->D1 L5 v=7006 ack=0 req=1
+347 ST C7 L5 M->S
+348 MSG 496 FwdGetM D0->C0 L0 v=None ack=0 req=6
+348 DIRREQ D0 GetM C6 L0 M->M
+348 DIR D1 L5 S_D->S mem=7006
+348 MSG 497 InvAck C2->C0 L0 v=None ack=0 req=0
+348 ST C2 L0 S->I
+349 MSG 498 InvAck C4->C3 L3 v=None ack=0 req=3
+349 ST C4 L3 SI_A->II_A
+351 MSG 499 PutAck D1->C4 L3 v=None ack=0 req=4
+351 DIRREQ D1 PutS C4 L3 M->M
+351 MSG 500 InvAck C3->C0 L0 v=None ack=0 req=0
+351 ST C3 L0 S->I
+351 MSG 501 Data C4->C2 L1 v=4007 ack=0 req=2
+351 MSG 502 Data C4->D1 L1 v=4007 ack=0 req=2
+351 ST C4 L1 M->S
+351 ST C5 L2 IM_AD->M
+351 STORE C5 L2 val=5008
+352 ST C5 L0 I->IS_D
+352 MSG 503 GetS C5->D0 L0 v=None ack=0 req=5
+353 MSG 504 InvAck C6->C0 L0 v=None ack=0 req=0
+353 ST C6 L0 SM_AD->IM_AD
+354 MSG 505 Data C5->C4 L2 v=5008 ack=0 req=4
+354 ST C5 L2 M->I
+357 MSG 506 FwdGetM D0->C6 L0 v=None ack=0 req=7
+357 DIRREQ D0 GetM C7 L0 M->M
+357 ST C1 L5 IS_D->S
+357 LD C1 L5 val=7006 miss lat=19
+357 ST C4 L2 IM_AD->M
+357 STORE C4 L2 val=4008
+357 MSG 507 InvAck C7->C0 L0 v=None ack=0 req=0
+357 ST C7 L0 SM_AD->IM_AD
+358 MSG 508 FwdGetS D0->C7 L0 v=None ack=0 req=5
+358 DIRREQ D0 GetS C5 L0 M->S_D
+358 ST C1 L3 I->IM_AD
+358 MSG 509 GetM C1->D1 L3 v=None ack=0 req=1
+358 ST C2 L1 IS_D->S
+358 LD C2 L1 val=4007 miss lat=21
+358 ST C4 L0 I->IS_D
+358 MSG 510 GetS C4->D0 L0 v=None ack=0 req=4
+359 ST C2 L2 I->IM_AD
+359 MSG 511 GetM C2->D0 L2 v=None ack=0 req=2
+360 ST C4 L3 II_A->I
+361 DIR D1 L1 S_D->S mem=4007
+361 ST C3 L3 SM_A->M
+361 STORE C3 L3 val=3004
+363 ST C3 L4 I->IS_D
+363 MSG 512 GetS C3->D0 L4 v=None ack=0 req=3
+366 MSG 513 FwdGetM D1->C3 L3 v=None ack=0 req=1
+366 DIRREQ D1 GetM C1 L3 M->M
+368 ST C0 L0 SM_A->M
+368 STORE C0 L0 val=7
+368 MSG 514 Data C0->C6 L0 v=7 ack=0 req=6
+368 ST C0 L0 M->I
+369 ST C0 L2 I->IS_D
+369 MSG 515 GetS C0->D0 L2 v=None ack=0 req=0
+369 MSG 516 Data C3->C1 L3 v=3004 ack=0 req=1
+369 ST C3 L3 M->I
+370 REFUSE 512 GetS C3 L4 at D0
+370 REFUSE 515 GetS C0 L2 at D0
+370 MSG 517 Nack D0->C3 L4 v=None ack=0 req=3 rtype=GetS
+370 MSG 518 Nack D0->C0 L2 v=None ack=0 req=0 rtype=GetS
+371 NACK C0 GetS L2 k=1 retry=373
+373 MSG 519 GetS C0->D0 L2 v=None ack=0 req=0
+374 REFUSE 519 GetS C0 L2 at D0
+374 MSG 520 Nack D0->C0 L2 v=None ack=0 req=0 rtype=GetS
+374 ST C1 L3 IM_AD->M
+374 STORE C1 L3 val=1009
+375 NACK C0 GetS L2 k=2 retry=379
+375 LD C1 L6 val=1003 hit
+375 ST C6 L0 IM_AD->M
+375 STORE C6 L0 val=6005
+375 MSG 521 Data C6->C7 L0 v=6005 ack=0 req=7
+375 ST C6 L0 M->I
+376 LD C1 L5 val=7006 hit
+376 ST C6 L2 I->IS_D
+376 MSG 522 GetS C6->D0 L2 v=None ack=0 req=6
+377 ST C1 L1 I->IS_D
+377 MSG 523 GetS C1->D1 L1 v=None ack=0 req=1
+377 NACK C3 GetS L4 k=1 retry=379
+379 MSG 524 GetS C0->D0 L2 v=None ack=0 req=0
+379 MSG 525 GetS C3->D0 L4 v=None ack=0 req=3
+379 ST C7 L0 IM_AD->M
+379 STORE C7 L0 val=7008
+379 MSG 526 Data C7->C5 L0 v=7008 ack=0 req=5
+379 MSG 527 Data C7->D0 L0 v=7008 ack=0 req=5
+379 ST C7 L0 M->S
+380 REFUSE 524 GetS C0 L2 at D0
+380 MSG 528 Nack D0->C0 L2 v=None ack=0 req=0 rtype=GetS
+380 ST C7 L5 S->SI_A
+380 MSG 529 PutS C7->D1 L5 v=None ack=0 req=7
+381 MSG 530 PutAck D1->C7 L5 v=None ack=0 req=7
+381 DIRREQ D1 PutS C7 L5 S->S
+381 NACK C0 GetS L2 k=3 retry=389
+381 ST C7 L0 S->SI_A
+381 MSG 531 PutS C7->D0 L0 v=None ack=0 req=7
+382 ST C7 L5 SI_A->I
+382 ST C7 L1 I->IS_D
+382 MSG 532 GetS C7->D1 L1 v=None ack=0 req=7
+383 REFUSE 522 GetS C6 L2 at D0
+383 MSG 533 Nack D0->C6 L2 v=None ack=0 req=6 rtype=GetS
+383 MSG 534 Data D1->C7 L1 v=4007 ack=0 req=7
+383 DIRREQ D1 GetS C7 L1 S->S
+384 ST C7 L1 IS_D->S
+384 LD C7 L1 val=4007 miss lat=2
+385 MSG 535 Data D1->C1 L1 v=4007 ack=0 req=1
+385 DIRREQ D1 GetS C1 L1 S->S
+385 ST C5 L0 IS_D->S
+385 LD C5 L0 val=7008 miss lat=33
+385 LD C7 L1 val=4007 hit
+386 REFUSE 525 GetS C3 L4 at D0
+386 MSG 536 Nack D0->C3 L4 v=None ack=0 req=3 rtype=GetS
+386 STORE C5 L7 val=5009
+386 LD C7 L1 val=4007 hit
+387 ST C5 L2 I->IM_AD
+387 MSG 537 GetM C5->D0 L2 v=None ack=0 req=5
+387 ST C7 L2 I->IS_D
+387 MSG 538 GetS C7->D0 L2 v=None ack=0 req=7
+389 MSG 539 GetS C0->D0 L2 v=None ack=0 req=0
+390 REFUSE 539 GetS C0 L2 at D0
+390 MSG 540 Nack D0->C0 L2 v=None ack=0 req=0 rtype=GetS
+390 NACK C6 GetS L2 k=1 retry=392
+391 DIR D0 L0 S_D->S mem=7008
+391 MSG 541 Data D0->C4 L0 v=7008 ack=0 req=4
+391 DIRREQ D0 GetS C4 L0 S->S
+391 NACK C0 GetS L2 k=4 retry=407
+392 MSG 542 FwdGetM D0->C4 L2 v=None ack=0 req=2
+392 DIRREQ D0 GetM C2 L2 M->M
+392 MSG 543 GetS C6->D0 L2 v=None ack=0 req=6
+393 MSG 544 PutAck D0->C7 L0 v=None ack=0 req=7
+393 DIRREQ D0 PutS C7 L0 S->S
+393 NACK C3 GetS L4 k=2 retry=397
+393 ST C4 L0 IS_D->S
+393 LD C4 L0 val=7008 miss lat=35
+394 MSG 545 FwdGetM D0->C2 L2 v=None ack=0 req=5
+394 DIRREQ D0 GetM C5 L2 M->M
+394 MSG 546 Data C4->C2 L2 v=4008 ack=0 req=2
+394 ST C4 L2 M->I
+394 LD C4 L1 val=4007 hit
+395 ST C1 L1 IS_D->S
+395 LD C1 L1 val=4007 miss lat=18
+395 LD C4 L0 val=7008 hit
+396 LD C1 L1 val=4007 hit
+396 ST C4 L0 S->SM_AD
+396 MSG 547 GetM C4->D0 L0 v=None ack=0 req=4
+397 ST C1 L5 S->SI_A
+397 MSG 548 PutS C1->D1 L5 v=None ack=0 req=1
+397 MSG 549 GetS C3->D0 L4 v=None ack=0 req=3
+398 MSG 550 FwdGetS D0->C5 L2 v=None ack=0 req=7
+398 DIRREQ D0 GetS C7 L2 M->S_D
+398 ST C1 L1 S->SI_A
+398 MSG 551 PutS C1->D1 L1 v=None ack=0 req=1
+399 MSG 552 Data D0->C4 L0 v=7008 ack=1 req=4
+399 MSG 553 Inv D0->C5 L0 v=None ack=0 req=4
+399 DIRREQ D0 GetM C4 L0 S->M
+401 ST C2 L2 IM_AD->M
+401 STORE C2 L2 val=2006
+401 MSG 554 Data C2->C5 L2 v=2006 ack=0 req=5
+401 ST C2 L2 M->I
+401 ST C4 L0 SM_AD->SM_A
+403 ST C2 L2 I->IM_AD
+403 MSG 555 GetM C2->D0 L2 v=None ack=0 req=2
+403 ST C7 L0 SI_A->I
+405 MSG 556 PutAck D1->C1 L5 v=None ack=0 req=1
+405 DIRREQ D1 PutS C1 L5 S->I
+405 MSG 557 InvAck C5->C4 L0 v=None ack=0 req=4
+405 ST C5 L0 S->I
+406 MSG 558 PutAck D1->C1 L1 v=None ack=0 req=1
+406 DIRREQ D1 PutS C1 L1 S->S
+407 MSG 559 GetS C0->D0 L2 v=None ack=0 req=0
+408 REFUSE 555 GetM C2 L2 at D0
+408 REFUSE 559 GetS C0 L2 at D0
+408 MSG 560 Nack D0->C2 L2 v=None ack=0 req=2 rtype=GetM
+408 MSG 561 Nack D0->C0 L2 v=None ack=0 req=0 rtype=GetS
+408 ST C4 L0 SM_A->M
+408 STORE C4 L0 val=4009
+408 ST C5 L2 IM_AD->M
+408 STORE C5 L2 val=5010
+408 MSG 562 Data C5->C7 L2 v=5010 ack=0 req=7
+408 MSG 563 Data C5->D0 L2 v=5010 ack=0 req=7
+408 ST C5 L2 M->S
+409 NACK C0 GetS L2 k=5 retry=441
+409 LD C4 L0 val=4009 hit
+409 ST C5 L7 M->MI_A
+409 MSG 564 PutM C5->D1 L7 v=5009 ack=0 req=5
+410 ST C4 L1 S->SI_A
+410 MSG 565 PutS C4->D1 L1 v=None ack=0 req=4
+410 ST C5 L2 S->SI_A
+410 MSG 566 PutS C5->D0 L2 v=None ack=0 req=5
+411 ST C4 L0 M->MI_A
+411 MSG 567 PutM C4->D0 L0 v=4009 ack=0 req=4
+413 DIR D0 L2 S_D->S mem=5010
+413 MSG 568 Data D0->C6 L2 v=5010 ack=0 req=6
+413 DIRREQ D0 GetS C6 L2 S->S
+413 NACK C2 GetM L2 k=1 retry=415
+414 MSG 569 FwdGetS D0->C0 L4 v=None ack=0 req=3
+414 DIRREQ D0 GetS C3 L4 M->S_D
+414 ST C7 L2 IS_D->S
+414 LD C7 L2 val=5010 miss lat=27
+415 MSG 570 PutAck D0->C4 L0 v=None ack=0 req=4
+415 DIRREQ D0 PutM C4 L0 M->I
+415 MSG 571 PutAck D1->C5 L7 v=None ack=0 req=5
+415 DIRREQ D1 PutM C5 L7 M->I
+415 MSG 572 Data C0->C3 L4 v=4 ack=0 req=3
+415 MSG 573 Data C0->D0 L4 v=4 ack=0 req=3
+415 ST C0 L4 M->S
+415 ST C1 L5 SI_A->I
+415 ST C1 L0 I->IM_AD
+415 MSG 574 GetM C1->D0 L0 v=None ack=0 req=1
+415 MSG 575 GetM C2->D0 L2 v=None ack=0 req=2
+415 LD C7 L2 val=5010 hit
+416 DIR D0 L4 S_D->S mem=4
+416 MSG 576 PutAck D0->C5 L2 v=None ack=0 req=5
+416 DIRREQ D0 PutS C5 L2 S->S
+416 ST C1 L1 SI_A->I
+417 MSG 577 Data D0->C1 L0 v=4009 ack=0 req=1
+417 DIRREQ D0 GetM C1 L0 I->M
+417 ST C4 L0 MI_A->I
+417 ST C4 L4 I->IM_AD
+417 MSG 578 GetM C4->D0 L4 v=None ack=0 req=4
+419 MSG 579 Data D0->C4 L4 v=4 ack=2 req=4
+419 MSG 580 Inv D0->C0 L4 v=None ack=0 req=4
+419 MSG 581 Inv D0->C3 L4 v=None ack=0 req=4
+419 DIRREQ D0 GetM C4 L4 S->M
+419 MSG 582 PutAck D1->C4 L1 v=None ack=0 req=4
+419 DIRREQ D1 PutS C4 L1 S->S
+419 ST C1 L0 IM_AD->M
+419 STORE C1 L0 val=1010
+420 MSG 583 Data D0->C2 L2 v=5010 ack=2 req=2
+420 MSG 584 Inv D0->C6 L2 v=None ack=0 req=2
+420 MSG 585 Inv D0->C7 L2 v=None ack=0 req=2
+420 DIRREQ D0 GetM C2 L2 S->M
+420 MSG 586 InvAck C0->C4 L4 v=None ack=0 req=4
+420 ST C0 L4 S->I
+420 ST C1 L3 M->MI_A
+420 MSG 587 PutM C1->D1 L3 v=1009 ack=0 req=1
+420 ST C6 L2 IS_D->S
+420 LD C6 L2 val=5010 miss lat=44
+420 ST C7 L4 I->IS_D
+420 MSG 588 GetS C7->D0 L4 v=None ack=0 req=7
+421 ST C1 L6 S->SI_A
+421 MSG 589 PutS C1->D0 L6 v=None ack=0 req=1
+421 ST C4 L4 IM_AD->IM_A
+421 ST C5 L7 MI_A->I
+421 ST C5 L3 I->IS_D
+421 MSG 590 GetS C5->D1 L3 v=None ack=0 req=5
+421 ST C6 L0 I->IS_D
+421 MSG 591 GetS C6->D0 L0 v=None ack=0 req=6
+422 ST C3 L4 IS_D->S
+422 LD C3 L4 val=4 miss lat=59
+422 ST C5 L2 SI_A->I
+423 MSG 592 PutAck D0->C1 L6 v=None ack=0 req=1
+423 DIRREQ D0 PutS C1 L6 S->S
+423 ST C3 L0 I->IM_AD
+423 MSG 593 GetM C3->D0 L0 v=None ack=0 req=3
+425 ST C1 L6 SI_A->I
+425 ST C1 L2 I->IS_D
+425 MSG 594 GetS C1->D0 L2 v=None ack=0 req=1
+425 ST C2 L2 IM_AD->IM_A
+426 MSG 595 InvAck C3->C4 L4 v=None ack=0 req=4
+426 ST C3 L4 S->I
+427 MSG 596 FwdGetS D0->C2 L2 v=None ack=0 req=1
+427 DIRREQ D0 GetS C1 L2 M->S_D
+427 MSG 597 FwdGetS D1->C1 L3 v=None ack=0 req=5
+427 DIRREQ D1 GetS C5 L3 M->S_D
+428 MSG 598 FwdGetS D0->C1 L0 v=None ack=0 req=6
+428 DIRREQ D0 GetS C6 L0 M->S_D
+428 MSG 599 PutAck D1->C1 L3 v=None ack=0 req=1
+428 DIRREQ D1 PutM C1 L3 S_D->S_D
+428 ST C4 L1 SI_A->I
+428 MSG 600 InvAck C6->C2 L2 v=None ack=0 req=2
+428 ST C6 L2 S->I
+430 MSG 601 Data C1->C6 L0 v=1010 ack=0 req=6
+430 MSG 602 Data C1->D0 L0 v=1010 ack=0 req=6
+430 ST C1 L0 M->S
+432 DIR D0 L0 S_D->S mem=1010
+432 MSG 603 Data D0->C3 L0 v=1010 ack=2 req=3
+432 MSG 604 Inv D0->C1 L0 v=None ack=0 req=3
+432 MSG 605 Inv D0->C6 L0 v=None ack=0 req=3
+432 DIRREQ D0 GetM C3 L0 S->M
+432 MSG 606 InvAck C7->C2 L2 v=None ack=0 req=2
+432 ST C7 L2 S->I
+433 MSG 607 FwdGetS D0->C4 L4 v=None ack=0 req=7
+433 DIRREQ D0 GetS C7 L4 M->S_D
+435 MSG 608 InvAck C1->C3 L0 v=None ack=0 req=3
+435 ST C1 L0 S->I
+435 ST C4 L4 IM_A->M
+435 STORE C4 L4 val=4010
+435 ST C6 L0 IS_D->S
+435 LD C6 L0 val=1010 miss lat=14
+436 MSG 609 Data C4->C7 L4 v=4010 ack=0 req=7
+436 MSG 610 Data C4->D0 L4 v=4010 ack=0 req=7
+436 ST C4 L4 M->S
+436 ST C4 L6 I->IS_D
+436 MSG 611 GetS C4->D0 L6 v=None ack=0 req=4
+437 MSG 612 Data C1->C5 L3 v=1009 ack=0 req=5
+437 MSG 613 Data C1->D1 L3 v=1009 ack=0 req=5
+437 ST C1 L3 MI_A->SI_A
+438 DIR D0 L4 S_D->S mem=4010
+438 ST C1 L3 SI_A->I
+438 ST C2 L2 IM_A->M
+438 STORE C2 L2 val=2007
+438 MSG 614 Data C2->C1 L2 v=2007 ack=0 req=1
+438 MSG 615 Data C2->D0 L2 v=2007 ack=0 req=1
+438 ST C2 L2 M->S
+439 MSG 616 Data D0->C4 L6 v=1003 ack=0 req=4
+439 DIRREQ D0 GetS C4 L6 S->S
+439 ST C3 L0 IM_AD->IM_A
+440 ST C6 L2 I->IM_AD
+440 MSG 617 GetM C6->D0 L2 v=None ack=0 req=6
+441 MSG 618 GetS C0->D0 L2 v=None ack=0 req=0
+441 ST C1 L2 IS_D->S
+441 LD C1 L2 val=2007 miss lat=16
+441 ST C4 L6 IS_D->S
+441 LD C4 L6 val=1003 miss lat=5
+441 ST C5 L3 IS_D->S
+441 LD C5 L3 val=1009 miss lat=20
+441 MSG 619 InvAck C6->C3 L0 v=None ack=0 req=3
+441 ST C6 L0 S->I
+442 ST C1 L4 I->IS_D
+442 MSG 620 GetS C1->D0 L4 v=None ack=0 req=1
+442 ST C4 L7 I->IS_D
+442 MSG 621 GetS C4->D1 L7 v=None ack=0 req=4
+442 ST C5 L2 I->IS_D
+442 MSG 622 GetS C5->D0 L2 v=None ack=0 req=5
+444 DIR D0 L2 S_D->S mem=2007
+444 MSG 623 Data D0->C0 L2 v=2007 ack=0 req=0
+444 DIRREQ D0 GetS C0 L2 S->S
+445 MSG 624 Data D0->C1 L4 v=4010 ack=0 req=1
+445 DIRREQ D0 GetS C1 L4 S->S
+445 DIR D1 L3 S_D->S mem=1009
+445 ST C0 L2 IS_D->S
+445 LD C0 L2 val=2007 miss lat=76
+445 ST C2 L4 I->IM_AD
+445 MSG 625 GetM C2->D0 L4 v=None ack=0 req=2
+445 ST C7 L4 IS_D->S
+445 LD C7 L4 val=4010 miss lat=25
+446 ST C0 L3 I->IS_D
+446 MSG 626 GetS C0->D1 L3 v=None ack=0 req=0
+446 ST C7 L1 S->SI_A
+446 MSG 627 PutS C7->D1 L1 v=None ack=0 req=7
+447 MSG 628 Data D0->C6 L2 v=2007 ack=3 req=6
+447 MSG 629 Inv D0->C0 L2 v=None ack=0 req=6
+447 MSG 630 Inv D0->C1 L2 v=None ack=0 req=6
+447 MSG 631 Inv D0->C2 L2 v=None ack=0 req=6
+447 DIRREQ D0 GetM C6 L2 S->M
+447 MSG 632 PutAck D1->C7 L1 v=None ack=0 req=7
+447 DIRREQ D1 PutS C7 L1 S->S
+447 ST C1 L4 IS_D->S
+447 LD C1 L4 val=4010 miss lat=5
+447 ST C7 L4 S->SI_A
+447 MSG 633 PutS C7->D0 L4 v=None ack=0 req=7
+448 MSG 634 FwdGetS D0->C6 L2 v=None ack=0 req=5
+448 DIRREQ D0 GetS C5 L2 M->S_D
+448 MSG 635 InvAck C0->C6 L2 v=None ack=0 req=6
+448 ST C0 L2 S->I
+448 ST C1 L1 I->IM_AD
+448 MSG 636 GetM C1->D1 L1 v=None ack=0 req=1
+448 ST C7 L1 SI_A->I
+448 ST C7 L0 I->IS_D
+448 MSG 637 GetS C7->D0 L0 v=None ack=0 req=7
+449 ST C3 L0 IM_A->M
+449 STORE C3 L0 val=3005
+450 MSG 638 Data D0->C2 L4 v=4010 ack=3 req=2
+450 MSG 639 Inv D0->C1 L4 v=None ack=0 req=2
+450 MSG 640 Inv D0->C4 L4 v=None ack=0 req=2
+450 MSG 641 Inv D0->C7 L4 v=None ack=0 req=2
+450 DIRREQ D0 GetM C2 L4 S->M
+450 ST C3 L1 I->IM_AD
+450 MSG 642 GetM C3->D1 L1 v=None ack=0 req=3
+451 MSG 643 Data D1->C4 L7 v=5009 ack=0 req=4
+451 DIRREQ D1 GetS C4 L7 I->S
+451 MSG 644 InvAck C1->C6 L2 v=None ack=0 req=6
+451 ST C1 L2 S->I
+452 MSG 645 InvAck C4->C2 L4 v=None ack=0 req=2
+452 ST C4 L4 S->I
+453 MSG 646 Data D1->C3 L1 v=4007 ack=1 req=3
+453 MSG 647 Inv D1->C2 L1 v=None ack=0 req=3
+453 DIRREQ D1 GetM C3 L1 S->M
+454 ST C6 L2 IM_AD->IM_A
+455 MSG 648 InvAck C1->C2 L4 v=None ack=0 req=2
+455 ST C1 L4 S->I
+455 ST C2 L4 IM_AD->IM_A
+456 MSG 649 Data D1->C0 L3 v=1009 ack=0 req=0
+456 DIRREQ D1 GetS C0 L3 S->S
+456 MSG 650 InvAck C2->C6 L2 v=None ack=0 req=6
+456 ST C2 L2 S->I
+456 ST C3 L1 IM_AD->IM_A
+458 MSG 651 PutAck D0->C7 L4 v=None ack=0 req=7
+458 DIRREQ D0 PutS C7 L4 M->M
+458 ST C6 L2 IM_A->M
+458 STORE C6 L2 val=6006
+459 MSG 652 FwdGetS D0->C3 L0 v=None ack=0 req=7
+459 DIRREQ D0 GetS C7 L0 M->S_D
+459 MSG 653 Data C6->C5 L2 v=6006 ack=0 req=5
+459 MSG 654 Data C6->D0 L2 v=6006 ack=0 req=5
+459 ST C6 L2 M->S
+459 ST C6 L1 I->IS_D
+459 MSG 655 GetS C6->D1 L1 v=None ack=0 req=6
+460 MSG 656 InvAck C2->C3 L1 v=None ack=0 req=3
+460 ST C2 L1 S->I
+460 ST C4 L7 IS_D->S
+460 LD C4 L7 val=5009 miss lat=18
+461 ST C4 L1 I->IM_AD
+461 MSG 657 GetM C4->D1 L1 v=None ack=0 req=4
+461 ST C5 L2 IS_D->S
+461 LD C5 L2 val=6006 miss lat=19
+462 ST C3 L1 IM_A->M
+462 STORE C3 L1 val=3006
+462 ST C5 L2 S->SM_AD
+462 MSG 658 GetM C5->D0 L2 v=None ack=0 req=5
+463 MSG 659 FwdGetS D1->C3 L1 v=None ack=0 req=6
+463 DIRREQ D1 GetS C6 L1 M->S_D
+463 LD C3 L0 val=3005 hit
+464 LD C3 L0 val=3005 hit
+464 MSG 660 InvAck C7->C2 L4 v=None ack=0 req=2
+464 ST C7 L4 SI_A->II_A
+465 STORE C3 L1 val=3007
+466 MSG 661 Data C3->C7 L0 v=3005 ack=0 req=7
+466 MSG 662 Data C3->D0 L0 v=3005 ack=0 req=7
+466 ST C3 L0 M->S
+467 DIR D0 L2 S_D->S mem=6006
+467 MSG 663 Data C3->C6 L1 v=3007 ack=0 req=6
+467 MSG 664 Data C3->D1 L1 v=3007 ack=0 req=6
+467 ST C3 L1 M->S
+468 ST C0 L3 IS_D->S
+468 LD C0 L3 val=1009 miss lat=22
+468 ST C7 L4 II_A->I
+469 MSG 665 Data D0->C5 L2 v=6006 ack=1 req=5
+469 MSG 666 Inv D0->C6 L2 v=None ack=0 req=5
+469 DIRREQ D0 GetM C5 L2 S->M
+469 ST C0 L1 I->IM_AD
+469 MSG 667 GetM C0->D1 L1 v=None ack=0 req=0
+469 ST C7 L0 IS_D->S
+469 LD C7 L0 val=3005 miss lat=21
+470 DIR D1 L1 S_D->S mem=3007
+470 MSG 668 Data D1->C1 L1 v=3007 ack=2 req=1
+470 MSG 669 Inv D1->C3 L1 v=None ack=0 req=1
+470 MSG 670 Inv D1->C6 L1 v=None ack=0 req=1
+470 DIRREQ D1 GetM C1 L1 S->M
+470 ST C2 L4 IM_A->M
+470 STORE C2 L4 val=2008
+470 ST C7 L2 I->IM_AD
+470 MSG 671 GetM C7->D0 L2 v=None ack=0 req=7
+471 MSG 672 FwdGetM D1->C1 L1 v=None ack=0 req=4
+471 DIRREQ D1 GetM C4 L1 M->M
+471 ST C2 L5 I->IS_D
+471 MSG 673 GetS C2->D1 L5 v=None ack=0 req=2
+471 ST C6 L1 IS_D->S
+471 LD C6 L1 val=3007 miss lat=12
+473 DIR D0 L0 S_D->S mem=3005
+473 MSG 674 InvAck C3->C1 L1 v=None ack=0 req=1
+473 ST C3 L1 S->I
+473 ST C3 L7 I->IM_AD
+473 MSG 675 GetM C3->D1 L7 v=None ack=0 req=3
+475 ST C5 L2 SM_AD->SM_A
+475 MSG 676 InvAck C6->C1 L1 v=None ack=0 req=1
+475 ST C6 L1 S->I
+476 MSG 677 Data D1->C2 L5 v=7006 ack=0 req=2
+476 DIRREQ D1 GetS C2 L5 I->S
+477 MSG 678 Data D1->C3 L7 v=5009 ack=1 req=3
+477 MSG 679 Inv D1->C4 L7 v=None ack=0 req=3
+477 DIRREQ D1 GetM C3 L7 S->M
+477 MSG 680 InvAck C6->C5 L2 v=None ack=0 req=5
+477 ST C6 L2 S->I
+477 ST C6 L1 I->IS_D
+477 MSG 681 GetS C6->D1 L1 v=None ack=0 req=6
+479 ST C5 L2 SM_A->M
+479 STORE C5 L2 val=5011
+480 ST C1 L1 IM_AD->IM_A
+480 ST C3 L7 IM_AD->IM_A
+481 MSG 682 FwdGetM D1->C4 L1 v=None ack=0 req=0
+481 DIRREQ D1 GetM C0 L1 M->M
+481 ST C1 L1 IM_A->M
+481 STORE C1 L1 val=1011
+482 MSG 683 FwdGetS D1->C0 L1 v=None ack=0 req=6
+482 DIRREQ D1 GetS C6 L1 M->S_D
+482 MSG 684 Data C1->C4 L1 v=1011 ack=0 req=4
+482 ST C1 L1 M->I
+482 ST C1 L7 I->IS_D
+482 MSG 685 GetS C1->D1 L7 v=None ack=0 req=1
+482 ST C2 L5 IS_D->S
+482 LD C2 L5 val=7006 miss lat=11
+483 ST C2 L4 M->MI_A
+483 MSG 686 PutM C2->D0 L4 v=2008 ack=0 req=2
+484 ST C2 L5 S->SI_A
+484 MSG 687 PutS C2->D1 L5 v=None ack=0 req=2
+485 MSG 688 FwdGetM D0->C5 L2 v=None ack=0 req=7
+485 DIRREQ D0 GetM C7 L2 M->M
+486 ST C4 L1 IM_AD->M
+486 STORE C4 L1 val=4011
+486 MSG 689 InvAck C4->C3 L7 v=None ack=0 req=3
+486 ST C4 L7 S->I
+487 LD C4 L1 val=4011 hit
+487 LD C5 L2 val=5011 hit
+488 MSG 690 PutAck D0->C2 L4 v=None ack=0 req=2
+488 DIRREQ D0 PutM C2 L4 M->I
+488 FINISH C4
+488 ST C5 L1 I->IS_D
+488 MSG 691 GetS C5->D1 L1 v=None ack=0 req=5
+489 MSG 692 PutAck D1->C2 L5 v=None ack=0 req=2
+489 DIRREQ D1 PutS C2 L5 S->I
+490 MSG 693 FwdGetS D1->C3 L7 v=None ack=0 req=1
+490 DIRREQ D1 GetS C1 L7 M->S_D
+490 MSG 694 Data C4->C0 L1 v=4011 ack=0 req=0
+490 ST C4 L1 M->I
+491 MSG 695 Data C5->C7 L2 v=5011 ack=0 req=7
+491 ST C5 L2 M->I
+492 ST C0 L1 IM_AD->M
+492 STORE C0 L1 val=8
+493 MSG 696 Data C0->C6 L1 v=8 ack=0 req=6
+493 MSG 697 Data C0->D1 L1 v=8 ack=0 req=6
+493 ST C0 L1 M->S
+493 LD C0 L1 val=8 hit
+493 ST C2 L4 MI_A->I
+493 ST C2 L0 I->IS_D
+493 MSG 698 GetS C2->D0 L0 v=None ack=0 req=2
+494 LD C0 L3 val=1009 hit
+495 ST C0 L1 S->SM_AD
+495 MSG 699 GetM C0->D1 L1 v=None ack=0 req=0
+495 ST C2 L5 SI_A->I
+497 ST C7 L2 IM_AD->M
+497 STORE C7 L2 val=7009
+498 MSG 700 Data D0->C2 L0 v=3005 ack=0 req=2
+498 DIRREQ D0 GetS C2 L0 S->S
+498 ST C3 L7 IM_A->M
+498 STORE C3 L7 val=3008
+498 MSG 701 Data C3->C1 L7 v=3008 ack=0 req=1
+498 MSG 702 Data C3->D1 L7 v=3008 ack=0 req=1
+498 ST C3 L7 M->S
+498 ST C7 L4 I->IS_D
+498 MSG 703 GetS C7->D0 L4 v=None ack=0 req=7
+499 ST C3 L5 I->IS_D
+499 MSG 704 GetS C3->D1 L5 v=None ack=0 req=3
+500 ST C6 L1 IS_D->S
+500 LD C6 L1 val=8 miss lat=23
+501 DIR D1 L7 S_D->S mem=3008
+501 ST C6 L3 I->IS_D
+501 MSG 705 GetS C6->D1 L3 v=None ack=0 req=6
+503 ST C1 L7 IS_D->S
+503 LD C1 L7 val=3008 miss lat=21
+503 ST C2 L0 IS_D->S
+503 LD C2 L0 val=3005 miss lat=10
+504 DIR D1 L1 S_D->S mem=8
+504 MSG 706 Data D1->C5 L1 v=8 ack=0 req=5
+504 DIRREQ D1 GetS C5 L1 S->S
+504 ST C1 L1 I->IS_D
+504 MSG 707 GetS C1->D1 L1 v=None ack=0 req=1
+504 ST C2 L1 I->IS_D
+504 MSG 708 GetS C2->D1 L1 v=None ack=0 req=2
+505 REFUSE 705 GetS C6 L3 at D1
+505 MSG 709 Data D1->C3 L5 v=7006 ack=0 req=3
+505 DIRREQ D1 GetS C3 L5 I->S
+505 MSG 710 Nack D1->C6 L3 v=None ack=0 req=6 rtype=GetS
+506 MSG 711 Data D1->C0 L1 v=8 ack=2 req=0
+506 MSG 712 Inv D1->C5 L1 v=None ack=0 req=0
+506 MSG 713 Inv D1->C6 L1 v=None ack=0 req=0
+506 DIRREQ D1 GetM C0 L1 S->M
+508 ST C3 L5 IS_D->S
+508 LD C3 L5 val=7006 miss lat=9
+509 MSG 714 Data D0->C7 L4 v=2008 ack=0 req=7
+509 DIRREQ D0 GetS C7 L4 I->S
+509 MSG 715 FwdGetS D1->C0 L1 v=None ack=0 req=2
+509 DIRREQ D1 GetS C2 L1 M->S_D
+509 ST C3 L2 I->IS_D
+509 MSG 716 GetS C3->D0 L2 v=None ack=0 req=3
+509 NACK C6 GetS L3 k=1 retry=511
+510 ST C5 L1 IS_D->S
+510 LD C5 L1 val=8 miss lat=22
+511 MSG 717 GetS C6->D1 L3 v=None ack=0 req=6
+512 ST C5 L0 I->IS_D
+512 MSG 718 GetS C5->D0 L0 v=None ack=0 req=5
+512 MSG 719 InvAck C6->C0 L1 v=None ack=0 req=0
+512 ST C6 L1 S->I
+513 MSG 720 InvAck C5->C0 L1 v=None ack=0 req=0
+513 ST C5 L1 S->I
+516 MSG 721 FwdGetS D0->C7 L2 v=None ack=0 req=3
+516 DIRREQ D0 GetS C3 L2 M->S_D
+517 ST C0 L1 SM_AD->SM_A
+519 ST C0 L1 SM_A->M
+519 STORE C0 L1 val=9
+519 ST C7 L4 IS_D->S
+519 LD C7 L4 val=2008 miss lat=21
+520 MSG 722 Data C0->C2 L1 v=9 ack=0 req=2
+520 MSG 723 Data C0->D1 L1 v=9 ack=0 req=2
+520 ST C0 L1 M->S
+520 ST C0 L0 I->IS_D
+520 MSG 724 GetS C0->D0 L0 v=None ack=0 req=0
+521 MSG 725 Data D0->C5 L0 v=3005 ack=0 req=5
+521 DIRREQ D0 GetS C5 L0 S->S
+521 ST C7 L0 S->SM_AD
+521 MSG 726 GetM C7->D0 L0 v=None ack=0 req=7
+522 MSG 727 Data D0->C0 L0 v=3005 ack=0 req=0
+522 DIRREQ D0 GetS C0 L0 S->S
+523 ST C0 L0 IS_D->S
+523 LD C0 L0 val=3005 miss lat=3
+524 LD C0 L3 val=1009 hit
+525 ST C0 L2 I->IS_D
+525 MSG 728 GetS C0->D0 L2 v=None ack=0 req=0
+525 ST C2 L1 IS_D->S
+525 LD C2 L1 val=9 miss lat=21
+526 ST C2 L1 S->SM_AD
+526 MSG 729 GetM C2->D1 L1 v=None ack=0 req=2
+526 MSG 730 Data C7->C3 L2 v=7009 ack=0 req=3
+526 MSG 731 Data C7->D0 L2 v=7009 ack=0 req=3
+526 ST C7 L2 M->S
+528 ST C5 L0 IS_D->S
+528 LD C5 L0 val=3005 miss lat=16
+529 ST C3 L2 IS_D->S
+529 LD C3 L2 val=7009 miss lat=20
+529 ST C5 L5 I->IS_D
+529 MSG 732 GetS C5->D1 L5 v=None ack=0 req=5
+530 ST C3 L7 S->SI_A
+530 MSG 733 PutS C3->D1 L7 v=None ack=0 req=3
+531 DIR D1 L1 S_D->S mem=9
+531 MSG 734 Data D1->C1 L1 v=9 ack=0 req=1
+531 DIRREQ D1 GetS C1 L1 S->S
+531 ST C3 L2 S->SI_A
+531 MSG 735 PutS C3->D0 L2 v=None ack=0 req=3
+532 MSG 736 Data D1->C6 L3 v=1009 ack=0 req=6
+532 DIRREQ D1 GetS C6 L3 S->S
+533 MSG 737 Data D1->C2 L1 v=9 ack=2 req=2
+533 MSG 738 Inv D1->C0 L1 v=None ack=0 req=2
+533 MSG 739 Inv D1->C1 L1 v=None ack=0 req=2
+533 DIRREQ D1 GetM C2 L1 S->M
+534 MSG 740 PutAck D1->C3 L7 v=None ack=0 req=3
+534 DIRREQ D1 PutS C3 L7 S->S
+535 MSG 741 Data D1->C5 L5 v=7006 ack=0 req=5
+535 DIRREQ D1 GetS C5 L5 S->S
+536 ST C6 L3 IS_D->S
+536 LD C6 L3 val=1009 miss lat=35
+537 DIR D0 L2 S_D->S mem=7009
+537 MSG 742 Data D0->C0 L2 v=7009 ack=0 req=0
+537 DIRREQ D0 GetS C0 L2 S->S
+537 ST C3 L7 SI_A->I
+537 ST C3 L6 I->IM_AD
+537 MSG 743 GetM C3->D0 L6 v=None ack=0 req=3
+537 ST C6 L1 I->IS_D
+537 MSG 744 GetS C6->D1 L1 v=None ack=0 req=6
+538 MSG 745 Data D0->C7 L0 v=3005 ack=4 req=7
+538 MSG 746 Inv D0->C0 L0 v=None ack=0 req=7
+538 MSG 747 Inv D0->C2 L0 v=None ack=0 req=7
+538 MSG 748 Inv D0->C3 L0 v=None ack=0 req=7
+538 MSG 749 Inv D0->C5 L0 v=None ack=0 req=7
+538 DIRREQ D0 GetM C7 L0 S->M
+538 ST C0 L2 IS_D->S
+538 LD C0 L2 val=7009 miss lat=13
+539 MSG 750 PutAck D0->C3 L2 v=None ack=0 req=3
+539 DIRREQ D0 PutS C3 L2 S->S
+539 MSG 751 InvAck C0->C7 L0 v=None ack=0 req=7
+539 ST C0 L0 S->I
+539 ST C2 L1 SM_AD->SM_A
+541 MSG 752 FwdGetS D1->C2 L1 v=None ack=0 req=6
+541 DIRREQ D1 GetS C6 L1 M->S_D
+541 ST C1 L1 IS_D->S
+541 LD C1 L1 val=9 miss lat=37
+541 ST C5 L5 IS_D->S
+541 LD C5 L5 val=7006 miss lat=12
+542 ST C1 L2 I->IS_D
+542 MSG 753 GetS C1->D0 L2 v=None ack=0 req=1
+544 MSG 754 Data D0->C3 L6 v=1003 ack=2 req=3
+544 MSG 755 Inv D0->C4 L6 v=None ack=0 req=3
+544 MSG 756 Inv D0->C6 L6 v=None ack=0 req=3
+544 DIRREQ D0 GetM C3 L6 S->M
+544 ST C5 L7 I->IM_AD
+544 MSG 757 GetM C5->D1 L7 v=None ack=0 req=5
+545 MSG 758 Data D0->C1 L2 v=7009 ack=0 req=1
+545 DIRREQ D0 GetS C1 L2 S->S
+545 MSG 759 InvAck C0->C2 L1 v=None ack=0 req=2
+545 ST C0 L1 S->I
+545 FINISH C0
+545 MSG 760 InvAck C2->C7 L0 v=None ack=0 req=7
+545 ST C2 L0 S->I
+546 MSG 761 InvAck C1->C2 L1 v=None ack=0 req=2
+546 ST C1 L1 S->I
+546 MSG 762 InvAck C4->C3 L6 v=None ack=0 req=3
+546 ST C4 L6 S->I
+547 ST C1 L2 IS_D->S
+547 LD C1 L2 val=7009 miss lat=5
+548 MSG 763 InvAck C3->C7 L0 v=None ack=0 req=7
+548 ST C3 L0 S->I
+548 MSG 764 InvAck C5->C7 L0 v=None ack=0 req=7
+548 ST C5 L0 S->I
+548 ST C7 L0 SM_AD->SM_A
+550 MSG 765 Data D1->C5 L7 v=3008 ack=1 req=5
+550 MSG 766 Inv D1->C1 L7 v=None ack=0 req=5
+550 DIRREQ D1 GetM C5 L7 S->M
+550 ST C3 L2 SI_A->I
+551 ST C2 L1 SM_A->M
+551 STORE C2 L1 val=2009
+551 MSG 767 Data C2->C6 L1 v=2009 ack=0 req=6
+551 MSG 768 Data C2->D1 L1 v=2009 ack=0 req=6
+551 ST C2 L1 M->S
+551 ST C3 L6 IM_AD->IM_A
+552 FINISH C1
+552 ST C2 L2 I->IS_D
+552 MSG 769 GetS C2->D0 L2 v=None ack=0 req=2
+553 ST C6 L1 IS_D->S
+553 LD C6 L1 val=2009 miss lat=16
+554 MSG 770 InvAck C6->C3 L6 v=None ack=0 req=3
+554 ST C6 L6 S->I
+554 ST C6 L0 I->IS_D
+554 MSG 771 GetS C6->D0 L0 v=None ack=0 req=6
+554 ST C7 L0 SM_A->M
+554 STORE C7 L0 val=7010
+555 LD C7 L0 val=7010 hit
+556 DIR D1 L1 S_D->S mem=2009
+556 ST C5 L7 IM_AD->IM_A
+557 MSG 772 Data D0->C2 L2 v=7009 ack=0 req=2
+557 DIRREQ D0 GetS C2 L2 S->S
+561 MSG 773 InvAck C1->C5 L7 v=None ack=0 req=5
+561 ST C1 L7 S->I
+561 ST C3 L6 IM_A->M
+561 STORE C3 L6 val=3009
+561 ST C7 L3 I->IS_D
+561 MSG 774 GetS C7->D1 L3 v=None ack=0 req=7
+562 MSG 775 Data D1->C7 L3 v=1009 ack=0 req=7
+562 DIRREQ D1 GetS C7 L3 S->S
+562 ST C2 L2 IS_D->S
+562 LD C2 L2 val=7009 miss lat=10
+562 ST C3 L3 I->IS_D
+562 MSG 776 GetS C3->D1 L3 v=None ack=0 req=3
+563 MSG 777 FwdGetS D0->C7 L0 v=None ack=0 req=6
+563 DIRREQ D0 GetS C6 L0 M->S_D
+563 LD C2 L1 val=2009 hit
+563 ST C7 L3 IS_D->S
+563 LD C7 L3 val=1009 miss lat=2
+564 ST C2 L3 I->IM_AD
+564 MSG 778 GetM C2->D1 L3 v=None ack=0 req=2
+565 MSG 779 Data D1->C3 L3 v=1009 ack=0 req=3
+565 DIRREQ D1 GetS C3 L3 S->S
+565 ST C5 L7 IM_A->M
+565 STORE C5 L7 val=5012
+566 ST C5 L0 I->IS_D
+566 MSG 780 GetS C5->D0 L0 v=None ack=0 req=5
+568 ST C3 L3 IS_D->S
+568 LD C3 L3 val=1009 miss lat=6
+569 MSG 781 Data D1->C2 L3 v=1009 ack=5 req=2
+569 MSG 782 Inv D1->C0 L3 v=None ack=0 req=2
+569 MSG 783 Inv D1->C3 L3 v=None ack=0 req=2
+569 MSG 784 Inv D1->C5 L3 v=None ack=0 req=2
+569 MSG 785 Inv D1->C6 L3 v=None ack=0 req=2
+569 MSG 786 Inv D1->C7 L3 v=None ack=0 req=2
+569 DIRREQ D1 GetM C2 L3 S->M
+569 ST C3 L6 M->MI_A
+569 MSG 787 PutM C3->D0 L6 v=3009 ack=0 req=3
+570 ST C3 L3 S->SI_A
+570 MSG 788 PutS C3->D1 L3 v=None ack=0 req=3
+570 MSG 789 InvAck C7->C2 L3 v=None ack=0 req=2
+570 ST C7 L3 S->I
+570 ST C7 L4 S->SI_A
+570 MSG 790 PutS C7->D0 L4 v=None ack=0 req=7
+571 ST C7 L0 M->MI_A
+571 MSG 791 PutM C7->D0 L0 v=7010 ack=0 req=7
+572 MSG 792 InvAck C3->C2 L3 v=None ack=0 req=2
+572 ST C3 L3 SI_A->II_A
+573 MSG 793 Data C7->C6 L0 v=7010 ack=0 req=6
+573 MSG 794 Data C7->D0 L0 v=7010 ack=0 req=6
+573 ST C7 L0 MI_A->SI_A
+574 MSG 795 PutAck D1->C3 L3 v=None ack=0 req=3
+574 DIRREQ D1 PutS C3 L3 M->M
+575 ST C2 L3 IM_AD->IM_A
+577 ST C3 L3 II_A->I
+577 ST C3 L7 I->IS_D
+577 MSG 796 GetS C3->D1 L7 v=None ack=0 req=3
+577 ST C6 L0 IS_D->S
+577 LD C6 L0 val=7010 miss lat=23
+578 MSG 797 InvAck C5->C2 L3 v=None ack=0 req=2
+578 ST C5 L3 S->I
+578 ST C6 L6 I->IS_D
+578 MSG 798 GetS C6->D0 L6 v=None ack=0 req=6
+579 MSG 799 InvAck C6->C2 L3 v=None ack=0 req=2
+579 ST C6 L3 S->I
+580 MSG 800 FwdGetS D1->C5 L7 v=None ack=0 req=3
+580 DIRREQ D1 GetS C3 L7 M->S_D
+582 MSG 801 InvAck C0->C2 L3 v=None ack=0 req=2
+582 ST C0 L3 S->I
+585 DIR D0 L0 S_D->S mem=7010
+585 MSG 802 Data D0->C5 L0 v=7010 ack=0 req=5
+585 DIRREQ D0 GetS C5 L0 S->S
+586 MSG 803 PutAck D0->C3 L6 v=None ack=0 req=3
+586 DIRREQ D0 PutM C3 L6 M->I
+586 MSG 804 Data C5->C3 L7 v=5012 ack=0 req=3
+586 MSG 805 Data C5->D1 L7 v=5012 ack=0 req=3
+586 ST C5 L7 M->S
+587 MSG 806 Data D0->C6 L6 v=3009 ack=0 req=6
+587 DIRREQ D0 GetS C6 L6 I->S
+587 ST C2 L3 IM_A->M
+587 STORE C2 L3 val=2010
+588 MSG 807 PutAck D0->C7 L4 v=None ack=0 req=7
+588 DIRREQ D0 PutS C7 L4 S->I
+588 LD C2 L2 val=7009 hit
+589 MSG 808 PutAck D0->C7 L0 v=None ack=0 req=7
+589 DIRREQ D0 PutM C7 L0 S->S
+589 ST C2 L4 I->IS_D
+589 MSG 809 GetS C2->D0 L4 v=None ack=0 req=2
+591 ST C5 L0 IS_D->S
+591 LD C5 L0 val=7010 miss lat=25
+592 ST C5 L2 I->IS_D
+592 MSG 810 GetS C5->D0 L2 v=None ack=0 req=5
+593 DIR D1 L7 S_D->S mem=5012
+593 ST C3 L6 MI_A->I
+594 MSG 811 Data D0->C2 L4 v=2008 ack=0 req=2
+594 DIRREQ D0 GetS C2 L4 I->S
+594 ST C6 L6 IS_D->S
+594 LD C6 L6 val=3009 miss lat=16
+595 ST C3 L7 IS_D->S
+595 LD C3 L7 val=5012 miss lat=18
+595 LD C6 L6 val=3009 hit
+596 ST C3 L1 I->IM_AD
+596 MSG 812 GetM C3->D1 L1 v=None ack=0 req=3
+596 ST C6 L6 S->SM_AD
+596 MSG 813 GetM C6->D0 L6 v=None ack=0 req=6
+597 MSG 814 Data D0->C5 L2 v=7009 ack=0 req=5
+597 DIRREQ D0 GetS C5 L2 S->S
+598 ST C7 L4 SI_A->I
+598 ST C7 L1 I->IS_D
+598 MSG 815 GetS C7->D1 L1 v=None ack=0 req=7
+599 MSG 816 Data D1->C7 L1 v=2009 ack=0 req=7
+599 DIRREQ D1 GetS C7 L1 S->S
+599 ST C2 L4 IS_D->S
+599 LD C2 L4 val=2008 miss lat=10
+599 ST C7 L0 SI_A->I
+600 MSG 817 Data D1->C3 L1 v=2009 ack=3 req=3
+600 MSG 818 Inv D1->C2 L1 v=None ack=0 req=3
+600 MSG 819 Inv D1->C6 L1 v=None ack=0 req=3
+600 MSG 820 Inv D1->C7 L1 v=None ack=0 req=3
+600 DIRREQ D1 GetM C3 L1 S->M
+600 ST C2 L2 S->SM_AD
+600 MSG 821 GetM C2->D0 L2 v=None ack=0 req=2
+600 ST C7 L1 IS_D->S
+600 LD C7 L1 val=2009 miss lat=2
+601 MSG 822 InvAck C7->C3 L1 v=None ack=0 req=3
+601 ST C7 L1 S->I
+601 ST C7 L5 I->IS_D
+601 MSG 823 GetS C7->D1 L5 v=None ack=0 req=7
+602 MSG 824 Data D1->C7 L5 v=7006 ack=0 req=7
+602 DIRREQ D1 GetS C7 L5 S->S
+603 MSG 825 Data D0->C6 L6 v=3009 ack=0 req=6
+603 DIRREQ D0 GetM C6 L6 S->M
+603 ST C3 L1 IM_AD->IM_A
+603 ST C5 L2 IS_D->S
+603 LD C5 L2 val=7009 miss lat=11
+603 ST C7 L5 IS_D->S
+603 LD C7 L5 val=7006 miss lat=2
+604 LD C5 L7 val=5012 hit
+604 ST C7 L1 I->IS_D
+604 MSG 826 GetS C7->D1 L1 v=None ack=0 req=7
+605 MSG 827 Data D0->C2 L2 v=7009 ack=4 req=2
+605 MSG 828 Inv D0->C0 L2 v=None ack=0 req=2
+605 MSG 829 Inv D0->C1 L2 v=None ack=0 req=2
+605 MSG 830 Inv D0->C5 L2 v=None ack=0 req=2
+605 MSG 831 Inv D0->C7 L2 v=None ack=0 req=2
+605 DIRREQ D0 GetM C2 L2 S->M
+605 MSG 832 FwdGetS D1->C3 L1 v=None ack=0 req=7
+605 DIRREQ D1 GetS C7 L1 M->S_D
+605 LD C5 L0 val=7010 hit
+605 MSG 833 InvAck C6->C3 L1 v=None ack=0 req=3
+605 ST C6 L1 S->I
+606 MSG 834 InvAck C0->C2 L2 v=None ack=0 req=2
+606 ST C0 L2 S->I
+606 MSG 835 InvAck C2->C3 L1 v=None ack=0 req=3
+606 ST C2 L1 S->I
+606 ST C5 L0 S->SM_AD
+606 MSG 836 GetM C5->D0 L0 v=None ack=0 req=5
+609 MSG 837 InvAck C1->C2 L2 v=None ack=0 req=2
+609 ST C1 L2 S->I
+610 ST C2 L2 SM_AD->SM_A
+610 ST C6 L6 SM_AD->M
+610 STORE C6 L6 val=6007
+611 MSG 838 Data D0->C5 L0 v=7010 ack=1 req=5
+611 MSG 839 Inv D0->C6 L0 v=None ack=0 req=5
+611 DIRREQ D0 GetM C5 L0 S->M
+611 ST C6 L1 I->IS_D
+611 MSG 840 GetS C6->D1 L1 v=None ack=0 req=6
+612 ST C3 L1 IM_A->M
+612 STORE C3 L1 val=3010
+612 MSG 841 Data C3->C7 L1 v=3010 ack=0 req=7
+612 MSG 842 Data C3->D1 L1 v=3010 ack=0 req=7
+612 ST C3 L1 M->S
+613 ST C3 L5 S->SM_AD
+613 MSG 843 GetM C3->D1 L5 v=None ack=0 req=3
+614 MSG 844 InvAck C5->C2 L2 v=None ack=0 req=2
+614 ST C5 L2 S->I
+615 ST C7 L1 IS_D->S
+615 LD C7 L1 val=3010 miss lat=11
+616 DIR D1 L1 S_D->S mem=3010
+616 MSG 845 Data D1->C6 L1 v=3010 ack=0 req=6
+616 DIRREQ D1 GetS C6 L1 S->S
+616 ST C7 L5 S->SI_A
+616 MSG 846 PutS C7->D1 L5 v=None ack=0 req=7
+617 MSG 847 Data D1->C3 L5 v=7006 ack=2 req=3
+617 MSG 848 Inv D1->C5 L5 v=None ack=0 req=3
+617 MSG 849 Inv D1->C7 L5 v=None ack=0 req=3
+617 DIRREQ D1 GetM C3 L5 S->M
+617 ST C5 L0 SM_AD->SM_A
+617 ST C7 L1 S->SI_A
+617 MSG 850 PutS C7->D1 L1 v=None ack=0 req=7
+618 MSG 851 PutAck D1->C7 L5 v=None ack=0 req=7
+618 DIRREQ D1 PutS C7 L5 M->M
+618 MSG 852 InvAck C7->C3 L5 v=None ack=0 req=3
+618 ST C7 L5 SI_A->II_A
+619 MSG 853 PutAck D1->C7 L1 v=None ack=0 req=7
+619 DIRREQ D1 PutS C7 L1 S->S
+619 MSG 854 InvAck C6->C5 L0 v=None ack=0 req=5
+619 ST C6 L0 S->I
+619 MSG 855 InvAck C7->C2 L2 v=None ack=0 req=2
+619 ST C7 L2 S->I
+620 ST C3 L5 SM_AD->SM_A
+620 ST C6 L1 IS_D->S
+620 LD C6 L1 val=3010 miss lat=9
+620 ST C7 L5 II_A->I
+620 ST C7 L0 I->IS_D
+620 MSG 856 GetS C7->D0 L0 v=None ack=0 req=7
+621 ST C5 L0 SM_A->M
+621 STORE C5 L0 val=5013
+621 ST C7 L1 SI_A->I
+622 FINISH C5
+623 MSG 857 InvAck C5->C3 L5 v=None ack=0 req=3
+623 ST C5 L5 S->I
+625 ST C2 L2 SM_A->M
+625 STORE C2 L2 val=2011
+626 STORE C2 L2 val=2012
+627 ST C2 L0 I->IS_D
+627 MSG 858 GetS C2->D0 L0 v=None ack=0 req=2
+628 ST C6 L0 I->IM_AD
+628 MSG 859 GetM C6->D0 L0 v=None ack=0 req=6
+631 MSG 860 FwdGetS D0->C5 L0 v=None ack=0 req=7
+631 DIRREQ D0 GetS C7 L0 M->S_D
+632 ST C3 L5 SM_A->M
+632 STORE C3 L5 val=3011
+637 MSG 861 Data C5->C7 L0 v=5013 ack=0 req=7
+637 MSG 862 Data C5->D0 L0 v=5013 ack=0 req=7
+637 ST C5 L0 M->S
+642 DIR D0 L0 S_D->S mem=5013
+642 MSG 863 Data D0->C2 L0 v=5013 ack=0 req=2
+642 DIRREQ D0 GetS C2 L0 S->S
+643 MSG 864 Data D0->C6 L0 v=5013 ack=3 req=6
+643 MSG 865 Inv D0->C2 L0 v=None ack=0 req=6
+643 MSG 866 Inv D0->C5 L0 v=None ack=0 req=6
+643 MSG 867 Inv D0->C7 L0 v=None ack=0 req=6
+643 DIRREQ D0 GetM C6 L0 S->M
+643 LD C3 L1 val=3010 hit
+643 ST C7 L0 IS_D->S
+643 LD C7 L0 val=5013 miss lat=23
+644 ST C3 L6 I->IS_D
+644 MSG 868 GetS C3->D0 L6 v=None ack=0 req=3
+644 LD C7 L0 val=5013 hit
+645 ST C7 L2 I->IS_D
+645 MSG 869 GetS C7->D0 L2 v=None ack=0 req=7
+647 ST C2 L0 IS_D->S
+647 LD C2 L0 val=5013 miss lat=20
+648 FINISH C2
+649 MSG 870 InvAck C2->C6 L0 v=None ack=0 req=6
+649 ST C2 L0 S->I
+650 ST C6 L0 IM_AD->IM_A
+651 MSG 871 FwdGetS D0->C6 L6 v=None ack=0 req=3
+651 DIRREQ D0 GetS C3 L6 M->S_D
+651 MSG 872 InvAck C5->C6 L0 v=None ack=0 req=6
+651 ST C5 L0 S->I
+656 MSG 873 FwdGetS D0->C2 L2 v=None ack=0 req=7
+656 DIRREQ D0 GetS C7 L2 M->S_D
+656 MSG 874 InvAck C7->C6 L0 v=None ack=0 req=6
+656 ST C7 L0 S->I
+658 MSG 875 Data C6->C3 L6 v=6007 ack=0 req=3
+658 MSG 876 Data C6->D0 L6 v=6007 ack=0 req=3
+658 ST C6 L6 M->S
+660 ST C6 L0 IM_A->M
+660 STORE C6 L0 val=6008
+661 MSG 877 Data C2->C7 L2 v=2012 ack=0 req=7
+661 MSG 878 Data C2->D0 L2 v=2012 ack=0 req=7
+661 ST C2 L2 M->S
+661 STORE C6 L0 val=6009
+662 FINISH C6
+665 DIR D0 L6 S_D->S mem=6007
+665 ST C3 L6 IS_D->S
+665 LD C3 L6 val=6007 miss lat=21
+666 DIR D0 L2 S_D->S mem=2012
+666 ST C3 L7 S->SI_A
+666 MSG 879 PutS C3->D1 L7 v=None ack=0 req=3
+666 ST C7 L2 IS_D->S
+666 LD C7 L2 val=2012 miss lat=21
+667 ST C3 L6 S->SI_A
+667 MSG 880 PutS C3->D0 L6 v=None ack=0 req=3
+669 MSG 881 PutAck D1->C3 L7 v=None ack=0 req=3
+669 DIRREQ D1 PutS C3 L7 S->S
+669 FINISH C7
+672 ST C3 L7 SI_A->I
+672 ST C3 L3 I->IS_D
+672 MSG 882 GetS C3->D1 L3 v=None ack=0 req=3
+674 MSG 883 PutAck D0->C3 L6 v=None ack=0 req=3
+674 DIRREQ D0 PutS C3 L6 S->S
+675 MSG 884 FwdGetS D1->C2 L3 v=None ack=0 req=3
+675 DIRREQ D1 GetS C3 L3 M->S_D
+681 MSG 885 Data C2->C3 L3 v=2010 ack=0 req=3
+681 MSG 886 Data C2->D1 L3 v=2010 ack=0 req=3
+681 ST C2 L3 M->S
+681 ST C3 L6 SI_A->I
+683 ST C3 L3 IS_D->S
+683 LD C3 L3 val=2010 miss lat=11
+684 LD C3 L1 val=3010 hit
+685 FINISH C3
+687 DIR D1 L3 S_D->S mem=2010
+687 END

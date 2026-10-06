@@ -1,6 +1,20 @@
 # Task 12 — COHERE-12 (directory coherence on a 2x4 mesh)
 
-**State:** prototype + draft packet built; early `opus` blind probe running.
+**State: FAILED the early difficulty gate (Gate 8.5). Do not upload.**
+
+The `opus`-alias blind probe on `cohere12_v1.pdf` reproduced the reference
+exactly in about 8 minutes: baseline makespan 685, every core finish
+cycle, p95 44, all 11 message-type counts, all 64 sweep rows identical
+(makespan, p95, messages, Nacks), sums 43,328 / 56,774 / 2,669, Fastest
+P2/4/1 at 586, Leanest P2/4/4 at 795, decomposition 635 and 690, checker
+passing. Under the v1 rubric it would score at or near 101/101. Archived
+in `audit/probe-1-opus/`. Its ambiguity list chose the reference's reading
+on every item (eviction repeat, issue cycle, message entry time).
+
+Concurrency with races did not stop transcription: a fully specified
+deterministic simulation was implemented exactly first time, as with
+TYPECHAIN-9, CELLGUARD-10 and TENURE-11 (Playbook mistake #74).
+
 
 - Design: `design/architecture-attack.md` (why the concurrent message-passing
   family; perfect-semantics ablation; risks).
