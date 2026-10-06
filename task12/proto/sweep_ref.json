@@ -1,0 +1,578 @@
+[
+{
+"placement": "P1",
+"Q": 1,
+"B": 1,
+"makespan": 712,
+"p95": 41,
+"msgs": 989,
+"nacks": 86
+},
+{
+"placement": "P1",
+"Q": 1,
+"B": 2,
+"makespan": 701,
+"p95": 48,
+"msgs": 967,
+"nacks": 85
+},
+{
+"placement": "P1",
+"Q": 1,
+"B": 4,
+"makespan": 677,
+"p95": 40,
+"msgs": 986,
+"nacks": 69
+},
+{
+"placement": "P1",
+"Q": 1,
+"B": 8,
+"makespan": 705,
+"p95": 50,
+"msgs": 862,
+"nacks": 49
+},
+{
+"placement": "P1",
+"Q": 2,
+"B": 1,
+"makespan": 677,
+"p95": 43,
+"msgs": 937,
+"nacks": 53
+},
+{
+"placement": "P1",
+"Q": 2,
+"B": 2,
+"makespan": 685,
+"p95": 44,
+"msgs": 886,
+"nacks": 38
+},
+{
+"placement": "P1",
+"Q": 2,
+"B": 4,
+"makespan": 670,
+"p95": 34,
+"msgs": 855,
+"nacks": 29
+},
+{
+"placement": "P1",
+"Q": 2,
+"B": 8,
+"makespan": 690,
+"p95": 49,
+"msgs": 896,
+"nacks": 38
+},
+{
+"placement": "P1",
+"Q": 3,
+"B": 1,
+"makespan": 632,
+"p95": 40,
+"msgs": 871,
+"nacks": 40
+},
+{
+"placement": "P1",
+"Q": 3,
+"B": 2,
+"makespan": 677,
+"p95": 34,
+"msgs": 839,
+"nacks": 26
+},
+{
+"placement": "P1",
+"Q": 3,
+"B": 4,
+"makespan": 662,
+"p95": 36,
+"msgs": 817,
+"nacks": 26
+},
+{
+"placement": "P1",
+"Q": 3,
+"B": 8,
+"makespan": 723,
+"p95": 40,
+"msgs": 868,
+"nacks": 33
+},
+{
+"placement": "P1",
+"Q": 4,
+"B": 1,
+"makespan": 690,
+"p95": 37,
+"msgs": 845,
+"nacks": 23
+},
+{
+"placement": "P1",
+"Q": 4,
+"B": 2,
+"makespan": 668,
+"p95": 33,
+"msgs": 823,
+"nacks": 15
+},
+{
+"placement": "P1",
+"Q": 4,
+"B": 4,
+"makespan": 711,
+"p95": 35,
+"msgs": 818,
+"nacks": 15
+},
+{
+"placement": "P1",
+"Q": 4,
+"B": 8,
+"makespan": 719,
+"p95": 35,
+"msgs": 830,
+"nacks": 11
+},
+{
+"placement": "P2",
+"Q": 1,
+"B": 1,
+"makespan": 675,
+"p95": 31,
+"msgs": 970,
+"nacks": 81
+},
+{
+"placement": "P2",
+"Q": 1,
+"B": 2,
+"makespan": 683,
+"p95": 40,
+"msgs": 970,
+"nacks": 90
+},
+{
+"placement": "P2",
+"Q": 1,
+"B": 4,
+"makespan": 727,
+"p95": 39,
+"msgs": 970,
+"nacks": 71
+},
+{
+"placement": "P2",
+"Q": 1,
+"B": 8,
+"makespan": 620,
+"p95": 46,
+"msgs": 927,
+"nacks": 68
+},
+{
+"placement": "P2",
+"Q": 2,
+"B": 1,
+"makespan": 731,
+"p95": 28,
+"msgs": 955,
+"nacks": 64
+},
+{
+"placement": "P2",
+"Q": 2,
+"B": 2,
+"makespan": 635,
+"p95": 36,
+"msgs": 892,
+"nacks": 51
+},
+{
+"placement": "P2",
+"Q": 2,
+"B": 4,
+"makespan": 683,
+"p95": 33,
+"msgs": 895,
+"nacks": 37
+},
+{
+"placement": "P2",
+"Q": 2,
+"B": 8,
+"makespan": 595,
+"p95": 35,
+"msgs": 840,
+"nacks": 23
+},
+{
+"placement": "P2",
+"Q": 3,
+"B": 1,
+"makespan": 641,
+"p95": 32,
+"msgs": 874,
+"nacks": 33
+},
+{
+"placement": "P2",
+"Q": 3,
+"B": 2,
+"makespan": 677,
+"p95": 35,
+"msgs": 858,
+"nacks": 26
+},
+{
+"placement": "P2",
+"Q": 3,
+"B": 4,
+"makespan": 610,
+"p95": 29,
+"msgs": 850,
+"nacks": 25
+},
+{
+"placement": "P2",
+"Q": 3,
+"B": 8,
+"makespan": 620,
+"p95": 32,
+"msgs": 856,
+"nacks": 18
+},
+{
+"placement": "P2",
+"Q": 4,
+"B": 1,
+"makespan": 586,
+"p95": 31,
+"msgs": 801,
+"nacks": 13
+},
+{
+"placement": "P2",
+"Q": 4,
+"B": 2,
+"makespan": 630,
+"p95": 32,
+"msgs": 840,
+"nacks": 17
+},
+{
+"placement": "P2",
+"Q": 4,
+"B": 4,
+"makespan": 638,
+"p95": 31,
+"msgs": 795,
+"nacks": 8
+},
+{
+"placement": "P2",
+"Q": 4,
+"B": 8,
+"makespan": 624,
+"p95": 31,
+"msgs": 800,
+"nacks": 9
+},
+{
+"placement": "P3",
+"Q": 1,
+"B": 1,
+"makespan": 775,
+"p95": 49,
+"msgs": 1031,
+"nacks": 109
+},
+{
+"placement": "P3",
+"Q": 1,
+"B": 2,
+"makespan": 834,
+"p95": 59,
+"msgs": 1058,
+"nacks": 129
+},
+{
+"placement": "P3",
+"Q": 1,
+"B": 4,
+"makespan": 787,
+"p95": 54,
+"msgs": 955,
+"nacks": 80
+},
+{
+"placement": "P3",
+"Q": 1,
+"B": 8,
+"makespan": 849,
+"p95": 55,
+"msgs": 915,
+"nacks": 59
+},
+{
+"placement": "P3",
+"Q": 2,
+"B": 1,
+"makespan": 701,
+"p95": 46,
+"msgs": 886,
+"nacks": 49
+},
+{
+"placement": "P3",
+"Q": 2,
+"B": 2,
+"makespan": 704,
+"p95": 42,
+"msgs": 878,
+"nacks": 34
+},
+{
+"placement": "P3",
+"Q": 2,
+"B": 4,
+"makespan": 704,
+"p95": 50,
+"msgs": 856,
+"nacks": 34
+},
+{
+"placement": "P3",
+"Q": 2,
+"B": 8,
+"makespan": 728,
+"p95": 39,
+"msgs": 851,
+"nacks": 37
+},
+{
+"placement": "P3",
+"Q": 3,
+"B": 1,
+"makespan": 692,
+"p95": 34,
+"msgs": 842,
+"nacks": 24
+},
+{
+"placement": "P3",
+"Q": 3,
+"B": 2,
+"makespan": 681,
+"p95": 38,
+"msgs": 851,
+"nacks": 30
+},
+{
+"placement": "P3",
+"Q": 3,
+"B": 4,
+"makespan": 708,
+"p95": 47,
+"msgs": 845,
+"nacks": 27
+},
+{
+"placement": "P3",
+"Q": 3,
+"B": 8,
+"makespan": 726,
+"p95": 37,
+"msgs": 853,
+"nacks": 16
+},
+{
+"placement": "P3",
+"Q": 4,
+"B": 1,
+"makespan": 704,
+"p95": 42,
+"msgs": 832,
+"nacks": 24
+},
+{
+"placement": "P3",
+"Q": 4,
+"B": 2,
+"makespan": 728,
+"p95": 43,
+"msgs": 814,
+"nacks": 17
+},
+{
+"placement": "P3",
+"Q": 4,
+"B": 4,
+"makespan": 697,
+"p95": 41,
+"msgs": 846,
+"nacks": 14
+},
+{
+"placement": "P3",
+"Q": 4,
+"B": 8,
+"makespan": 671,
+"p95": 35,
+"msgs": 813,
+"nacks": 12
+},
+{
+"placement": "P4",
+"Q": 1,
+"B": 1,
+"makespan": 665,
+"p95": 47,
+"msgs": 1055,
+"nacks": 120
+},
+{
+"placement": "P4",
+"Q": 1,
+"B": 2,
+"makespan": 615,
+"p95": 39,
+"msgs": 933,
+"nacks": 74
+},
+{
+"placement": "P4",
+"Q": 1,
+"B": 4,
+"makespan": 613,
+"p95": 37,
+"msgs": 956,
+"nacks": 75
+},
+{
+"placement": "P4",
+"Q": 1,
+"B": 8,
+"makespan": 678,
+"p95": 44,
+"msgs": 937,
+"nacks": 73
+},
+{
+"placement": "P4",
+"Q": 2,
+"B": 1,
+"makespan": 629,
+"p95": 33,
+"msgs": 939,
+"nacks": 46
+},
+{
+"placement": "P4",
+"Q": 2,
+"B": 2,
+"makespan": 632,
+"p95": 31,
+"msgs": 936,
+"nacks": 57
+},
+{
+"placement": "P4",
+"Q": 2,
+"B": 4,
+"makespan": 599,
+"p95": 34,
+"msgs": 911,
+"nacks": 38
+},
+{
+"placement": "P4",
+"Q": 2,
+"B": 8,
+"makespan": 633,
+"p95": 42,
+"msgs": 910,
+"nacks": 32
+},
+{
+"placement": "P4",
+"Q": 3,
+"B": 1,
+"makespan": 639,
+"p95": 34,
+"msgs": 904,
+"nacks": 41
+},
+{
+"placement": "P4",
+"Q": 3,
+"B": 2,
+"makespan": 698,
+"p95": 36,
+"msgs": 870,
+"nacks": 37
+},
+{
+"placement": "P4",
+"Q": 3,
+"B": 4,
+"makespan": 669,
+"p95": 33,
+"msgs": 897,
+"nacks": 32
+},
+{
+"placement": "P4",
+"Q": 3,
+"B": 8,
+"makespan": 677,
+"p95": 34,
+"msgs": 869,
+"nacks": 20
+},
+{
+"placement": "P4",
+"Q": 4,
+"B": 1,
+"makespan": 626,
+"p95": 34,
+"msgs": 821,
+"nacks": 16
+},
+{
+"placement": "P4",
+"Q": 4,
+"B": 2,
+"makespan": 619,
+"p95": 32,
+"msgs": 835,
+"nacks": 14
+},
+{
+"placement": "P4",
+"Q": 4,
+"B": 4,
+"makespan": 618,
+"p95": 33,
+"msgs": 860,
+"nacks": 19
+},
+{
+"placement": "P4",
+"Q": 4,
+"B": 8,
+"makespan": 655,
+"p95": 32,
+"msgs": 833,
+"nacks": 10
+}
+]
