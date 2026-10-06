@@ -176,6 +176,16 @@ them below is unproven. Every fully specified simulation built in this
 project (TYPECHAIN-9, CELLGUARD-10, TENURE-11) was solved. See
 `task06/audit/code-source-audit.md` and `task07/STATUS.md`.
 
+## Brief: ARRAY-11 (task11) outcome
+
+ARRAY-11 (64-turbine offshore cable layout, certified optima, standard
+library only) passed its real-pilot round because five of six runs hit the
+platform's "claude cli timed out after 9000s" error, which counts as a
+valid stump. The one run that finished scored 98%, proving all five optima
+with its own branch and bound in about 1 h 45 min. The local `opus` probe
+(64.6%) had underestimated the real target on this search task. See
+mistake #73 and `task11/audit/real-pilot-1/`.
+
 ## The Task 06 discovery: real pilots can score below synthetic mutants
 
 Task 06 (ATRIUM-9, an exhaustive-sweep elevator-dispatch simulation) is a
