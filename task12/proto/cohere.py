@@ -38,7 +38,8 @@ def lcg(x):
     return (1103515245 * x + 12345) % (1 << 31)
 
 
-def workload(nops=40):
+def workload(nops=40, nline=None):
+    nl = NLINE if nline is None else nline
     progs = []
     for core in range(NCORE):
         x = 101 + 7 * core
@@ -47,7 +48,7 @@ def workload(nops=40):
             x = lcg(x); r = x >> 8
             kind = r % 10
             x = lcg(x); s = x >> 8
-            line = (s % 3) if (s >> 4) % 10 < 6 else (s % NLINE)
+            line = (s % 3) if (s >> 4) % 10 < 6 else (s % nl)
             if kind < 5:
                 prog.append(("LD", line))
             elif kind < 8:
@@ -67,7 +68,8 @@ class Msg:
 
 
 class Sim:
-    def __init__(self, placement, qcap, backoff, progs, mut=frozenset(), trace=False):
+    def __init__(self, placement, qcap, backoff, progs, mut=frozenset(), trace=False, home=None):
+        self.home_tab = home
         self.placement = placement          # node of D0, D1
         self.qcap, self.backoff, self.mut = qcap, backoff, mut
         self.progs = progs
@@ -110,6 +112,8 @@ class Sim:
         return self.placement[int(ent[1:])]
 
     def home(self, line):
+        if self.home_tab is not None:
+            return f"D{self.home_tab[line]}"
         return f"D{line % 2}"
 
     def send(self, typ, vnet, src, dst, line, req=None, ack=0, val=None):
