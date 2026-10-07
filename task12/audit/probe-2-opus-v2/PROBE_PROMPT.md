@@ -1,4 +1,4 @@
-You are the memory system architect for an eight core chip. The attached cohere12_v3.pdf is the complete specification of its directory coherence protocol, network, cores, workload, configuration space and objective. Read the node layout, every link latency and the baseline line map from the figures; they are not printed elsewhere. State the values you read, including the baseline line map number.
+You are the memory system architect for an eight core chip. The attached cohere12_v2.pdf is the complete specification of its directory coherence protocol, network, cores, workload, configuration space and objective. Read the node layout, every link latency and the baseline line map from the figures; they are not printed elsewhere. State the values you read, including the baseline line map number.
 
 Build a cycle accurate simulator of the whole system exactly as the packet specifies, using only the standard library of your chosen language, offline. Record the exact language and runtime version, and give reproduction commands.
 

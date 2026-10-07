@@ -1,0 +1,5 @@
+trace: baseline_trace.txt
+records: 7996 state transitions, 1648 loads, 940 stores, last cycle 6725
+Invariant 1 (at most one M holder per line at every cycle): PASS (0 violations; max simultaneous M holders of a line = 1)
+Invariant 2 (every load returns the most recent store): PASS (0 violations over 1648 loads)
+Trace consistency checks: PASS (0 problems)

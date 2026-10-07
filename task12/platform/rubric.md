@@ -1,4 +1,4 @@
-# COHERE-12 rubric (v2, packet cohere12_v2.pdf)
+# COHERE-12 rubric (v2, packet cohere12_v3.pdf)
 
 Positive total **134**; three negative criteria (-10, -8, -5). **43
 criteria**. Every weight is within -10..+10; every criterion body is 301

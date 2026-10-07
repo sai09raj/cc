@@ -1,5 +1,33 @@
 # Task 12 — COHERE-12 (directory coherence on a 2x4 mesh)
 
+## v2 (current): exhaustive design-space characterization — probe 35.8%
+
+v1 failed (probe reproduced it exactly in 8 min). v2 keeps the validated
+simulator and makes the deliverable a characterization of 29,360,128
+configurations (any directory node pair x 65,536 line maps x Q 1..4 x B
+1,2,4,8; 16 lines, 400 operations per core). The single optimum turned out
+to be shortcut-able (placement N2/N6 dominates by any cheap test), so most
+weight sits on whole-space counts and sums that need every configuration.
+
+- Answer key: exhaustive C enumeration (448 chunks), aggregated in
+  `reference/aggregate.json` and `reference/aggregates2.json`; 12 random
+  stored entries plus baseline and optimum re-run by the independent JS
+  engine, all identical.
+- Packet `artifact/cohere12_v3.pdf` (v2 + p95 issue-cycle and Figure 2
+  axis clarifications; values unchanged). Prompt, rubric (43 criteria,
+  134 points) and Ideal Flow in `platform/`; v1 files in `platform/v1/`.
+- Probe 2 (`audit/probe-2-opus-v2/`, packet v2, 2.5 h budget, Node/Python,
+  4 cores): exact on figures, baseline, variants, optimum, checker, memo;
+  simulated 16.5% of the space and reported estimates -> **48/134 = 35.8%**.
+  Its Node simulator ran at about 5 ms per configuration, i.e. about 41
+  core-hours for the full space (~3.2 h on ~12.6 effective platform cores
+  before any build time).
+- Risk: a run that writes a faster engine and parallelises perfectly could
+  approach the 2.5 h limit; the per-Q and per-B counts give partial credit
+  per quarter of the space covered (3 of 4 quarters plus everything else
+  is about 54%).
+
+
 **State: FAILED the early difficulty gate (Gate 8.5). Do not upload.**
 
 The `opus`-alias blind probe on `cohere12_v1.pdf` reproduced the reference
