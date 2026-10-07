@@ -68,6 +68,17 @@
 - [ ] For any visual/graphical artifact (PDF or otherwise): metadata is a solution-leakage vector, not just a privacy concern — if Producer/Creator/Author/date/tEXt fields or vector-drawing-object coordinates survive, the model can read the answer straight out of the file and the task will not score below 50% no matter how sound the rubric is. Verify zero hits at the raw-byte level and zero vector drawing objects remain (rasterize diagrams to images), not by eye alone.
 - [ ] Canonical text copied; all numbers, panel letters, tuples, and hashes compared.
 
+## Reviewer-feedback checks (mistakes #75, #76) — run on the local rubric and again on the platform text
+
+- [ ] Every expected value is a legal value under the packet (inside every stated option set and range) and is reproduced by the reference.
+- [ ] Every graded metric is defined in the packet: what it measures, when it is sampled, its unit.
+- [ ] Every prompt "explain", "why", "compare" and "state" clause has its own criterion.
+- [ ] No criterion pairs a mechanism description with a trace value, or bundles two constants, or a constant with an explanation.
+- [ ] No validity-only criterion where the prompt asks for the best or strongest value (a trivial answer must not pass).
+- [ ] No presence-only criterion where correctness or consistency with the run's own files can be graded.
+- [ ] Every conditional prompt rule ("only when", "only if") has a negative criterion for exactly that violation.
+- [ ] After platform entry, every row's numbers, coordinates and scenario labels match the local file (no dropped digits, no row copied from its neighbour).
+
 ## Before full runs
 
 - [ ] Pilot used the visual and tools.
