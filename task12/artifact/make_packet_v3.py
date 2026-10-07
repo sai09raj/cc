@@ -238,7 +238,9 @@ def main():
     doc.save(tmp, garbage=4, deflate=True, clean=True); doc.close()
     doc = fitz.open(tmp)
     doc.xref_set_key(-1, "Info", "null"); doc.xref_set_key(-1, "ID", "null")
-    doc.xref_set_key(doc.pdf_catalog(), "Info", "null")
+    cat = doc.pdf_catalog()
+    pages_ref = doc.xref_get_key(cat, "Pages")[1]
+    doc.update_object(cat, "<< /Type /Catalog /Pages %s >>" % pages_ref)
     out = os.path.join(HERE, f"{REVISION}.pdf")
     doc.save(out, garbage=4, deflate=True, clean=True, no_new_id=True); doc.close(); os.remove(tmp)
     raw = open(out, "rb").read()
