@@ -1,0 +1,270 @@
+{
+ "total": 29360128,
+ "optimum": {
+  "makespan": 5470,
+  "messages": 9121,
+  "d0": 2,
+  "d1": 6,
+  "Q": 4,
+  "B": 1,
+  "linemap": 55860
+ },
+ "best_per_Q": {
+  "1": {
+   "makespan": 5656,
+   "messages": 10519,
+   "d0": 2,
+   "d1": 6,
+   "Q": 1,
+   "B": 4,
+   "linemap": 25524
+  },
+  "2": {
+   "makespan": 5525,
+   "messages": 9496,
+   "d0": 2,
+   "d1": 6,
+   "Q": 2,
+   "B": 4,
+   "linemap": 34742
+  },
+  "3": {
+   "makespan": 5479,
+   "messages": 9230,
+   "d0": 2,
+   "d1": 6,
+   "Q": 3,
+   "B": 1,
+   "linemap": 39820
+  },
+  "4": {
+   "makespan": 5470,
+   "messages": 9121,
+   "d0": 2,
+   "d1": 6,
+   "Q": 4,
+   "B": 1,
+   "linemap": 55860
+  }
+ },
+ "best_per_B": {
+  "1": {
+   "makespan": 5470,
+   "messages": 9121,
+   "d0": 2,
+   "d1": 6,
+   "Q": 4,
+   "B": 1,
+   "linemap": 55860
+  },
+  "2": {
+   "makespan": 5476,
+   "messages": 9097,
+   "d0": 2,
+   "d1": 6,
+   "Q": 4,
+   "B": 2,
+   "linemap": 21748
+  },
+  "4": {
+   "makespan": 5499,
+   "messages": 9006,
+   "d0": 2,
+   "d1": 6,
+   "Q": 4,
+   "B": 4,
+   "linemap": 47665
+  },
+  "8": {
+   "makespan": 5516,
+   "messages": 8980,
+   "d0": 2,
+   "d1": 6,
+   "Q": 4,
+   "B": 8,
+   "linemap": 26713
+  }
+ },
+ "top20": [
+  {
+   "makespan": 5470,
+   "messages": 9121,
+   "d0": 2,
+   "d1": 6,
+   "Q": 4,
+   "B": 1,
+   "linemap": 55860
+  },
+  {
+   "makespan": 5476,
+   "messages": 9097,
+   "d0": 2,
+   "d1": 6,
+   "Q": 4,
+   "B": 2,
+   "linemap": 21748
+  },
+  {
+   "makespan": 5479,
+   "messages": 9230,
+   "d0": 2,
+   "d1": 6,
+   "Q": 3,
+   "B": 1,
+   "linemap": 39820
+  },
+  {
+   "makespan": 5479,
+   "messages": 9233,
+   "d0": 2,
+   "d1": 6,
+   "Q": 3,
+   "B": 1,
+   "linemap": 53700
+  },
+  {
+   "makespan": 5484,
+   "messages": 9095,
+   "d0": 2,
+   "d1": 6,
+   "Q": 4,
+   "B": 1,
+   "linemap": 9126
+  },
+  {
+   "makespan": 5491,
+   "messages": 8964,
+   "d0": 2,
+   "d1": 6,
+   "Q": 4,
+   "B": 1,
+   "linemap": 5553
+  },
+  {
+   "makespan": 5495,
+   "messages": 8969,
+   "d0": 2,
+   "d1": 6,
+   "Q": 4,
+   "B": 2,
+   "linemap": 53269
+  },
+  {
+   "makespan": 5495,
+   "messages": 9171,
+   "d0": 2,
+   "d1": 6,
+   "Q": 3,
+   "B": 2,
+   "linemap": 56404
+  },
+  {
+   "makespan": 5498,
+   "messages": 9129,
+   "d0": 2,
+   "d1": 6,
+   "Q": 4,
+   "B": 2,
+   "linemap": 29748
+  },
+  {
+   "makespan": 5499,
+   "messages": 9006,
+   "d0": 2,
+   "d1": 6,
+   "Q": 4,
+   "B": 4,
+   "linemap": 47665
+  },
+  {
+   "makespan": 5499,
+   "messages": 9265,
+   "d0": 2,
+   "d1": 6,
+   "Q": 3,
+   "B": 1,
+   "linemap": 542
+  },
+  {
+   "makespan": 5501,
+   "messages": 9067,
+   "d0": 2,
+   "d1": 6,
+   "Q": 3,
+   "B": 1,
+   "linemap": 37681
+  },
+  {
+   "makespan": 5503,
+   "messages": 8942,
+   "d0": 2,
+   "d1": 6,
+   "Q": 4,
+   "B": 1,
+   "linemap": 3625
+  },
+  {
+   "makespan": 5515,
+   "messages": 9028,
+   "d0": 2,
+   "d1": 6,
+   "Q": 4,
+   "B": 4,
+   "linemap": 49204
+  },
+  {
+   "makespan": 5515,
+   "messages": 9034,
+   "d0": 2,
+   "d1": 6,
+   "Q": 4,
+   "B": 4,
+   "linemap": 39660
+  },
+  {
+   "makespan": 5515,
+   "messages": 9128,
+   "d0": 2,
+   "d1": 6,
+   "Q": 4,
+   "B": 1,
+   "linemap": 22036
+  },
+  {
+   "makespan": 5516,
+   "messages": 8980,
+   "d0": 2,
+   "d1": 6,
+   "Q": 4,
+   "B": 8,
+   "linemap": 26713
+  },
+  {
+   "makespan": 5518,
+   "messages": 9097,
+   "d0": 2,
+   "d1": 6,
+   "Q": 4,
+   "B": 2,
+   "linemap": 39446
+  },
+  {
+   "makespan": 5518,
+   "messages": 9154,
+   "d0": 2,
+   "d1": 6,
+   "Q": 3,
+   "B": 1,
+   "linemap": 18435
+  },
+  {
+   "makespan": 5518,
+   "messages": 9295,
+   "d0": 2,
+   "d1": 6,
+   "Q": 3,
+   "B": 2,
+   "linemap": 52161
+  }
+ ]
+}
