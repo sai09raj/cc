@@ -498,6 +498,24 @@ identify the criterion by exact quoted text to find and exact text to
 replace it with, and verify the edit landed by re-reading the changed
 content back, not by trusting the row index.
 
+## Reviewer findings on ARRAY-11 (minor issues on a praised task)
+
+Four patterns to check before every submission (mistake #75):
+
+1. **Entry slips.** The local file was right; the platform text was not
+   ((-700, 200) for (-700, 2700); a row's scenario label copied from its
+   neighbour). Copy-paste, then diff the platform text against the file.
+2. **Validity-only criteria.** "Reports a lower bound not above the true
+   minimum" lets a bound of 0 pass when the prompt asks for the strongest
+   bound. Put a quality bar in the prompt or grade a checkable consequence.
+3. **Presence-only criteria.** "Reports a feeder count for each scenario"
+   does not check the count. Grade correctness, or consistency with the
+   run's own delivered files when correct answers are not unique.
+4. **Conditional prompt rules without a matching trap.** "Call it proven
+   optimal only when the bound equals it" needs a negative for "calls it
+   optimal while its own bound is below its own cost", not only for costs
+   above the true minimum.
+
 ## Final rubric audit
 
 - [ ] 12–50 criteria.
