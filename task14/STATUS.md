@@ -18,3 +18,16 @@ full sweep time out.
 - Answer key: 36 cloud workers (one per cycle and plan, branches claude/grid14-gt-c{C}p{P}),
   launched 2026-10-08 16:34 UTC; aggregator `proto/aggregate.py`.
 - Early opus-alias probe running (2.5 h budget, Python/Node only).
+
+## Answer key (36 workers, 144 part files, none missing)
+Sum of total TTS 123,858,216,502,180; below baseline 7,425,123; gridlock 5,485,845.
+Below baseline by cycle: 60: 3,145,241 / 72: 3,126,728 / 84: 1,153,154 / 96, 108, 120: 0 (not graded:
+a sample guesses 0). By plan 1-6: 1,188,148 / 1,278,030 / 1,265,778 / 1,146,190 / 1,208,142 / 1,338,835.
+By order: lead 3,861,286 / lag 3,563,837. Gridlock by cycle 60..120: 514 / 17,064 / 310,502 / 872,881 /
+1,410,855 / 2,874,029. Optimum: C 60, plan 6, lag, offsets 0/45/15/30/0/30/15/30/0, total TTS 1,829,597.
+
+## Probe 1 (opus alias) - stopped by the account usage limit before finishing
+Its simulator was exact (baseline 4,052,648 and all three variants match), its local search found the
+true optimum (1,829,597), it simulated 324,155 configurations (1.7 %) and reported the whole-space
+items as stratified-sample estimates with confidence intervals - i.e. the "partial run" branch,
+which earns none of the whole-space weight. Retry launched 22:48 UTC.
