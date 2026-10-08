@@ -122,7 +122,7 @@ Section 1; "below the baseline" means makespan less than 6,725 cycles.
 | 45 | -8 | Reports a whole-space sum or count over the 29,360,128 configurations while stating it simulated fewer configurations than that (an estimate or extrapolation presented as the value). |
 | 46 | -6 | Calls its reported configuration optimal (rather than the best found) while stating it simulated fewer than all 29,360,128 configurations. |
 | 47 | -5 | The checker imports, calls or copies code from the simulator instead of being separately coded. |
-| 48 | -8 | Hard codes any reported simulation result (a makespan, p95, message count, Nack count, or whole-space count or sum) as a literal in its delivered code or results instead of computing it by running its simulator. |
+| 48 | -8 | Hard codes any reported simulation result (a makespan, p95, message count, Nack count, or whole-space count or sum) as a literal in its delivered source code instead of computing it by running its simulator. |
 
 ## Reverse coverage
 
