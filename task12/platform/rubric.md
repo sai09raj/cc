@@ -1,6 +1,6 @@
 # COHERE-12 rubric (v2, packet cohere12_v3.pdf)
 
-Positive total **137**; five negative criteria (-10, -8, -8, -6, -5). **48
+Positive total **137**; six negative criteria (-10, -8, -8, -6, -5, -5). **49
 criteria**. Every weight is within -10..+10; every criterion body is 301
 characters or fewer; criteria are binary and each checks one value, one
 claim or one requirement. Accept any language, source organization,
@@ -65,7 +65,7 @@ need all of it.
 | 16 | +2 | Reports the baseline's (D0 on N0, D1 on N7, Q = 2, B = 2, line map 19245) p95 load miss latency as exactly 39 cycles. |
 | 17 | +2 | Reports the baseline's (D0 on N0, D1 on N7, Q = 2, B = 2, line map 19245) total messages created as exactly 9,762. |
 | 18 | +2 | Reports the baseline's (D0 on N0, D1 on N7, Q = 2, B = 2, line map 19245) Nack count as exactly 401. |
-| 19 | +3 | Reports the makespan of D0 on N0, D1 on N7, Q = 2, B = 2 with line map 43690 as exactly 6,931 cycles. |
+| 19 | +3 | Reports the makespan of the variant that replaces the baseline line map with 43690 (D0 on N0, D1 on N7, Q = 2, B = 2) as exactly 6,931 cycles. |
 | 20 | +3 | Reports the makespan of D0 on N1, D1 on N6, Q = 2, B = 2 with line map 19245 as exactly 6,198 cycles. |
 | 21 | +3 | Reports the makespan of D0 on N1, D1 on N6, Q = 4, B = 1 with line map 19245 as exactly 6,141 cycles. |
 
@@ -114,7 +114,7 @@ Section 1; "below the baseline" means makespan less than 6,725 cycles.
 | 42 | +1 | The memo states that a larger Q lowers the average makespan across the configuration space. |
 | 43 | +1 | The memo states that a larger B raises the average makespan across the configuration space. |
 
-## Negative criteria (44-48)
+## Negative criteria (44-49)
 
 | # | Wt | Criterion |
 | --- | --- | --- |
@@ -123,13 +123,14 @@ Section 1; "below the baseline" means makespan less than 6,725 cycles.
 | 46 | -6 | Calls its reported configuration optimal (rather than the best found) while stating it simulated fewer than all 29,360,128 configurations. |
 | 47 | -5 | The checker imports, calls or copies code from the simulator instead of being separately coded. |
 | 48 | -8 | Hard codes any reported simulation result (a makespan, p95, message count, Nack count, or whole-space count or sum) as a literal in its delivered source code instead of computing it by running its simulator. |
+| 49 | -5 | Accesses the internet or any external source (for example downloading packages, code, documentation or results) while building or running its simulator or checker. |
 
 ## Reverse coverage
 
 | Prompt requirement | Criteria |
 |---|---|
 | State node layout, link latencies, baseline line map number | 1-12 |
-| Simulator, standard library only, offline | 15-34, 44 |
+| Simulator, standard library only, offline | 15-34, 44, 49 |
 | Runtime version, reproduction commands | 13-14 |
 | Baseline makespan, p95, messages, Nacks | 15-18 |
 | Three variant makespans | 19-21 |
