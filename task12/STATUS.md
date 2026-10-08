@@ -1,5 +1,20 @@
 # Task 12 — COHERE-12 (directory coherence on a 2x4 mesh)
 
+## Real pilot round 1 (v2 package, cohere12_v3.pdf): 94 / 100 / 100 — FAILED
+
+All three real runs (claude-opus-5-5, 93-103 min each) built a correct
+Node.js simulator, swept all 29,360,128 configurations in 61-66 minutes on
+16-17 worker threads, and reported every whole-space value exactly, plus the
+optimum, the checker results (including the 1,648-load count and both altered
+traces) and the memo claims. Trajectories in `audit/real-pilot-1/`.
+
+The design's premise was wrong: the local probe ran at ~5 ms per
+configuration on 4 cores and I assumed ~12.6 effective platform cores. The
+real runs achieved about 2.3 ms per configuration per thread on 17 usable
+threads (about 7,400 configurations per second), so the full sweep fit in
+about an hour. Compute-bound difficulty sized against a local probe does not
+transfer (mistake #77).
+
 ## v2 (current): exhaustive design-space characterization — probe 35.8%
 
 v1 failed (probe reproduced it exactly in 8 min). v2 keeps the validated
