@@ -1,0 +1,62 @@
+{
+ "fault_type": "BC (phase-to-phase, no ground)",
+ "fault_start_sample": 320,
+ "A_first": {
+  "Z1": null,
+  "Z2": 351,
+  "KEY": 351,
+  "RX": 406,
+  "TRIP": 406
+ },
+ "B_first": {
+  "Z1": null,
+  "Z2": null,
+  "Z3R": null,
+  "RX": 363,
+  "ECHO": 394,
+  "KEY": 394,
+  "TRIP": null
+ },
+ "A_open_sample": 502,
+ "zA_sec": [
+  1.163,
+  5.213
+ ],
+ "zA_pri": [
+  9.7,
+  43.44
+ ],
+ "zB_sec": [
+  -1.199,
+  -1.113
+ ],
+ "zB_pri_true_2000_5": [
+  -6.0,
+  -5.56
+ ],
+ "zB_pri_if_1200_5": [
+  -9.99,
+  -9.27
+ ],
+ "IB_at_B_sec": 5.672,
+ "IB_at_B_pri_true": 2269,
+ "IB_at_B_pri_if_1200_5": 1361,
+ "IB_at_A_pri": 2269,
+ "prefault_IA_A_pri": 354.8,
+ "prefault_IA_B_sec": 0.8869,
+ "prefault_IA_B_pri_true": 354.8,
+ "counterfactual_1200_5": {
+  "B_Z3R_first": 350,
+  "B_ECHO_first": null,
+  "A_TRIP_first": null,
+  "A_Z2_first": 351
+ },
+ "corrective_settings_if_core_stays_2000_5": {
+  "CTR": 400,
+  "Z1P": 6.18,
+  "Z2P": 9.65,
+  "Z3P": 2.9,
+  "50PP": 0.3
+ },
+ "B_Z3R_actual_primary_reach": 8.7
+}
