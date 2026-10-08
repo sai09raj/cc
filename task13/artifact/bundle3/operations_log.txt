@@ -1,0 +1,10 @@
+SYSTEM OPERATIONS LOG  -  2026-09-14
+
+14:22:07  Disturbance, 230 kV system.
+          Line L2 (Substation B - Substation C) tripped at both ends (B: zone 1, C: POTT), as expected for an L2 fault.
+          Breaker L1 at Substation A tripped (relay L1-21, POTT). Breaker L1 at Substation B did not trip.
+14:31:40  L2 patrol dispatched.
+14:40-15:55  Restoration switching at Substations A and B (several close/open operations).
+15:58:12  L1 restored from Substation A, no fault found on L1.
+17:05:00  Patrol report received for L2 (see patrol report). L2 restored 18:40.
+          L1 trip at Substation A classified as a probable misoperation; protection engineering to investigate.

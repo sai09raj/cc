@@ -59,3 +59,13 @@ it did; spreading the chain over three files did not slow it. The reconstruction
 then confirmed it, and it rejected the decoys (firmware, Z3P change) with replays.
 It also noticed a bundle inconsistency: the one-line still shows a generator at B although
 G2 is retired, and the T1 bay is not drawn.
+
+## v3 (L1_trip_case_r3_2026-09-14.zip, 27 files) — cause moved off the routine checklist
+
+Waveforms and SERs unchanged (relay B still receives 0.60 of the true current). New cause:
+CT tap X2-X4 and polarity are correct (commissioning book now shows X2-X4) and pass every
+routine check. The BF-50 breaker-failure relay replaced on 2025-02-12 was terminated in
+PARALLEL with relay B's current inputs (as-built schedule rows: TS-L1:2 -> Z01 and TS-L1:2 ->
+BF50 A1; Z02 -> TB:10 and A2 -> TB:10) instead of in series (AC schematic B-E-3301). Burdens
+0.04 ohm (relay) and 0.06 ohm (BF-50) split the current 0.60 / 0.40. The 2025-06 relay test
+injected with BF-50 isolated, so it passed. Corrective action: re-terminate BF-50 in series.

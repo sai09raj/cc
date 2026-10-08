@@ -1,0 +1,18 @@
+SUBSTATION A  -  L1-21 LINE RELAY (230 kV line L1 to Substation B)
+EVENT SUMMARY
+Date: 2026-09-14   Trigger: 14:22:07.5116   Oscillography: SUBA_L1-21_20260914_142207
+Event: TRIP
+Trip logic: POTT (Z2 and RX)
+Faulted loop: BC
+Fault location (reactance method, line data of settings): 92.0 km
+
+SEQUENTIAL EVENTS RECORDER (relay time, GPS synchronized)
+14:22:07.3450  52A        closed
+14:22:07.5278  Z2         asserted
+14:22:07.5278  KEY        asserted
+14:22:07.5564  RX         asserted
+14:22:07.5564  TRIP       asserted
+14:22:07.5772  Z2         deasserted
+14:22:07.5772  KEY        deasserted
+14:22:07.5897  RX         deasserted
+14:22:07.6064  52A        open

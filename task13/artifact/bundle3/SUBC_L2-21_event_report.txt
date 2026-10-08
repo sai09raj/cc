@@ -1,0 +1,17 @@
+SUBSTATION C  -  L2-21 LINE RELAY (230 kV line L2 to Substation B)
+EVENT SUMMARY
+Date: 2026-09-14   Trigger: 14:22:07.5116   Oscillography: SUBC_L2-21_20260914_142207
+Event: TRIP
+Trip logic: POTT (Z2 and RX)
+Faulted loop: BC
+
+SEQUENTIAL EVENTS RECORDER (relay time, GPS synchronized)
+14:22:07.3450  52A        closed
+14:22:07.5257  Z2         asserted
+14:22:07.5257  KEY        asserted
+14:22:07.5272  RX         asserted
+14:22:07.5272  TRIP       asserted
+14:22:07.5772  52A        open
+14:22:07.5798  Z2         deasserted
+14:22:07.5798  KEY        deasserted
+14:22:07.5861  RX         deasserted
