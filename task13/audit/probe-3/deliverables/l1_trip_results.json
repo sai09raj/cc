@@ -1,0 +1,923 @@
+{
+  "event": "230 kV line L1 breaker trip at Substation A, 2026-09-14 14:22:07",
+  "conventions": {
+    "relay_sample_k": "k = n - 1, n = first column of the .dat (1-based); time = 14:22:07.345000 + k/1920 s",
+    "channel_delay_samples": 12,
+    "breaker_delay_samples": 96
+  },
+  "item1_fault": {
+    "fault_type": "phase-to-phase B-C (no ground, I0 ~ 0), through fault resistance",
+    "faulted_line": "L2 (Substation B - Substation C)",
+    "distance_from_substation_B_km": 6.48,
+    "distance_from_substation_B_km_patrol": 6.5,
+    "fault_inception_sample_k": 320,
+    "fault_inception_record_line_n": 321,
+    "fault_inception_time": "14:22:07.5116",
+    "fault_resistance_ohm_primary": 3.0,
+    "superimposed_change_first_samples": {
+      "SUBA_L1": {
+        "VA": null,
+        "VB": 320,
+        "VC": 320,
+        "IA": 438,
+        "IB": 321,
+        "IC": 321
+      },
+      "SUBB_L2": {
+        "VA": 446,
+        "VB": 320,
+        "VC": 320,
+        "IA": 436,
+        "IB": 321,
+        "IC": 321
+      },
+      "SUBC_L2": {
+        "VA": 448,
+        "VB": 320,
+        "VC": 320,
+        "IA": 436,
+        "IB": 321,
+        "IC": 321
+      }
+    },
+    "fault_currents_and_voltages": {
+      "SUBA_L1": {
+        "IA_pre": 1.479,
+        "IB_pre": 1.478,
+        "IC_pre": 1.479,
+        "IA_flt": 1.479,
+        "IB_flt": 9.316,
+        "IC_flt": 7.942,
+        "I0_flt": 0.0,
+        "VA_flt": 67.826,
+        "VB_flt": 57.694,
+        "VC_flt": 57.9,
+        "VA_pre": 67.826
+      },
+      "SUBB_L2": {
+        "IA_pre": 1.365,
+        "IB_pre": 1.364,
+        "IC_pre": 1.364,
+        "IA_flt": 1.364,
+        "IB_flt": 18.439,
+        "IC_flt": 17.134,
+        "I0_flt": 0.0,
+        "VA_flt": 66.44,
+        "VB_flt": 38.107,
+        "VC_flt": 30.062,
+        "VA_pre": 66.44
+      },
+      "SUBC_L2": {
+        "IA_pre": 1.364,
+        "IB_pre": 1.364,
+        "IC_pre": 1.364,
+        "IA_flt": 1.364,
+        "IB_flt": 10.078,
+        "IC_flt": 11.431,
+        "I0_flt": 0.0,
+        "VA_flt": 65.946,
+        "VB_flt": 46.776,
+        "VC_flt": 40.33,
+        "VA_pre": 65.943
+      }
+    },
+    "location_details": {
+      "two_ended_km_from_B": 6.480285504970075,
+      "two_ended_imag_km": -0.023264247926586337,
+      "Rf_phase_to_phase_ohm_primary": 3.002384763157596,
+      "B_L2_apparent_Z_sec": [
+        0.3265038514766439,
+        0.35687250444873786
+      ],
+      "B_L2_reactance_km": 6.195703202235032,
+      "C_L2_apparent_Z_sec": [
+        0.7309129928378508,
+        2.5610224639644716
+      ],
+      "C_L2_reactance_km_from_C": 44.462195554938745,
+      "A_L1_apparent_Z_sec": [
+        1.2088012038835254,
+        5.289849348944197
+      ],
+      "A_L1_reactance_km_from_A": 91.83766230805898
+    },
+    "L1_consistency_check": {
+      "ZL1_sec": [
+        0.48,
+        4.608
+      ],
+      "max_relative_residual": 0.03900318382931324,
+      "ZL1_measured_sec_BC": [
+        0.47366287369570265,
+        4.615684874339445
+      ],
+      "ZL1_measured_primary_BC": [
+        3.9471906141308555,
+        38.46404061949537
+      ],
+      "infeed_ratio_IL2B_over_IL1_BC": [
+        2.062161092445148,
+        -5.022046896552296
+      ]
+    }
+  },
+  "item2_first_assertions": {
+    "relay_A": {
+      "Z1": {
+        "first_assert_sample": null,
+        "first_assert_time": null
+      },
+      "Z2": {
+        "first_assert_sample": 351,
+        "first_assert_time": "14:22:07.5278"
+      },
+      "Z3R": {
+        "first_assert_sample": null,
+        "first_assert_time": null
+      },
+      "RX": {
+        "first_assert_sample": 406,
+        "first_assert_time": "14:22:07.5564"
+      },
+      "ECHO": {
+        "first_assert_sample": null,
+        "first_assert_time": null
+      },
+      "KEY": {
+        "first_assert_sample": 351,
+        "first_assert_time": "14:22:07.5278"
+      },
+      "TRIP": {
+        "first_assert_sample": 406,
+        "first_assert_time": "14:22:07.5564"
+      },
+      "52A": {
+        "first_open_sample": 502
+      }
+    },
+    "relay_B": {
+      "Z1": {
+        "first_assert_sample": null,
+        "first_assert_time": null
+      },
+      "Z2": {
+        "first_assert_sample": null,
+        "first_assert_time": null
+      },
+      "Z3R": {
+        "first_assert_sample": null,
+        "first_assert_time": null
+      },
+      "RX": {
+        "first_assert_sample": 363,
+        "first_assert_time": "14:22:07.5340"
+      },
+      "ECHO": {
+        "first_assert_sample": 394,
+        "first_assert_time": "14:22:07.5502"
+      },
+      "KEY": {
+        "first_assert_sample": 394,
+        "first_assert_time": "14:22:07.5502"
+      },
+      "TRIP": {
+        "first_assert_sample": null,
+        "first_assert_time": null
+      },
+      "52A": {
+        "first_open_sample": null
+      }
+    },
+    "relay_A_elements_not_applicable": "Z3R (Z3P=OFF) and ECHO (ECHO=N) are disabled at relay A",
+    "relay_A_fault_locator": {
+      "loop": "BC",
+      "sample": 406,
+      "Z_sec": [
+        1.1403456072261204,
+        5.299574761018051
+      ],
+      "X_primary": 44.16312300848376,
+      "km": 92.0065062676745
+    },
+    "relay_B_input_reconstruction": {
+      "voltages": "SUBB L2-21 record VA/VB/VC (common Sub B bus VT)",
+      "currents": "-m x SUBA L1-21 record IA/IB/IC",
+      "m": 0.6,
+      "m_basis": "as-built parallel BF-50: 0.06/(0.04+0.06)"
+    }
+  },
+  "replay_validation": {
+    "digital_channel_mismatch": {
+      "SUBB-L2-21": {
+        "mismatching_samples_vs_recorded_digitals": {
+          "Z1": 0,
+          "Z2": 0,
+          "KEY": 0,
+          "RX": 0,
+          "TRIP": 0,
+          "52A": 0
+        }
+      },
+      "SUBC-L2-21": {
+        "mismatching_samples_vs_recorded_digitals": {
+          "Z1": 0,
+          "Z2": 0,
+          "KEY": 0,
+          "RX": 0,
+          "TRIP": 0,
+          "52A": 0
+        }
+      },
+      "SUBA-L1-21": {
+        "mismatching_samples_vs_recorded_digitals": {
+          "Z1": 0,
+          "Z2": 0,
+          "KEY": 0,
+          "RX": 0,
+          "TRIP": 0,
+          "52A": 0
+        }
+      }
+    },
+    "SER_comparison": {
+      "SUBA-L1-21": [
+        {
+          "element": "52A",
+          "state": "closed",
+          "ser_time": "14:22:07.3450",
+          "ser_sample": 0,
+          "replay_sample": 0,
+          "replay_time": null,
+          "match": "record start (closed)"
+        },
+        {
+          "element": "Z2",
+          "state": "asserted",
+          "ser_time": "14:22:07.5278",
+          "ser_sample": 351,
+          "replay_sample": 351,
+          "replay_time": "14:22:07.5278",
+          "match": true
+        },
+        {
+          "element": "KEY",
+          "state": "asserted",
+          "ser_time": "14:22:07.5278",
+          "ser_sample": 351,
+          "replay_sample": 351,
+          "replay_time": "14:22:07.5278",
+          "match": true
+        },
+        {
+          "element": "RX",
+          "state": "asserted",
+          "ser_time": "14:22:07.5564",
+          "ser_sample": 406,
+          "replay_sample": 406,
+          "replay_time": "14:22:07.5564",
+          "match": true
+        },
+        {
+          "element": "TRIP",
+          "state": "asserted",
+          "ser_time": "14:22:07.5564",
+          "ser_sample": 406,
+          "replay_sample": 406,
+          "replay_time": "14:22:07.5564",
+          "match": true
+        },
+        {
+          "element": "Z2",
+          "state": "deasserted",
+          "ser_time": "14:22:07.5772",
+          "ser_sample": 446,
+          "replay_sample": 446,
+          "replay_time": "14:22:07.5772",
+          "match": true
+        },
+        {
+          "element": "KEY",
+          "state": "deasserted",
+          "ser_time": "14:22:07.5772",
+          "ser_sample": 446,
+          "replay_sample": 446,
+          "replay_time": "14:22:07.5772",
+          "match": true
+        },
+        {
+          "element": "RX",
+          "state": "deasserted",
+          "ser_time": "14:22:07.5897",
+          "ser_sample": 470,
+          "replay_sample": 470,
+          "replay_time": "14:22:07.5897",
+          "match": true
+        },
+        {
+          "element": "52A",
+          "state": "open",
+          "ser_time": "14:22:07.6064",
+          "ser_sample": 502,
+          "replay_sample": 502,
+          "replay_time": "14:22:07.6064",
+          "match": true
+        }
+      ],
+      "SUBB-L1-21": [
+        {
+          "element": "RX",
+          "state": "asserted",
+          "ser_time": "14:22:07.5340",
+          "ser_sample": 363,
+          "replay_sample": 363,
+          "replay_time": "14:22:07.5340",
+          "match": true
+        },
+        {
+          "element": "ECHO",
+          "state": "asserted",
+          "ser_time": "14:22:07.5502",
+          "ser_sample": 394,
+          "replay_sample": 394,
+          "replay_time": "14:22:07.5502",
+          "match": true
+        },
+        {
+          "element": "KEY",
+          "state": "asserted",
+          "ser_time": "14:22:07.5502",
+          "ser_sample": 394,
+          "replay_sample": 394,
+          "replay_time": "14:22:07.5502",
+          "match": true
+        },
+        {
+          "element": "RX",
+          "state": "deasserted",
+          "ser_time": "14:22:07.5835",
+          "ser_sample": 458,
+          "replay_sample": 458,
+          "replay_time": "14:22:07.5835",
+          "match": true
+        },
+        {
+          "element": "ECHO",
+          "state": "deasserted",
+          "ser_time": "14:22:07.5835",
+          "ser_sample": 458,
+          "replay_sample": 458,
+          "replay_time": "14:22:07.5835",
+          "match": true
+        },
+        {
+          "element": "KEY",
+          "state": "deasserted",
+          "ser_time": "14:22:07.5835",
+          "ser_sample": 458,
+          "replay_sample": 458,
+          "replay_time": "14:22:07.5835",
+          "match": true
+        }
+      ],
+      "SUBB-L2-21": [
+        {
+          "element": "52A",
+          "state": "closed",
+          "ser_time": "14:22:07.3450",
+          "ser_sample": 0,
+          "replay_sample": 0,
+          "replay_time": null,
+          "match": "record start (closed)"
+        },
+        {
+          "element": "Z2",
+          "state": "asserted",
+          "ser_time": "14:22:07.5210",
+          "ser_sample": 338,
+          "replay_sample": 338,
+          "replay_time": "14:22:07.5210",
+          "match": true
+        },
+        {
+          "element": "KEY",
+          "state": "asserted",
+          "ser_time": "14:22:07.5210",
+          "ser_sample": 338,
+          "replay_sample": 338,
+          "replay_time": "14:22:07.5210",
+          "match": true
+        },
+        {
+          "element": "Z1",
+          "state": "asserted",
+          "ser_time": "14:22:07.5220",
+          "ser_sample": 340,
+          "replay_sample": 340,
+          "replay_time": "14:22:07.5220",
+          "match": true
+        },
+        {
+          "element": "TRIP",
+          "state": "asserted",
+          "ser_time": "14:22:07.5220",
+          "ser_sample": 340,
+          "replay_sample": 340,
+          "replay_time": "14:22:07.5220",
+          "match": true
+        },
+        {
+          "element": "RX",
+          "state": "asserted",
+          "ser_time": "14:22:07.5319",
+          "ser_sample": 359,
+          "replay_sample": 359,
+          "replay_time": "14:22:07.5319",
+          "match": true
+        },
+        {
+          "element": "52A",
+          "state": "open",
+          "ser_time": "14:22:07.5720",
+          "ser_sample": 436,
+          "replay_sample": 436,
+          "replay_time": "14:22:07.5720",
+          "match": true
+        },
+        {
+          "element": "Z1",
+          "state": "deasserted",
+          "ser_time": "14:22:07.5783",
+          "ser_sample": 448,
+          "replay_sample": 448,
+          "replay_time": "14:22:07.5783",
+          "match": true
+        },
+        {
+          "element": "Z2",
+          "state": "deasserted",
+          "ser_time": "14:22:07.5798",
+          "ser_sample": 451,
+          "replay_sample": 451,
+          "replay_time": "14:22:07.5798",
+          "match": true
+        },
+        {
+          "element": "KEY",
+          "state": "deasserted",
+          "ser_time": "14:22:07.5798",
+          "ser_sample": 451,
+          "replay_sample": 451,
+          "replay_time": "14:22:07.5798",
+          "match": true
+        },
+        {
+          "element": "RX",
+          "state": "deasserted",
+          "ser_time": "14:22:07.5861",
+          "ser_sample": 463,
+          "replay_sample": 463,
+          "replay_time": "14:22:07.5861",
+          "match": true
+        }
+      ],
+      "SUBC-L2-21": [
+        {
+          "element": "52A",
+          "state": "closed",
+          "ser_time": "14:22:07.3450",
+          "ser_sample": 0,
+          "replay_sample": 0,
+          "replay_time": null,
+          "match": "record start (closed)"
+        },
+        {
+          "element": "Z2",
+          "state": "asserted",
+          "ser_time": "14:22:07.5257",
+          "ser_sample": 347,
+          "replay_sample": 347,
+          "replay_time": "14:22:07.5257",
+          "match": true
+        },
+        {
+          "element": "KEY",
+          "state": "asserted",
+          "ser_time": "14:22:07.5257",
+          "ser_sample": 347,
+          "replay_sample": 347,
+          "replay_time": "14:22:07.5257",
+          "match": true
+        },
+        {
+          "element": "RX",
+          "state": "asserted",
+          "ser_time": "14:22:07.5272",
+          "ser_sample": 350,
+          "replay_sample": 350,
+          "replay_time": "14:22:07.5272",
+          "match": true
+        },
+        {
+          "element": "TRIP",
+          "state": "asserted",
+          "ser_time": "14:22:07.5272",
+          "ser_sample": 350,
+          "replay_sample": 350,
+          "replay_time": "14:22:07.5272",
+          "match": true
+        },
+        {
+          "element": "52A",
+          "state": "open",
+          "ser_time": "14:22:07.5772",
+          "ser_sample": 446,
+          "replay_sample": 446,
+          "replay_time": "14:22:07.5772",
+          "match": true
+        },
+        {
+          "element": "Z2",
+          "state": "deasserted",
+          "ser_time": "14:22:07.5798",
+          "ser_sample": 451,
+          "replay_sample": 451,
+          "replay_time": "14:22:07.5798",
+          "match": true
+        },
+        {
+          "element": "KEY",
+          "state": "deasserted",
+          "ser_time": "14:22:07.5798",
+          "ser_sample": 451,
+          "replay_sample": 451,
+          "replay_time": "14:22:07.5798",
+          "match": true
+        },
+        {
+          "element": "RX",
+          "state": "deasserted",
+          "ser_time": "14:22:07.5861",
+          "ser_sample": 463,
+          "replay_sample": 463,
+          "replay_time": "14:22:07.5861",
+          "match": true
+        }
+      ]
+    }
+  },
+  "item3_root_cause": {
+    "summary": "At Substation B the numerical BF-50 breaker-failure relay installed on 2025-02-12 (cable schedule bay L1 rev C) was wired in PARALLEL with the L1-21 relay B current inputs instead of in SERIES as drawn on AC schematic B-E-3301. The CT secondary current divides between the 0.04 ohm relay and the 0.06 ohm BF-50, so relay B measured only 60 % of the L1 current. Its apparent impedance for the reverse L2 fault was magnified by 1/0.60 and fell outside the reverse zone 3 (Z3P 1.74), so Z3R/EBLK did not block the weak-infeed echo; relay B echoed relay A's Z2 permissive and relay A tripped by POTT for an external fault on L2.",
+    "relay_B_BC_loop_impedance_as_built": {
+      "Z_sec": [
+        -1.2252305503130383,
+        -1.1236074576745878
+      ],
+      "mag": 1.6624330423696292,
+      "ang_deg": -137.47737191975997,
+      "dist_to_Z3R_centre": 1.1633453521682315,
+      "Z3R_radius": 0.87,
+      "min_Z3P_to_include": 2.2188928669770047,
+      "loop_current_A_sec": 10.35048545906386
+    },
+    "relay_B_BC_loop_impedance_correct_wiring": {
+      "Z_sec": [
+        -0.7351383301878228,
+        -0.6741644746047527
+      ],
+      "mag": 0.9974598254217774,
+      "ang_deg": -137.47737191975997,
+      "dist_to_Z3R_centre": 0.6719370328832114,
+      "Z3R_radius": 0.87,
+      "min_Z3P_to_include": 1.3313357201862022,
+      "loop_current_A_sec": 17.25080909843977
+    },
+    "relay_B_effective_reaches_as_built": {
+      "Z1P_effective_sec": 2.226,
+      "Z2P_effective_sec": 3.4739999999999998,
+      "Z3P_effective_sec": 1.044,
+      "Z1_percent_of_L1": 48.04732157532273,
+      "Z2_percent_of_L1": 74.98490348278129
+    },
+    "on_angle_coordination": {
+      "A_Z2_reach_primary": 48.25,
+      "overreach_beyond_B_primary": 9.64222876155631,
+      "B_Z3R_reach_primary": 14.5,
+      "margin_ratio_correct_wiring": 1.503801699645593,
+      "margin_ratio_as_built": 0.9022810197873556
+    },
+    "relay_B_current_share_consistent_with_records": {
+      "min": 0.0,
+      "max": 0.73
+    },
+    "CT_duty": {
+      "max_phase_current_A_sec": 9.50878540144464,
+      "burden_series_ohm": 0.48,
+      "burden_parallel_ohm": 0.404,
+      "X_over_R": 9.594902166006744,
+      "required_voltage_full_offset_V": 48.35743250201238,
+      "C800_on_1200_tap_V": 480.0
+    },
+    "hypotheses": {
+      "H0_as_built_parallel_BF50_m0.60": {
+        "relay_B_current_share_m": 0.6,
+        "settings_override": null,
+        "result": {
+          "A_Z2": 351,
+          "A_RX": 406,
+          "A_TRIP": 406,
+          "B_Z1": null,
+          "B_Z2": null,
+          "B_Z3R": null,
+          "B_RX": 363,
+          "B_ECHO": 394,
+          "B_KEY": 394,
+          "B_TRIP": null
+        },
+        "reproduces_recorded_event": true
+      },
+      "H1_correct_series_m1.00": {
+        "relay_B_current_share_m": 1.0,
+        "settings_override": null,
+        "result": {
+          "A_Z2": 351,
+          "A_RX": null,
+          "A_TRIP": null,
+          "B_Z1": null,
+          "B_Z2": null,
+          "B_Z3R": 350,
+          "B_RX": 363,
+          "B_ECHO": null,
+          "B_KEY": null,
+          "B_TRIP": null
+        },
+        "reproduces_recorded_event": false
+      },
+      "H2_wrong_CT_tap_X1X5_2000to5_series_m0.60": {
+        "relay_B_current_share_m": 0.6,
+        "settings_override": null,
+        "result": {
+          "A_Z2": 351,
+          "A_RX": 406,
+          "A_TRIP": 406,
+          "B_Z1": null,
+          "B_Z2": null,
+          "B_Z3R": null,
+          "B_RX": 363,
+          "B_ECHO": 394,
+          "B_KEY": 394,
+          "B_TRIP": null
+        },
+        "reproduces_recorded_event": true
+      },
+      "H3_reversed_CT_polarity_at_B_series": {
+        "relay_B_current_share_m": -1.0,
+        "settings_override": null,
+        "result": {
+          "A_Z2": 351,
+          "A_RX": 351,
+          "A_TRIP": 351,
+          "B_Z1": 342,
+          "B_Z2": 339,
+          "B_Z3R": null,
+          "B_RX": 363,
+          "B_ECHO": null,
+          "B_KEY": 339,
+          "B_TRIP": 342
+        },
+        "reproduces_recorded_event": false
+      },
+      "H4_reversed_polarity_and_parallel_BF50": {
+        "relay_B_current_share_m": -0.6,
+        "settings_override": null,
+        "result": {
+          "A_Z2": 351,
+          "A_RX": 355,
+          "A_TRIP": 355,
+          "B_Z1": 348,
+          "B_Z2": 343,
+          "B_Z3R": null,
+          "B_RX": 363,
+          "B_ECHO": null,
+          "B_KEY": 343,
+          "B_TRIP": 348
+        },
+        "reproduces_recorded_event": false
+      },
+      "H9_open_or_shorted_CT_circuit_at_B_m0": {
+        "relay_B_current_share_m": 0.0,
+        "settings_override": null,
+        "result": {
+          "A_Z2": 351,
+          "A_RX": 406,
+          "A_TRIP": 406,
+          "B_Z1": null,
+          "B_Z2": null,
+          "B_Z3R": null,
+          "B_RX": 363,
+          "B_ECHO": 394,
+          "B_KEY": 394,
+          "B_TRIP": null
+        },
+        "reproduces_recorded_event": true
+      },
+      "H10_Z3R_disabled_at_B_correct_wiring": {
+        "relay_B_current_share_m": 1.0,
+        "settings_override": {
+          "Z3P": "OFF"
+        },
+        "result": {
+          "A_Z2": 351,
+          "A_RX": 406,
+          "A_TRIP": 406,
+          "B_Z1": null,
+          "B_Z2": null,
+          "B_Z3R": null,
+          "B_RX": 363,
+          "B_ECHO": 394,
+          "B_KEY": 394,
+          "B_TRIP": null
+        },
+        "reproduces_recorded_event": true
+      },
+      "H5_previous_setting_Z3P_1.80_with_parallel_BF50": {
+        "relay_B_current_share_m": 0.6,
+        "settings_override": {
+          "Z3P": 1.8
+        },
+        "result": {
+          "A_Z2": 351,
+          "A_RX": 406,
+          "A_TRIP": 406,
+          "B_Z1": null,
+          "B_Z2": null,
+          "B_Z3R": null,
+          "B_RX": 363,
+          "B_ECHO": 394,
+          "B_KEY": 394,
+          "B_TRIP": null
+        },
+        "reproduces_recorded_event": true
+      },
+      "H6_previous_setting_Z3P_1.80_correct_wiring": {
+        "relay_B_current_share_m": 1.0,
+        "settings_override": {
+          "Z3P": 1.8
+        },
+        "result": {
+          "A_Z2": 351,
+          "A_RX": null,
+          "A_TRIP": null,
+          "B_Z1": null,
+          "B_Z2": null,
+          "B_Z3R": 350,
+          "B_RX": 363,
+          "B_ECHO": null,
+          "B_KEY": null,
+          "B_TRIP": null
+        },
+        "reproduces_recorded_event": false
+      },
+      "H7_interim_ECHO_N_at_B_with_parallel_BF50": {
+        "relay_B_current_share_m": 0.6,
+        "settings_override": {
+          "ECHO": "N"
+        },
+        "result": {
+          "A_Z2": 351,
+          "A_RX": null,
+          "A_TRIP": null,
+          "B_Z1": null,
+          "B_Z2": null,
+          "B_Z3R": null,
+          "B_RX": 363,
+          "B_ECHO": null,
+          "B_KEY": null,
+          "B_TRIP": null
+        },
+        "reproduces_recorded_event": false
+      },
+      "H8_echo_disabled_correct_wiring": {
+        "relay_B_current_share_m": 1.0,
+        "settings_override": {
+          "ECHO": "N"
+        },
+        "result": {
+          "A_Z2": 351,
+          "A_RX": null,
+          "A_TRIP": null,
+          "B_Z1": null,
+          "B_Z2": null,
+          "B_Z3R": 350,
+          "B_RX": 363,
+          "B_ECHO": null,
+          "B_KEY": null,
+          "B_TRIP": null
+        },
+        "reproduces_recorded_event": false
+      }
+    }
+  },
+  "item4_without_root_cause": {
+    "relay_A": {
+      "Z1": {
+        "first_assert_sample": null,
+        "first_assert_time": null
+      },
+      "Z2": {
+        "first_assert_sample": 351,
+        "first_assert_time": "14:22:07.5278"
+      },
+      "Z3R": {
+        "first_assert_sample": null,
+        "first_assert_time": null
+      },
+      "RX": {
+        "first_assert_sample": null,
+        "first_assert_time": null
+      },
+      "ECHO": {
+        "first_assert_sample": null,
+        "first_assert_time": null
+      },
+      "KEY": {
+        "first_assert_sample": 351,
+        "first_assert_time": "14:22:07.5278"
+      },
+      "TRIP": {
+        "first_assert_sample": null,
+        "first_assert_time": null
+      },
+      "52A": {
+        "first_open_sample": null
+      }
+    },
+    "relay_B": {
+      "Z1": {
+        "first_assert_sample": null,
+        "first_assert_time": null
+      },
+      "Z2": {
+        "first_assert_sample": null,
+        "first_assert_time": null
+      },
+      "Z3R": {
+        "first_assert_sample": 350,
+        "first_assert_time": "14:22:07.5272"
+      },
+      "RX": {
+        "first_assert_sample": 363,
+        "first_assert_time": "14:22:07.5340"
+      },
+      "ECHO": {
+        "first_assert_sample": null,
+        "first_assert_time": null
+      },
+      "KEY": {
+        "first_assert_sample": null,
+        "first_assert_time": null
+      },
+      "TRIP": {
+        "first_assert_sample": null,
+        "first_assert_time": null
+      },
+      "52A": {
+        "first_open_sample": null
+      }
+    },
+    "relay_A_trips": false,
+    "relay_B_echoes": false,
+    "relay_B_Z3R_lead_over_RX_samples": 13,
+    "note": "m = 1.00 (series CT circuit); after k=501 analog data continued as steady sinusoid (breaker A would stay closed)"
+  },
+  "item5_corrective_action": {
+    "wiring": "Re-terminate CT 52-L1 core 1 at Substation B in series per B-E-3301: L1-21:Z02/Z04/Z06 -> BF50-L1:A1/B1/C1 and BF50-L1:A2/B2/C2 -> TB-L1:10; remove the parallel connections TS-L1:2/4/6 -> BF50-L1:A1/B1/C1 and L1-21:Z02/Z04/Z06 -> TB-L1:10; issue cable schedule rev D.",
+    "settings": {
+      "relay_B_interim_until_rewired": {
+        "ECHO": "N"
+      },
+      "relay_B_after_rewiring_and_recommissioning": {
+        "ECHO": "Y",
+        "Z3P": 1.74,
+        "Z1P": 3.71,
+        "Z2P": 5.79,
+        "EDPU": 32,
+        "EDUR": 64,
+        "EBLK": 64
+      },
+      "relay_A": "no change"
+    },
+    "interim_ECHO_N_replay": {
+      "A_Z2": 351,
+      "A_RX": null,
+      "A_TRIP": null,
+      "B_Z1": null,
+      "B_Z2": null,
+      "B_Z3R": null,
+      "B_RX": 363,
+      "B_ECHO": null,
+      "B_KEY": null,
+      "B_TRIP": null
+    },
+    "verification": "primary (or CT-terminal secondary) injection through the complete series chain, then on-load check: relay B phase currents equal in magnitude to relay A within 1-2 % and 180 deg opposite; BF-50 currents equal to relay B currents."
+  }
+}

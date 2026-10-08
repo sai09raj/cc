@@ -1,0 +1,88 @@
+=== FAULT INCEPTION AND TYPE
+SUBA_L1 first sample with one-cycle superimposed change > 5 V / 0.2 A: {'VA': None, 'VB': 320, 'VC': 320, 'IA': 438, 'IB': 321, 'IC': 321}
+SUBB_L2 first sample with one-cycle superimposed change > 5 V / 0.2 A: {'VA': 446, 'VB': 320, 'VC': 320, 'IA': 436, 'IB': 321, 'IC': 321}
+SUBC_L2 first sample with one-cycle superimposed change > 5 V / 0.2 A: {'VA': 448, 'VB': 320, 'VC': 320, 'IA': 436, 'IB': 321, 'IC': 321}
+fault inception: relay sample k = 320 (record line n = 321 ), time 14:22:07.5116 ; trigger time in cfg 14:22:07.511667
+SUBA_L1 pre-fault (k=300) and fault (k=370..429) RMS secondary: {'IA_pre': np.float64(1.479), 'IB_pre': np.float64(1.478), 'IC_pre': np.float64(1.479), 'IA_flt': 1.479, 'IB_flt': 9.316, 'IC_flt': 7.942, 'I0_flt': 0.0, 'VA_flt': 67.826, 'VB_flt': 57.694, 'VC_flt': 57.9, 'VA_pre': np.float64(67.826)}
+SUBB_L2 pre-fault (k=300) and fault (k=370..429) RMS secondary: {'IA_pre': np.float64(1.365), 'IB_pre': np.float64(1.364), 'IC_pre': np.float64(1.364), 'IA_flt': 1.364, 'IB_flt': 18.439, 'IC_flt': 17.134, 'I0_flt': 0.0, 'VA_flt': 66.44, 'VB_flt': 38.107, 'VC_flt': 30.062, 'VA_pre': np.float64(66.44)}
+SUBC_L2 pre-fault (k=300) and fault (k=370..429) RMS secondary: {'IA_pre': np.float64(1.364), 'IB_pre': np.float64(1.364), 'IC_pre': np.float64(1.364), 'IA_flt': 1.364, 'IB_flt': 10.078, 'IC_flt': 11.431, 'I0_flt': 0.0, 'VA_flt': 65.946, 'VB_flt': 46.776, 'VC_flt': 40.33, 'VA_pre': np.float64(65.943)}
+=== FAULT LOCATION
+two-ended (B,C) BC-loop location on L2: d = 6.480 km from Substation B (imag part -0.023 km), spread over window 6.197..6.797 km
+phase-to-phase fault resistance R_f = 3.00 ohm primary (0.360 ohm sec); reactive part of V_F/I_F 0.003 ohm sec
+apparent BC-loop impedances (k=370..429 mean, sec): A(L1) (1.209+5.29j), B(L2) (0.327+0.357j), C(L2) (0.731+2.561j)
+reactance distances: A->91.8 km, B(L2)->6.20 km, C(L2)->44.46 km
+L1 check V_A - V_B = ZL1*I_A over fault window: max relative residual 0.0390
+infeed at B: I_L2(B)/I_L1(A) BC loop = 2.062 at -5.0 deg (T1 infeed fraction of L2 current 0.519)
+ZL1 measured from A and B records (BC loop): (0.4737+4.6157j) ohm sec = (3.95+38.46j) ohm primary (data: 4.00+j38.40)
+=== VALIDATION 1: L2 relays (B and C), replayed in lock step from their own records
+SUBB-L2-21 mismatching samples replay vs recorded digital channels: {'Z1': 0, 'Z2': 0, 'KEY': 0, 'RX': 0, 'TRIP': 0, '52A': 0}
+SUBC-L2-21 mismatching samples replay vs recorded digital channels: {'Z1': 0, 'Z2': 0, 'KEY': 0, 'RX': 0, 'TRIP': 0, '52A': 0}
+=== ACTUAL CASE: relay B inputs reconstructed with relay share m = 0.600 (as-built parallel BF-50)
+relay A replay vs recorded digital channels, mismatching samples: {'Z1': 0, 'Z2': 0, 'KEY': 0, 'RX': 0, 'TRIP': 0, '52A': 0}
+SER comparison relay A (L1, Sub A)
+   52A    closed      SER 14:22:07.3450 (k=0)  replay k=0 None  match=record start (closed)
+   Z2     asserted    SER 14:22:07.5278 (k=351)  replay k=351 14:22:07.5278  match=True
+   KEY    asserted    SER 14:22:07.5278 (k=351)  replay k=351 14:22:07.5278  match=True
+   RX     asserted    SER 14:22:07.5564 (k=406)  replay k=406 14:22:07.5564  match=True
+   TRIP   asserted    SER 14:22:07.5564 (k=406)  replay k=406 14:22:07.5564  match=True
+   Z2     deasserted  SER 14:22:07.5772 (k=446)  replay k=446 14:22:07.5772  match=True
+   KEY    deasserted  SER 14:22:07.5772 (k=446)  replay k=446 14:22:07.5772  match=True
+   RX     deasserted  SER 14:22:07.5897 (k=470)  replay k=470 14:22:07.5897  match=True
+   52A    open        SER 14:22:07.6064 (k=502)  replay k=502 14:22:07.6064  match=True
+SER comparison relay B (L1, Sub B)
+   RX     asserted    SER 14:22:07.5340 (k=363)  replay k=363 14:22:07.5340  match=True
+   ECHO   asserted    SER 14:22:07.5502 (k=394)  replay k=394 14:22:07.5502  match=True
+   KEY    asserted    SER 14:22:07.5502 (k=394)  replay k=394 14:22:07.5502  match=True
+   RX     deasserted  SER 14:22:07.5835 (k=458)  replay k=458 14:22:07.5835  match=True
+   ECHO   deasserted  SER 14:22:07.5835 (k=458)  replay k=458 14:22:07.5835  match=True
+   KEY    deasserted  SER 14:22:07.5835 (k=458)  replay k=458 14:22:07.5835  match=True
+SER comparison L2-21 Sub B
+   52A    closed      SER 14:22:07.3450 (k=0)  replay k=0 None  match=record start (closed)
+   Z2     asserted    SER 14:22:07.5210 (k=338)  replay k=338 14:22:07.5210  match=True
+   KEY    asserted    SER 14:22:07.5210 (k=338)  replay k=338 14:22:07.5210  match=True
+   Z1     asserted    SER 14:22:07.5220 (k=340)  replay k=340 14:22:07.5220  match=True
+   TRIP   asserted    SER 14:22:07.5220 (k=340)  replay k=340 14:22:07.5220  match=True
+   RX     asserted    SER 14:22:07.5319 (k=359)  replay k=359 14:22:07.5319  match=True
+   52A    open        SER 14:22:07.5720 (k=436)  replay k=436 14:22:07.5720  match=True
+   Z1     deasserted  SER 14:22:07.5783 (k=448)  replay k=448 14:22:07.5783  match=True
+   Z2     deasserted  SER 14:22:07.5798 (k=451)  replay k=451 14:22:07.5798  match=True
+   KEY    deasserted  SER 14:22:07.5798 (k=451)  replay k=451 14:22:07.5798  match=True
+   RX     deasserted  SER 14:22:07.5861 (k=463)  replay k=463 14:22:07.5861  match=True
+SER comparison L2-21 Sub C
+   52A    closed      SER 14:22:07.3450 (k=0)  replay k=0 None  match=record start (closed)
+   Z2     asserted    SER 14:22:07.5257 (k=347)  replay k=347 14:22:07.5257  match=True
+   KEY    asserted    SER 14:22:07.5257 (k=347)  replay k=347 14:22:07.5257  match=True
+   RX     asserted    SER 14:22:07.5272 (k=350)  replay k=350 14:22:07.5272  match=True
+   TRIP   asserted    SER 14:22:07.5272 (k=350)  replay k=350 14:22:07.5272  match=True
+   52A    open        SER 14:22:07.5772 (k=446)  replay k=446 14:22:07.5772  match=True
+   Z2     deasserted  SER 14:22:07.5798 (k=451)  replay k=451 14:22:07.5798  match=True
+   KEY    deasserted  SER 14:22:07.5798 (k=451)  replay k=451 14:22:07.5798  match=True
+   RX     deasserted  SER 14:22:07.5861 (k=463)  replay k=463 14:22:07.5861  match=True
+relay B elements absent from its SER: Z1 first=None, Z2 first=None, Z3R first=None, TRIP first=None
+relay A fault locator (replay): {'loop': 'BC', 'sample': 406, 'Z_sec': [np.float64(1.1403456072261204), np.float64(5.299574761018051)], 'X_primary': np.float64(44.16312300848376), 'km': np.float64(92.0065062676745)} ; event report: 92.0 km BC
+relay A first assertions: {'Z1': None, 'Z2': 351, 'Z3R': None, 'RX': 406, 'ECHO': None, 'KEY': 351, 'TRIP': 406, '52A_open': 502}
+relay B first assertions: {'Z1': None, 'Z2': None, 'Z3R': None, 'RX': 363, 'ECHO': 394, 'KEY': 394, 'TRIP': None, '52A_open': None}
+relay B as built (m=0.60): BC-loop Z (k=370..429 mean) = -1.225-1.124j ohm sec, |Z|=1.662 at -137.5 deg; distance to Z3R centre 1.163 vs radius 0.870; minimum reverse reach that would contain it 2.219 ohm sec
+=== COUNTERFACTUAL: correct series CT circuit (m = 1.00); after sample 501 the analog data are continued with the steady pre-opening sinusoid because breaker A would not have opened
+relay A (counterfactual) first assertions: {'Z1': None, 'Z2': 351, 'Z3R': None, 'RX': None, 'ECHO': None, 'KEY': 351, 'TRIP': None, '52A_open': None}
+relay B (counterfactual) first assertions: {'Z1': None, 'Z2': None, 'Z3R': 350, 'RX': 363, 'ECHO': None, 'KEY': None, 'TRIP': None, '52A_open': None}
+relay B correct wiring (m=1.00): BC-loop Z (k=370..429 mean) = -0.735-0.674j ohm sec, |Z|=0.997 at -137.5 deg; distance to Z3R centre 0.672 vs radius 0.870; minimum reverse reach that would contain it 1.331 ohm sec
+counterfactual relay B: RX first at 363, Z3R at that sample=1, EBLK=1; Z3R asserted 13 samples before RX
+counterfactual on unextended record: A TRIP=None, B ECHO=None, B KEY=None
+=== ALTERNATIVE HYPOTHESES AND SENSITIVITY
+H0_as_built_parallel_BF50_m0.60                      {'A_Z2': 351, 'A_RX': 406, 'A_TRIP': 406, 'B_Z1': None, 'B_Z2': None, 'B_Z3R': None, 'B_RX': 363, 'B_ECHO': 394, 'B_KEY': 394, 'B_TRIP': None}  reproduces SER/record: True
+H1_correct_series_m1.00                              {'A_Z2': 351, 'A_RX': None, 'A_TRIP': None, 'B_Z1': None, 'B_Z2': None, 'B_Z3R': 350, 'B_RX': 363, 'B_ECHO': None, 'B_KEY': None, 'B_TRIP': None}  reproduces SER/record: False
+H2_wrong_CT_tap_X1X5_2000to5_series_m0.60            {'A_Z2': 351, 'A_RX': 406, 'A_TRIP': 406, 'B_Z1': None, 'B_Z2': None, 'B_Z3R': None, 'B_RX': 363, 'B_ECHO': 394, 'B_KEY': 394, 'B_TRIP': None}  reproduces SER/record: True
+H3_reversed_CT_polarity_at_B_series                  {'A_Z2': 351, 'A_RX': 351, 'A_TRIP': 351, 'B_Z1': 342, 'B_Z2': 339, 'B_Z3R': None, 'B_RX': 363, 'B_ECHO': None, 'B_KEY': 339, 'B_TRIP': 342}  reproduces SER/record: False
+H4_reversed_polarity_and_parallel_BF50               {'A_Z2': 351, 'A_RX': 355, 'A_TRIP': 355, 'B_Z1': 348, 'B_Z2': 343, 'B_Z3R': None, 'B_RX': 363, 'B_ECHO': None, 'B_KEY': 343, 'B_TRIP': 348}  reproduces SER/record: False
+H9_open_or_shorted_CT_circuit_at_B_m0                {'A_Z2': 351, 'A_RX': 406, 'A_TRIP': 406, 'B_Z1': None, 'B_Z2': None, 'B_Z3R': None, 'B_RX': 363, 'B_ECHO': 394, 'B_KEY': 394, 'B_TRIP': None}  reproduces SER/record: True
+H10_Z3R_disabled_at_B_correct_wiring                 {'A_Z2': 351, 'A_RX': 406, 'A_TRIP': 406, 'B_Z1': None, 'B_Z2': None, 'B_Z3R': None, 'B_RX': 363, 'B_ECHO': 394, 'B_KEY': 394, 'B_TRIP': None}  reproduces SER/record: True
+H5_previous_setting_Z3P_1.80_with_parallel_BF50      {'A_Z2': 351, 'A_RX': 406, 'A_TRIP': 406, 'B_Z1': None, 'B_Z2': None, 'B_Z3R': None, 'B_RX': 363, 'B_ECHO': 394, 'B_KEY': 394, 'B_TRIP': None}  reproduces SER/record: True
+H6_previous_setting_Z3P_1.80_correct_wiring          {'A_Z2': 351, 'A_RX': None, 'A_TRIP': None, 'B_Z1': None, 'B_Z2': None, 'B_Z3R': 350, 'B_RX': 363, 'B_ECHO': None, 'B_KEY': None, 'B_TRIP': None}  reproduces SER/record: False
+H7_interim_ECHO_N_at_B_with_parallel_BF50            {'A_Z2': 351, 'A_RX': None, 'A_TRIP': None, 'B_Z1': None, 'B_Z2': None, 'B_Z3R': None, 'B_RX': 363, 'B_ECHO': None, 'B_KEY': None, 'B_TRIP': None}  reproduces SER/record: False
+H8_echo_disabled_correct_wiring                      {'A_Z2': 351, 'A_RX': None, 'A_TRIP': None, 'B_Z1': None, 'B_Z2': None, 'B_Z3R': 350, 'B_RX': 363, 'B_ECHO': None, 'B_KEY': None, 'B_TRIP': None}  reproduces SER/record: False
+relay-B current share m reproducing the recorded event (sweep 0.00..1.00 step 0.01): 0.00 .. 0.73
+smallest m for which B Z3R blocks the echo: 0.74
+relay B effective reaches with m=0.60: {'Z1P_effective_sec': 2.226, 'Z2P_effective_sec': 3.474, 'Z3P_effective_sec': 1.044, 'Z1_percent_of_L1': 48.047, 'Z2_percent_of_L1': 74.985}
+on-angle coordination (primary ohm): {'A_Z2_reach_primary': 48.25, 'overreach_beyond_B_primary': 9.642, 'B_Z3R_reach_primary': 14.5, 'margin_ratio_correct_wiring': 1.504, 'margin_ratio_as_built': 0.902}
+CT 52-L1 core 1 at B duty: {'max_phase_current_A_sec': np.float64(9.509), 'burden_series_ohm': 0.48, 'burden_parallel_ohm': 0.404, 'X_over_R': 9.595, 'required_voltage_full_offset_V': np.float64(48.357), 'C800_on_1200_tap_V': 480.0}

@@ -1,0 +1,143 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>L1 Trip Investigation</title>
+<style>
+body{font-family:sans-serif;font-size:9.5pt;line-height:1.35;color:#111}
+h1{font-size:15pt;margin:0 0 4px 0} h2{font-size:12pt;margin:14px 0 4px 0;border-bottom:1px solid #888}
+h3{font-size:10.5pt;margin:10px 0 3px 0}
+table{border-collapse:collapse;margin:4px 0 8px 0;width:100%} td,th{border:1px solid #999;padding:2px 4px;font-size:8.5pt;vertical-align:top}
+th{background:#e8e8e8;text-align:left} .mono{font-family:monospace;font-size:8.5pt} .box{border:1px solid #444;padding:6px;background:#f4f4f4}
+p{margin:3px 0 5px 0} ul,ol{margin:2px 0 6px 18px}
+</style></head><body>
+
+<h1>230 kV Line L1 &ndash; Substation A breaker trip of 14 September 2026, 14:22:07</h1>
+<p>Protection engineering investigation report. Case file L1_trip_case_r3_2026-09-14. All numbers in this report are outputs of the replay program <span class="mono">l1_trip_replay.py</span> (console log <span class="mono">replay_console_log.txt</span>, values in <span class="mono">l1_trip_results.json</span>). Relay sample k = n &minus; 1 (n = first column of the .dat files); time = 14:22:07.3450 + k/1920 s, printed truncated to 0.1 ms as in the relays' SER.</p>
+
+<div class="box">
+<b>Conclusion.</b> The disturbance was a phase B&ndash;C fault (no ground) on line <b>L2</b>, <b>6.48 km from Substation B</b> (patrol: tower 18, 6.50 km), beginning at relay sample <b>k = 320</b> (14:22:07.5116). L2 was correctly cleared at both ends. The L1 trip at Substation A was a <b>POTT scheme misoperation caused by relay B (L1-21 at Substation B) echoing relay A's permissive signal for a reverse fault</b>.<br>
+<b>Root cause:</b> when the BF-50 breaker-failure relay of bay L1 at Substation B was replaced on 2025-02-12 (cable schedule bay L1, revision C), its current inputs were wired <b>in parallel</b> with the L1-21 relay current inputs (both fed from TS-L1:2/4/6, both returned to TB-L1:10) instead of <b>in series</b> as required by AC schematic B-E-3301. The CT secondary current divides in inverse proportion to the input burdens (relay 0.04 &Omega;, BF-50 0.06 &Omega;), so relay B measures only <b>60 %</b> of the true current and sees every impedance 1/0.60 = 1.67 times too large. For this reverse, resistive L2 fault relay B's BC-loop impedance (&minus;1.225 &minus; j1.124 &Omega; sec) fell outside its reverse zone 3 (Z3P = 1.74 &Omega;), so neither Z3R nor the EBLK timer blocked the weak-infeed echo enabled at B on 2026-05-26 (settings R5). Relay B echoed relay A's zone 2 KEY, and relay A tripped by POTT.<br>
+<b>Without the wiring error</b> (series connection, full current), the replay shows relay B's Z3R asserting at k = 350, 13 samples before the permissive arrives (k = 363); the echo is blocked, relay A keys but never receives RX, and neither L1 relay trips.<br>
+<b>Corrective action:</b> re-terminate the bay L1 CT circuit at Substation B in series per B-E-3301 and re-commission it; set <b>ECHO = N</b> at relay B as an interim measure until the circuit is corrected; after correction restore ECHO = Y with the R5 values unchanged (Z3P = 1.74 &Omega; sec, EDPU 32, EDUR 64, EBLK 64). No change at relay A.
+</div>
+
+<h2>1. Records used and method</h2>
+<ul>
+<li>Oscillography (COMTRADE 1999 ASCII, 1920 samples/s, 640 samples, common GPS start 14:22:07.345000): SUBA L1-21 (relay A), SUBB L2-21, SUBC L2-21. Relay B's oscillography was overwritten; only its SER is available.</li>
+<li>Settings exports of all four relays, manual excerpt (phasor, mho, POTT/echo logic, Fig. 1 and Fig. 2), technical data of L1-21 and BF-50, one-line S-230-001, settings calculation of L1, CT drawings A-E-1107, B-E-2214/2215/2216, C-E-0310, AC schematics B-E-3301/3302, cable and termination schedules (Sub B bays L1, L2, T1), CT commissioning book (A, B, C), Sub B maintenance log, operations log, L2 patrol report.</li>
+</ul>
+<h3>1.1 Replay program</h3>
+<p>The program implements the manual literally and evaluates every sample in the specified order: (1) full-cycle Fourier phasor X(k) = (&radic;2/32)&middot;&Sigma; x[k&minus;i]&middot;e<sup>&minus;j2&pi;(k&minus;i)/32</sup> for k &ge; 31; (2) loops AB, BC, CA with V = V<sub>X</sub> &minus; V<sub>Y</sub>, I = I<sub>X</sub> &minus; I<sub>Y</sub>, evaluated only for |I| &ge; 50PP, Z = V/I; forward mho |Z &minus; (R/2)e<sup>jT</sup>| &le; R/2 for Z1/Z2, reverse mho |Z + (R/2)e<sup>jT</sup>| &le; R/2 for Z3R; (3) RX(k) = remote KEY(k &minus; 12); (4) echo: AND(/Z1, /Z2, /Z3R, /EBLK, RX) &rarr; EDPU pickup (asserts on the 32nd consecutive sample) &rarr; EDUR one-shot (64 samples, not retriggerable), EBLK = dropout timer holding 64 samples after Z3R drops; (5) KEY = Z2 + ECHO (ECHO only when ECHO = Y); (6) TRIP = latch(Z1 + Z2&middot;RX); 52A opens 96 samples after TRIP; fault locator d = X<sub>primary</sub>/0.48 at the trip sample. The two ends of a line are simulated in lock step so that the channel couples them.</p>
+<h3>1.2 Reconstruction of relay B's inputs</h3>
+<ul>
+<li><b>Voltages</b>: Sub B bus VT, i.e. VA/VB/VC of the SUBB L2-21 record (one-line note: both Sub B line relays take the same bus VT).</li>
+<li><b>Currents</b>: L1 has negligible charging, both ends have CTR = 240 and P1 toward the bus, so the true L1 secondary current at B is &minus;I<sub>A</sub> (relay A record). Relay B measures &minus;m&middot;I<sub>A</sub>, where m is the share of the CT secondary current passing through the relay. As built (parallel BF-50): m = 0.06/(0.04 + 0.06) = <b>0.60</b> (resistive burdens, no phase shift). By design (series): m = 1.00.</li>
+<li>Check of the basis: the L1 series impedance computed from relay A's currents and the two bus voltages, (V<sub>A</sub> &minus; V<sub>B</sub>)/I<sub>A</sub> on the BC loop, is 3.95 + j38.46 &Omega; primary versus line data 4.00 + j38.40 &Omega;. So relay A's record and the Sub B voltages are mutually consistent, and no current left L1 between A and B (no L1 fault).</li>
+</ul>
+
+<h2>2. Validation of the replay against the relays' own outputs</h2>
+<table>
+<tr><th>Relay replayed</th><th>Inputs</th><th>Recorded digital channels (Z1, Z2, KEY, RX, TRIP, 52A), 640 samples</th><th>SER entries reproduced to 0.1 ms</th></tr>
+<tr><td>L2-21 Sub B and L2-21 Sub C (lock step)</td><td>own records</td><td>0 mismatching samples on every channel</td><td>10/10 and 8/8 transitions (+ 52A closed at record start)</td></tr>
+<tr><td>L1-21 relay A (lock step with replayed relay B)</td><td>own record</td><td>0 mismatching samples on every channel, including RX, which is generated by the replayed relay B</td><td>8/8 transitions (+ 52A closed at record start); fault locator 92.0 km BC (report: 92.0 km BC)</td></tr>
+<tr><td>L1-21 relay B</td><td>reconstructed, m = 0.60</td><td>no oscillography exists</td><td>6/6 (RX, ECHO and KEY assert and deassert); Z1, Z2, Z3R and TRIP never assert, as in the SER</td></tr>
+</table>
+<p>The implementation reproduces all three recorded relays sample for sample. The reconstructed relay B reproduces its SER exactly, and its replayed ECHO, delayed by the channel, reproduces relay A's recorded RX channel sample for sample.</p>
+
+<h2>3. Item 1 &ndash; the fault</h2>
+<table>
+<tr><th>Quantity</th><th>Result</th><th>Evidence</th></tr>
+<tr><td>Fault type</td><td>Phase-to-phase B&ndash;C, no ground</td><td>Only VB/VC and IB/IC change; 3I0 = 0.000 A at all three terminals; phase A current and voltage unchanged during the fault (relay A: IA 1.479 A before and during; Sub B VA 66.44 V). Patrol: phase-to-phase flashover B&ndash;C at tower 18, bird nest, no ground contact.</td></tr>
+<tr><td>Faulted line</td><td>L2 (Substation B &ndash; Substation C)</td><td>L2 relays: B zone 1, C POTT; patrol findings on L2; L1 impedance check consistent with no L1 fault; L1 restored with no fault found.</td></tr>
+<tr><td>Distance from Substation B</td><td><b>6.48 km</b> (two-ended, BC loop, mean over k = 370&ndash;429; spread 6.20&ndash;6.80 km)</td><td>Patrol: tower 18 at 6.50 km. Single-ended reactance at B L2-21: 6.20 km (affected by remote infeed and fault resistance).</td></tr>
+<tr><td>Fault resistance</td><td>3.00 &Omega; primary phase to phase (arc)</td><td>From the two-ended solution.</td></tr>
+<tr><td>Fault inception</td><td><b>Relay sample k = 320</b> (record line n = 321), 14:22:07.5116</td><td>First one-cycle superimposed change of VB and VC at k = 320 in all three records (currents follow at k = 321); equal to the COMTRADE trigger 14:22:07.511667.</td></tr>
+</table>
+<p>The Sub B infeed (transformer T1 from the 115 kV network) makes the L2 current at B 2.06 times the L1 current (angle &minus;5.0&deg;). That infeed is why relay A's zone 2 measured the fault at 91.8&ndash;92.0 km instead of 86.5 km. Relay A's zone 2 is designed to overreach, so its pickup was expected.</p>
+
+<h2>4. Sequence of events (replay, actual case)</h2>
+<table>
+<tr><th>k</th><th>Time 14:22:</th><th>Event</th></tr>
+<tr><td>320</td><td>07.5116</td><td>B&ndash;C fault on L2, 6.48 km from B</td></tr>
+<tr><td>338 / 340</td><td>07.5210 / 07.5220</td><td>L2-21 B: Z2 + KEY / Z1 + TRIP</td></tr>
+<tr><td>347 / 350</td><td>07.5257 / 07.5272</td><td>L2-21 C: Z2 + KEY / RX + TRIP (POTT)</td></tr>
+<tr><td>351</td><td>07.5278</td><td>Relay A: Z2 asserts (forward, overreaching), KEY sent to B</td></tr>
+<tr><td>363</td><td>07.5340</td><td>Relay B: RX. Its BC-loop impedance lies outside Z3R, so Z3R and EBLK stay deasserted; Z1 and Z2 are deasserted (reverse fault). The echo AND gate is satisfied.</td></tr>
+<tr><td>394</td><td>07.5502</td><td>Relay B: EDPU expires (32nd consecutive sample), ECHO and KEY assert for 64 samples</td></tr>
+<tr><td>406</td><td>07.5564</td><td>Relay A: RX (B's echo + 12 samples) with Z2 still asserted, so <b>TRIP (POTT)</b>; locator 92.0 km, BC</td></tr>
+<tr><td>436 / 446</td><td>07.5720 / 07.5772</td><td>L2 breakers open at B / C, fault cleared; relay A Z2 and KEY drop at 446</td></tr>
+<tr><td>458 / 470</td><td>07.5835 / 07.5897</td><td>Relay B ECHO/KEY/RX drop / relay A RX drops</td></tr>
+<tr><td>502</td><td>07.6064</td><td>L1 breaker at A opens (TRIP + 96 samples)</td></tr>
+</table>
+
+<h2>5. Item 2 &ndash; first assertion of each element (replay)</h2>
+<table>
+<tr><th>Relay</th><th>Z1</th><th>Z2</th><th>Z3R</th><th>RX</th><th>ECHO</th><th>KEY</th><th>TRIP</th><th>52A opens</th></tr>
+<tr><td>A (Sub A)</td><td>never</td><td>351</td><td>disabled (Z3P = OFF)</td><td>406</td><td>disabled (ECHO = N)</td><td>351</td><td>406</td><td>502</td></tr>
+<tr><td>B (Sub B), as built</td><td>never</td><td>never</td><td>never</td><td>363</td><td>394</td><td>394</td><td>never</td><td>stays closed</td></tr>
+</table>
+
+<h2>6. Item 3 &ndash; root cause and evidence</h2>
+<h3>6.1 Why relay A tripped</h3>
+<p>Relay A behaved exactly as set. Its zone 2 (5.79 &Omega; sec = 125 % of L1) overreaches into L2 by design and asserted at k = 351 (Z = 1.33 + j5.50 &Omega; sec at pickup). It received a permissive at k = 406 and tripped by POTT. The permissive was relay B's echo, so relay A's trip is a consequence and not a cause.</p>
+<h3>6.2 Why relay B echoed</h3>
+<p>For a fault behind Substation B, relay B must assert Z3R (reverse) and block the echo. With the as-built CT circuit, relay B's BC-loop impedance during the fault averaged <b>&minus;1.225 &minus; j1.124 &Omega; sec</b> (|Z| = 1.66 &Omega; at &minus;137.5&deg;). It is 1.163 &Omega; from the Z3R circle centre, against a radius of 0.870 &Omega;, so it lies outside the circle. Z3R never asserted, EBLK never started, the AND gate was satisfied from RX (k = 363), and ECHO followed at k = 394. With the true current (m = 1) the same impedance is &minus;0.735 &minus; j0.674 &Omega; sec, 0.672 &Omega; from the centre, inside Z3R. The angle (&minus;137.5&deg;, away from the 264&deg; Z3R axis) comes from the 3.0 &Omega; fault resistance seen through the 2.06 infeed ratio. The 1/0.60 magnification is what pushes the point out of the circle. The figure below shows the trajectories.</p>
+<p><img src="fig_replay_overview.png" width="560"></p>
+<h3>6.3 Documentary evidence of the parallel connection</h3>
+<ul>
+<li><b>Cable and termination schedule, Sub B bay L1, as built, rev C 2025-02-12 ("BF-50 replaced")</b>: rows 3/4, 9/10 and 15/16 feed relay L1-21 (Z01/Z03/Z05) <i>and</i> BF50-L1 (A1/B1/C1) from the same test-switch terminals TS-L1:2/4/6. Rows 5/6, 11/12 and 17/18 return both relay outputs (Z02/Z04/Z06) and BF-50 outputs (A2/B2/C2) to the star point TB-L1:10. That is a parallel connection.</li>
+<li><b>AC schematic B-E-3301 rev A</b>: "all devices on core 1 are connected in SERIES in each phase (CT X2 &rarr; TS &rarr; device 1 in/out &rarr; device 2 in/out &rarr; N)". The bay L2 schedule (rev B 2023) is correct: L2-21:Z02 &rarr; BF50-L2:A1, BF50-L2:A2 &rarr; TB-L2:10.</li>
+<li><b>Device technical data</b>: L1-21 burden 0.04 &Omega; and BF-50 burden 0.06 &Omega;, both resistive, so the relay's share is 0.06/0.10 = 0.60 with no phase shift.</li>
+<li><b>Maintenance log</b>: the BF-50 replacement on 2025-02-12 was followed only by a trip-output test (no CT circuit re-commissioning). The CT commissioning book for Sub B dates from 2023-04-14, before the change. The 2025-06-03 relay B test injected at the relay test switch "with BF-50 isolated by its own test switch". Isolating the BF-50 removes the parallel path, so the test could not reveal the error. The error had no effect on security until <b>ECHO = Y</b> was introduced at B with R5 on 2026-05-26.</li>
+</ul>
+<h3>6.4 Consequences beyond this event</h3>
+<p>With m = 0.60 every reach of relay B is effectively multiplied by 0.60: Z1 covers 48 % of L1 instead of 80 %, Z2 75 % instead of 125 % (no longer overreaching, so POTT keying from B fails for faults near A), and Z3R covers 0.90 times instead of 1.50 times relay A's zone 2 overreach beyond bus B. The BF-50 receives only 40 % of the current, so its 50BF pickup is effectively 2.5 times its setting.</p>
+
+<h2>7. Alternative causes considered</h2>
+<table>
+<tr><th>Hypothesis</th><th>Replay result</th><th>Verdict and evidence</th></tr>
+<tr><td>Correct series wiring (m = 1.00), relays as set</td><td>B Z3R at 350, no echo, A no trip</td><td>Does not reproduce the event. The same settings and logic would not have produced the trip.</td></tr>
+<tr><td>Fault on L1, or relay A misoperation</td><td>Relay A replay matches its record with 0 mismatches</td><td>Rejected. ZL1 computed from the A and B data equals the line data, so no current left L1; the patrol found the fault on L2; L1 was restored with no fault. Relay A operated per its logic on a received permissive.</td></tr>
+<tr><td>Spurious RX at A (channel)</td><td>A's RX = B's replayed ECHO + 12 samples, exactly</td><td>Rejected. Relay B's SER shows ECHO and KEY, and the RX timing at A matches them to the sample.</td></tr>
+<tr><td>CT polarity reversed at B (m = &minus;1 or &minus;0.6)</td><td>B Z2 at 339/343, B Z1 at 342/348, B TRIP; A trips at 351/355</td><td>Rejected. Relay B's SER shows no Z1, Z2 or TRIP, and A tripped at 406, not 351.</td></tr>
+<tr><td>Wrong CT tap at B, X1&ndash;X5 2000:5 (ratio error 1200/2000 = 0.60)</td><td>Same as the as-built case (identical factor)</td><td>Event data alone cannot separate it from the parallel BF-50, so the documents decide. The commissioning record of 2023-04-14 (52-L1 core 1: X2&ndash;X4, ratio PASS) and the as-built schedule rev C (CT52L1-A/B/C:X2 and X4 common) both show the 1200:5 tap. Rejected.</td></tr>
+<tr><td>Open or shorted CT circuit at B (m = 0); Z3R disabled at B</td><td>Both reproduce the SER (the sweep shows any m &le; 0.73 does)</td><td>No documentary support. The settings export shows Z3P = 1.74 active in group 1, and nothing records a shorted or open circuit. The documented parallel connection gives m = 0.60, inside the range that reproduces the event. The as-found on-load check in section 9 will confirm m directly.</td></tr>
+<tr><td>Settings revision R5: Z3P recalculated 1.80 &rarr; 1.74</td><td>With 1.80: still no Z3R (as built); Z3R at 350 (series)</td><td>Rejected as a cause: the old reach would also have failed. The smallest reach that would have contained the as-built impedance is 2.22 &Omega;. The calculation itself is sound for a correctly wired relay: Z3R reach is 1.50 times A's zone 2 overreach, and the event impedance is inside Z3R with m = 1.</td></tr>
+<tr><td>Firmware v3.2 &rarr; v3.4 (SB-114, event storage)</td><td>Manual logic with the documented inputs reproduces the SER exactly</td><td>No firmware anomaly is needed to explain the event. The upgrade concerns event storage.</td></tr>
+<tr><td>VT-B secondary MCB (replaced 2026-06-14)</td><td>&ndash;</td><td>Rejected. The Sub B bus voltages in the L2-21 record are healthy (VA 66.44 V), and L2-21 B, on the same VT, operated correctly (zone 1).</td></tr>
+<tr><td>CT saturation at B</td><td>&ndash;</td><td>Rejected. Peak secondary fault current 9.51 A rms &times; 0.48 &Omega; series burden &times; (1 + X/R 9.6) needs 48 V, against 480 V (C800 on the 1200/2000 tap). Saturation also would not give the steady ratio that the replay requires.</td></tr>
+<tr><td>Echo timers mis-set or channel delay</td><td>&ndash;</td><td>Rejected. The SER spacing is RX &rarr; ECHO 31 samples (EDPU 32), ECHO 64 samples (EDUR), and channel 12 samples, all as set.</td></tr>
+</table>
+
+<h2>8. Item 4 &ndash; behaviour without the root cause (replay, m = 1.00)</h2>
+<p>The CT circuit is correct (series), the settings are unchanged, and the analog data after k = 501 are continued as the steady pre-opening waveform because breaker A would have stayed closed.</p>
+<table>
+<tr><th>Relay</th><th>Z1</th><th>Z2</th><th>Z3R</th><th>RX</th><th>ECHO</th><th>KEY</th><th>TRIP</th></tr>
+<tr><td>A</td><td>never</td><td>351 (drops 446)</td><td>disabled</td><td>never</td><td>disabled</td><td>351 (drops 446)</td><td><b>never</b></td></tr>
+<tr><td>B</td><td>never</td><td>never</td><td><b>350</b></td><td>363</td><td><b>never</b></td><td>never</td><td>never</td></tr>
+</table>
+<p>Relay B's Z3R asserts 13 samples before the permissive arrives. Z3R and EBLK block the echo, relay A receives no permissive, and its zone 2 resets when L2 clears at k = 446. L1 stays in service: this is the correct, secure behaviour for an external fault. The program also replays this case on the unextended record, with the same result.</p>
+
+<h2>9. Item 5 &ndash; corrective action</h2>
+<ol>
+<li><b>Immediate setting change at relay B (interim):</b> <b>ECHO = N</b> (all other R5 values unchanged) until the CT circuit is corrected. The replay with ECHO = N and the as-built circuit gives no trip at A for this event. Relay B's dependability remains reduced (effective Z2 is 75 % of L1), so the rewiring must not wait.</li>
+<li><b>As-found confirmation before the change:</b> record on load the relay B and BF-50 phase currents and compare them with relay A. Expected as found: relay B at 0.60 times relay A's magnitude and 180&deg; opposite, and BF-50 at 0.40 times.</li>
+<li><b>Rewire to the design (B-E-3301):</b> L1-21:Z02/Z04/Z06 &rarr; BF50-L1:A1/B1/C1 and BF50-L1:A2/B2/C2 &rarr; TB-L1:10. Remove TS-L1:2/4/6 &rarr; BF50-L1:A1/B1/C1 and L1-21:Z02/Z04/Z06 &rarr; TB-L1:10. Issue cable schedule rev D.</li>
+<li><b>Re-commission the CT 52-L1 core 1 circuit</b> (form P-14): primary injection, or secondary injection at the CT terminals through the complete chain with all devices in circuit, followed by ratio, polarity and loop-resistance checks and an on-load check. Relay B must equal relay A within 1&ndash;2 % at 180&deg;, and BF-50 must equal relay B. Repeat the POTT/echo end-to-end test, including a reverse-fault case that verifies Z3R blocking of the echo.</li>
+<li><b>Final settings at relay B after re-commissioning:</b> restore <b>ECHO = Y</b> with R5 unchanged: Z1P 3.71, Z2P 5.79, Z3P 1.74 &Omega; sec, Z1ANG 84&deg;, 50PP 0.50 A, EDPU 32, EDUR 64, EBLK 64 samples. The replay shows that these values coordinate for this event when the inputs are correct. Do not increase Z3P to compensate for the wiring: a reach above 2.22 &Omega; would only mask the error. Relay A: no change.</li>
+<li><b>Process:</b> require CT circuit re-commissioning after any device change in a CT circuit. Do not test series-connected devices with other devices isolated without a follow-up through-current test. Apply this to the planned 2027 BF-50 replacement in bay L2 and audit other BF-50 retrofits for the same error.</li>
+</ol>
+
+<h2>10. Limitations</h2>
+<ul>
+<li>Relay B's oscillography was not available, so its inputs are reconstructed. The event data constrain relay B's current share to m &le; 0.73. The value m = 0.60 comes from the documented parallel connection and the device burdens; lead resistance between the split point and the devices was neglected. The as-found on-load measurement (action 2) will confirm m.</li>
+<li>Counterfactual analog data after k = 501 are a steady-state continuation; the fault had been cleared at k = 446.</li>
+</ul>
+
+<h2>11. Deliverables</h2>
+<ul>
+<li><span class="mono">l1_trip_replay.py</span>: replay and analysis program (run: <span class="mono">python3 l1_trip_replay.py &lt;case_dir&gt; &lt;out_dir&gt;</span>)</li>
+<li><span class="mono">replay_digital_channels_actual.csv</span>: replayed digital channels of relays A and B per sample (with BC-loop impedances)</li>
+<li><span class="mono">replay_digital_channels_counterfactual.csv</span>: the same channels with a correct CT circuit (m = 1)</li>
+<li><span class="mono">l1_trip_results.json</span>: all reported values (items 1&ndash;5, validation, hypotheses)</li>
+<li><span class="mono">replay_console_log.txt</span>, <span class="mono">fig_replay_overview.png</span>, and this report (HTML and PDF)</li>
+</ul>
+</body></html>

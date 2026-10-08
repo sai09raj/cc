@@ -69,3 +69,18 @@ PARALLEL with relay B's current inputs (as-built schedule rows: TS-L1:2 -> Z01 a
 BF50 A1; Z02 -> TB:10 and A2 -> TB:10) instead of in series (AC schematic B-E-3301). Burdens
 0.04 ohm (relay) and 0.06 ohm (BF-50) split the current 0.60 / 0.40. The 2025-06 relay test
 injected with BF-50 isolated, so it passed. Corrective action: re-terminate BF-50 in series.
+
+## Probe 3 (opus alias, v3): SOLVED exactly in ~13 min, 44 tool calls
+
+Same pattern again. Calls 1-25: every text file, every PDF page rendered and viewed (manual
+with a zoom on the logic figure, one-line, all five CT sheets, both AC schematics, all three
+cable schedules re-rendered at 150 dpi, all four commissioning pages). Call 30, its first
+program, already contains the parallel BF-50 diagnosis and the 0.04/0.06 burden split. It
+then confirmed by replay, ruled out the CT tap with the documents, and even noted which
+alternatives the event data alone cannot exclude.
+
+## Conclusion so far
+
+Three versions, three exact solves in 7-13 minutes. Moving the cause off the routine checklist
+did not help: with ~30 pages the model reads every page and traces terminal tables row by
+row. The community tips' "background file" effect did not appear at this bundle size.
