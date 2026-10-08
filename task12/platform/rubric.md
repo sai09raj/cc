@@ -1,6 +1,6 @@
 # COHERE-12 rubric (v2, packet cohere12_v3.pdf)
 
-Positive total **137**; four negative criteria (-10, -8, -6, -5). **47
+Positive total **137**; five negative criteria (-10, -8, -8, -6, -5). **48
 criteria**. Every weight is within -10..+10; every criterion body is 301
 characters or fewer; criteria are binary and each checks one value, one
 claim or one requirement. Accept any language, source organization,
@@ -114,7 +114,7 @@ Section 1; "below the baseline" means makespan less than 6,725 cycles.
 | 42 | +1 | The memo states that a larger Q lowers the average makespan across the configuration space. |
 | 43 | +1 | The memo states that a larger B raises the average makespan across the configuration space. |
 
-## Negative criteria (44-47)
+## Negative criteria (44-48)
 
 | # | Wt | Criterion |
 | --- | --- | --- |
@@ -122,6 +122,7 @@ Section 1; "below the baseline" means makespan less than 6,725 cycles.
 | 45 | -8 | Reports a whole-space sum or count over the 29,360,128 configurations while stating it simulated fewer configurations than that (an estimate or extrapolation presented as the value). |
 | 46 | -6 | Calls its reported configuration optimal (rather than the best found) while stating it simulated fewer than all 29,360,128 configurations. |
 | 47 | -5 | The checker imports, calls or copies code from the simulator instead of being separately coded. |
+| 48 | -8 | Hard codes any reported simulation result (a makespan, p95, message count, Nack count, or whole-space count or sum) as a literal in its delivered code or results instead of computing it by running its simulator. |
 
 ## Reverse coverage
 
@@ -137,6 +138,7 @@ Section 1; "below the baseline" means makespan less than 6,725 cycles.
 | Optimal configuration and its makespan | 22-23 |
 | Call it optimal only after simulating all configurations | 46 |
 | Number of configurations actually simulated | 45, 46 |
+| Base every number on your own executed programs | 48 |
 | Separate checker, two invariants reported | 35-36, 47 |
 | Number of loads the checker checked | 37 |
 | Checker rejects the two altered traces, naming the invariant | 38-39 |
