@@ -1,0 +1,18 @@
+SUBSTATION A  -  L1-21 LINE RELAY  -  SETTINGS EXPORT (GROUP 1, ACTIVE)
+Settings revision: R4 2025-11-20
+RID      = SUBA-L1-21
+TID      = 230KV LINE L1 TO SUB B
+CTR      = 240          ; CT ratio 1200/5
+PTR      = 2000         ; VT ratio 230000/115
+Z1ANG    = 84.0         ; deg, maximum torque angle of all mho elements
+Z1P      = 3.71         ; ohm sec, zone 1 forward phase mho reach
+Z2P      = 5.79         ; ohm sec, zone 2 forward phase mho reach
+Z3P      = OFF          ; ohm sec, zone 3 reverse phase mho reach
+50PP     = 0.50         ; A sec, minimum loop current for phase mho elements
+SCHEME   = POTT
+ECHO     = N
+EDPU     = 32           ; samples, echo pickup
+EDUR     = 64           ; samples, echo duration
+EBLK     = 64           ; samples, echo block after Z3R
+TR       = Z1 + Z2*RX   ; trip equation
+KEY      = Z2 + ECHO    ; transmit equation

@@ -1,0 +1,78 @@
+{
+ "opens": {
+  "L1": 502,
+  "L2B": 436,
+  "L2C": 446
+ },
+ "A_first": {
+  "Z1": null,
+  "Z2": 351,
+  "KEY": 351,
+  "RX": 406,
+  "TRIP": 406
+ },
+ "B_SER_first": {
+  "RX": 363,
+  "ECHO": 394,
+  "Z3R": null,
+  "Z2": null,
+  "Z1": null
+ },
+ "L2B_first": {
+  "Z1": 340,
+  "Z2": 338,
+  "KEY": 338,
+  "RX": 359,
+  "TRIP": 340
+ },
+ "L2C_first": {
+  "Z1": null,
+  "Z2": 347,
+  "KEY": 347,
+  "RX": 350,
+  "TRIP": 350
+ },
+ "B_recon_at_240": {
+  "Z1": null,
+  "Z2": null,
+  "Z3R": 350,
+  "RX": 363,
+  "ECHO": null,
+  "KEY": null
+ },
+ "A_with_B_recon_240_trip": null,
+ "B_recon_at_400": {
+  "Z1": null,
+  "Z2": null,
+  "Z3R": null,
+  "RX": 363,
+  "ECHO": 394,
+  "KEY": 394
+ },
+ "A_with_B_recon_400_trip": 406,
+ "B_recon400_BC_sec_k400": [
+  -1.2,
+  -1.113
+ ],
+ "B_recon240_BC_sec_k400": [
+  -0.72,
+  -0.668
+ ],
+ "ratios_reproducing_SER": [
+  330,
+  800
+ ],
+ "ratio_scan_all_ok_from_lo": true,
+ "A_BC_sec_k400": [
+  1.162,
+  5.213
+ ],
+ "IB_L1_at_B_pri_k400": 2269,
+ "corrective_if_core_stays_2000_5": {
+  "CTR": 400,
+  "Z1P": 6.18,
+  "Z2P": 9.65,
+  "Z3P": 2.9,
+  "50PP": 0.3
+ }
+}

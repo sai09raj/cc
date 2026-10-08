@@ -1,0 +1,14 @@
+SUBSTATION B  -  L1-21 LINE RELAY (230 kV line L1 to Substation A)
+EVENT SUMMARY
+Date: 2026-09-14   Trigger: 14:22:07.5340
+Event: KEY (no trip)
+Oscillography: not available. The relay's event storage (4 records) was overwritten by later events
+during the L1 and L2 restoration switching on 2026-09-14; only the SER below was retrieved.
+
+SEQUENTIAL EVENTS RECORDER (relay time, GPS synchronized)
+14:22:07.5340  RX         asserted
+14:22:07.5502  ECHO       asserted
+14:22:07.5502  KEY        asserted
+14:22:07.5835  RX         deasserted
+14:22:07.5835  ECHO       deasserted
+14:22:07.5835  KEY        deasserted

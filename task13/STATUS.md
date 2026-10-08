@@ -32,3 +32,18 @@ Every reported value matched the answer key (root cause, element samples, impeda
    and fault, and the L1 voltage drop / current matching the line impedance only at 2000:5.
 4. The prompt's item 4 (primary current at B) and "primary ohms" at B invited that check.
 Gate 8.5: redesign/harden before any platform work.
+
+## v2 (case file L1_trip_case_2026-09-14.zip, 24 files) — hardened against probe 1's path
+
+- Relay B's oscillography is not in the case file (overwritten during restoration); only its
+  SER. Its inputs must be reconstructed: bus B voltages from the L2-21 Sub B record, L1 current
+  at B = -(A's current). The direct A-vs-B current fingerprint is gone.
+- No document states the design tap. Chain: B's settings CTR 240 (1200/5) -> nameplate tap chart
+  on B-E-2214 (1200:5 = X2-X4) -> 2023 commissioning book row "52-L1 core 1 X1-X5" (2000:5).
+  The CT was never replaced; the error is latent since 2023 and exposed by echo being enabled
+  in May 2026.
+- Decoys with evidence against them: firmware upgrade v3.2->v3.4 and settings revision R5
+  (Z3P 1.80->1.74, echo enabled) both on 2026-05-26; Z3P 1.80 would also have missed the fault.
+- Answer key (`reference/answer_key2.py`): a reconstruction at the set ratio 240 gives Z3R at 350
+  and no echo, contradicting B's SER; any in-service ratio >= 330 reproduces the SER exactly;
+  of the nameplate taps only X2-X5 (1750:5) and X1-X5 (2000:5) qualify, and the book says X1-X5.

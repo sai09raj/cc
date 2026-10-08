@@ -59,7 +59,7 @@ def element_states(V, I, k, s):
     return st, zs
 
 
-def replay(recA, recB, setA, setB, chan=12, edpu=32, edur=64, eblk=64):
+def replay(recA, recB, setA, setB, chan=12, edpu=32, edur=64, eblk=64, echo_b=True):
     """recX: dict with 'V' and 'I' as lists of 3 sample lists (secondary). Returns per-sample digital dicts."""
     n = len(recA["V"][0])
     PA = {"V": [phasors(c) for c in recA["V"]], "I": [phasors(c) for c in recA["I"]]}
@@ -85,7 +85,7 @@ def replay(recA, recB, setA, setB, chan=12, edpu=32, edur=64, eblk=64):
             echo_left -= 1
             echo_now = 1
         else:
-            cond = rxB and not (sB["Z1"] or sB["Z2"] or sB["Z3R"]) and (k - last_z3) > eblk
+            cond = echo_b and rxB and not (sB["Z1"] or sB["Z2"] or sB["Z3R"]) and (k - last_z3) > eblk
             cnt = cnt + 1 if cond else 0
             if cnt >= edpu:
                 echo_now = 1
