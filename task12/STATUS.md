@@ -14,7 +14,9 @@ engine 2.5x faster, before any development time.
   `claude/cohere12-gt-p{a}{b}`), 448 chunk files, aggregated by
   `proto/aggregate_v4.py` into `reference/aggregate_v4.json`. 41 sampled
   entries plus baseline, variants and optimum identical in the JS engine
-  and the real pilots' engine; FULLCHUNK_CHECK.
+  and the real pilots' engine; the unoptimized `proto/cohere.c` recomputed the full
+  N2/N6 Q4 B1 chunk (65,536 maps) with identical sum (2,314,432,507),
+  histogram and top 20.
 - Values: baseline 39,980 (p95 38, 58,447 messages, 2,181 Nacks, 9,609
   loads); variants 39,767 / 36,306 / 35,693; sum 1,234,126,567,296; below
   baseline 9,711,036; at most 36,000: 1,239,802; per Q 1,416,317 /
