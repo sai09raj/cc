@@ -152,6 +152,43 @@ int main(int argc, char **argv) {
         printf("total %lld\n", tot);
         return 0;
     }
+
+    if (argc >= 9 && !strcmp(argv[1], "chunk")) {
+        /* chunk C plan lag oi_lo oi_hi baseline_total outfile */
+        int C = atoi(argv[2]), plan = atoi(argv[3]), ci = -1, LAG = atoi(argv[4]), LO = atoi(argv[5]), HI = atoi(argv[6]);
+        long long base = atoll(argv[7]);
+        for (int i = 0; i < NCYC; i++) if (CYCLES[i] == C) ci = i;
+        long long sum = 0, sumsc[3] = {0, 0, 0}, mn = -1, mx = 0; long long below = 0, grid = 0, n = 0;
+        static int hist[70000]; memset(hist, 0, sizeof hist);
+        long long topv[20]; int topk[20]; int nt = 0;
+        for (int lag = LAG; lag == LAG; lag++) for (int oi = LO; oi < HI; oi++) {
+            int off[9];
+            for (int j = 0; j < 9; j++) off[j] = ((oi >> (2 * (8 - j))) & 3) * C / 4;
+            long long tot = 0; int gl = 0;
+            for (int sc = 0; sc < 3; sc++) { Res r = run(ci, plan, off, lag, sc); tot += r.tts; sumsc[sc] += r.tts; if (r.end >= CAP && r.exited < r.gen) gl = 1; }
+            n++; sum += tot; if (tot < base) below++; if (gl) grid++;
+            if (mn < 0 || tot < mn) mn = tot; if (tot > mx) mx = tot;
+            long long b = tot / 1000; if (b >= 70000) b = 69999; hist[b]++;
+            int key = lag * 262144 + oi;
+            int pos = nt < 20 ? nt : 20;
+            while (pos > 0 && topv[pos - 1] > tot) pos--;   /* strict: earlier key wins ties (iteration order is the tie-break order) */
+            if (pos < 20) {
+                int last = nt < 20 ? nt : 19;
+                for (int k = last; k > pos; k--) { topv[k] = topv[k - 1]; topk[k] = topk[k - 1]; }
+                topv[pos] = tot; topk[pos] = key; if (nt < 20) nt++;
+            }
+        }
+        char tmp[600]; snprintf(tmp, sizeof tmp, "%s.part", argv[8]);
+        FILE *f = fopen(tmp, "w");
+        fprintf(f, "{\"lag\":%d,\"lo\":%d,\"hi\":%d,\"C\":%d,\"plan\":%d,\"n\":%lld,\"sum\":%lld,\"sum_AM\":%lld,\"sum_PM\":%lld,\"sum_EVENT\":%lld,\"below\":%lld,\"gridlock\":%lld,\"min\":%lld,\"max\":%lld,\"top\":[",
+                LAG, LO, HI, C, plan, n, sum, sumsc[0], sumsc[1], sumsc[2], below, grid, mn, mx);
+        for (int k = 0; k < nt; k++) fprintf(f, "%s[%lld,%d]", k ? "," : "", topv[k], topk[k]);
+        fprintf(f, "],\"hist1000\":{");
+        int first = 1;
+        for (int b = 0; b < 70000; b++) if (hist[b]) { fprintf(f, "%s\"%d\":%d", first ? "" : ",", b, hist[b]); first = 0; }
+        fprintf(f, "}}\n"); fclose(f); rename(tmp, argv[8]);
+        return 0;
+    }
     if (argc >= 3 && !strcmp(argv[1], "bench")) {
         int n = atoi(argv[2]); unsigned s = 7; long long acc = 0;
         clock_t c0 = clock();
