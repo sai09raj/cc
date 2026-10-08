@@ -1,0 +1,1650 @@
+{
+  "files": {
+    "A": "SUBA_L1_RLY_20260914_142207",
+    "B": "SUBB_L1_RLY_20260914_142207"
+  },
+  "sample_convention": "relay sample k = .dat sample number n - 1 (manual sec. 1); all sample numbers below are relay samples k unless labelled n",
+  "samples_per_record": 640,
+  "replay_vs_record": {
+    "all_digital_channels_match": true,
+    "detail": {
+      "A": {
+        "Z1": {
+          "samples_compared": 640,
+          "mismatches": 0,
+          "first_mismatch_k": null
+        },
+        "Z2": {
+          "samples_compared": 640,
+          "mismatches": 0,
+          "first_mismatch_k": null
+        },
+        "KEY": {
+          "samples_compared": 640,
+          "mismatches": 0,
+          "first_mismatch_k": null
+        },
+        "RX": {
+          "samples_compared": 640,
+          "mismatches": 0,
+          "first_mismatch_k": null
+        },
+        "TRIP": {
+          "samples_compared": 640,
+          "mismatches": 0,
+          "first_mismatch_k": null
+        },
+        "52A": {
+          "samples_compared": 640,
+          "mismatches": 0,
+          "first_mismatch_k": null
+        }
+      },
+      "B": {
+        "Z1": {
+          "samples_compared": 640,
+          "mismatches": 0,
+          "first_mismatch_k": null
+        },
+        "Z2": {
+          "samples_compared": 640,
+          "mismatches": 0,
+          "first_mismatch_k": null
+        },
+        "Z3R": {
+          "samples_compared": 640,
+          "mismatches": 0,
+          "first_mismatch_k": null
+        },
+        "RX": {
+          "samples_compared": 640,
+          "mismatches": 0,
+          "first_mismatch_k": null
+        },
+        "ECHO": {
+          "samples_compared": 640,
+          "mismatches": 0,
+          "first_mismatch_k": null
+        },
+        "KEY": {
+          "samples_compared": 640,
+          "mismatches": 0,
+          "first_mismatch_k": null
+        },
+        "52A": {
+          "samples_compared": 640,
+          "mismatches": 0,
+          "first_mismatch_k": null
+        }
+      }
+    }
+  },
+  "item1_fault": {
+    "fault_type": "phase B to phase C (BC phase-to-phase, no ground) on line L2, 6.5 km from Substation B; external to L1",
+    "fault_inception_k_SubA": 320,
+    "fault_inception_k_SubB": 320,
+    "fault_inception_n_dat": 321,
+    "record_trigger_k": 320,
+    "inception_detector": "first sample where |x[k]-x[k-32]| exceeds max(4 x pre-fault maximum, 2 % of pre-fault peak)",
+    "per_channel_detection": {
+      "A": {
+        "IA": {
+          "first_k": 461,
+          "prefault_cycle_diff_max": 0.008,
+          "threshold": 0.0418
+        },
+        "IB": {
+          "first_k": 321,
+          "prefault_cycle_diff_max": 0.007,
+          "threshold": 0.0418
+        },
+        "IC": {
+          "first_k": 321,
+          "prefault_cycle_diff_max": 0.008,
+          "threshold": 0.0419
+        },
+        "VA": {
+          "first_k": null,
+          "prefault_cycle_diff_max": 0.14,
+          "threshold": 1.9194
+        },
+        "VB": {
+          "first_k": 320,
+          "prefault_cycle_diff_max": 0.13,
+          "threshold": 1.9126
+        },
+        "VC": {
+          "first_k": 320,
+          "prefault_cycle_diff_max": 0.16,
+          "threshold": 1.917
+        }
+      },
+      "B": {
+        "IA": {
+          "first_k": 461,
+          "prefault_cycle_diff_max": 0.007,
+          "threshold": 0.028
+        },
+        "IB": {
+          "first_k": 321,
+          "prefault_cycle_diff_max": 0.008,
+          "threshold": 0.032
+        },
+        "IC": {
+          "first_k": 321,
+          "prefault_cycle_diff_max": 0.008,
+          "threshold": 0.032
+        },
+        "VA": {
+          "first_k": 460,
+          "prefault_cycle_diff_max": 0.1,
+          "threshold": 1.8732
+        },
+        "VB": {
+          "first_k": 320,
+          "prefault_cycle_diff_max": 0.13,
+          "threshold": 1.8798
+        },
+        "VC": {
+          "first_k": 320,
+          "prefault_cycle_diff_max": 0.11,
+          "threshold": 1.8776
+        }
+      }
+    },
+    "phasor_evidence": {
+      "A": {
+        "k300": {
+          "IA": {
+            "mag": 1.4785,
+            "ang_deg": 93.72
+          },
+          "IB": {
+            "mag": 1.4794,
+            "ang_deg": -26.28
+          },
+          "IC": {
+            "mag": 1.4783,
+            "ang_deg": -146.28
+          },
+          "VA": {
+            "mag": 67.8307,
+            "ang_deg": 102.27
+          },
+          "VB": {
+            "mag": 67.8301,
+            "ang_deg": -17.74
+          },
+          "VC": {
+            "mag": 67.8264,
+            "ang_deg": -137.74
+          },
+          "I0": {
+            "mag": 0.0004,
+            "ang_deg": -25.18
+          },
+          "I1": {
+            "mag": 1.4787,
+            "ang_deg": 93.72
+          },
+          "I2": {
+            "mag": 0.0003,
+            "ang_deg": -162.26
+          },
+          "V0": {
+            "mag": 0.0007,
+            "ang_deg": 160.86
+          },
+          "V2": {
+            "mag": 0.003,
+            "ang_deg": 168.33
+          },
+          "IB_plus_IC": {
+            "mag": 1.479,
+            "ang_deg": -86.24
+          }
+        },
+        "k400": {
+          "IA": {
+            "mag": 1.4784,
+            "ang_deg": 93.7
+          },
+          "IB": {
+            "mag": 9.455,
+            "ang_deg": -66.58
+          },
+          "IC": {
+            "mag": 8.078,
+            "ang_deg": 116.95
+          },
+          "VA": {
+            "mag": 67.8279,
+            "ang_deg": 102.27
+          },
+          "VB": {
+            "mag": 57.695,
+            "ang_deg": -23.53
+          },
+          "VC": {
+            "mag": 57.8953,
+            "ang_deg": -131.68
+          },
+          "I0": {
+            "mag": 0.0003,
+            "ang_deg": -13.02
+          },
+          "I1": {
+            "mag": 5.3722,
+            "ang_deg": 32.41
+          },
+          "I2": {
+            "mag": 4.8393,
+            "ang_deg": -163.13
+          },
+          "V0": {
+            "mag": 0.0036,
+            "ang_deg": 171.27
+          },
+          "V2": {
+            "mag": 6.894,
+            "ang_deg": 101.47
+          },
+          "IB_plus_IC": {
+            "mag": 1.4787,
+            "ang_deg": -86.26
+          }
+        },
+        "delta_I_k400_minus_k300": {
+          "A": {
+            "mag": 0.0004,
+            "ang_deg": 0.39
+          },
+          "B": {
+            "mag": 8.3814,
+            "ang_deg": -73.14
+          },
+          "C": {
+            "mag": 8.3818,
+            "ang_deg": 106.87
+          }
+        }
+      },
+      "B": {
+        "k300": {
+          "IA": {
+            "mag": 0.8869,
+            "ang_deg": -86.3
+          },
+          "IB": {
+            "mag": 0.8877,
+            "ang_deg": 153.69
+          },
+          "IC": {
+            "mag": 0.8875,
+            "ang_deg": 33.71
+          },
+          "VA": {
+            "mag": 66.4449,
+            "ang_deg": 96.53
+          },
+          "VB": {
+            "mag": 66.4414,
+            "ang_deg": -23.47
+          },
+          "VC": {
+            "mag": 66.4463,
+            "ang_deg": -143.47
+          },
+          "I0": {
+            "mag": 0.0003,
+            "ang_deg": 105.9
+          },
+          "I1": {
+            "mag": 0.8874,
+            "ang_deg": -86.3
+          },
+          "I2": {
+            "mag": 0.0001,
+            "ang_deg": 66.99
+          },
+          "V0": {
+            "mag": 0.0016,
+            "ang_deg": -160.81
+          },
+          "V2": {
+            "mag": 0.0017,
+            "ang_deg": 44.41
+          },
+          "IB_plus_IC": {
+            "mag": 0.8879,
+            "ang_deg": 93.72
+          }
+        },
+        "k400": {
+          "IA": {
+            "mag": 0.887,
+            "ang_deg": -86.34
+          },
+          "IB": {
+            "mag": 5.6724,
+            "ang_deg": 113.42
+          },
+          "IC": {
+            "mag": 4.8472,
+            "ang_deg": -63.05
+          },
+          "VA": {
+            "mag": 66.4431,
+            "ang_deg": 96.54
+          },
+          "VB": {
+            "mag": 38.1004,
+            "ang_deg": -72.04
+          },
+          "VC": {
+            "mag": 30.0658,
+            "ang_deg": -98.01
+          },
+          "I0": {
+            "mag": 0.0006,
+            "ang_deg": -144.53
+          },
+          "I1": {
+            "mag": 3.2233,
+            "ang_deg": -147.59
+          },
+          "I2": {
+            "mag": 2.9034,
+            "ang_deg": 16.87
+          },
+          "V0": {
+            "mag": 0.0018,
+            "ang_deg": -103.08
+          },
+          "V2": {
+            "mag": 28.9623,
+            "ang_deg": 101.25
+          },
+          "IB_plus_IC": {
+            "mag": 0.886,
+            "ang_deg": 93.76
+          }
+        },
+        "delta_I_k400_minus_k300": {
+          "A": {
+            "mag": 0.0007,
+            "ang_deg": -169.71
+          },
+          "B": {
+            "mag": 5.0279,
+            "ang_deg": 106.87
+          },
+          "C": {
+            "mag": 5.0295,
+            "ang_deg": -73.14
+          }
+        }
+      }
+    },
+    "fault_interrupted_first_postfault_k": 461,
+    "fault_duration_samples": 141,
+    "fault_duration_ms": 73.4
+  },
+  "item2_first_assertions": {
+    "A": {
+      "first_asserted_k": {
+        "Z1": null,
+        "Z2": 351,
+        "Z3R": null,
+        "RX": 406,
+        "ECHO": null,
+        "KEY": 351,
+        "TRIP": 406,
+        "52A_open": 502
+      },
+      "not_asserted": [
+        "Z1",
+        "Z3R",
+        "ECHO"
+      ],
+      "per_loop_first_k": {
+        "AB": {
+          "Z1": null,
+          "Z2": null,
+          "Z3R": null
+        },
+        "BC": {
+          "Z1": null,
+          "Z2": 351,
+          "Z3R": null
+        },
+        "CA": {
+          "Z1": null,
+          "Z2": null,
+          "Z3R": null
+        }
+      },
+      "edges": {
+        "Z1": {
+          "asserted_k": [],
+          "deasserted_k": [],
+          "asserted_time": [],
+          "deasserted_time": []
+        },
+        "Z2": {
+          "asserted_k": [
+            351
+          ],
+          "deasserted_k": [
+            464
+          ],
+          "asserted_time": [
+            "14:22:07.5278"
+          ],
+          "deasserted_time": [
+            "14:22:07.5867"
+          ]
+        },
+        "Z3R": {
+          "asserted_k": [],
+          "deasserted_k": [],
+          "asserted_time": [],
+          "deasserted_time": []
+        },
+        "RX": {
+          "asserted_k": [
+            406
+          ],
+          "deasserted_k": [
+            470
+          ],
+          "asserted_time": [
+            "14:22:07.5565"
+          ],
+          "deasserted_time": [
+            "14:22:07.5898"
+          ]
+        },
+        "ECHO": {
+          "asserted_k": [],
+          "deasserted_k": [],
+          "asserted_time": [],
+          "deasserted_time": []
+        },
+        "KEY": {
+          "asserted_k": [
+            351
+          ],
+          "deasserted_k": [
+            464
+          ],
+          "asserted_time": [
+            "14:22:07.5278"
+          ],
+          "deasserted_time": [
+            "14:22:07.5867"
+          ]
+        },
+        "TRIP": {
+          "asserted_k": [
+            406
+          ],
+          "deasserted_k": [],
+          "asserted_time": [
+            "14:22:07.5565"
+          ],
+          "deasserted_time": []
+        }
+      }
+    },
+    "B": {
+      "first_asserted_k": {
+        "Z1": null,
+        "Z2": null,
+        "Z3R": null,
+        "RX": 363,
+        "ECHO": 394,
+        "KEY": 394,
+        "TRIP": null,
+        "52A_open": null
+      },
+      "not_asserted": [
+        "Z1",
+        "Z2",
+        "Z3R",
+        "TRIP",
+        "52A_open"
+      ],
+      "per_loop_first_k": {
+        "AB": {
+          "Z1": null,
+          "Z2": null,
+          "Z3R": null
+        },
+        "BC": {
+          "Z1": null,
+          "Z2": null,
+          "Z3R": null
+        },
+        "CA": {
+          "Z1": null,
+          "Z2": null,
+          "Z3R": null
+        }
+      },
+      "edges": {
+        "Z1": {
+          "asserted_k": [],
+          "deasserted_k": [],
+          "asserted_time": [],
+          "deasserted_time": []
+        },
+        "Z2": {
+          "asserted_k": [],
+          "deasserted_k": [],
+          "asserted_time": [],
+          "deasserted_time": []
+        },
+        "Z3R": {
+          "asserted_k": [],
+          "deasserted_k": [],
+          "asserted_time": [],
+          "deasserted_time": []
+        },
+        "RX": {
+          "asserted_k": [
+            363
+          ],
+          "deasserted_k": [
+            476
+          ],
+          "asserted_time": [
+            "14:22:07.5341"
+          ],
+          "deasserted_time": [
+            "14:22:07.5929"
+          ]
+        },
+        "ECHO": {
+          "asserted_k": [
+            394
+          ],
+          "deasserted_k": [
+            458
+          ],
+          "asserted_time": [
+            "14:22:07.5502"
+          ],
+          "deasserted_time": [
+            "14:22:07.5835"
+          ]
+        },
+        "KEY": {
+          "asserted_k": [
+            394
+          ],
+          "deasserted_k": [
+            458
+          ],
+          "asserted_time": [
+            "14:22:07.5502"
+          ],
+          "deasserted_time": [
+            "14:22:07.5835"
+          ]
+        },
+        "TRIP": {
+          "asserted_k": [],
+          "deasserted_k": [],
+          "asserted_time": [],
+          "deasserted_time": []
+        }
+      }
+    },
+    "note": "Relay A has ECHO=N and Z3P=OFF, so its ECHO and Z3R elements are disabled; relay B Z1, Z2, Z3R and TRIP never asserted."
+  },
+  "item3_BC_impedance_k400": {
+    "A": {
+      "Z_BC_secondary_ohm": {
+        "R": 1.1635,
+        "X": 5.2128,
+        "mag": 5.3411,
+        "ang_deg": 77.42
+      },
+      "Z_BC_primary_ohm_relay_settings_CTR_PTR": {
+        "R": 9.6957,
+        "X": 43.44,
+        "mag": 44.5089,
+        "ang_deg": 77.42
+      },
+      "I_BC_loop_secondary_A": {
+        "mag": 17.5247,
+        "ang_deg": -64.95
+      },
+      "relay_CTR": 240.0,
+      "relay_PTR": 2000.0,
+      "Z_BC_primary_ohm_true": {
+        "R": 9.6957,
+        "X": 43.44,
+        "mag": 44.5089,
+        "ang_deg": 77.42
+      }
+    },
+    "B": {
+      "Z_BC_secondary_ohm": {
+        "R": -1.1992,
+        "X": -1.1126,
+        "mag": 1.6359,
+        "ang_deg": -137.15
+      },
+      "Z_BC_primary_ohm_relay_settings_CTR_PTR": {
+        "R": -9.9936,
+        "X": -9.2715,
+        "mag": 13.6321,
+        "ang_deg": -137.15
+      },
+      "I_BC_loop_secondary_A": {
+        "mag": 10.5146,
+        "ang_deg": 115.05
+      },
+      "relay_CTR": 240.0,
+      "relay_PTR": 2000.0,
+      "Z_BC_primary_ohm_true_CT_2000_5": {
+        "R": -5.9962,
+        "X": -5.5629,
+        "mag": 8.1793,
+        "ang_deg": -137.15
+      },
+      "Z_BC_secondary_ohm_if_CT_on_design_1200_5_tap": {
+        "R": -0.7195,
+        "X": -0.6675,
+        "mag": 0.9815,
+        "ang_deg": -137.15
+      }
+    }
+  },
+  "item4_IB_L1_at_SubB_k400": {
+    "IB_secondary_A": {
+      "mag": 5.6724,
+      "ang_deg": 113.42
+    },
+    "IB_primary_A_true_CT_2000_5": 2268.9,
+    "IB_primary_A_as_relay_B_reports_CTR_240": 1361.4,
+    "cross_check_IB_primary_at_SubA_A": 2269.2,
+    "cross_check_angle_A_minus_B_deg": 180.0
+  },
+  "ct_ratio_evidence": {
+    "description": "secondary current ratio |I_A|/|I_B| for the same primary through-current of L1; equal CT ratios give 1.000, B on 2000:5 vs A on 1200:5 gives 2000/1200 = 1.667",
+    "fault_interval_k340_449": {
+      "A": {
+        "mean_mag_IA_over_IB_secondary": 1.6671,
+        "std_mag": 0.0009,
+        "mean_angle_deg_of_-IA/IB": 0.01
+      },
+      "B": {
+        "mean_mag_IA_over_IB_secondary": 1.6667,
+        "std_mag": 0.0001,
+        "mean_angle_deg_of_-IA/IB": -0.0
+      },
+      "C": {
+        "mean_mag_IA_over_IB_secondary": 1.6667,
+        "std_mag": 0.0001,
+        "mean_angle_deg_of_-IA/IB": -0.0
+      }
+    },
+    "prefault_load_k40_299": {
+      "A": {
+        "mean_mag": 1.6667,
+        "mean_angle_deg": 0.01
+      },
+      "B": {
+        "mean_mag": 1.667,
+        "mean_angle_deg": 0.0
+      },
+      "C": {
+        "mean_mag": 1.6665,
+        "mean_angle_deg": 0.01
+      }
+    },
+    "implied_CT_ratio_B_primary_A_per_5A": 2000.0,
+    "line_impedance_check": {
+      "expected_ZL1_primary": {
+        "R": 4.0,
+        "X": 38.4,
+        "mag": 38.608,
+        "ang_deg": 84.05
+      },
+      "computed": {
+        "k380": {
+          "ZL1_from_A_current_CTR240": {
+            "R": 3.759,
+            "X": 39.314,
+            "mag": 39.493,
+            "ang_deg": 84.54
+          },
+          "ZL1_from_B_current_CTR400": {
+            "R": 3.759,
+            "X": 39.312,
+            "mag": 39.491,
+            "ang_deg": 84.54
+          },
+          "ZL1_from_B_current_CTR240": {
+            "R": 6.265,
+            "X": 65.52,
+            "mag": 65.818,
+            "ang_deg": 84.54
+          }
+        },
+        "k400": {
+          "ZL1_from_A_current_CTR240": {
+            "R": 3.7,
+            "X": 37.877,
+            "mag": 38.058,
+            "ang_deg": 84.42
+          },
+          "ZL1_from_B_current_CTR400": {
+            "R": 3.699,
+            "X": 37.878,
+            "mag": 38.058,
+            "ang_deg": 84.42
+          },
+          "ZL1_from_B_current_CTR240": {
+            "R": 6.165,
+            "X": 63.13,
+            "mag": 63.431,
+            "ang_deg": 84.42
+          }
+        },
+        "k420": {
+          "ZL1_from_A_current_CTR240": {
+            "R": 4.397,
+            "X": 38.5,
+            "mag": 38.75,
+            "ang_deg": 83.48
+          },
+          "ZL1_from_B_current_CTR400": {
+            "R": 4.396,
+            "X": 38.503,
+            "mag": 38.753,
+            "ang_deg": 83.49
+          },
+          "ZL1_from_B_current_CTR240": {
+            "R": 7.326,
+            "X": 64.172,
+            "mag": 64.588,
+            "ang_deg": 83.49
+          }
+        }
+      }
+    }
+  },
+  "fault_locator_A": {
+    "trip_k": 406,
+    "Z_BC_sec_at_trip": {
+      "R": 1.1418,
+      "X": 5.2985,
+      "mag": 5.4201,
+      "ang_deg": 77.84
+    },
+    "X_primary": 44.154,
+    "distance_km": 92.0,
+    "event_report_km": 92.0,
+    "actual_fault_location": "L2 tower 18, 80 km (L1) + 6.5 km = 86.5 km electrical path from A; the larger apparent distance is the infeed of the Substation B source"
+  },
+  "B_BC_loop_trajectory": [
+    {
+      "k": 330,
+      "Z_sec_as_found": {
+        "R": -12.424,
+        "X": -19.547,
+        "mag": 23.162,
+        "ang_deg": -122.44
+      },
+      "Z_sec_design_ratio": {
+        "R": -7.455,
+        "X": -11.728,
+        "mag": 13.897,
+        "ang_deg": -122.44
+      },
+      "outside_Z3R_by_ohm_as_found": 21.516,
+      "outside_Z3R_by_ohm_design_ratio": 12.254
+    },
+    {
+      "k": 335,
+      "Z_sec_as_found": {
+        "R": -9.931,
+        "X": -12.628,
+        "mag": 16.065,
+        "ang_deg": -128.18
+      },
+      "Z_sec_design_ratio": {
+        "R": -5.959,
+        "X": -7.577,
+        "mag": 9.639,
+        "ang_deg": -128.18
+      },
+      "outside_Z3R_by_ohm_as_found": 14.466,
+      "outside_Z3R_by_ohm_design_ratio": 8.045
+    },
+    {
+      "k": 340,
+      "Z_sec_as_found": {
+        "R": -3.884,
+        "X": -5.665,
+        "mag": 6.868,
+        "ang_deg": -124.43
+      },
+      "Z_sec_design_ratio": {
+        "R": -2.33,
+        "X": -3.399,
+        "mag": 4.121,
+        "ang_deg": -124.43
+      },
+      "outside_Z3R_by_ohm_as_found": 5.247,
+      "outside_Z3R_by_ohm_design_ratio": 2.511
+    },
+    {
+      "k": 345,
+      "Z_sec_as_found": {
+        "R": -1.623,
+        "X": -4.159,
+        "mag": 4.464,
+        "ang_deg": -111.31
+      },
+      "Z_sec_design_ratio": {
+        "R": -0.974,
+        "X": -2.495,
+        "mag": 2.678,
+        "ang_deg": -111.31
+      },
+      "outside_Z3R_by_ohm_as_found": 2.762,
+      "outside_Z3R_by_ohm_design_ratio": 0.984
+    },
+    {
+      "k": 350,
+      "Z_sec_as_found": {
+        "R": -1.456,
+        "X": -1.76,
+        "mag": 2.285,
+        "ang_deg": -129.6
+      },
+      "Z_sec_design_ratio": {
+        "R": -0.874,
+        "X": -1.056,
+        "mag": 1.371,
+        "ang_deg": -129.6
+      },
+      "outside_Z3R_by_ohm_as_found": 0.763,
+      "outside_Z3R_by_ohm_design_ratio": -0.064
+    },
+    {
+      "k": 355,
+      "Z_sec_as_found": {
+        "R": -1.288,
+        "X": -1.098,
+        "mag": 1.693,
+        "ang_deg": -139.56
+      },
+      "Z_sec_design_ratio": {
+        "R": -0.773,
+        "X": -0.659,
+        "mag": 1.016,
+        "ang_deg": -139.56
+      },
+      "outside_Z3R_by_ohm_as_found": 0.35,
+      "outside_Z3R_by_ohm_design_ratio": -0.157
+    },
+    {
+      "k": 360,
+      "Z_sec_as_found": {
+        "R": -1.24,
+        "X": -1.062,
+        "mag": 1.632,
+        "ang_deg": -139.41
+      },
+      "Z_sec_design_ratio": {
+        "R": -0.744,
+        "X": -0.637,
+        "mag": 0.979,
+        "ang_deg": -139.41
+      },
+      "outside_Z3R_by_ohm_as_found": 0.296,
+      "outside_Z3R_by_ohm_design_ratio": -0.178
+    },
+    {
+      "k": 365,
+      "Z_sec_as_found": {
+        "R": -1.191,
+        "X": -1.078,
+        "mag": 1.606,
+        "ang_deg": -137.83
+      },
+      "Z_sec_design_ratio": {
+        "R": -0.714,
+        "X": -0.647,
+        "mag": 0.964,
+        "ang_deg": -137.83
+      },
+      "outside_Z3R_by_ohm_as_found": 0.25,
+      "outside_Z3R_by_ohm_design_ratio": -0.21
+    },
+    {
+      "k": 370,
+      "Z_sec_as_found": {
+        "R": -1.176,
+        "X": -1.123,
+        "mag": 1.626,
+        "ang_deg": -136.33
+      },
+      "Z_sec_design_ratio": {
+        "R": -0.706,
+        "X": -0.674,
+        "mag": 0.976,
+        "ang_deg": -136.33
+      },
+      "outside_Z3R_by_ohm_as_found": 0.245,
+      "outside_Z3R_by_ohm_design_ratio": -0.226
+    },
+    {
+      "k": 375,
+      "Z_sec_as_found": {
+        "R": -1.202,
+        "X": -1.158,
+        "mag": 1.669,
+        "ang_deg": -136.07
+      },
+      "Z_sec_design_ratio": {
+        "R": -0.721,
+        "X": -0.695,
+        "mag": 1.002,
+        "ang_deg": -136.07
+      },
+      "outside_Z3R_by_ohm_as_found": 0.279,
+      "outside_Z3R_by_ohm_design_ratio": -0.217
+    },
+    {
+      "k": 380,
+      "Z_sec_as_found": {
+        "R": -1.243,
+        "X": -1.156,
+        "mag": 1.697,
+        "ang_deg": -137.09
+      },
+      "Z_sec_design_ratio": {
+        "R": -0.746,
+        "X": -0.693,
+        "mag": 1.018,
+        "ang_deg": -137.09
+      },
+      "outside_Z3R_by_ohm_as_found": 0.318,
+      "outside_Z3R_by_ohm_design_ratio": -0.193
+    },
+    {
+      "k": 385,
+      "Z_sec_as_found": {
+        "R": -1.261,
+        "X": -1.123,
+        "mag": 1.689,
+        "ang_deg": -138.31
+      },
+      "Z_sec_design_ratio": {
+        "R": -0.757,
+        "X": -0.674,
+        "mag": 1.013,
+        "ang_deg": -138.31
+      },
+      "outside_Z3R_by_ohm_as_found": 0.328,
+      "outside_Z3R_by_ohm_design_ratio": -0.177
+    },
+    {
+      "k": 390,
+      "Z_sec_as_found": {
+        "R": -1.245,
+        "X": -1.094,
+        "mag": 1.657,
+        "ang_deg": -138.68
+      },
+      "Z_sec_design_ratio": {
+        "R": -0.747,
+        "X": -0.657,
+        "mag": 0.994,
+        "ang_deg": -138.68
+      },
+      "outside_Z3R_by_ohm_as_found": 0.306,
+      "outside_Z3R_by_ohm_design_ratio": -0.182
+    },
+    {
+      "k": 395,
+      "Z_sec_as_found": {
+        "R": -1.216,
+        "X": -1.092,
+        "mag": 1.634,
+        "ang_deg": -138.06
+      },
+      "Z_sec_design_ratio": {
+        "R": -0.729,
+        "X": -0.655,
+        "mag": 0.981,
+        "ang_deg": -138.06
+      },
+      "outside_Z3R_by_ohm_as_found": 0.277,
+      "outside_Z3R_by_ohm_design_ratio": -0.198
+    },
+    {
+      "k": 400,
+      "Z_sec_as_found": {
+        "R": -1.199,
+        "X": -1.113,
+        "mag": 1.636,
+        "ang_deg": -137.15
+      },
+      "Z_sec_design_ratio": {
+        "R": -0.72,
+        "X": -0.668,
+        "mag": 0.982,
+        "ang_deg": -137.15
+      },
+      "outside_Z3R_by_ohm_as_found": 0.266,
+      "outside_Z3R_by_ohm_design_ratio": -0.211
+    },
+    {
+      "k": 405,
+      "Z_sec_as_found": {
+        "R": -1.205,
+        "X": -1.135,
+        "mag": 1.655,
+        "ang_deg": -136.72
+      },
+      "Z_sec_design_ratio": {
+        "R": -0.723,
+        "X": -0.681,
+        "mag": 0.993,
+        "ang_deg": -136.72
+      },
+      "outside_Z3R_by_ohm_as_found": 0.276,
+      "outside_Z3R_by_ohm_design_ratio": -0.212
+    },
+    {
+      "k": 410,
+      "Z_sec_as_found": {
+        "R": -1.225,
+        "X": -1.142,
+        "mag": 1.675,
+        "ang_deg": -137.01
+      },
+      "Z_sec_design_ratio": {
+        "R": -0.735,
+        "X": -0.685,
+        "mag": 1.005,
+        "ang_deg": -137.01
+      },
+      "outside_Z3R_by_ohm_as_found": 0.297,
+      "outside_Z3R_by_ohm_design_ratio": -0.201
+    },
+    {
+      "k": 415,
+      "Z_sec_as_found": {
+        "R": -1.24,
+        "X": -1.13,
+        "mag": 1.678,
+        "ang_deg": -137.67
+      },
+      "Z_sec_design_ratio": {
+        "R": -0.744,
+        "X": -0.678,
+        "mag": 1.007,
+        "ang_deg": -137.67
+      },
+      "outside_Z3R_by_ohm_as_found": 0.309,
+      "outside_Z3R_by_ohm_design_ratio": -0.19
+    },
+    {
+      "k": 420,
+      "Z_sec_as_found": {
+        "R": -1.239,
+        "X": -1.112,
+        "mag": 1.664,
+        "ang_deg": -138.09
+      },
+      "Z_sec_design_ratio": {
+        "R": -0.743,
+        "X": -0.667,
+        "mag": 0.999,
+        "ang_deg": -138.09
+      },
+      "outside_Z3R_by_ohm_as_found": 0.304,
+      "outside_Z3R_by_ohm_design_ratio": -0.188
+    },
+    {
+      "k": 425,
+      "Z_sec_as_found": {
+        "R": -1.224,
+        "X": -1.105,
+        "mag": 1.649,
+        "ang_deg": -137.93
+      },
+      "Z_sec_design_ratio": {
+        "R": -0.734,
+        "X": -0.663,
+        "mag": 0.989,
+        "ang_deg": -137.93
+      },
+      "outside_Z3R_by_ohm_as_found": 0.288,
+      "outside_Z3R_by_ohm_design_ratio": -0.195
+    },
+    {
+      "k": 430,
+      "Z_sec_as_found": {
+        "R": -1.212,
+        "X": -1.112,
+        "mag": 1.645,
+        "ang_deg": -137.46
+      },
+      "Z_sec_design_ratio": {
+        "R": -0.727,
+        "X": -0.667,
+        "mag": 0.987,
+        "ang_deg": -137.46
+      },
+      "outside_Z3R_by_ohm_as_found": 0.278,
+      "outside_Z3R_by_ohm_design_ratio": -0.204
+    },
+    {
+      "k": 435,
+      "Z_sec_as_found": {
+        "R": -1.211,
+        "X": -1.124,
+        "mag": 1.652,
+        "ang_deg": -137.12
+      },
+      "Z_sec_design_ratio": {
+        "R": -0.726,
+        "X": -0.674,
+        "mag": 0.991,
+        "ang_deg": -137.12
+      },
+      "outside_Z3R_by_ohm_as_found": 0.279,
+      "outside_Z3R_by_ohm_design_ratio": -0.207
+    },
+    {
+      "k": 440,
+      "Z_sec_as_found": {
+        "R": -1.219,
+        "X": -1.131,
+        "mag": 1.663,
+        "ang_deg": -137.14
+      },
+      "Z_sec_design_ratio": {
+        "R": -0.732,
+        "X": -0.679,
+        "mag": 0.998,
+        "ang_deg": -137.14
+      },
+      "outside_Z3R_by_ohm_as_found": 0.289,
+      "outside_Z3R_by_ohm_design_ratio": -0.203
+    },
+    {
+      "k": 445,
+      "Z_sec_as_found": {
+        "R": -1.23,
+        "X": -1.128,
+        "mag": 1.669,
+        "ang_deg": -137.46
+      },
+      "Z_sec_design_ratio": {
+        "R": -0.738,
+        "X": -0.677,
+        "mag": 1.001,
+        "ang_deg": -137.46
+      },
+      "outside_Z3R_by_ohm_as_found": 0.299,
+      "outside_Z3R_by_ohm_design_ratio": -0.196
+    },
+    {
+      "k": 450,
+      "Z_sec_as_found": {
+        "R": -1.233,
+        "X": -1.12,
+        "mag": 1.665,
+        "ang_deg": -137.74
+      },
+      "Z_sec_design_ratio": {
+        "R": -0.74,
+        "X": -0.672,
+        "mag": 0.999,
+        "ang_deg": -137.74
+      },
+      "outside_Z3R_by_ohm_as_found": 0.3,
+      "outside_Z3R_by_ohm_design_ratio": -0.193
+    },
+    {
+      "k": 455,
+      "Z_sec_as_found": {
+        "R": -1.227,
+        "X": -1.113,
+        "mag": 1.656,
+        "ang_deg": -137.78
+      },
+      "Z_sec_design_ratio": {
+        "R": -0.736,
+        "X": -0.668,
+        "mag": 0.994,
+        "ang_deg": -137.78
+      },
+      "outside_Z3R_by_ohm_as_found": 0.292,
+      "outside_Z3R_by_ohm_design_ratio": -0.195
+    },
+    {
+      "k": 460,
+      "Z_sec_as_found": {
+        "R": -1.043,
+        "X": -1.613,
+        "mag": 1.921,
+        "ang_deg": -122.88
+      },
+      "Z_sec_design_ratio": {
+        "R": -0.626,
+        "X": -0.968,
+        "mag": 1.153,
+        "ang_deg": -122.88
+      },
+      "outside_Z3R_by_ohm_as_found": 0.341,
+      "outside_Z3R_by_ohm_design_ratio": -0.325
+    },
+    {
+      "k": 465,
+      "Z_sec_as_found": {
+        "R": -1.057,
+        "X": -4.815,
+        "mag": 4.929,
+        "ang_deg": -102.38
+      },
+      "Z_sec_design_ratio": {
+        "R": -0.634,
+        "X": -2.889,
+        "mag": 2.958,
+        "ang_deg": -102.38
+      },
+      "outside_Z3R_by_ohm_as_found": 3.196,
+      "outside_Z3R_by_ohm_design_ratio": 1.225
+    }
+  ],
+  "B_Z3R_closest_approach": {
+    "k": 368,
+    "Z_sec": {
+      "R": -1.1765,
+      "X": -1.1038,
+      "mag": 1.6133,
+      "ang_deg": -136.83
+    },
+    "outside_by_ohm": 0.2415,
+    "required_Z3P_to_reach_ohm_sec_as_found": 2.132
+  },
+  "item5_counterfactual": {
+    "as_found": {
+      "A_trips": true,
+      "A_trip_k": 406,
+      "B_trips": false
+    },
+    "design_tap_restored": {
+      "label": "B CT secondary restored to design tap X2-X4 (1200:5); B currents x 2000/1200; settings unchanged",
+      "A_first_asserted_k": {
+        "Z1": null,
+        "Z2": 351,
+        "Z3R": null,
+        "RX": null,
+        "ECHO": null,
+        "KEY": 351,
+        "TRIP": null,
+        "52A_open": null
+      },
+      "B_first_asserted_k": {
+        "Z1": null,
+        "Z2": null,
+        "Z3R": 350,
+        "RX": 363,
+        "ECHO": null,
+        "KEY": null,
+        "TRIP": null,
+        "52A_open": null
+      },
+      "A_trips": false,
+      "B_trips": false,
+      "B_edges": {
+        "Z3R": {
+          "asserted_k": [
+            350
+          ],
+          "deasserted_k": [
+            462
+          ],
+          "asserted_time": [
+            "14:22:07.5273"
+          ],
+          "deasserted_time": [
+            "14:22:07.5856"
+          ]
+        },
+        "RX": {
+          "asserted_k": [
+            363
+          ],
+          "deasserted_k": [
+            476
+          ],
+          "asserted_time": [
+            "14:22:07.5341"
+          ],
+          "deasserted_time": [
+            "14:22:07.5929"
+          ]
+        },
+        "ECHO": {
+          "asserted_k": [],
+          "deasserted_k": [],
+          "asserted_time": [],
+          "deasserted_time": []
+        },
+        "KEY": {
+          "asserted_k": [],
+          "deasserted_k": [],
+          "asserted_time": [],
+          "deasserted_time": []
+        }
+      },
+      "A_edges": {
+        "Z2": {
+          "asserted_k": [
+            351
+          ],
+          "deasserted_k": [
+            464
+          ],
+          "asserted_time": [
+            "14:22:07.5278"
+          ],
+          "deasserted_time": [
+            "14:22:07.5867"
+          ]
+        },
+        "KEY": {
+          "asserted_k": [
+            351
+          ],
+          "deasserted_k": [
+            464
+          ],
+          "asserted_time": [
+            "14:22:07.5278"
+          ],
+          "deasserted_time": [
+            "14:22:07.5867"
+          ]
+        },
+        "RX": {
+          "asserted_k": [],
+          "deasserted_k": [],
+          "asserted_time": [],
+          "deasserted_time": []
+        },
+        "TRIP": {
+          "asserted_k": [],
+          "deasserted_k": [],
+          "asserted_time": [],
+          "deasserted_time": []
+        }
+      },
+      "B_Z_BC_sec_k400": {
+        "R": -0.7195,
+        "X": -0.6675,
+        "mag": 0.9815,
+        "ang_deg": -137.15
+      },
+      "B_ECHO_ever": false,
+      "coordination": {
+        "B_RX_first_k": 363,
+        "B_Z3R_first_k": 350,
+        "echo_pickup_would_complete_k": 394,
+        "Z3R_margin_samples_before_pickup": 44
+      }
+    },
+    "ctr400_resettings": {
+      "label": "B CT left on X1-X5 (2000:5); relay B re-set CTR=400, Z1P=6.18, Z2P=9.65, Z3P=2.90, 50PP=0.30",
+      "A_first_asserted_k": {
+        "Z1": null,
+        "Z2": 351,
+        "Z3R": null,
+        "RX": null,
+        "ECHO": null,
+        "KEY": 351,
+        "TRIP": null,
+        "52A_open": null
+      },
+      "B_first_asserted_k": {
+        "Z1": null,
+        "Z2": null,
+        "Z3R": 350,
+        "RX": 363,
+        "ECHO": null,
+        "KEY": null,
+        "TRIP": null,
+        "52A_open": null
+      },
+      "A_trips": false,
+      "B_trips": false,
+      "B_edges": {
+        "Z3R": {
+          "asserted_k": [
+            350
+          ],
+          "deasserted_k": [
+            462
+          ],
+          "asserted_time": [
+            "14:22:07.5273"
+          ],
+          "deasserted_time": [
+            "14:22:07.5856"
+          ]
+        },
+        "RX": {
+          "asserted_k": [
+            363
+          ],
+          "deasserted_k": [
+            476
+          ],
+          "asserted_time": [
+            "14:22:07.5341"
+          ],
+          "deasserted_time": [
+            "14:22:07.5929"
+          ]
+        },
+        "ECHO": {
+          "asserted_k": [],
+          "deasserted_k": [],
+          "asserted_time": [],
+          "deasserted_time": []
+        },
+        "KEY": {
+          "asserted_k": [],
+          "deasserted_k": [],
+          "asserted_time": [],
+          "deasserted_time": []
+        }
+      },
+      "A_edges": {
+        "Z2": {
+          "asserted_k": [
+            351
+          ],
+          "deasserted_k": [
+            464
+          ],
+          "asserted_time": [
+            "14:22:07.5278"
+          ],
+          "deasserted_time": [
+            "14:22:07.5867"
+          ]
+        },
+        "KEY": {
+          "asserted_k": [
+            351
+          ],
+          "deasserted_k": [
+            464
+          ],
+          "asserted_time": [
+            "14:22:07.5278"
+          ],
+          "deasserted_time": [
+            "14:22:07.5867"
+          ]
+        },
+        "RX": {
+          "asserted_k": [],
+          "deasserted_k": [],
+          "asserted_time": [],
+          "deasserted_time": []
+        },
+        "TRIP": {
+          "asserted_k": [],
+          "deasserted_k": [],
+          "asserted_time": [],
+          "deasserted_time": []
+        }
+      },
+      "B_Z_BC_sec_k400": {
+        "R": -1.1992,
+        "X": -1.1126,
+        "mag": 1.6359,
+        "ang_deg": -137.15
+      },
+      "B_ECHO_ever": false
+    },
+    "echo_disabled_sensitivity": {
+      "label": "as-found wiring but echo disabled at B (illustration only, not a recommended fix)",
+      "A_first_asserted_k": {
+        "Z1": null,
+        "Z2": 351,
+        "Z3R": null,
+        "RX": null,
+        "ECHO": null,
+        "KEY": 351,
+        "TRIP": null,
+        "52A_open": null
+      },
+      "B_first_asserted_k": {
+        "Z1": null,
+        "Z2": null,
+        "Z3R": null,
+        "RX": 363,
+        "ECHO": null,
+        "KEY": null,
+        "TRIP": null,
+        "52A_open": null
+      },
+      "A_trips": false,
+      "B_trips": false,
+      "B_edges": {
+        "Z3R": {
+          "asserted_k": [],
+          "deasserted_k": [],
+          "asserted_time": [],
+          "deasserted_time": []
+        },
+        "RX": {
+          "asserted_k": [
+            363
+          ],
+          "deasserted_k": [
+            476
+          ],
+          "asserted_time": [
+            "14:22:07.5341"
+          ],
+          "deasserted_time": [
+            "14:22:07.5929"
+          ]
+        },
+        "ECHO": {
+          "asserted_k": [],
+          "deasserted_k": [],
+          "asserted_time": [],
+          "deasserted_time": []
+        },
+        "KEY": {
+          "asserted_k": [],
+          "deasserted_k": [],
+          "asserted_time": [],
+          "deasserted_time": []
+        }
+      },
+      "A_edges": {
+        "Z2": {
+          "asserted_k": [
+            351
+          ],
+          "deasserted_k": [
+            464
+          ],
+          "asserted_time": [
+            "14:22:07.5278"
+          ],
+          "deasserted_time": [
+            "14:22:07.5867"
+          ]
+        },
+        "KEY": {
+          "asserted_k": [
+            351
+          ],
+          "deasserted_k": [
+            464
+          ],
+          "asserted_time": [
+            "14:22:07.5278"
+          ],
+          "deasserted_time": [
+            "14:22:07.5867"
+          ]
+        },
+        "RX": {
+          "asserted_k": [],
+          "deasserted_k": [],
+          "asserted_time": [],
+          "deasserted_time": []
+        },
+        "TRIP": {
+          "asserted_k": [],
+          "deasserted_k": [],
+          "asserted_time": [],
+          "deasserted_time": []
+        }
+      },
+      "B_Z_BC_sec_k400": {
+        "R": -1.1992,
+        "X": -1.1126,
+        "mag": 1.6359,
+        "ang_deg": -137.15
+      },
+      "B_ECHO_ever": false
+    }
+  },
+  "item6_setting_recalc_by_CTR": {
+    "240": {
+      "Z1P": 3.71,
+      "Z2P": 5.79,
+      "Z3P": 1.74,
+      "50PP_same_primary_pickup": 0.5
+    },
+    "400": {
+      "Z1P": 6.18,
+      "Z2P": 9.65,
+      "Z3P": 2.9,
+      "50PP_same_primary_pickup": 0.3
+    }
+  }
+}

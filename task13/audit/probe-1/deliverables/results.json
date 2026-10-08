@@ -1,0 +1,221 @@
+{
+  "event": "230 kV line L1 trip at Substation A, 2026-09-14 14:22:07",
+  "sample_convention": "relay sample k = .dat sample number n - 1 (manual sec. 1); all sample numbers below are relay samples k unless labelled n",
+  "replay_reproduces_all_recorded_digital_channels": true,
+  "replay_mismatch_counts": {
+    "A": {
+      "Z1": 0,
+      "Z2": 0,
+      "KEY": 0,
+      "RX": 0,
+      "TRIP": 0,
+      "52A": 0
+    },
+    "B": {
+      "Z1": 0,
+      "Z2": 0,
+      "Z3R": 0,
+      "RX": 0,
+      "ECHO": 0,
+      "KEY": 0,
+      "52A": 0
+    }
+  },
+  "item1": {
+    "fault_type": "BC phase-to-phase fault (no ground: I0 ~ 0, V0 ~ 0, IA unchanged) on line L2, tower 18, 6.5 km from Substation B - external to L1",
+    "fault_inception_relay_sample_k": 320,
+    "fault_inception_dat_sample_n": 321,
+    "fault_inception_time": "14:22:07.5117",
+    "fault_cleared_by_L2_first_postfault_sample_k": 461,
+    "fault_duration_ms": 73.4
+  },
+  "item2": {
+    "SubA": {
+      "Z1": null,
+      "Z2": 351,
+      "RX": 406,
+      "KEY": 351,
+      "TRIP": 406,
+      "Z3R": "disabled (Z3P=OFF)",
+      "ECHO": "disabled (ECHO=N)",
+      "52A_opened_k": 502,
+      "Z2_loop": "BC"
+    },
+    "SubB": {
+      "Z1": null,
+      "Z2": null,
+      "Z3R": null,
+      "RX": 363,
+      "ECHO": 394,
+      "KEY": 394,
+      "TRIP": null,
+      "52A_opened_k": null
+    },
+    "note": "null = never asserted in the record"
+  },
+  "item3": {
+    "SubA": {
+      "Z_BC_secondary_ohm": {
+        "R": 1.1635,
+        "X": 5.2128,
+        "mag": 5.3411,
+        "ang_deg": 77.42
+      },
+      "Z_BC_primary_ohm": {
+        "R": 9.6957,
+        "X": 43.44,
+        "mag": 44.5089,
+        "ang_deg": 77.42
+      },
+      "conversion": "x PTR/CTR = 2000/240 (CT 1200:5 correct at A)"
+    },
+    "SubB": {
+      "Z_BC_secondary_ohm": {
+        "R": -1.1992,
+        "X": -1.1126,
+        "mag": 1.6359,
+        "ang_deg": -137.15
+      },
+      "Z_BC_primary_ohm_true": {
+        "R": -5.9962,
+        "X": -5.5629,
+        "mag": 8.1793,
+        "ang_deg": -137.15
+      },
+      "true_conversion": "x 2000/400 (CT actually on 2000:5 tap)",
+      "Z_BC_primary_ohm_as_relay_B_computes_with_CTR_240": {
+        "R": -9.9936,
+        "X": -9.2715,
+        "mag": 13.6321,
+        "ang_deg": -137.15
+      },
+      "Z_BC_secondary_ohm_on_design_1200_5_tap": {
+        "R": -0.7195,
+        "X": -0.6675,
+        "mag": 0.9815,
+        "ang_deg": -137.15
+      }
+    }
+  },
+  "item4": {
+    "IB_L1_SubB_secondary_A": {
+      "mag": 5.6724,
+      "ang_deg": 113.42
+    },
+    "IB_L1_SubB_primary_A_true": 2268.9,
+    "IB_L1_SubB_primary_A_as_relay_B_would_report_CTR_240": 1361.4,
+    "cross_check_IB_L1_SubA_primary_A": 2269.2,
+    "cross_check_phase_difference_deg": 180.0
+  },
+  "item5": {
+    "root_cause": "Substation B line-protection CT core 1 (52-L1, replaced like-for-like 2000:5 MR in 2026-05) was landed on the full-winding tap X1-X5 (2000:5) instead of the design tap X2-X4 (1200:5, drawing B-E-2214 rev C), while relay B kept CTR = 240. Relay B under-measured current by 1200/2000 = 0.6, so its impedances were 1.667 x too large; its zone 3 reverse (1.74 ohm sec) did not see the external BC fault on L2 (closest approach 0.24 ohm outside the circle at k = 368), so the echo was not blocked, B echoed A's zone 2 permissive back and A tripped by POTT (Z2 * RX) at k = 406.",
+    "commissioning_gap": "The 2026-05-27 record shows core 1 on X1-X5 with ratio check PASS because the check compares with the nameplate ratio of the landed tap, not with the design ratio / relay CTR.",
+    "ct_ratio_evidence": {
+      "secondary_current_ratio_IA_SubA_over_IB_SubB_fault": 1.6667,
+      "secondary_current_ratio_prefault_load_phaseA": 1.6667,
+      "implied_SubB_CT_ratio": "2000.0:5",
+      "ZL1_check_k400_with_B_at_400": {
+        "R": 3.699,
+        "X": 37.878,
+        "mag": 38.058,
+        "ang_deg": 84.42
+      },
+      "ZL1_check_k400_with_B_at_240": {
+        "R": 6.165,
+        "X": 63.13,
+        "mag": 63.431,
+        "ang_deg": 84.42
+      },
+      "ZL1_expected": {
+        "R": 4.0,
+        "X": 38.4,
+        "mag": 38.608,
+        "ang_deg": 84.05
+      }
+    },
+    "without_root_cause_replay": {
+      "SubB": "Z3R asserts at k = 350 (13 samples before RX at k = 363, 44 samples before the echo pickup would have completed at k = 394) and deasserts at k = 462; EBLK holds to k = 525, beyond RX dropout at k = 476: no ECHO, no KEY, no trip (correct - fault is behind B).",
+      "SubA": "Z2/KEY asserted k = 351 to 463 (correct overreach), RX never asserts, no TRIP; L1 stays in service.",
+      "A_trips": false,
+      "B_trips": false,
+      "B_echo": false,
+      "B_first_asserted_k": {
+        "Z1": null,
+        "Z2": null,
+        "Z3R": 350,
+        "RX": 363,
+        "ECHO": null,
+        "KEY": null,
+        "TRIP": null,
+        "52A_open": null
+      },
+      "A_first_asserted_k": {
+        "Z1": null,
+        "Z2": 351,
+        "Z3R": null,
+        "RX": null,
+        "ECHO": null,
+        "KEY": 351,
+        "TRIP": null,
+        "52A_open": null
+      }
+    }
+  },
+  "item6": {
+    "corrective_action_recommended": "Re-land Substation B 52-L1 core 1 (L1-21 relay B IA/IB/IC) on tap X2-X4 (1200:5) per drawing B-E-2214 rev C; relay B settings unchanged (CTR = 240, Z1P = 3.71, Z2P = 5.79, Z3P = 1.74 ohm sec, 50PP = 0.50 A).",
+    "settings_if_recommended_fix": {
+      "CTR": 240,
+      "PTR": 2000,
+      "Z1P": 3.71,
+      "Z2P": 5.79,
+      "Z3P": 1.74,
+      "50PP": 0.5
+    },
+    "alternative_if_core_must_stay_on_X1_X5_2000_5": {
+      "CTR": 400,
+      "PTR": 2000,
+      "Z1P": 6.18,
+      "Z2P": 9.65,
+      "Z3P": 2.9,
+      "50PP": 0.3,
+      "Z1ANG": 84.0,
+      "replay_result": {
+        "A_trips": false,
+        "B_echo": false,
+        "B_Z3R_first_k": 350
+      }
+    },
+    "followups": [
+      "Verify by primary injection / in-service load comparison that relay B secondary currents equal relay A's (ratio 1.000, 180 deg) before returning the POTT/echo scheme to normal",
+      "Amend form P-14: ratio check against the design ratio and the relay CTR setting, not only the nameplate of the landed tap",
+      "Audit all secondary circuits re-landed after the 2026-05 CT replacement at Substation B (cores 2 and 3 agree with B-E-2214)",
+      "Add an end-to-end current comparison (both line ends) to the post-maintenance return-to-service checklist"
+    ]
+  },
+  "other_values": {
+    "SubA_fault_locator_km": 92.0,
+    "SubA_trip_sample_Z_BC_secondary": {
+      "R": 1.1418,
+      "X": 5.2985,
+      "mag": 5.4201,
+      "ang_deg": 77.84
+    },
+    "SubB_Z3R_closest_approach": {
+      "k": 368,
+      "Z_sec": {
+        "R": -1.1765,
+        "X": -1.1038,
+        "mag": 1.6133,
+        "ang_deg": -136.83
+      },
+      "outside_by_ohm": 0.2415,
+      "required_Z3P_to_reach_ohm_sec_as_found": 2.132
+    },
+    "coordination_margin_samples_design_ratio": {
+      "B_RX_first_k": 363,
+      "B_Z3R_first_k": 350,
+      "echo_pickup_would_complete_k": 394,
+      "Z3R_margin_samples_before_pickup": 44
+    }
+  }
+}

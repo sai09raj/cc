@@ -18,3 +18,17 @@ give the landed tap and its ratio.
   build_case.py, gen_data.py, make_docs.py). Bundle: `artifact/L1_event_2026-09-14.zip`.
 - Draft prompt: `platform/prompt.md` (291 words).
 - Next: early opus-alias blind probe; read its trajectory and harden the shortcuts it used.
+
+## Probe 1 (opus alias, draft v1): SOLVED exactly in ~7 min, 27 tool calls
+
+Every reported value matched the answer key (root cause, element samples, impedances,
+2,269 A, counterfactual Z3R at 350, corrective settings). Trajectory:
+1. It read all 16 files first: every text file, every PDF rendered, and the commissioning
+   records re-rendered at high resolution. Nothing in a 16-file bundle is "background".
+2. Before writing any code it had the cause from documents alone: drawing B-E-2214 says
+   core 1 "X2-X4 (1200:5)", the commissioning record row says "X1-X5", and the drawing's
+   "Rev C: CT replaced 2026-05" note plus the 2026-05-27 test date point straight at it.
+3. It confirmed numerically: A/B secondary current ratio 1.6667 in every phase, prefault
+   and fault, and the L1 voltage drop / current matching the line impedance only at 2000:5.
+4. The prompt's item 4 (primary current at B) and "primary ohms" at B invited that check.
+Gate 8.5: redesign/harden before any platform work.
