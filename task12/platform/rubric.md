@@ -1,6 +1,6 @@
 # COHERE-12 rubric (v2, packet cohere12_v3.pdf)
 
-Positive total **137**; six negative criteria (-10, -8, -8, -6, -5, -5). **49
+Positive total **138**; six negative criteria (-10, -8, -8, -6, -5, -5). **50
 criteria**. Every weight is within -10..+10; every criterion body is 301
 characters or fewer; criteria are binary and each checks one value, one
 claim or one requirement. Accept any language, source organization,
@@ -21,7 +21,7 @@ in Section 9.
 | Bucket | Criteria | Points | Needs the whole space simulated? |
 |---|---|---|---|
 | Values read from the figures | 1-12 | 12 | no |
-| Package | 13-14 | 2 | no |
+| Package | 13-14, 50 | 3 | no |
 | Baseline and variants | 15-21 | 19 | no |
 | Optimal configuration | 22-23 | 7 | no (findable by search) |
 | Whole-space characterization | 24-34 | 86 | yes |
@@ -29,7 +29,7 @@ in Section 9.
 | Memo reasoning | 40-43 | 6 | no |
 
 A correct simulator with a correct optimum but an incomplete sweep earns
-at most 51/137 (37.2%). Each per-Q count needs one quarter of the space
+at most 52/138 (37.7%). Each per-Q count needs one quarter of the space
 (7,340,032 runs) and each per-B count another quarter; the three totals
 need all of it.
 
@@ -125,6 +125,14 @@ Section 1; "below the baseline" means makespan less than 6,725 cycles.
 | 48 | -8 | Hard codes any reported simulation result (a makespan, p95, message count, Nack count, or whole-space count or sum) as a literal in its delivered source code instead of computing it by running its simulator. |
 | 49 | -5 | Accesses the internet or any external source (for example downloading packages, code, documentation or results) while building or running its simulator or checker. |
 
+## Package completeness (50, weight 1)
+
+Contents of each file are graded elsewhere (simulator and results 15-34, checker 35-39, memo 40-43); this row checks delivery only.
+
+| # | Wt | Criterion |
+| --- | --- | --- |
+| 50 | +1 | Delivers as files a simulator source, a separately coded checker source, a baseline trace, a results file and an engineering memo. |
+
 ## Reverse coverage
 
 | Prompt requirement | Criteria |
@@ -140,6 +148,7 @@ Section 1; "below the baseline" means makespan less than 6,725 cycles.
 | Call it optimal only after simulating all configurations | 46 |
 | Number of configurations actually simulated | 45, 46 |
 | Base every number on your own executed programs | 48 |
+| Deliver the five files | 50 |
 | Separate checker, two invariants reported | 35-36, 47 |
 | Number of loads the checker checked | 37 |
 | Checker rejects the two altered traces, naming the invariant | 38-39 |
