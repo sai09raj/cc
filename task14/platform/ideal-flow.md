@@ -1,0 +1,17 @@
+## Analyze
+
+```text
+Read the packet and recover the whole model. From Figure 1, map each length to its link and divide by 7.5 m: blocks I0-I1 32 cells, I1-I2 26, I3-I4 22, I4-I5 36, I6-I7 28, I7-I8 24, I0-I3 30, I1-I4 24, I2-I5 27, I3-I6 20, I4-I7 34, I5-I8 21; inbound links T0..T11 38, 44, 36, 41, 35, 43, 39, 37, 45, 42, 40, 36 cells; every outbound boundary link 10 cells. From Figure 2 read the 36 demand values (for example EVENT at T9 395 veh/h). From Figure 3 read the turning shares (north and south arrivals: left 20, through 65, right 15 percent; east and west arrivals: left 10, through 75, right 15) and the phase sets and orders (lead A B C D, lag B A D C). From Figure 4 read the green times for every cycle and plan (for example plan 6 at 84 s: 31/7/31/7). Recover the rules in the text: one vehicle per cell, moves decided on start-of-step occupancy, a waiting left-turner blocks its lane, 2 s all-red, the terminal and vehicle generators, the turn draw on entering a link, the run end at the first empty step after 3600 or at step 7199, TTS, gridlock, the 18,874,368-configuration space and the tie-break.
+```
+
+## Execute & Generate
+
+```text
+Write a step-by-step simulator in the standard library, offline, and make it fast, because the whole-space items need all 18,874,368 configurations times three scenario runs: plan the runtime, track vehicles rather than scanning cells, split the space across all cores, and checkpoint partial results. Baseline (84 s, plan 1, lead, offsets 0): AM 1,138,089, PM 1,097,366, EVENT 1,817,193, total 4,052,648. Variants: offsets 0/21/42 by row 3,901,019; lag 4,281,802; cycle 60 s 2,136,688. Whole space: sum of total TTS 123,858,216,502,180; 7,425,123 configurations below the baseline; 5,485,845 gridlock; below the baseline by cycle 60, 72, 84, 96, 108, 120: 3,145,241, 3,126,728, 1,153,154, 0, 0, 0; by plan 1 to 6: 1,188,148, 1,278,030, 1,265,778, 1,146,190, 1,208,142, 1,338,835. Optimal: cycle 60 s, plan 6, lag, offsets 0, 45, 15, 30, 0, 30, 15, 30, 0, total TTS 1,829,597. Call it optimal only because all configurations were simulated, and state that count. Write the baseline AM trace and run a separately coded checker: it passes the three invariants, reports 8,136 stop-line crossings checked, and rejects the two altered copies, naming the invariant each violates. Record the runtime version and reproduction commands.
+```
+
+## Synthesize
+
+```text
+Write the memo from your own results. The cycle length dominates: the average total TTS rises from 2,066,826 at 60 s through 2,940,743, 4,681,995, 7,266,588 and 9,693,661 to 12,723,654 at 120 s, a spread of about 10.7 million, against about 1.9 million between lead (5,602,798) and lag (7,521,691) and under 0.1 million across the six plans. Short cycles win because every approach is a single lane where a waiting left-turner blocks through traffic and queues spill back into upstream intersections: a short cycle serves each movement often enough that queues never fill a block, while long cycles let queues spill back until whole parts of the grid lock (gridlocks rise from 514 configurations at 60 s to 2,874,029 at 120 s). The best configuration combines the 60 s cycle with plan 6 (the shortest left phases, the longest through greens) and offsets that stagger neighbouring intersections. Lag raises the average total TTS compared with lead. The offsets matter within a cycle and plan, but only an exhaustive sweep gives the exact counts and sums.
+```

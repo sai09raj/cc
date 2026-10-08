@@ -1,4 +1,4 @@
-You are the traffic signal engineer for a downtown grid. The attached grid14_v1.pdf is the complete specification of the street network, signals, demand, vehicle behaviour, configuration space and objective. Read the link lengths, demand values, turning shares and phase sequences from its figures, and state the values you read, including the length in cells of every street block and inbound boundary link.
+You are the traffic signal engineer for a downtown grid. The attached grid14_v1.pdf is the complete specification of the street network, signals, demand, vehicle behaviour, configuration space and objective. Read the link lengths, demand values, turning shares, phase sequences and green times from its figures. State the values you read, including the lengths in cells of the blocks I0-I1, I4-I5, I2-I5 and I5-I8 and of the inbound links at T1 and T8, and the EVENT demand at T9.
 
 Build a step-by-step simulator of the packet's model, using only the standard library of your chosen language, offline. Record the exact language and runtime version, and give reproduction commands.
 
