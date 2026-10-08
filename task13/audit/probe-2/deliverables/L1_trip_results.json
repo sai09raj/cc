@@ -1,0 +1,638 @@
+{
+  "event": "L1 breaker trip at Substation A, 2026-09-14 14:22:07",
+  "sample_convention": "relay sample k = dat sample n - 1; k = 0 at 14:22:07.345000; 1920 samples/s",
+  "item1_fault": {
+    "type": "phase B to phase C (BC phase-to-phase, no ground)",
+    "faulted_line": "L2 (Substation B - Substation C)",
+    "distance_from_substation_B_km_two_ended": 6.53,
+    "distance_from_substation_B_km_reactance_SubB_L2_relay": 6.15,
+    "distance_from_substation_C_km_reactance_SubC_L2_relay": 44.26,
+    "distance_from_substation_B_km_patrol": 6.5,
+    "fault_resistance_ohm_primary_two_ended": 1.51,
+    "fault_inception_sample_k": 320,
+    "fault_inception_dat_n": 321,
+    "fault_inception_time": "14:22:07.5116",
+    "inception_sample_by_record": {
+      "SUBA_L1-21": 320,
+      "SUBB_L2-21": 320,
+      "SUBC_L2-21": 320
+    }
+  },
+  "item2_first_assertion_as_found": {
+    "relay_A": {
+      "Z1": null,
+      "Z2": {
+        "k": 351,
+        "dat_n": 352,
+        "time": "14:22:07.5278"
+      },
+      "Z3R": null,
+      "RX": {
+        "k": 406,
+        "dat_n": 407,
+        "time": "14:22:07.5564"
+      },
+      "ECHO": null,
+      "KEY": {
+        "k": 351,
+        "dat_n": 352,
+        "time": "14:22:07.5278"
+      },
+      "TRIP": {
+        "k": 406,
+        "dat_n": 407,
+        "time": "14:22:07.5564"
+      }
+    },
+    "relay_B": {
+      "Z1": null,
+      "Z2": null,
+      "Z3R": null,
+      "RX": {
+        "k": 363,
+        "dat_n": 364,
+        "time": "14:22:07.5340"
+      },
+      "ECHO": {
+        "k": 394,
+        "dat_n": 395,
+        "time": "14:22:07.5502"
+      },
+      "KEY": {
+        "k": 394,
+        "dat_n": 395,
+        "time": "14:22:07.5502"
+      },
+      "TRIP": null
+    },
+    "relay_A_deassertion_k": {
+      "Z1": null,
+      "Z2": 446,
+      "Z3R": null,
+      "RX": 470,
+      "ECHO": null,
+      "KEY": 446,
+      "TRIP": 640
+    },
+    "relay_B_deassertion_k": {
+      "Z1": null,
+      "Z2": null,
+      "Z3R": null,
+      "RX": 458,
+      "ECHO": 458,
+      "KEY": 458,
+      "TRIP": null
+    },
+    "relay_A_breaker_open_k": 502,
+    "relay_A_replay_vs_record_mismatched_samples": {
+      "Z1": 0,
+      "Z2": 0,
+      "KEY": 0,
+      "RX": 0,
+      "TRIP": 0,
+      "52A": 0
+    },
+    "relay_A_SER_comparison": [
+      {
+        "element": "52A",
+        "state": "closed",
+        "ser_k": 0,
+        "ser_time": "14:22:07.3450",
+        "replay_k": 0,
+        "match": true
+      },
+      {
+        "element": "Z2",
+        "state": "asserted",
+        "ser_k": 351,
+        "ser_time": "14:22:07.5278",
+        "replay_k": 351,
+        "match": true
+      },
+      {
+        "element": "KEY",
+        "state": "asserted",
+        "ser_k": 351,
+        "ser_time": "14:22:07.5278",
+        "replay_k": 351,
+        "match": true
+      },
+      {
+        "element": "RX",
+        "state": "asserted",
+        "ser_k": 406,
+        "ser_time": "14:22:07.5564",
+        "replay_k": 406,
+        "match": true
+      },
+      {
+        "element": "TRIP",
+        "state": "asserted",
+        "ser_k": 406,
+        "ser_time": "14:22:07.5564",
+        "replay_k": 406,
+        "match": true
+      },
+      {
+        "element": "Z2",
+        "state": "deasserted",
+        "ser_k": 446,
+        "ser_time": "14:22:07.5772",
+        "replay_k": 446,
+        "match": true
+      },
+      {
+        "element": "KEY",
+        "state": "deasserted",
+        "ser_k": 446,
+        "ser_time": "14:22:07.5772",
+        "replay_k": 446,
+        "match": true
+      },
+      {
+        "element": "RX",
+        "state": "deasserted",
+        "ser_k": 470,
+        "ser_time": "14:22:07.5897",
+        "replay_k": 470,
+        "match": true
+      },
+      {
+        "element": "52A",
+        "state": "open",
+        "ser_k": 502,
+        "ser_time": "14:22:07.6064",
+        "replay_k": 502,
+        "match": true
+      }
+    ],
+    "relay_B_SER_comparison": [
+      {
+        "element": "RX",
+        "state": "asserted",
+        "ser_k": 363,
+        "ser_time": "14:22:07.5340",
+        "replay_k": 363,
+        "match": true
+      },
+      {
+        "element": "ECHO",
+        "state": "asserted",
+        "ser_k": 394,
+        "ser_time": "14:22:07.5502",
+        "replay_k": 394,
+        "match": true
+      },
+      {
+        "element": "KEY",
+        "state": "asserted",
+        "ser_k": 394,
+        "ser_time": "14:22:07.5502",
+        "replay_k": 394,
+        "match": true
+      },
+      {
+        "element": "RX",
+        "state": "deasserted",
+        "ser_k": 458,
+        "ser_time": "14:22:07.5835",
+        "replay_k": 458,
+        "match": true
+      },
+      {
+        "element": "ECHO",
+        "state": "deasserted",
+        "ser_k": 458,
+        "ser_time": "14:22:07.5835",
+        "replay_k": 458,
+        "match": true
+      },
+      {
+        "element": "KEY",
+        "state": "deasserted",
+        "ser_k": 458,
+        "ser_time": "14:22:07.5835",
+        "replay_k": 458,
+        "match": true
+      }
+    ],
+    "relay_A_fault_locator_km": 92.0
+  },
+  "item3_root_cause": "Relay B (Substation B L1-21) is fed from CT 52-L1 core 1 landed on the full winding X1-X5 = 2000:5 (ratio 400; commissioning record Sub B 2023-04-14, DWG B-E-2214), while the relay is set CTR = 240 (1200:5, tap X2-X4) as the settings calculation requires. Relay B measures 240/400 = 0.60 of the true current, so every apparent impedance is 1.667x too large and the reverse zone Z3R (1.74 ohm sec) did not reach the reverse BC fault on L2. With no Z1, Z2 or Z3R and RX from relay A (Z2 keying for the L2 fault in its overreach), the echo AND held for EDPU = 32 samples and relay B echoed the permissive back; relay A then tripped by POTT (Z2 AND RX). The tap error became exposed when ECHO was enabled at B in settings revision R5 (2026-05-26).",
+  "relayB_apparent_impedance_BC_fault_window_sec_ohm": {
+    "as_found_CT_400": {
+      "R": -1.2270926156875333,
+      "X": -1.1138690611375777,
+      "mag": 1.655908754559776,
+      "ang": -137.76124878433146
+    },
+    "with_correct_CT_240": {
+      "R": -0.7362555694125199,
+      "X": -0.6683214366825474,
+      "mag": 0.9935452527358651,
+      "ang": -137.7612487843314
+    },
+    "Z3P_setting": 1.74,
+    "Z3P_reach_needed_to_operate_as_found": 2.222,
+    "Z3P_reach_needed_to_operate_correct_CT": 1.333,
+    "old_Z3P_1.80_with_CT_as_landed": {
+      "Z3R_first": null,
+      "ECHO_first": 394,
+      "relay_A_trip_first": 406
+    }
+  },
+  "loop_element_first_assertion": {
+    "relay_A": {
+      "Z1_AB": null,
+      "Z2_AB": null,
+      "Z1_BC": null,
+      "Z2_BC": 351,
+      "Z1_CA": null,
+      "Z2_CA": null
+    },
+    "relay_B_as_found": {
+      "Z1_AB": null,
+      "Z2_AB": null,
+      "Z3R_AB": null,
+      "Z1_BC": null,
+      "Z2_BC": null,
+      "Z3R_BC": null,
+      "Z1_CA": null,
+      "Z2_CA": null,
+      "Z3R_CA": null
+    },
+    "relay_B_CT_corrected": {
+      "Z1_AB": null,
+      "Z2_AB": null,
+      "Z3R_AB": null,
+      "Z1_BC": null,
+      "Z2_BC": null,
+      "Z3R_BC": 350,
+      "Z1_CA": null,
+      "Z2_CA": null,
+      "Z3R_CA": null
+    }
+  },
+  "relayA_apparent_impedance_BC_fault_window_sec_ohm": {
+    "R": 1.2294119952448055,
+    "X": 5.25970257767481,
+    "mag": 5.40573231520001,
+    "ang": 76.87690666917999
+  },
+  "item4_without_root_cause": {
+    "relay_A": {
+      "Z1": null,
+      "Z2": {
+        "k": 351,
+        "dat_n": 352,
+        "time": "14:22:07.5278"
+      },
+      "Z3R": null,
+      "RX": null,
+      "ECHO": null,
+      "KEY": {
+        "k": 351,
+        "dat_n": 352,
+        "time": "14:22:07.5278"
+      },
+      "TRIP": null
+    },
+    "relay_B": {
+      "Z1": null,
+      "Z2": null,
+      "Z3R": {
+        "k": 350,
+        "dat_n": 351,
+        "time": "14:22:07.5272"
+      },
+      "RX": {
+        "k": 363,
+        "dat_n": 364,
+        "time": "14:22:07.5340"
+      },
+      "ECHO": null,
+      "KEY": null,
+      "TRIP": null
+    },
+    "relay_A_trips": false,
+    "relay_B_trips": false,
+    "relay_B_echo": false,
+    "relay_A_keys_from_Z2_k": 351,
+    "summary": "Relay B Z3R asserts and blocks echo; relay B never keys; relay A keys on Z2 but receives no permissive and does not trip. L1 stays in service; L2 fault cleared by L2 relays only."
+  },
+  "item5_corrective_action": {
+    "primary": "Re-land relay B CT circuit (52-L1 core 1 at Sub B) on tap X2-X4 = 1200:5 to match CTR = 240 and the settings calculation; no relay setting change. Verify by ratio test from primary injection and in-service load check (relay B current magnitude equal to relay A at 1:1, phase 180 deg).",
+    "new_setting_values_primary_option": "none (settings R5 remain valid: CTR 240, Z1P 3.71, Z2P 5.79, Z3P 1.74, 50PP 0.50)",
+    "alternative_if_X1_X5_tap_retained": {
+      "CTR": 400,
+      "Z1P": 6.18,
+      "Z2P": 9.65,
+      "Z3P": 2.9,
+      "50PP": 0.3,
+      "others": "unchanged (Z1ANG 84, ECHO Y, EDPU 32, EDUR 64, EBLK 64)",
+      "replay_relay_A_trips": false,
+      "replay_relay_B_first": {
+        "Z1": null,
+        "Z2": null,
+        "Z3R": 350,
+        "RX": 363,
+        "ECHO": null,
+        "KEY": null,
+        "TRIP": null
+      }
+    },
+    "other": [
+      "Audit CT tap/ratio of all bays against relay CTR settings (Sub B uses 2000:5 MR CTs).",
+      "Add in-service load-current comparison (both line ends) to commissioning and to post-setting-change procedure; secondary injection at the test switch cannot detect a CT tap error.",
+      "Correct one-line S-230-001 (G2 retired; T1 bay at B not shown).",
+      "Increase relay B event storage / retrieve records before restoration switching."
+    ]
+  },
+  "evidence": {
+    "engine_validation_L2_relays_mismatched_samples": {
+      "SUBB_L2-21": {
+        "Z1": 0,
+        "Z2": 0,
+        "KEY": 0,
+        "RX": 0,
+        "TRIP": 0,
+        "52A": 0
+      },
+      "SUBC_L2-21": {
+        "Z1": 0,
+        "Z2": 0,
+        "KEY": 0,
+        "RX": 0,
+        "TRIP": 0,
+        "52A": 0
+      }
+    },
+    "engine_validation_L2_SER": {
+      "SUBB_L2-21": [
+        {
+          "element": "52A",
+          "state": "closed",
+          "ser_k": 0,
+          "ser_time": "14:22:07.3450",
+          "replay_k": 0,
+          "match": true
+        },
+        {
+          "element": "Z2",
+          "state": "asserted",
+          "ser_k": 338,
+          "ser_time": "14:22:07.5210",
+          "replay_k": 338,
+          "match": true
+        },
+        {
+          "element": "KEY",
+          "state": "asserted",
+          "ser_k": 338,
+          "ser_time": "14:22:07.5210",
+          "replay_k": 338,
+          "match": true
+        },
+        {
+          "element": "Z1",
+          "state": "asserted",
+          "ser_k": 340,
+          "ser_time": "14:22:07.5220",
+          "replay_k": 340,
+          "match": true
+        },
+        {
+          "element": "TRIP",
+          "state": "asserted",
+          "ser_k": 340,
+          "ser_time": "14:22:07.5220",
+          "replay_k": 340,
+          "match": true
+        },
+        {
+          "element": "RX",
+          "state": "asserted",
+          "ser_k": 359,
+          "ser_time": "14:22:07.5319",
+          "replay_k": 359,
+          "match": true
+        },
+        {
+          "element": "52A",
+          "state": "open",
+          "ser_k": 436,
+          "ser_time": "14:22:07.5720",
+          "replay_k": 436,
+          "match": true
+        },
+        {
+          "element": "Z1",
+          "state": "deasserted",
+          "ser_k": 448,
+          "ser_time": "14:22:07.5783",
+          "replay_k": 448,
+          "match": true
+        },
+        {
+          "element": "Z2",
+          "state": "deasserted",
+          "ser_k": 451,
+          "ser_time": "14:22:07.5798",
+          "replay_k": 451,
+          "match": true
+        },
+        {
+          "element": "KEY",
+          "state": "deasserted",
+          "ser_k": 451,
+          "ser_time": "14:22:07.5798",
+          "replay_k": 451,
+          "match": true
+        },
+        {
+          "element": "RX",
+          "state": "deasserted",
+          "ser_k": 463,
+          "ser_time": "14:22:07.5861",
+          "replay_k": 463,
+          "match": true
+        }
+      ],
+      "SUBC_L2-21": [
+        {
+          "element": "52A",
+          "state": "closed",
+          "ser_k": 0,
+          "ser_time": "14:22:07.3450",
+          "replay_k": 0,
+          "match": true
+        },
+        {
+          "element": "Z2",
+          "state": "asserted",
+          "ser_k": 347,
+          "ser_time": "14:22:07.5257",
+          "replay_k": 347,
+          "match": true
+        },
+        {
+          "element": "KEY",
+          "state": "asserted",
+          "ser_k": 347,
+          "ser_time": "14:22:07.5257",
+          "replay_k": 347,
+          "match": true
+        },
+        {
+          "element": "RX",
+          "state": "asserted",
+          "ser_k": 350,
+          "ser_time": "14:22:07.5272",
+          "replay_k": 350,
+          "match": true
+        },
+        {
+          "element": "TRIP",
+          "state": "asserted",
+          "ser_k": 350,
+          "ser_time": "14:22:07.5272",
+          "replay_k": 350,
+          "match": true
+        },
+        {
+          "element": "52A",
+          "state": "open",
+          "ser_k": 446,
+          "ser_time": "14:22:07.5772",
+          "replay_k": 446,
+          "match": true
+        },
+        {
+          "element": "Z2",
+          "state": "deasserted",
+          "ser_k": 451,
+          "ser_time": "14:22:07.5798",
+          "replay_k": 451,
+          "match": true
+        },
+        {
+          "element": "KEY",
+          "state": "deasserted",
+          "ser_k": 451,
+          "ser_time": "14:22:07.5798",
+          "replay_k": 451,
+          "match": true
+        },
+        {
+          "element": "RX",
+          "state": "deasserted",
+          "ser_k": 463,
+          "ser_time": "14:22:07.5861",
+          "replay_k": 463,
+          "match": true
+        }
+      ]
+    },
+    "relayB_input_hypotheses": {
+      "CT 1200:5 as designed (CTR 240), normal polarity": {
+        "ratio": 240.0,
+        "polarity": 1,
+        "relayB_first": {
+          "Z1": null,
+          "Z2": null,
+          "Z3R": 350,
+          "ECHO": null,
+          "KEY": null,
+          "TRIP": null
+        },
+        "relayA_trip": null,
+        "reproduces_relayB_SER": false,
+        "reproduces_relayA_record": false
+      },
+      "CT 2000:5 X1-X5 as landed (400), normal polarity": {
+        "ratio": 400.0,
+        "polarity": 1,
+        "relayB_first": {
+          "Z1": null,
+          "Z2": null,
+          "Z3R": null,
+          "ECHO": 394,
+          "KEY": 394,
+          "TRIP": null
+        },
+        "relayA_trip": 406,
+        "reproduces_relayB_SER": true,
+        "reproduces_relayA_record": true
+      },
+      "CT 1200:5, reversed polarity": {
+        "ratio": 240.0,
+        "polarity": -1,
+        "relayB_first": {
+          "Z1": 342,
+          "Z2": 339,
+          "Z3R": null,
+          "ECHO": null,
+          "KEY": 339,
+          "TRIP": 342
+        },
+        "relayA_trip": 351,
+        "reproduces_relayB_SER": false,
+        "reproduces_relayA_record": false
+      },
+      "CT 2000:5, reversed polarity": {
+        "ratio": 400.0,
+        "polarity": -1,
+        "relayB_first": {
+          "Z1": 348,
+          "Z2": 343,
+          "Z3R": null,
+          "ECHO": null,
+          "KEY": 343,
+          "TRIP": 348
+        },
+        "relayA_trip": 355,
+        "reproduces_relayB_SER": false,
+        "reproduces_relayA_record": false
+      }
+    },
+    "effective_ratio_scan_relayA_trips_for_ratio_range": [
+      330.0,
+      600.0
+    ],
+    "effective_ratio_scan_no_trip_for_ratio_range": [
+      200.0,
+      325.0
+    ],
+    "L1_series_impedance_from_A_and_B_voltages_ohm_per_km": {
+      "R": 0.0517,
+      "X": 0.4784,
+      "expected": "0.05 + j0.48"
+    },
+    "loop_current_fault_window_A_sec": {
+      "AB": 10.76,
+      "BC": 17.32,
+      "CA": 6.66
+    },
+    "loop_current_prefault_A_sec": {
+      "AB": 2.561,
+      "BC": 2.561,
+      "CA": 2.561
+    },
+    "loop_current_fault_window_SubB_L2_sec": {
+      "AB": 19.82,
+      "BC": 35.73,
+      "CA": 15.92
+    },
+    "BC_loop_current_primary_A_fault_window": {
+      "L1_at_A": 4156.0,
+      "L2_at_B": 8576.0,
+      "L2_at_C": 5178.0,
+      "other_bays_at_B_(T1)": 4442.0
+    },
+    "relayB_BC_loop_current_sec_as_found": 10.39,
+    "fault_window_samples": [
+      384,
+      434
+    ]
+  }
+}

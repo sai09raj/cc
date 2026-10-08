@@ -47,3 +47,15 @@ Gate 8.5: redesign/harden before any platform work.
 - Answer key (`reference/answer_key2.py`): a reconstruction at the set ratio 240 gives Z3R at 350
   and no echo, contradicting B's SER; any in-service ratio >= 330 reproduces the SER exactly;
   of the nameplate taps only X2-X5 (1750:5) and X1-X5 (2000:5) qualify, and the book says X1-X5.
+
+## Probe 2 (opus alias, v2): SOLVED exactly in ~8 min, 31 tool calls
+
+Same pattern as probe 1. Tool calls 1-19: it extracted every file, rendered every drawing
+sheet (all three Substation B CT sheets, A and C), all four commissioning-book pages and a zoom
+of the logic diagram. Tool call 20, its first program, already hard-codes relay B's CT as
+2000:5 (X1-X5) - the diagnosis came from the documents before any computation. Routine
+protection practice (check every CT tap in service against the relay's CTR) is exactly what
+it did; spreading the chain over three files did not slow it. The reconstruction of relay B
+then confirmed it, and it rejected the decoys (firmware, Z3P change) with replays.
+It also noticed a bundle inconsistency: the one-line still shows a generator at B although
+G2 is retired, and the T1 bay is not drawn.
