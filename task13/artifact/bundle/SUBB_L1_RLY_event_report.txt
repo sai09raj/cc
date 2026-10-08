@@ -1,0 +1,12 @@
+SUBSTATION B  -  L1-21 LINE RELAY (230 kV line L1 to Substation A)
+EVENT SUMMARY
+Date: 2026-09-14   Trigger: 14:22:07.5116   Record: SUBB_L1_RLY_20260914_142207
+Event: KEY (no trip)
+
+SEQUENTIAL EVENTS RECORDER (relay time, GPS synchronized)
+14:22:07.5340  RX         asserted
+14:22:07.5502  ECHO       asserted
+14:22:07.5502  KEY        asserted
+14:22:07.5835  ECHO       deasserted
+14:22:07.5835  KEY        deasserted
+14:22:07.5929  RX         deasserted
