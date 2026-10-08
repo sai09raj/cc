@@ -1,4 +1,4 @@
-# COHERE-12 rubric (v2, packet cohere12_v3.pdf)
+# COHERE-12 rubric (v3, packet cohere12_v4.pdf)
 
 Positive total **138**; six negative criteria (-10, -8, -8, -6, -5, -5). **50
 criteria**. Every weight is within -10..+10; every criterion body is 301
@@ -7,12 +7,15 @@ claim or one requirement. Accept any language, source organization,
 results-file format and trace format. Numbers may be written with or
 without thousands separators.
 
-Answer key: exhaustive simulation of all 29,360,128 configurations with
-the C reference engine (`proto/cohere.c`), which matches the Python
-reference (`proto/cohere.py`, itself reproduced exactly by an independent
-blind probe on the v1 packet) on every compared configuration, and an
-independently written JavaScript engine (`proto/cohere.js`) on 12 random
-entries of the stored results plus the baseline and the optimum. Every
+Answer key: exhaustive simulation of all 29,360,128 configurations
+(2,400 operations per core) with the optimized C engine
+(`proto/cohere_fast.c`), split over 28 parallel workers, one per directory
+placement, 448 chunk files in all, aggregated by `proto/aggregate_v4.py`.
+Its results match the JavaScript engine (`proto/cohere.js`) and the real
+pilot model's own engine on 41 sampled entries plus the baseline, the
+three variants and the optimum. The unoptimized C reference
+(`proto/cohere.c`) recomputed one full chunk (D0 on N2, D1 on N6, Q = 4,
+B = 1) with the same makespan sum and histogram. Every
 graded metric is defined in packet Section 8; the optimum's tie-break is
 in Section 9.
 
@@ -61,39 +64,39 @@ need all of it.
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 15 | +4 | Reports the baseline's (D0 on N0, D1 on N7, Q = 2, B = 2, line map 19245) makespan as exactly 6,725 cycles. |
-| 16 | +2 | Reports the baseline's (D0 on N0, D1 on N7, Q = 2, B = 2, line map 19245) p95 load miss latency as exactly 39 cycles. |
-| 17 | +2 | Reports the baseline's (D0 on N0, D1 on N7, Q = 2, B = 2, line map 19245) total messages created as exactly 9,762. |
-| 18 | +2 | Reports the baseline's (D0 on N0, D1 on N7, Q = 2, B = 2, line map 19245) Nack count as exactly 401. |
-| 19 | +3 | Reports the makespan of the variant that replaces the baseline line map with 43690 (D0 on N0, D1 on N7, Q = 2, B = 2) as exactly 6,931 cycles. |
-| 20 | +3 | Reports the makespan of D0 on N1, D1 on N6, Q = 2, B = 2 with line map 19245 as exactly 6,198 cycles. |
-| 21 | +3 | Reports the makespan of D0 on N1, D1 on N6, Q = 4, B = 1 with line map 19245 as exactly 6,141 cycles. |
+| 15 | +4 | Reports the baseline's (D0 on N0, D1 on N7, Q = 2, B = 2, line map 19245) makespan as exactly 39,980 cycles. |
+| 16 | +2 | Reports the baseline's (D0 on N0, D1 on N7, Q = 2, B = 2, line map 19245) p95 load miss latency as exactly 38 cycles. |
+| 17 | +2 | Reports the baseline's (D0 on N0, D1 on N7, Q = 2, B = 2, line map 19245) total messages created as exactly 58,447. |
+| 18 | +2 | Reports the baseline's (D0 on N0, D1 on N7, Q = 2, B = 2, line map 19245) Nack count as exactly 2,181. |
+| 19 | +3 | Reports the makespan of the variant that replaces the baseline line map with 43690 (D0 on N0, D1 on N7, Q = 2, B = 2) as exactly 39,767 cycles. |
+| 20 | +3 | Reports the makespan of D0 on N1, D1 on N6, Q = 2, B = 2 with line map 19245 as exactly 36,306 cycles. |
+| 21 | +3 | Reports the makespan of D0 on N1, D1 on N6, Q = 4, B = 1 with line map 19245 as exactly 35,693 cycles. |
 
 ## Optimal configuration (22-23, weight 7)
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 22 | +4 | Identifies the optimal configuration (smallest makespan; ties by messages, D0 node, D1 node, Q, B, line map) as D0 on N2, D1 on N6, Q = 4, B = 1, line map 55860. |
-| 23 | +3 | Reports the optimal configuration's (D0 on N2, D1 on N6, Q = 4, B = 1, line map 55860) makespan as exactly 5,470 cycles. |
+| 22 | +4 | Identifies the optimal configuration (smallest makespan; ties by messages, D0 node, D1 node, Q, B, line map) as D0 on N2, D1 on N6, Q = 4, B = 1, line map 63905. |
+| 23 | +3 | Reports the optimal configuration's (D0 on N2, D1 on N6, Q = 4, B = 1, line map 63905) makespan as exactly 33,626 cycles. |
 
 ## Whole-space characterization (24-34, weight 86)
 
 All counts and sums are over the 29,360,128 configurations of packet
-Section 1; "below the baseline" means makespan less than 6,725 cycles.
+Section 1; "below the baseline" means makespan less than 39,980 cycles.
 
 | # | Wt | Criterion |
 | --- | --- | --- |
-| 24 | +10 | Reports the sum of makespan over all 29,360,128 configurations as exactly 209,223,156,016. |
-| 25 | +10 | Reports the number of configurations, out of 29,360,128, whose makespan is below the baseline's 6,725 cycles as exactly 9,223,852. |
-| 26 | +10 | Reports the number of configurations, out of 29,360,128, with makespan at most 6,000 cycles as exactly 655,021. |
-| 27 | +8 | Reports the number of configurations with Q = 1 whose makespan is below 6,725 cycles as exactly 1,282,669. |
-| 28 | +8 | Reports the number of configurations with Q = 2 whose makespan is below 6,725 cycles as exactly 2,286,609. |
-| 29 | +8 | Reports the number of configurations with Q = 3 whose makespan is below 6,725 cycles as exactly 2,704,997. |
-| 30 | +8 | Reports the number of configurations with Q = 4 whose makespan is below 6,725 cycles as exactly 2,949,577. |
-| 31 | +6 | Reports the number of configurations with B = 1 whose makespan is below 6,725 cycles as exactly 2,505,587. |
-| 32 | +6 | Reports the number of configurations with B = 2 whose makespan is below 6,725 cycles as exactly 2,428,929. |
-| 33 | +6 | Reports the number of configurations with B = 4 whose makespan is below 6,725 cycles as exactly 2,273,644. |
-| 34 | +6 | Reports the number of configurations with B = 8 whose makespan is below 6,725 cycles as exactly 2,015,692. |
+| 24 | +10 | Reports the sum of makespan over all 29,360,128 configurations as exactly 1,234,126,567,296. |
+| 25 | +10 | Reports the number of configurations, out of 29,360,128, whose makespan is below the baseline's 39,980 cycles as exactly 9,711,036. |
+| 26 | +10 | Reports the number of configurations, out of 29,360,128, with makespan at most 36,000 cycles as exactly 1,239,802. |
+| 27 | +8 | Reports the number of configurations with Q = 1 whose makespan is below 39,980 cycles as exactly 1,416,317. |
+| 28 | +8 | Reports the number of configurations with Q = 2 whose makespan is below 39,980 cycles as exactly 2,396,296. |
+| 29 | +8 | Reports the number of configurations with Q = 3 whose makespan is below 39,980 cycles as exactly 2,825,944. |
+| 30 | +8 | Reports the number of configurations with Q = 4 whose makespan is below 39,980 cycles as exactly 3,072,479. |
+| 31 | +6 | Reports the number of configurations with B = 1 whose makespan is below 39,980 cycles as exactly 2,614,670. |
+| 32 | +6 | Reports the number of configurations with B = 2 whose makespan is below 39,980 cycles as exactly 2,547,107. |
+| 33 | +6 | Reports the number of configurations with B = 4 whose makespan is below 39,980 cycles as exactly 2,395,093. |
+| 34 | +6 | Reports the number of configurations with B = 8 whose makespan is below 39,980 cycles as exactly 2,154,166. |
 
 ## Checker (35-39, weight 5)
 
@@ -101,7 +104,7 @@ Section 1; "below the baseline" means makespan less than 6,725 cycles.
 | --- | --- | --- |
 | 35 | +1 | The checker's recorded output reports that in the baseline trace no cycle has two caches holding the same line in state M. |
 | 36 | +1 | The checker's recorded output reports that in the baseline trace every load returned the value of the most recent store to its line. |
-| 37 | +1 | The checker's recorded output reports checking exactly 1,648 loads in the baseline trace (the baseline run's total LD operations). |
+| 37 | +1 | The checker's recorded output reports checking exactly 9,609 loads in the baseline trace (the baseline run's total LD operations). |
 | 38 | +1 | The checker's recorded output rejects the altered baseline trace in which one load returns a different value, naming the load value invariant as violated. |
 | 39 | +1 | The checker's recorded output rejects the altered baseline trace in which a second cache holds a line in state M, naming the single M holder invariant as violated. |
 
@@ -142,7 +145,7 @@ Contents of each file are graded elsewhere (simulator and results 15-34, checker
 | Runtime version, reproduction commands | 13-14 |
 | Baseline makespan, p95, messages, Nacks | 15-18 |
 | Three variant makespans | 19-21 |
-| Sum of makespan; count below baseline; count at most 6,000 | 24-26 |
+| Sum of makespan; count below baseline; count at most 36,000 | 24-26 |
 | Count below baseline per Q and per B | 27-34 |
 | Optimal configuration and its makespan | 22-23 |
 | Call it optimal only after simulating all configurations | 46 |

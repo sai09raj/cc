@@ -1,5 +1,32 @@
 # Task 12 — COHERE-12 (directory coherence on a 2x4 mesh)
 
+## v3 package (cohere12_v4.pdf): 2,400 operations per core — ready for real pilots
+
+Same system, rules and configuration space; each core now runs 2,400
+operations instead of 400, so every simulation is about 6x longer. Sized
+with the engine the real pilots actually wrote (`fast_2400.js`, 20.5 ms per
+configuration locally, x0.655 platform factor, 17 threads): a full sweep
+needs about 23,200 s, 2.6x the 9,000 s limit, and still about 9,300 s for an
+engine 2.5x faster, before any development time.
+
+- Answer key: `proto/cohere_fast.c` over all 29,360,128 configurations, 28
+  parallel cloud workers (one per placement, branches
+  `claude/cohere12-gt-p{a}{b}`), 448 chunk files, aggregated by
+  `proto/aggregate_v4.py` into `reference/aggregate_v4.json`. 41 sampled
+  entries plus baseline, variants and optimum identical in the JS engine
+  and the real pilots' engine; FULLCHUNK_CHECK.
+- Values: baseline 39,980 (p95 38, 58,447 messages, 2,181 Nacks, 9,609
+  loads); variants 39,767 / 36,306 / 35,693; sum 1,234,126,567,296; below
+  baseline 9,711,036; at most 36,000: 1,239,802; per Q 1,416,317 /
+  2,396,296 / 2,825,944 / 3,072,479; per B 2,614,670 / 2,547,107 /
+  2,395,093 / 2,154,166; optimum N2/N6 Q4 B1 map 63905, makespan 33,626.
+- Memo facts: mean makespan by placement spans 11,820 cycles (N2/N6
+  36,036 to N3/N7 47,856), by Q 2,082, by B 618; the line map's own mean
+  effect is about 7,100 over 72 sampled maps including the all-one-bank
+  extremes (provable bound 12,444), so placement is the largest knob.
+- Prompt changes: file name v4, threshold 36,000. Rubric: same 50
+  criteria and weights, values replaced. Ideal Flow: values replaced.
+
 ## Real pilot round 1 (v2 package, cohere12_v3.pdf): 94 / 100 / 100 — FAILED
 
 All three real runs (claude-opus-5-5, 93-103 min each) built a correct
