@@ -1,5 +1,13 @@
 # Task 12 — COHERE-12 (directory coherence on a 2x4 mesh)
 
+## Outcome: PASSED on timeouts (v3 package, cohere12_v4.pdf)
+
+The user reports that every real run of the v4 packet ended with "claude cli
+timed out after 9000s", which the platform counts as a valid stump. As with
+ARRAY-11, the pass rests on the time limit, not on a completed low score:
+a run that finished the sweep would likely score near 100% (v3 runs scored
+94/100/100). See mistake #78.
+
 ## v3 package (cohere12_v4.pdf): 2,400 operations per core — ready for real pilots
 
 Same system, rules and configuration space; each core now runs 2,400

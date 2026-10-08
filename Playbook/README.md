@@ -186,6 +186,15 @@ with its own branch and bound in about 1 h 45 min. The local `opus` probe
 (64.6%) had underestimated the real target on this search task. See
 mistake #73 and `task11/audit/real-pilot-1/`.
 
+## Brief: COHERE-12 (task12) outcome
+
+COHERE-12 (directory coherence, exact whole-space counts over 29,360,128
+simulations) failed at v3 (94/100/100: the runs finished the sweep in about
+an hour on 17 threads). v4 made each simulation 6x longer (~23,000 s of
+platform compute) and every real run then hit the 9000 s CLI timeout, a
+valid stump. Like ARRAY-11, it passed on timeouts, not completed low scores
+(mistakes #77, #78). Next tasks follow the community tips in 08, section 5.
+
 ## The Task 06 discovery: real pilots can score below synthetic mutants
 
 Task 06 (ATRIUM-9, an exhaustive-sweep elevator-dispatch simulation) is a

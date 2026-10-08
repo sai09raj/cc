@@ -61,6 +61,44 @@ A fellow tasker recommended generating plots or diagrams through code—such as 
 
 Task 03 follows this pattern through `artifact/make_packet.py`, which deterministically renders the PNG and is followed by full-resolution visual inspection and isolated packet-only audits.
 
+## 5. Community tips on stumping Opus 5.5 (screenshots, 2026-10-08)
+
+Two community posts, shared by the QMO, from authors who report real
+sub-50 runs on the current Model A:
+
+**Iterate on the model's own trajectory (via Erick_QMO_ES, tip from
+@latam.coder2023).** Deep domain knowledge (DFIR in their case) plus many
+iterations on the artifact bundle. After each run, read the trajectory: what
+the model got right, which shortcuts it found, what made the task easier than
+intended. Harden exactly those paths and remove the shortcuts until the
+model must follow the intended reverse-engineering and attribution chain,
+without making the task feel artificial.
+
+**Put the fault one step past where the model looks (mubtasar).** When the
+failure is in the part under suspicion, Opus finds it: it checks that part
+and every standard check on it. When the failure sits one step further
+along, in something the part rests on, feeds into or calls, it misses it.
+The evidence only appears when two files are combined, such as a value in
+one file and a position or reference point in another. If the model can
+read or look it up directly, it finds it. Put the evidence in a file it
+treats as background: it zooms into the files it thinks matter and skims
+the rest. Keep that file legible at full size.
+
+### Authoring rule
+
+- Prefer diagnosis/attribution tasks over "simulate a complete spec"
+  (every fully specified simulation in this project was transcribed, #74)
+  and over compute-bound tasks (they pass only on timeouts, #73, #78).
+- The decisive fact must come from combining two files: a value in one and
+  a reference (datum, offset, ratio, orientation, revision, mapping) in
+  another, where the second file looks like routine background.
+- The obvious suspect must be checkable and must check out clean, so a
+  model that stops there reaches a wrong root cause.
+- Fairness is unchanged: the evidence is present, legible at full size,
+  and determines one root cause; rival causes must be refutable from the
+  supplied data, and the rubric grades the reference chain, not wording.
+- Iterate: after every pilot, find the shortcut it used and harden it.
+
 ## Permanent gate
 
 No future task proceeds to a pilot unless it passes all four checks:
