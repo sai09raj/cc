@@ -42,7 +42,7 @@ Score topology: whole-space criteria carry 87/135 = 64.4 % of positive weight; a
 
 | # | Wt | Criterion |
 |---|---|---|
-| 17 | +4 | Identifies the optimal configuration (smallest total TTS; ties by cycle, plan, lead before lag, offsets of I0..I8) as cycle 60 s, plan 6, lag, offsets I0..I8 = 0, 45, 15, 30, 0, 30, 15, 30, 0 s. |
+| 17 | +4 | Identifies the optimal configuration (smallest total TTS; ties: smaller cycle, smaller plan, lead before lag, then offsets of I0..I8 smaller first) as cycle 60 s, plan 6, lag, offsets I0..I8 = 0, 45, 15, 30, 0, 30, 15, 30, 0 s. |
 | 18 | +3 | Reports the optimal configuration's (cycle 60 s, plan 6, lag, offsets 0, 45, 15, 30, 0, 30, 15, 30, 0 s) total TTS as exactly 1,829,597 vehicle-seconds. |
 
 ## Whole-space characterization ("below the baseline" = total TTS less than 4,052,648)
@@ -80,7 +80,7 @@ Score topology: whole-space criteria carry 87/135 = 64.4 % of positive weight; a
 
 | # | Wt | Criterion |
 |---|---|---|
-| 40 | +2 | The memo identifies the cycle length as the knob with the largest effect on total TTS, larger than the plan, the phase order or the offsets. |
+| 40 | +2 | The memo identifies the cycle length as the knob with the largest effect on total TTS (its average total TTS ranges from about 2.07 million at 60 s to 12.72 million at 120 s). |
 | 41 | +2 | The memo attributes the best configuration's advantage mainly to its 60 s cycle, the cycle length with the lowest average total TTS across the space. |
 | 42 | +1 | The memo states that a longer cycle raises the average total TTS across the configuration space. |
 | 43 | +1 | The memo states that lag gives a higher average total TTS than lead across the configuration space. |
@@ -90,8 +90,8 @@ Score topology: whole-space criteria carry 87/135 = 64.4 % of positive weight; a
 | # | Wt | Criterion |
 |---|---|---|
 | 44 | -10 | Uses a third party package or external tool (for example NumPy, SUMO, VISSIM, Aimsun) to compute any simulation result. |
-| 45 | -8 | Reports a whole-space sum or count over the 18,874,368 configurations while stating it simulated fewer configurations than that (an estimate or extrapolation presented as the value). |
-| 46 | -6 | Calls its reported configuration optimal (rather than the best found) while stating it simulated fewer than all 18,874,368 configurations. |
+| 45 | -8 | Reports a whole-space sum or count over the 18,874,368 configurations as an exact value when its own report or code shows it simulated fewer configurations than that. |
+| 46 | -6 | Calls its reported configuration optimal (rather than the best found) when its own report or code shows it simulated fewer than all 18,874,368 configurations. |
 | 47 | -5 | The checker imports, calls or copies code from the simulator instead of being separately coded. |
 | 48 | -8 | Hard codes any reported simulation result (a TTS, count or sum) as a literal in its delivered source code instead of computing it by running its simulator. |
 | 49 | -5 | Accesses the internet or any external source (packages, code, documentation or results) while building or running its simulator or checker. |
@@ -118,4 +118,73 @@ Score topology: whole-space criteria carry 87/135 = 64.4 % of positive weight; a
 | Call it optimal only if all configurations simulated; number simulated | 45, 46 |
 | Base every number on your own executed programs | 48 |
 | Deliver the five files | 50 |
+
+## Atomicity and self-containment check (every criterion, after the last edit)
+
+| # | One value, claim or requirement? | Expected answer stated in the row? | Chars |
+|---|---|---|---|
+| 1 | yes | yes | 60 |
+| 2 | yes | yes | 60 |
+| 3 | yes | yes | 62 |
+| 4 | yes | yes | 62 |
+| 5 | yes | yes | 64 |
+| 6 | yes | yes | 66 |
+| 7 | yes | yes | 64 |
+| 8 | yes | yes | 113 |
+| 9 | yes | yes | 99 |
+| 10 | yes | yes | 109 |
+| 11 | yes | yes | 109 |
+| 12 | yes | yes | 112 |
+| 13 | yes | yes | 112 |
+| 14 | yes | yes | 163 |
+| 15 | yes | yes | 120 |
+| 16 | yes | yes | 126 |
+| 17 | yes (one configuration: cycle, plan, order and nine offsets are one answer object) | yes | 227 |
+| 18 | yes | yes | 152 |
+| 19 | yes | yes | 111 |
+| 20 | yes | yes | 128 |
+| 21 | yes | yes | 137 |
+| 22 | yes | yes | 109 |
+| 23 | yes | yes | 109 |
+| 24 | yes | yes | 109 |
+| 25 | yes | yes | 101 |
+| 26 | yes | yes | 102 |
+| 27 | yes | yes | 102 |
+| 28 | yes | yes | 105 |
+| 29 | yes | yes | 105 |
+| 30 | yes | yes | 105 |
+| 31 | yes | yes | 105 |
+| 32 | yes | yes | 105 |
+| 33 | yes | yes | 105 |
+| 34 | yes | yes | 100 |
+| 35 | yes | yes | 144 |
+| 36 | yes | yes | 156 |
+| 37 | yes | yes | 106 |
+| 38 | yes | yes | 159 |
+| 39 | yes | yes | 153 |
+| 40 | yes | yes | 175 |
+| 41 | yes | yes | 149 |
+| 42 | yes | yes | 96 |
+| 43 | yes | yes | 99 |
+| 44 | yes (one prohibited behaviour) | yes | 119 |
+| 45 | yes | yes | 166 |
+| 46 | yes | yes | 158 |
+| 47 | yes | yes | 95 |
+| 48 | yes | yes | 155 |
+| 49 | yes (one prohibited behaviour) | yes | 139 |
+| 50 | yes (package delivery only; contents graded by 10-43) | yes | 133 |
+
+## Reviewer-feedback audit (Playbook mistakes #75, #76; the photos and the ARRAY-11 review)
+
+| Past finding | Check on this rubric | Result |
+|---|---|---|
+| Expected value a correct answer can never reach (C39 = 164 outside the legal set) | Every expected value machine-compared with the exhaustive answer key (17 whole-space and optimum values) and the optimum's offsets checked to be legal (multiples of C/4) | pass |
+| Values that need an unstated rule (baseline 14008 vs 9026) | A blind probe working only from the packet reproduced the baseline, all three variants, the optimum and the 8,136 crossings exactly; every point it listed as possibly ambiguous is settled by a packet sentence or figure | pass |
+| Prompt explanation with no criterion | Memo clauses map to 40-43; every prompt clause in the reverse-coverage table | pass |
+| Mechanism description bundled with a trace value; several constants or a constant plus an explanation in one row | None; each row checks one value or one claim (table above) | pass |
+| Metric the packet never defines (assembly_highwater, commit_gap_cycles) | TTS, total TTS, gridlock, stop-line crossing, "below the baseline" all defined in packet Sections 5-6 or in the row itself | pass |
+| Wrong coordinate or label copied from a neighbouring row (ARRAY-11 C2, C20) | Cycle and plan labels and values machine-checked against the answer key; enter by copy-paste and compare after entry | pass (re-check after entry) |
+| Validity-only bound (ARRAY-11 C17-C21) | None; every numeric row is an exact value | pass |
+| Presence-only count (ARRAY-11 C12) | None; counts are graded for their exact value | pass |
+| Conditional prompt rule without its own trap (ARRAY-11 C39 gap) | "Call it optimal only if you simulated all" -> 46; exact whole-space values from a partial run -> 45, both judged from the run's own report or code | pass |
 
