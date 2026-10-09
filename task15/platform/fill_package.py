@@ -1,18 +1,31 @@
 #!/usr/bin/env python3
-"""Write rubric.md and ideal-flow.md for FIRE-15 from the answer key (reference/aggregate.json).
+"""Write rubric.md (or, with --template, rubric_TEMPLATE.md with [PLACEHOLDERS]) and ideal-flow.md for FIRE-15 from the answer key (reference/aggregate.json).
 usage: fill_package.py AGGREGATE_JSON   (checks every criterion is <= 301 characters)"""
 import json, os, sys
-A = json.load(open(sys.argv[1]))
+TEMPLATE = sys.argv[1] == "--template"
+if TEMPLATE:   # placeholders for values that come from the answer key
+    A = dict(plans=105413504, missing=0, sum_total_loss="[SUM_TOTAL_LOSS]", below_baseline="[N_BELOW_BASELINE]",
+             below_baseline_all_four="[N_BELOW_ALL_FOUR]", below_by_crew_station=[None] * 6 + [[f"[CREW7_S{j + 1}_BELOW]" for j in range(14)]],
+             optimum=dict(total_loss="[OPT_TOTAL_LOSS]", plan=None))
+else:
+    A = json.load(open(sys.argv[1]))
 assert A["plans"] == 105413504 and A["missing"] == 0, "answer key incomplete"
-f = lambda v: f"{v:,}"
+f = lambda v: v if isinstance(v, str) else f"{v:,}"
 BASE = "S1, S4, S5, S8, S9, S12, S13"
 bb7 = A["below_by_crew_station"][6]
-mean = A["mean_by_crew_station"]
-spread = [max(m) - min(m) for m in mean]
-crew_most = spread.index(max(spread)) + 1
-best7 = bb7.index(max(bb7)) + 1; worst7 = bb7.index(min(bb7)) + 1
-opt = A["optimum"]; plan = ", ".join(f"S{s}" for s in opt["plan"])
-avg = A["sum_total_loss"] / A["plans"]
+opt = A["optimum"]
+if TEMPLATE:
+    crew_most, best7, worst7, plan = "[CREW_MOST]", "[BEST7]", "[WORST7]", "[OPT_PLAN_S1..S7]"
+    bbest, bworst, avg_s, lo_s, hi_s = "[CREW7_BEST_BELOW]", "[CREW7_WORST_BELOW]", "[AVG_TOTAL_LOSS]", "[MIN_STATION_AVG]", "[MAX_STATION_AVG]"
+else:
+    mean = A["mean_by_crew_station"]
+    spread = [max(m) - min(m) for m in mean]
+    crew_most = spread.index(max(spread)) + 1
+    best7 = bb7.index(max(bb7)) + 1; worst7 = bb7.index(min(bb7)) + 1
+    plan = ", ".join(f"S{s}" for s in opt["plan"])
+    bbest, bworst = f(bb7[best7 - 1]), f(bb7[worst7 - 1])
+    avg_s = f"{A['sum_total_loss'] / A['plans']:,.0f}"
+    lo_s, hi_s = f"{min(mean[crew_most - 1]):,.0f}", f"{max(mean[crew_most - 1]):,.0f}"
 
 R = []  # (weight, text)
 def add(w, t): R.append((w, t))
@@ -42,8 +55,8 @@ add(2, "The checker's recorded output reports checking exactly 980 spread igniti
 add(1, "The checker's recorded output rejects the altered trace with a spread ignition moved to a cell with no burning neighbour of its fire, naming the spread-adjacency invariant as violated.")
 add(1, "The checker's recorded output rejects the altered trace with a crew putting out one cell more than its capacity in a step, naming the crew-capacity invariant as violated.")
 add(2, f"The memo identifies crew {crew_most} as the crew whose station changes the average total loss across the plan space the most.")
-add(1, f"The memo names S{best7} as the best station for crew 7, the station with the most plans below the baseline ({f(bb7[best7 - 1])}).")
-add(1, f"The memo names S{worst7} as the worst station for crew 7, the station with the fewest plans below the baseline ({f(bb7[worst7 - 1])}).")
+add(1, f"The memo names S{best7} as the best station for crew 7, the station with the most plans below the baseline ({bbest}).")
+add(1, f"The memo names S{worst7} as the worst station for crew 7, the station with the fewest plans below the baseline ({bworst}).")
 add(-10, "Uses a third-party package or external tool (for example NumPy, FARSITE, FlamMap) to compute any simulation result.")
 add(-8, "Reports a whole-space sum or count over the 105,413,504 plans as an exact value when its own report or code shows it simulated fewer plans than that.")
 add(-6, "Calls its reported plan optimal (rather than the best found) when its own report or code shows it simulated fewer than all 105,413,504 plans.")
@@ -78,7 +91,8 @@ out += ["", "## Reverse coverage", "",
         "| Undefined metric | Loss, burnt cell, spread ignition and \"below the baseline\" are defined in the packet or criterion |",
         "| Validity-only or presence-only criteria | None; every number is graded as an exact value |",
         "| Prompt rule with no penalty | Optimal-claim and partial-exact penalties (44, 45), judged from the run's own report or code |"]
-open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "rubric.md"), "w").write("\n".join(out) + "\n")
+SUF = "_TEMPLATE" if TEMPLATE else ""
+open(os.path.join(os.path.dirname(os.path.abspath(__file__)), f"rubric{SUF}.md"), "w").write("\n".join(out) + "\n")
 
 bb = ", ".join(f"S{j + 1} {f(v)}" for j, v in enumerate(bb7))
 analyze = ("Read the packet and recover the whole model. From Figure 1 read the cover letter of each 8 x 8 block (for example cell (100, 36) is houses and (76, 62) rock) and the 14 station cells (S14 at x 100, y 92). "
@@ -90,11 +104,11 @@ execute = ("Write a step-by-step simulator in the standard library, offline, and
            f"Whole space: sum of total loss {f(A['sum_total_loss'])}; {f(A['below_baseline'])} plans below the baseline; {f(A['below_baseline_all_four'])} below it in all four scenarios; with crew 7 at each station, below the baseline: {bb}. "
            f"Optimal: {plan}, total loss {f(opt['total_loss'])}; call it optimal only because all plans were simulated, and state that count. "
            "Write the baseline scenario A trace and run a separately coded checker: it passes the three invariants, reports 980 spread ignitions checked, and rejects the two altered copies, naming the invariant each violates. Record the runtime version and reproduction commands.")
-synth = (f"Write the memo from your own results. Across the space the average total loss is {avg:,.0f}. Crew {crew_most}'s station changes the average most: its per-station averages range from {min(mean[crew_most - 1]):,.0f} to {max(mean[crew_most - 1]):,.0f}. "
-         f"Crew 7 is best based at S{best7} ({f(bb7[best7 - 1])} plans below the baseline) and worst at S{worst7} ({f(bb7[worst7 - 1])}). "
+synth = (f"Write the memo from your own results. Across the space the average total loss is {avg_s}. Crew {crew_most}'s station changes the average most: its per-station averages range from {lo_s} to {hi_s}. "
+         f"Crew 7 is best based at S{best7} ({bbest} plans below the baseline) and worst at S{worst7} ({bworst}). "
          "Explain the pattern from the landscape and wind: stations near the town and upwind of it reach fires that threaten houses sooner, and each house cell costs ten times a plain cell. "
          "Note that fire growth is chaotic, so only an exhaustive sweep gives the exact counts and sums.")
-open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "ideal-flow.md"), "w").write(
+open(os.path.join(os.path.dirname(os.path.abspath(__file__)), f"ideal-flow{SUF}.md"), "w").write(
     f"## Analyze\n\n```text\n{analyze}\n```\n\n## Execute & Generate\n\n```text\n{execute}\n```\n\n## Synthesize\n\n```text\n{synth}\n```\n")
 print(f"rubric: {len(R)} criteria, positive {pos}, whole-space share {100 * ws / pos:.1f}%, max len {max(len(t) for _, t in R)}")
 print("ideal flow lengths:", len(analyze), len(execute), len(synth))
