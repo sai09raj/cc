@@ -38,3 +38,8 @@ Exact simulator, baseline, variants, optimum, checker and memo; 893,362 configur
 Its JS engine ran ~25 ms per configuration (as fast as our C). Scaling as in COHERE (real engine ~1.43x
 faster than the local probe's, platform x0.655, 17 threads): full sweep ~12,800 s on the platform plus
 development time, versus the 9000 s limit - margin about 1.4-1.7x, thinner than COHERE v4's 2.6x.
+
+## Real Model A runs (2026-10-09): PASSED
+5 of 6 runs: "server disconnected without sending a response" (valid stump). 1 completed run, platform
+score 19 (my count 34/135 = 25%): exact engine, but it ended its turn with the sweep ~4% done and the
+one-shot session killed the sweep; no memo. See audit/real-runs/GRADING.md, playbook mistakes #80, #81.

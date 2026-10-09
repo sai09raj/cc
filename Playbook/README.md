@@ -195,6 +195,18 @@ platform compute) and every real run then hit the 9000 s CLI timeout, a
 valid stump. Like ARRAY-11, it passed on timeouts, not completed low scores
 (mistakes #77, #78). Next tasks follow the community tips in 08, section 5.
 
+## Brief: GRID-14 (task14) outcome
+
+GRID-14 (3x3 signal-coordination grid, integer-exact simulator, exact
+whole-space aggregates over 18,874,368 configurations) passed its real-run
+round: 5 of 6 Model A runs ended with "server disconnected without sending a
+response" (valid stump) and the sixth completed at a platform score of 19.
+That run had an exact engine but ended its turn while a 6-7 h background
+sweep ran; the one-shot session killed the sweep, so it delivered only
+partial values and no memo. This is the first pass with a completed
+sub-50 run alongside timeouts. Recipe and platform facts: mistakes #80, #81;
+evidence in `task14/audit/real-runs/`.
+
 ## The Task 06 discovery: real pilots can score below synthetic mutants
 
 Task 06 (ATRIUM-9, an exhaustive-sweep elevator-dispatch simulation) is a
