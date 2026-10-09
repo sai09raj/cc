@@ -1,0 +1,31 @@
+red-crossing alteration: vehicle 0 crossing from link 0 into link 24 moved from step 84 to step 81 (it is shown in cell 0 of link 24 at steps 81..83)
+double-cell alteration: at step 1000 vehicle 789 placed in link 0 cell 19, already holding vehicle 786
+
+=== checker on baseline AM trace
+trace: baseline_AM_trace.txt
+config: {'C': 84, 'plan': 1, 'order': 'lead', 'offsets': [0, 0, 0, 0, 0, 0, 0, 0, 0]}; steps read: 4967; stop-line crossings checked: 8136; vehicles created: 2728; departed: 2728
+I1 [no cell ever holds two vehicles]: PASS
+I2 [every stop-line crossing happens during a green for its movement]: PASS
+I3 [created == waiting + in network + departed at every step]: PASS
+OVERALL: PASS
+exit status 0
+
+=== checker on altered copy 1 (crossing moved into red)
+trace: altered_trace_red_crossing.txt
+config: {'C': 84, 'plan': 1, 'order': 'lead', 'offsets': [0, 0, 0, 0, 0, 0, 0, 0, 0]}; steps read: 4967; stop-line crossings checked: 8136; vehicles created: 2728; departed: 2728
+I1 [no cell ever holds two vehicles]: PASS
+I2 [every stop-line crossing happens during a green for its movement]: FAIL (1 violation(s))
+    step 81: vehicle 0 crossed at I0 (N-approach T, needs phase A) while signal shows D
+I3 [created == waiting + in network + departed at every step]: PASS
+OVERALL: REJECTED
+exit status 1
+
+=== checker on altered copy 2 (two vehicles in one cell)
+trace: altered_trace_double_cell.txt
+config: {'C': 84, 'plan': 1, 'order': 'lead', 'offsets': [0, 0, 0, 0, 0, 0, 0, 0, 0]}; steps read: 4967; stop-line crossings checked: 8136; vehicles created: 2728; departed: 2728
+I1 [no cell ever holds two vehicles]: FAIL (1 violation(s))
+    step 1000: vehicles 786 and 789 both in link 0 cell 19
+I2 [every stop-line crossing happens during a green for its movement]: PASS
+I3 [created == waiting + in network + departed at every step]: PASS
+OVERALL: REJECTED
+exit status 1

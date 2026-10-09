@@ -31,3 +31,10 @@ Its simulator was exact (baseline 4,052,648 and all three variants match), its l
 true optimum (1,829,597), it simulated 324,155 configurations (1.7 %) and reported the whole-space
 items as stratified-sample estimates with confidence intervals - i.e. the "partial run" branch,
 which earns none of the whole-space weight. Retry launched 22:48 UTC.
+
+## Probe 2 (opus alias, retry): 51/135 = 37.8 % - the "partial run" branch, as designed
+Exact simulator, baseline, variants, optimum, checker and memo; 893,362 configurations simulated
+(4.73 %); whole-space items reported as estimates (all miss). See audit/probe-2/GRADING.md.
+Its JS engine ran ~25 ms per configuration (as fast as our C). Scaling as in COHERE (real engine ~1.43x
+faster than the local probe's, platform x0.655, 17 threads): full sweep ~12,800 s on the platform plus
+development time, versus the 9000 s limit - margin about 1.4-1.7x, thinner than COHERE v4's 2.6x.
