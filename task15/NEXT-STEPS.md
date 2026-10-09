@@ -2,7 +2,7 @@
 
 Written so the task can be finished even if this session stops.
 
-1. Answer key: 56 cloud workers (branches `claude/fire15-gt-s{1..14}q{0..3}`) each push their part files
+1. Answer key: 56 cloud workers (49 ran first; the last 7 never started and were relaunched at 14:02 UTC as "(retry)" sessions, due ~15:00 UTC) (branches `claude/fire15-gt-s{1..14}q{0..3}`) each push their part files
    to `task15/gt/` on their branch, about 45-60 minutes after 13:00 UTC on 2026-10-09.
 2. Run `bash task15/finish.sh` from the repo root. It fetches every branch, copies the 196 part files,
    aggregates them into `task15/reference/aggregate.json`, and writes `task15/platform/rubric.md` and
