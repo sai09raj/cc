@@ -32,3 +32,4 @@ A: count 150 valve symbols of 4 types on a cluttered sheet (key gate 41, globe 3
 B: trace 24 same-colour crossing wires from left to right terminals (key in scratch scan_keys.json).
 C: noisy rotated scan of a 32 x 9 table of 5-digit numbers: two column sums and five cells.
 Whichever fails most becomes the core of Task 16.
+Scan result: A 150/150, B 24/24, C 7/7 - all exact (playbook #85). Perception is not a weakness.
