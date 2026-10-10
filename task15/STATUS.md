@@ -23,3 +23,8 @@ My independent enumeration of all 196 parts (105,413,504 plans, C engine) matche
 S14,S14,S8,S5,S3,S9,S7 = 6,012; crew 6 most influential (range 2,068 vs crew 7 2,006); crew 7 best S9, worst S2.
 The platform package is GPT's v4 (fire15_v4.pdf, prompt, rubric, Ideal Flow); platform/rubric.md and
 ideal-flow.md here are my earlier v1-based versions, kept for reference only.
+
+## Real platform runs (2026-10-10): 4 timeouts (9000 s), 2 scored 100
+The 100 runs installed C compilers (apt-get gcc / pip ziglang), used the prompt-endorsed shared-state evaluation,
+and finished the full sweep in 86-100 min (6,573 s and 8,693 s total). Submitted as is by the user's decision.
+Lesson: playbook mistake #83 (compute-only difficulty is a weak stump; assume the model installs any tooling).
