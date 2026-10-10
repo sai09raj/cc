@@ -31,6 +31,7 @@ def render(sheet, out):
         if len(m) > 2:
             tag = m[2]; txt = {"GV": "GV"}.get(tag, tag.replace("HX:", ""))
             fc = "#2b5d8a" if tag.startswith("HX") else "#444"
+            x1, y1 = x1 - nx / n * 1.6, y1 - ny / n * 1.6
             ax.text(x1, y1, txt, fontsize=7, color="white", ha="center", va="center", zorder=5,
                     bbox=dict(boxstyle="square,pad=0.3" if tag.startswith("HX") else "round,pad=0.2", fc=fc, ec="k"))
     # crossings
@@ -73,7 +74,8 @@ def render(sheet, out):
         _, a, b, dn = best; (x0, y0), (x1, y1) = iso(a), iso(b)
         mx, my = x0 + (x1 - x0) * 0.3, y0 + (y1 - y0) * 0.3; nx, ny = (y1 - y0), -(x1 - x0); n = math.hypot(nx, ny) or 1
         ang = upright(math.degrees(math.atan2(y1 - y0, x1 - x0)))
-        ax.text(mx + nx / n * 1.8, my + ny / n * 1.8, f"{lid} DN{dn}", rotation=ang, fontsize=7.5, color="#a00", zorder=6, ha="center",
+        sgn = -1 if lid == "CW-201" else 1
+        ax.text(mx + sgn * nx / n * 1.8, my + sgn * ny / n * 1.8, f"{lid} DN{dn}", rotation=ang, fontsize=7.5, color="#a00", zorder=6, ha="center",
                 va="center", bbox=dict(fc="white", ec="none", pad=0.1))
     if True:
         for lid, det in (STUBS if sheet == "1" else STUBS2).items():
@@ -86,7 +88,8 @@ def render(sheet, out):
             ax.text(tx, ty, f"{lid} DN{pc['dn']}\nsee sheet 3, detail {det}", fontsize=8, color="#a00", zorder=6, ha="center", va="center",
                     bbox=dict(fc="white", ec="#a00", pad=0.2))
     if sheet == "1":
-        x, y = iso(nodes["M"]); ax.text(x - 1, y - 3.5, "PUMP DISCHARGE MANIFOLD OUTLET\nEL +1500 (E 0, N 0)\nP-201A/B/C/D below", fontsize=8, ha="right")
+        x, y = iso(nodes["M"]); ax.text(x - 3, y - 6, "PUMP DISCHARGE MANIFOLD OUTLET\nEL +1500 (E 0, N 0)\nP-201A/B/C/D below", fontsize=8, ha="right")
+        ax.annotate("", xy=(x, y), xytext=(x - 3, y - 4.5), arrowprops=dict(arrowstyle="-", lw=0.7))
         ax.set_title("CW-200 isometric, sheet 1 of 3: pump manifold, DN200 ring main and its branches. To scale; dimensions in mm along centrelines. Plant north up-right.", fontsize=10)
     else:
         x, y = iso(nodes["TK1"]); ax.text(x + 1, y + 1, "TK-1 BOTTOM OUTLET NOZZLE\nEL +25000 (E 40000, N 60000)", fontsize=8)
@@ -105,20 +108,25 @@ def render_details(out):
         p = (0.0, 0.0); pts = [p]
         for m in pc["moves"]:
             dx, dy = {"E": (C30, -S30), "W": (-C30, S30), "N": (C30, S30), "S": (-C30, -S30), "U": (0, 1), "D": (0, -1)}[m[0]]
-            s_ = 1.0 + 0.35 * math.log10(m[1] / 1000 + 1) * 6; q = (p[0] + dx * s_, p[1] + dy * s_)
+            s_ = 2.4 + 0.35 * math.log10(m[1] / 1000 + 1) * 6; q = (p[0] + dx * s_, p[1] + dy * s_)
             ax.plot([p[0], q[0]], [p[1], q[1]], color="k", lw=LW[pc["dn"]], zorder=2)
             ang = upright(math.degrees(math.atan2(q[1] - p[1], q[0] - p[0]))); nx, ny = -(q[1] - p[1]), (q[0] - p[0]); n = math.hypot(nx, ny) or 1
             ax.text((p[0] + q[0]) / 2 + nx / n * 0.35, (p[1] + q[1]) / 2 + ny / n * 0.35, str(m[1]), rotation=ang, ha="center", va="center",
                     fontsize=9, bbox=dict(fc="white", ec="none", pad=0.2), zorder=4)
             if len(m) > 2:
                 tag = m[2]; fc = "#2b5d8a" if tag.startswith("HX") else "#444"
-                ax.text(q[0], q[1], tag.replace("HX:", ""), fontsize=8.5, color="white", ha="center", va="center", zorder=5,
+                ax_, ay_ = (q[0], q[1]) if tag.startswith("HX") else ((p[0] + q[0]) / 2, (p[1] + q[1]) / 2)
+                ax.plot([ax_, ax_ - nx / n * 0.85], [ay_, ay_ - ny / n * 0.85], color="0.4", lw=0.8, zorder=4)
+                ax.text(ax_ - nx / n * 1.1, ay_ - ny / n * 1.1, tag.replace("HX:", ""), fontsize=8.5, color="white", ha="center", va="center", zorder=5,
                         bbox=dict(boxstyle="square,pad=0.3" if tag.startswith("HX") else "round,pad=0.2", fc=fc, ec="k"))
             p = q; pts.append(p)
-        ax.plot(0, 0, "ko", ms=7, zorder=3); ax.text(0.2, -0.6, f"{pc['frm']} (on ring main)" if pc["frm"] != "N5" else "N5 (sheet 2)", fontsize=9, weight="bold", color="#0047ab")
+        fdx = {"E": C30, "W": -C30, "N": C30, "S": -C30, "U": 0, "D": 0}[pc["moves"][0][0]]
+        ax.plot(0, 0, "ko", ms=7, zorder=3); ax.text(-0.3 if fdx >= 0 else 0.3, 0.6, ha="right" if fdx >= 0 else "left", s= f"{pc['frm']} (on ring main)" if pc["frm"] != "N5" else "N5 (sheet 2)", fontsize=9, weight="bold", color="#0047ab")
         lm = pc["moves"][-1][0]; ddx, ddy = {"E": (C30, -S30), "W": (-C30, S30), "N": (C30, S30), "S": (-C30, -S30), "U": (0, 1), "D": (0, -1)}[lm]
         ax.plot([p[0], p[0] + ddx * 0.6], [p[1], p[1] + ddy * 0.6], color="#0047ab", lw=1, ls=":")
-        ax.text(p[0] + ddx * 1.6, p[1] + ddy * 1.6 - 0.2, END_LABEL[pc["to"]], fontsize=9, weight="bold", color="#0047ab", ha="center",
+        vert = lm in ("U", "D")
+        ax.text(p[0] + (0.5 if vert else ddx * 1.6), p[1] + (ddy * 0.9 if vert else ddy * 1.6 - 0.2), END_LABEL[pc["to"]], fontsize=9, weight="bold",
+                color="#0047ab", ha="left" if vert else "center",
                 bbox=dict(fc="#e8f0ff", ec="#0047ab", pad=0.2)); pts.append((p[0] + ddx * 2.6, p[1] + ddy * 2.6))
         xs, ys = zip(*pts); ax.set_xlim(min(xs) - 2.5, max(xs) + 3.5); ax.set_ylim(min(ys) - 1.5, max(ys) + 1.5)
         ax.set_title(f"Detail {det}: {lid} DN{pc['dn']} (not to scale)", fontsize=10)
