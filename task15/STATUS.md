@@ -16,3 +16,10 @@ computation exceeds the 9000 s limit, partial-run branch scores low, timeout bra
   2026-10-09 ~13:00 UTC; aggregator proto/aggregate.py.
 - Packet artifact/fire15_v1.pdf (2 text pages, map, parameters, wind, crews), metadata-clean.
 - Blind opus probe launched 13:05 UTC (2.5 h, Python/Node only, 4 cores).
+
+## Answer-key verification (2026-10-10 07:35 UTC)
+My independent enumeration of all 196 parts (105,413,504 plans, C engine) matches every value in the v4 rubric
+(GPT's package): sum 1,517,929,184,378; below 43,983,052; all four 6,249,692; all 14 crew-7 counts; optimum
+S14,S14,S8,S5,S3,S9,S7 = 6,012; crew 6 most influential (range 2,068 vs crew 7 2,006); crew 7 best S9, worst S2.
+The platform package is GPT's v4 (fire15_v4.pdf, prompt, rubric, Ideal Flow); platform/rubric.md and
+ideal-flow.md here are my earlier v1-based versions, kept for reference only.
