@@ -21,3 +21,8 @@ shaded perspective, two views (from SE and from NW), floor survey grid every 150
 1500 grid and every horizontal run at a TOS level or nozzle EL (stated in the conventions page).
 Key: lengths DN200 30,000 / DN150 40,000 / DN100 47,200 / DN80 39,500 / DN50 11,100; 19 elbows.
 Probe 2 (opus, 40 min) launched on the two views.
+
+## Probe 2 result (3D perspective views): solved
+All 10 lines' vertices, all lengths and 19 elbows exact. It fitted the floor grid to calibrate each camera,
+triangulated from both views, snapped and reprojected. It also found a clash in my scene (CW-203's drop lands
+on CW-210's centreline at (10500, 7500, 4500)). Playbook #84.
