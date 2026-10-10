@@ -9,3 +9,15 @@ from compute. Iterate as the tip says: draft -> blind probe -> read the trajecto
   crossing breaks with depth from the viewer at east-south-above).
 - Probe 1 (opus, 40 min, extraction only): node coordinates, length per DN, elbow count. Key in the scratch
   probe folder: lengths DN150 41,100 / DN100 17,900 / DN80 21,250 / DN50 8,950; 30 elbows.
+
+## Probe 1 result (schematic isometric): solved
+Opus read every coordinate (13/13) and every length exactly; its elbow count (29) was right and my key (30)
+wrong (the main turns through tee T6). A clean schematic iso with dimension strings is not hard for it.
+
+## v2 draft: 3D perspective views (proto3d/)
+scene.py: pipe rack (columns on grid, beam levels TOS +4500/+7000), 8 equipment items with tagged nozzle
+elevations, 10 lines (headers CW-201 DN200 at +7000 and CW-210 DN150 at +4500, branches). render3d.py:
+shaded perspective, two views (from SE and from NW), floor survey grid every 1500 mm. Every vertex lies on the
+1500 grid and every horizontal run at a TOS level or nozzle EL (stated in the conventions page).
+Key: lengths DN200 30,000 / DN150 40,000 / DN100 47,200 / DN80 39,500 / DN50 11,100; 19 elbows.
+Probe 2 (opus, 40 min) launched on the two views.
