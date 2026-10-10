@@ -1,0 +1,25 @@
+COOLING-WATER SUPPLY AND OUTFALL - HYDRAULIC DATA SHEET (sheet 1 of 2; the isometric is sheet 2)
+
+System. Head tank T-1 is open to atmosphere; its water level is held at EL +25000 mm. Its outlet nozzle (E 0, N 0, EL +20000) feeds header CW-301 (DN150). Branches CW-302, CW-303 and CW-304 (DN80) leave the header at tees T1, T2 and T3. All valves shown are gate valves, fully open. Steady state.
+
+Outlets. O1, O2 and O4 pass through heat exchangers E-301, E-302 and E-304 and discharge to atmospheric drains at the outlet elevation. O3 discharges freely to atmosphere into the cooling pond at its outlet elevation.
+
+Water at 20 C: density 998.2 kg/m3; kinematic viscosity 1.004e-6 m2/s; vapour pressure 2.339 kPa absolute. Atmospheric pressure 101.325 kPa. g = 9.81 m/s2.
+
+Pipe: carbon steel, absolute roughness 0.045 mm. Inside diameters: DN150 154.1 mm; DN80 77.9 mm. Lengths are centreline lengths from the isometric.
+
+Friction: Darcy-Weisbach, f = 0.25 / [log10( e/(3.7 D) + 5.74 / Re^0.9 )]^2 (Swamee-Jain), Re = V D / nu.
+
+Minor-loss coefficients K, each applied to the velocity head of the line in which the fitting sits:
+- tank entrance 0.5
+- each 90-degree elbow (every change of direction along a line) 0.3
+- gate valve, fully open 0.15
+- tee, flow continuing along the run: 0.2 on the velocity of the run downstream of the tee
+- tee, flow turning into a branch: 1.0 on the branch velocity
+- heat exchanger: E-301 45, E-302 30, E-304 60 (on the velocity of the line at that outlet)
+- discharge to atmosphere at any outlet: 1.0
+
+General notes.
+1. Pressures are absolute unless stated. Free water surfaces and outlets are at atmospheric pressure.
+2. Water cannot sustain an absolute pressure below its vapour pressure. Where a full-pipe solution would require one, the column separates at the point of lowest pressure: the pressure there equals the vapour pressure, the line downstream of that point runs partly full under vapour, and its downstream drop adds no suction.
+3. For the pressure at a point, include the losses of every fitting upstream of the point, and count a fitting located at the point as upstream of it.

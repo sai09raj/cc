@@ -33,3 +33,12 @@ B: trace 24 same-colour crossing wires from left to right terminals (key in scra
 C: noisy rotated scan of a 32 x 9 table of 5-digit numbers: two column sums and five cells.
 Whichever fails most becomes the core of Task 16.
 Scan result: A 150/150, B 24/24, C 7/7 - all exact (playbook #85). Perception is not a weakness.
+
+## v3 draft: hidden hydraulic regime change (hyd/), user chose option 1 (2026-10-10)
+Gravity cooling-water system from open head tank T-1 (level EL +25.0 m): header CW-301 DN150 at EL +14 m,
+branches to O1 (EL 15), O2 (EL 17), O4 (EL 16) through exchangers (K 45/30/60), and CW-304 DN80 to the cooling
+pond O3 (EL 0) over a pipe bridge with its crest at EL +31 m. Data sheet gives fluid data, Swamee-Jain friction,
+K values and a generic note that the column separates at vapour pressure at the lowest-pressure point.
+Key (correct): O1 8.954, O2 9.131, O3 10.658, O4 28.247, total 56.989 L/s; crest 2.339 kPa abs; T3 189.92 kPa.
+Naive full-pipe: O3 24.281, total 68.224 L/s, crest -98.6 kPa abs (impossible) - every flow differs.
+Probe 3 (opus, 40 min) launched.
