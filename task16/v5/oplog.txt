@@ -1,0 +1,19 @@
+CW-200 OPERATING LOG - NIGHT SHIFT 14/15 OCT (sheet 2 of 2)
+22:00 Handover. Running P-201A, P-201B. P-201C AUTO-standby. P-201D out of service (motor bearing replacement, permit 8102). FIC-201 AUTO SP 18.0 L/s; FIC-203 AUTO SP 16.0 L/s. HV-204, HV-206 open.
+22:40 Rounds. All exchanger outlet temperatures normal.
+23:20 P-201B tripped (motor overload). PI-100 low alarm; P-201C started on standby logic. Alarm cleared.
+23:35 Called electrician for P-201B.
+00:15 Sump makeup checked, level normal.
+01:10 FT-203 signal failed (bad quality). FIC-203 to MANUAL, FV-203 output set to 35 %.
+01:40 Permit 8117: E-204 tube-side clean. HV-204 closed and locked.
+02:30 Electrician reset P-201B overload; megger test good. P-201B selected AUTO-standby.
+03:15 Rounds. TK-1 level gauge glass and weir box inspected.
+03:50 Permit 8102 closed: P-201D bearing job complete. P-201D selected AUTO-standby.
+04:30 P-201C high vibration alarm 7.1 mm/s. Started P-201B from control room, then stopped P-201C. P-201C selected OFF for vibration analysis.
+05:20 E-206 suspected tube leak (conductivity high on outlet). HV-206 closed to isolate E-206. Maintenance informed.
+06:00 Permit 8117 closed: E-204 cleaning complete. HV-204 unlocked and opened; E-204 back in service.
+06:45 Instrument tech replaced FT-203. FIC-203 left in MANUAL at 35 % pending loop check by day shift.
+07:10 Process engineer request: FIC-201 setpoint raised to 26.0 L/s (FIC-201 remains AUTO).
+07:40 P-201D 5-minute test run from local station for bearing run-in, then stopped locally. Returned to AUTO-standby.
+08:20 Rounds. No further changes.
+09:00 Handover to day shift.

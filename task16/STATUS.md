@@ -58,3 +58,14 @@ Naive (all pumps, auto, HV-204 open): overflowing, TK-1 26.007 m, E-104 12.50, o
 Probe 4 (opus, 40 min) launched.
 Probe 4 result: everything exact (line-up, all flows, level, PI-100, crest), plus a consistency flaw found in my
 log (A alone keeps PI-100 at ~2.39 bar g, so C's 23:40 auto-start needs a transient). Playbook #87.
+
+## CW-200 (v5) - scaled-up version for platform iteration (user chose option 2, 2026-10-10)
+Four pumps -> manifold -> DN200 ring main (loop solve, unknown directions) with 5 branches (E-201/FV-201,
+riser to TK-1, E-202, E-203/FV-203, E-204/HV-204) -> TK-1 (free inlet EL 30, weir EL 29) -> CW-208 -> N5 ->
+E-205, E-206/HV-206, outfall over crest EL 21 to pond EL -9. Geometry from 3 isometric sheets (ring to scale,
+branch details). Night log: B trips (C auto-starts; A alone gives PI-100 ~2.67 < 2.8 bar g threshold), FIC-203
+to MANUAL 35 %, HV-204 closed then explicitly reopened, B reset, D returned, C vibration -> B started + C stopped,
+HV-206 closed (leak), FIC-201 SP 18 -> 26 (saturates), D test run then stopped. Every log state checked against
+the physics (v5/timeline.py). Final regime: weir overflowing, outfall column-separated, FV-201 saturated,
+ring flow Tb-Tc reversed (1.15 L/s Tc->Tb). Key: v5/key.json. Packet artifact/cw200_v1.pdf (metadata clean).
+Figure checks: CW-204 length 37,500 mm; CW-211 has 4 elbows. Local fairness probe (opus, 60 min) launched.

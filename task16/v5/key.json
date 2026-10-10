@@ -1,0 +1,35 @@
+{
+ "regime": {
+  "weir_overflowing": true,
+  "outfall_column_separated": true,
+  "riser_flowing": true,
+  "FV-201_saturated": true
+ },
+ "running": [
+  "P-201A",
+  "P-201B"
+ ],
+ "PI100_barg": 3.06,
+ "Ls": {
+  "P-201A": 78.64,
+  "P-201B": 75.67,
+  "E-201": 25.27,
+  "riser": 52.31,
+  "E-202": 37.33,
+  "E-203": 16.98,
+  "E-204": 22.43,
+  "CW-208": 40.49,
+  "E-205": 13.34,
+  "E-206": 0.0,
+  "outfall": 27.15,
+  "weir": 11.82,
+  "ring R1-Ta": 76.44,
+  "ring Ta-Tb": 51.16,
+  "ring Tb-Tc": -1.15,
+  "ring Tc-Td": -38.47,
+  "ring Td-Te": -55.45,
+  "ring Te-R1": -77.88
+ },
+ "TK1_level_m": 29.0401,
+ "outfall_min_kPa_abs": 2.339
+}

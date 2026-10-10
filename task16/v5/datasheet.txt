@@ -1,0 +1,29 @@
+CW-200 COOLING-WATER SYSTEM - DATA SHEET (sheet 1 of 2)
+
+Arrangement. Pumps P-201A, P-201B, P-201C and P-201D take suction from the open sump (water level EL 0.0 m) and discharge in parallel, each through its own check valve, into the manifold whose outlet feeds CW-201 (isometric sheet 1). CW-201 joins the DN200 ring main CW-202 at R1. Branches leave the ring at tees Ta (CW-203: FV-201, E-201, drain), Tb (CW-204: riser to break tank TK-1), Tc (CW-205: E-202, drain), Td (CW-206: FV-203, E-203, drain) and Te (CW-207: HV-204, E-204, drain). TK-1 is open to atmosphere; the riser enters it as a free discharge above any water level; its overflow weir returns to the sump. From the TK-1 bottom outlet, CW-208 runs to node N5, which feeds CW-209 (E-205, drain), CW-210 (HV-206, E-206, drain) and the outfall CW-211 to the river pond. Drains, the pond outfall and the TK-1 inlet discharge to atmosphere at the elevation of the line end shown on the isometrics. PI-100 is on the ring at R1.
+
+Pumps: head H (m) = H0 - k Q^2, Q in m3/s. P-201A: H0 52.0, k 1900. P-201B: H0 50.0, k 1750. P-201C: H0 47.0, k 2300. P-201D: H0 50.0, k 1800. Each pump's check valve and discharge fittings: K 4.0 on the velocity of that pump's flow in DN150. Suction losses are negligible; the manifold itself is lossless.
+
+Pipe inside diameters: DN200 202.7 mm; DN150 154.1 mm; DN100 102.3 mm; DN80 77.9 mm. Roughness 0.045 mm. Friction: Darcy-Weisbach with f = 0.25 / [log10(e/(3.7 D) + 5.74 / Re^0.9)]^2.
+
+Minor losses, each K applied to the velocity head of the line in which it sits:
+- elbow (each change of direction along a line, counted from the isometrics) 0.3; a change of direction at R1, at a tee or at N5 belongs to that junction, not to an elbow;
+- gate valve (GV) or hand valve (HV) fully open 0.15;
+- flow leaving the ring or N5 into a branch line: 1.0 on the branch velocity; no loss for flow continuing along the ring, for flow from CW-201 into the ring at R1, or for flow from CW-208 into N5;
+- TK-1 outlet entrance 0.5 (CW-208);
+- discharge to atmosphere at a drain, at the TK-1 inlet or at the pond: 1.0;
+- exchangers: E-201 60, E-202 26, E-203 34, E-204 22, E-205 60, E-206 55;
+- control valves FV-201 and FV-203, K versus opening: 20 % 420; 30 % 170; 35 % 115; 45 % 55; 60 % 22; 80 % 9.0; 100 % 4.5.
+
+Controllers: FIC-201 (on FV-201) and FIC-203 (on FV-203). In AUTO a controller holds its line's flow at the setpoint if its valve can do so; if even fully open its valve cannot reach the setpoint, it sits fully open. In MANUAL the valve stays at the opening the operator set.
+
+TK-1: weir crest EL 29.0 m, rectangular, length 0.8 m, overflow Q = 1.84 L h^1.5 (h = level above crest, m). Bottom outlet nozzle EL 25.0 m.
+
+Water: density 998.2 kg/m3, kinematic viscosity 1.004e-6 m2/s, vapour pressure 2.339 kPa abs. Atmospheric pressure 101.325 kPa. g 9.81 m/s2.
+
+Notes.
+1. Report steady-state values for the line-up in force at the end of the log.
+2. Water cannot sustain an absolute pressure below its vapour pressure. Where a full-pipe solution would require one, the column separates at the point of lowest pressure: the pressure there equals the vapour pressure, the line downstream runs partly full under vapour, and its drop adds no suction.
+3. For the pressure at a point, include the losses of every fitting upstream of the point and count a fitting located at the point as upstream.
+4. PI-100 reading = energy head at R1 minus the R1 elevation minus the velocity head in ring segment R1-Ta, in bar gauge.
+5. Pump and valve states change only through operations recorded in the log. A pump in AUTO-standby starts automatically if PI-100 falls below 2.8 bar g. Only an operator stops a running pump.
