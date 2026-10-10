@@ -26,3 +26,9 @@ Probe 2 (opus, 40 min) launched on the two views.
 All 10 lines' vertices, all lengths and 19 elbows exact. It fitted the floor grid to calibrate each camera,
 triangulated from both views, snapped and reprojected. It also found a clash in my scene (CW-203's drop lands
 on CW-210's centreline at (10500, 7500, 4500)). Playbook #84.
+
+## Capability scan (2026-10-10): three small vision probes in parallel (scan/make_probes.py)
+A: count 150 valve symbols of 4 types on a cluttered sheet (key gate 41, globe 35, check 41, ball 33).
+B: trace 24 same-colour crossing wires from left to right terminals (key in scratch scan_keys.json).
+C: noisy rotated scan of a 32 x 9 table of 5-digit numbers: two column sums and five cells.
+Whichever fails most becomes the core of Task 16.
