@@ -23,3 +23,11 @@
 
 ## Entry
 Copy-paste every field; screenshot each entered field and compare with these files.
+
+## Blind re-solve of the final PDF (independent agent, no access to key)
+All key values reproduced (pumps 78.6434 / 75.6689, PI-100 3.0605, every exchanger, riser, CW-208, outfall, weir, level 29.040, all six ring segments with direction, FIC-201 saturated, 2.34 kPa at the top of the 30 m drop; line-up identical). Ambiguities it reported and fixes (labels only, no value change):
+- CW-201 6000 mm run had its dimension hidden under the line-ID label -> line-ID moved to a callout. FIXED
+- Sheet 2: 18000 / 19000 labels both sat between the two verticals; 3000 / 6000 near N5 sat between lines -> each moved to its line's outer side. FIXED
+- GV beside CW-211 riser -> drawn valve symbol on the 3000 run with tag "GV (CW-211)". FIXED
+- Ring elevation implicit -> note "Ring main CW-202 is horizontal throughout." FIXED
+PDF rebuilt; metadata and answer-text checks re-run clean.

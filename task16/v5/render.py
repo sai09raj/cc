@@ -13,6 +13,15 @@ STUBS = {"CW-203": "A", "CW-204": "B", "CW-205": "C", "CW-206": "D", "CW-207": "
 STUBS2 = {"CW-209": "F", "CW-210": "G"}
 END_LABEL = {"D201": "DRAIN", "D202": "DRAIN", "D203": "DRAIN", "D204": "DRAIN", "D205": "DRAIN", "D206": "DRAIN",
              "TK1IN": "TK-1 (free-discharge inlet)", "POND": "RIVER POND (free outfall)"}
+DIM_FLIP = {("CW-211", 0), ("CW-211", 1), ("CW-208", 2), ("CW-208", 3)}   # put these dimensions on the outer side
+NAME_SEG = {"CW-208": 1}                                                    # segment carrying the line-ID label
+def valve(ax, x0, y0, x1, y1, t, dn):
+    L = math.hypot(x1 - x0, y1 - y0); ux, uy = (x1 - x0) / L, (y1 - y0) / L; cx, cy = x0 + (x1 - x0) * t, y0 + (y1 - y0) * t
+    h, w = 0.45, 0.55
+    for sg in (-1, 1):
+        ax.fill([cx, cx + sg * ux * w - uy * h, cx + sg * ux * w + uy * h], [cy, cy + sg * uy * w + ux * h, cy + sg * uy * w - ux * h],
+                fc="white", ec="k", lw=1.2, zorder=4.5)
+    return cx, cy
 def render(sheet, out):
     nodes, lines = build()
     fig, ax = plt.subplots(figsize=(17, 12)); ax.set_aspect("equal"); ax.axis("off")
@@ -22,18 +31,20 @@ def render(sheet, out):
             p = nodes[pc["frm"]]
             for m in pc["moves"]:
                 v = P.VEC[m[0]]; q = tuple(p[i] + v[i] * m[1] for i in range(3)); segs.append((lid, pc["dn"], p, q, m)); p = q
+    cnt = {}
     for lid, dn, a, b, m in segs:
+        k = cnt.get(lid, 0); cnt[lid] = k + 1
         (x0, y0), (x1, y1) = iso(a), iso(b)
         ax.plot([x0, x1], [y0, y1], color="k", lw=LW[dn], solid_capstyle="butt", zorder=2)
         ang = upright(math.degrees(math.atan2(y1 - y0, x1 - x0))); nx, ny = -(y1 - y0), (x1 - x0); n = math.hypot(nx, ny) or 1
-        ax.text((x0 + x1) / 2 + nx / n * 1.6, (y0 + y1) / 2 + ny / n * 1.6, str(m[1]), rotation=ang, ha="center", va="center",
-                fontsize=7.5, zorder=4, bbox=dict(fc="white", ec="none", pad=0.2))
+        if (lid, k) in DIM_FLIP: nx, ny = -nx, -ny
+        ax.text((x0 + x1) / 2 + nx / n * 1.0, (y0 + y1) / 2 + ny / n * 1.0, str(m[1]), rotation=ang, ha="center", va="center",
+                fontsize=8, zorder=4, bbox=dict(fc="white", ec="none", pad=0.2))
         if len(m) > 2:
-            tag = m[2]; txt = {"GV": "GV"}.get(tag, tag.replace("HX:", ""))
-            fc = "#2b5d8a" if tag.startswith("HX") else "#444"
-            x1, y1 = x1 - nx / n * 1.6, y1 - ny / n * 1.6
-            ax.text(x1, y1, txt, fontsize=7, color="white", ha="center", va="center", zorder=5,
-                    bbox=dict(boxstyle="square,pad=0.3" if tag.startswith("HX") else "round,pad=0.2", fc=fc, ec="k"))
+            cx, cy = valve(ax, x0, y0, x1, y1, 0.78, dn)
+            ax.plot([cx, cx + nx / n * 2.2], [cy, cy + ny / n * 2.2], color="0.4", lw=0.8, zorder=4)
+            ax.text(cx + nx / n * 2.6, cy + ny / n * 2.6, f"{m[2]} ({lid})", fontsize=7.5, color="white", ha="center", va="center", zorder=5,
+                    bbox=dict(boxstyle="round,pad=0.2", fc="#444", ec="k"))
     # crossings
     def depth(p): return p[0] - p[1] + p[2]
     for i, (l1, d1, a1, b1, _) in enumerate(segs):
@@ -64,17 +75,23 @@ def render(sheet, out):
                     ax.text(x + ddx * 2.5, y + ddy * 2.5, END_LABEL[nm], ha="center", fontsize=8, weight="bold", color="#0047ab", zorder=6,
                             bbox=dict(fc="#e8f0ff", ec="#0047ab", pad=0.2))
     for lid in SHEETS[sheet]:
-        best = None
+        if lid == "CW-201":
+            (x0, y0), (x1, y1) = iso(nodes["M"]), iso(nodes["R1"]); mx, my = x0 + (x1 - x0) * 0.8, y0 + 2.5 + (y1 - y0) * 0.8
+            ax.plot([mx, mx - 1.5], [my, my + 4.5], color="#a00", lw=0.7, zorder=5)
+            ax.text(mx - 1.5, my + 5.2, "CW-201 DN200", fontsize=7.5, color="#a00", zorder=6, ha="center", va="center",
+                    bbox=dict(fc="white", ec="none", pad=0.1))
+            continue
+        best = None; k = 0
         for pc in lines[lid]:
             p = nodes[pc["frm"]]
             for m in pc["moves"]:
                 v = P.VEC[m[0]]; q = tuple(p[i] + v[i] * m[1] for i in range(3))
-                if best is None or m[1] > best[0]: best = (m[1], p, q, pc["dn"])
-                p = q
+                if (lid in NAME_SEG and k == NAME_SEG[lid]) or (lid not in NAME_SEG and (best is None or m[1] > best[0])): best = (m[1], p, q, pc["dn"])
+                p = q; k += 1
         _, a, b, dn = best; (x0, y0), (x1, y1) = iso(a), iso(b)
         mx, my = x0 + (x1 - x0) * 0.3, y0 + (y1 - y0) * 0.3; nx, ny = (y1 - y0), -(x1 - x0); n = math.hypot(nx, ny) or 1
         ang = upright(math.degrees(math.atan2(y1 - y0, x1 - x0)))
-        sgn = -1 if lid == "CW-201" else 1
+        sgn = 1
         ax.text(mx + sgn * nx / n * 1.8, my + sgn * ny / n * 1.8, f"{lid} DN{dn}", rotation=ang, fontsize=7.5, color="#a00", zorder=6, ha="center",
                 va="center", bbox=dict(fc="white", ec="none", pad=0.1))
     if True:
@@ -90,6 +107,7 @@ def render(sheet, out):
     if sheet == "1":
         x, y = iso(nodes["M"]); ax.text(x - 3, y - 6, "PUMP DISCHARGE MANIFOLD OUTLET\nEL +1500 (E 0, N 0)\nP-201A/B/C/D below", fontsize=8, ha="right")
         ax.annotate("", xy=(x, y), xytext=(x - 3, y - 4.5), arrowprops=dict(arrowstyle="-", lw=0.7))
+        (xa, ya), (xc, yc) = iso(nodes["Ta"]), iso(nodes["Tc"]); ax.text((xa + xc) / 2, (ya + yc) / 2, "Ring main CW-202 is horizontal throughout.", fontsize=9, ha="center")
         ax.set_title("CW-200 isometric, sheet 1 of 3: pump manifold, DN200 ring main and its branches. To scale; dimensions in mm along centrelines. Plant north up-right.", fontsize=10)
     else:
         x, y = iso(nodes["TK1"]); ax.text(x + 1, y + 1, "TK-1 BOTTOM OUTLET NOZZLE\nEL +25000 (E 40000, N 60000)", fontsize=8)
