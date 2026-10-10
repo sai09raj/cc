@@ -42,3 +42,5 @@ K values and a generic note that the column separates at vapour pressure at the 
 Key (correct): O1 8.954, O2 9.131, O3 10.658, O4 28.247, total 56.989 L/s; crest 2.339 kPa abs; T3 189.92 kPa.
 Naive full-pipe: O3 24.281, total 68.224 L/s, crest -98.6 kPa abs (impossible) - every flow differs.
 Probe 3 (opus, 40 min) launched.
+Probe 3 result: solved exactly (all flows to 3 decimals, crest at vapour pressure, located correctly); it also
+noted the siphon cannot self-prime (crest above tank level), a flaw in the draft. Playbook #86.
