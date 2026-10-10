@@ -1,5 +1,21 @@
 # Magnetic Rainstorm Quick Checklist
 
+## RULE ZERO: never underestimate the platform model (Opus 5.5, max effort)
+
+Assume the model can do almost anything a strong engineer can do in 2.5 hours, and more:
+- It installs whatever it needs: apt-get, pip, any compiler (gcc, clang, zig via pip), any library.
+- It uses all ~17 threads, writes engine code faster than ours, profiles and re-optimises.
+- It reads every page and figure of the packet in full, zoomed, before coding.
+- It finds and uses exact shortcuts (shared-state execution, symmetry, pruning), above all any hinted in the prompt.
+- It cross-checks its own results with independent implementations.
+- It works until the time limit when the work needs it.
+
+So: never size difficulty from our own engine, a local probe, or what a previous run happened not to do.
+Compute-only difficulty fails (COHERE-12, GRID-14, FIRE-15: 2 of 6 FIRE-15 runs scored 100 after installing a
+compiler). A timeout counts only if the model is stuck (iterating, debugging, not converging), and completed
+runs must fail on reasoning the model gets wrong. See mistakes #77, #80, #83.
+
+
 ## Before designing
 
 - [ ] Read `guidelines.pdf`, `rubric.pdf`, `common-errors.pdf`, and the handbook.
