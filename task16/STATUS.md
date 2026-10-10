@@ -56,3 +56,5 @@ Key: A 58.29, C 37.20, E-101 18.47, E-102 30.79, riser 46.24, E-103 12.89, E-104
 TK-1 23.461 m (below the weir); PI-100 2.585 bar g; crest 2.339 kPa abs.
 Naive (all pumps, auto, HV-204 open): overflowing, TK-1 26.007 m, E-104 12.50, outfall 34.44 L/s.
 Probe 4 (opus, 40 min) launched.
+Probe 4 result: everything exact (line-up, all flows, level, PI-100, crest), plus a consistency flaw found in my
+log (A alone keeps PI-100 at ~2.39 bar g, so C's 23:40 auto-start needs a transient). Playbook #87.
