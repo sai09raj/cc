@@ -1,0 +1,20 @@
+CW-100 OPERATING LOG - NIGHT SHIFT 9/10 OCT (entries in time order)
+22:00 Shift handover. Running: P-101A, P-101B. P-101C in AUTO-standby. FIC-101 AUTO, SP 18.0 L/s. All exchanger isolations open.
+22:30 Rounds complete. P-101A bearing temp 52 C, P-101B 55 C. Nothing to report.
+23:10 Sump level 0.0 m, makeup on auto.
+23:40 P-101B tripped on motor overload (relay 51). PI-100 dipped; P-101C auto-started. PI-100 recovered.
+23:55 Informed shift electrician of P-101B trip.
+01:30 Permit 7781 issued: E-104 tube-side cleaning. HV-204 closed and locked out under permit 7781.
+01:45 Cleaning crew started on E-104.
+02:15 Electrician attended P-101B: overload relay reset, insulation test good. P-101B selected to AUTO-standby.
+02:40 Rounds: P-101C running smoothly, vibration normal.
+03:05 FT-101 reading frozen. FIC-101 put in MANUAL; FV-101 opening set to 45 %.
+03:20 Notified instrument technician about FT-101.
+04:10 Outfall sample taken from pond outlet. Clear.
+04:45 P-101B test: started locally from field station, ran 5 min for rotation/vibration check, stopped locally. Returned to AUTO-standby.
+05:30 Rounds complete. Nothing to report.
+06:30 Instrument technician replaced FT-101 and stroke-checked FV-101 (left at 45 %). FIC-101 kept in MANUAL until day-shift engineer reviews the loop.
+06:50 E-104 cleaning complete. Permit 7781 closed; lockout removed, area handed back.
+07:30 Day-shift engineer delayed; FIC-101 review moved to 10:00.
+08:15 Rounds complete. No change to equipment line-up since the last entries.
+09:00 Handover to day shift.

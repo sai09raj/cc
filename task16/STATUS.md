@@ -44,3 +44,15 @@ Naive full-pipe: O3 24.281, total 68.224 L/s, crest -98.6 kPa abs (impossible) -
 Probe 3 (opus, 40 min) launched.
 Probe 3 result: solved exactly (all flows to 3 decimals, crest at vapour pressure, located correctly); it also
 noted the siphon cannot self-prime (crest above tank level), a flaw in the draft. Playbook #86.
+
+## v4 draft: coupled regimes + operating-log state (v4/), "toughest" per user (2026-10-10)
+Three parallel pumps on check valves -> header -> consumers E-101 (FV-101), E-102 and riser to break tank TK-1
+(free inlet EL 28, weir crest EL 26) -> gravity node -> E-103, E-104 (HV-204) and outfall over a crest (EL 21.5)
+to a pond (EL -4). Regimes: weir overflow or not, outfall full or column-separated, controller saturated or not;
+solver enumerates regimes and keeps the consistent one (unique for each state tested).
+State at 09:00 from the night log: A+C running (B tripped, reset, test-run and stopped), FV-101 MANUAL 45 %,
+HV-204 still closed (permit closed but valve never reopened).
+Key: A 58.29, C 37.20, E-101 18.47, E-102 30.79, riser 46.24, E-103 12.89, E-104 0, outfall 33.35, weir 0 L/s;
+TK-1 23.461 m (below the weir); PI-100 2.585 bar g; crest 2.339 kPa abs.
+Naive (all pumps, auto, HV-204 open): overflowing, TK-1 26.007 m, E-104 12.50, outfall 34.44 L/s.
+Probe 4 (opus, 40 min) launched.
