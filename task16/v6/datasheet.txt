@@ -26,5 +26,5 @@ Notes.
 2. Water cannot sustain an absolute pressure below its vapour pressure. Where a full-pipe solution would require one, the column separates at the point of lowest pressure: the pressure there equals the vapour pressure, the line downstream runs partly full under vapour, and its drop adds no suction.
 3. For the pressure at a point, include the losses of every fitting upstream of the point and count a fitting located at the point as upstream.
 4. PI-100 reading = energy head at R1 minus the R1 elevation minus the velocity head in ring segment R1-Ta, in bar gauge.
-5. Pump and valve states change only through operations recorded in the log. A pump in AUTO-standby starts automatically if PI-100 falls below 3.0 bar g. Only an operator stops a running pump.
+5. Pump and valve states change only through operations recorded in the log. The PI-100 low alarm is set at 3.0 bar g; a pump in AUTO-standby starts automatically if PI-100 falls below 3.0 bar g. Only an operator stops a running pump.
 6. At every junction (R1, each tee, N5) the energy head (elevation + pressure head + velocity head) is the same in every connected line, apart from the losses listed above. Report steady-state values to the precision asked; the rules above define them exactly.

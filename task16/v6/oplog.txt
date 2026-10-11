@@ -2,10 +2,10 @@ CW-200 OPERATING LOG - NIGHT SHIFT 14/15 OCT (sheet 2 of 2)
 22:00 Handover. Running P-201A, P-201B. P-201C AUTO-standby. P-201D out of service (motor bearing replacement, permit 8102). FIC-201 AUTO SP 18.0 L/s; FIC-203 AUTO SP 16.0 L/s. HV-204, HV-206 open.
 22:40 Rounds. All exchanger outlet temperatures normal.
 23:20 P-201B tripped (motor overload). PI-100 low alarm; P-201C started on standby logic.
-23:35 Called electrician for P-201B.
+23:35 Called electrician for P-201B. PI-100 low alarm still standing; no standby pump available.
 00:15 Sump makeup checked, level normal.
 01:10 FT-203 signal failed (bad quality). FIC-203 to MANUAL, FV-203 output set to 35 %.
-01:40 Permit 8117: E-204 tube-side clean. HV-204 closed and locked.
+01:40 Permit 8117: E-204 tube-side clean. HV-204 closed and locked. PI-100 low alarm cleared.
 02:30 Electrician reset P-201B overload; megger test good. P-201B selected AUTO-standby.
 03:15 Rounds. TK-1 level gauge glass and weir box inspected.
 03:50 Permit 8102 closed: P-201D bearing job complete. P-201D selected AUTO-standby.
