@@ -69,3 +69,11 @@ HV-206 closed (leak), FIC-201 SP 18 -> 26 (saturates), D test run then stopped. 
 the physics (v5/timeline.py). Final regime: weir overflowing, outfall column-separated, FV-201 saturated,
 ring flow Tb-Tc reversed (1.15 L/s Tc->Tb). Key: v5/key.json. Packet artifact/cw200_v1.pdf (metadata clean).
 Figure checks: CW-204 length 37,500 mm; CW-211 has 4 elbows. Local fairness probe (opus, 60 min) launched.
+
+## CW-200 v1 real runs (2026-10-11)
+Model listed: claude-opus-4-8. Scores 96 (f296ba3c), 78 (80d8512d), 59 (11091df9), 59 (0fabc130); avg 73, all completed (33-50 min). Grader = rubric count exactly.
+- 96: everything exact.
+- 78: sheet-2 18000/19000 swap -> gravity side wrong (E-205, CW-208, outfall, weir, level, crest location).
+- 59 (11091): same swap + detail E vertical read as drop (drain EL 3.0 vs 5.0) -> E-204, riser, 4 ring segments.
+- 59 (0fabc): geometry right; HGL (pressure) continuity at ring tees instead of energy -> pumps, PI-100 3.08, riser, gravity flows, all ring segments.
+Every run got the line-up, regimes, FIC saturation, column separation and memo right.
