@@ -1,0 +1,42 @@
+{
+ "regime": {
+  "weir_overflowing": false,
+  "outfall_column_separated": true,
+  "FV201_saturated": true
+ },
+ "running": [
+  "P-201A",
+  "P-201B"
+ ],
+ "PI100_barg": 3.2018,
+ "TK1_level_m": 34.1888,
+ "outfall_min_kPa_abs": 2.339,
+ "Ls": {
+  "P-201A": 75.208,
+  "P-201B": 71.856,
+  "E-201": 25.825,
+  "E-202": 35.532,
+  "E-203": 17.35,
+  "E-204": 22.96,
+  "E-205": 14.531,
+  "E-206": 0.0,
+  "riser CW-204": 45.396,
+  "CW-208": 45.396,
+  "outfall CW-211": 30.865,
+  "weir": 0,
+  "ring R1-Ta": 72.12,
+  "ring Ta-Tb": 46.295,
+  "ring Tb-Tc": 0.899,
+  "ring Tc-Td": -34.633,
+  "ring Td-Te": -51.983,
+  "ring Te-R1": -74.943
+ },
+ "figures": {
+  "CW-204 length m": 25.5,
+  "CW-204 elbows": 2,
+  "CW-211 elbows": 4,
+  "Tb EL m": 8.5,
+  "Tc EL m": 8.5,
+  "TK1 inlet EL m": 26.0
+ }
+}
