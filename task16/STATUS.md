@@ -77,3 +77,11 @@ Model listed: claude-opus-4-8. Scores 96 (f296ba3c), 78 (80d8512d), 59 (11091df9
 - 59 (11091): same swap + detail E vertical read as drop (drain EL 3.0 vs 5.0) -> E-204, riser, 4 ring segments.
 - 59 (0fabc): geometry right; HGL (pressure) continuity at ring tees instead of energy -> pumps, PI-100 3.08, riser, gravity flows, all ring segments.
 Every run got the line-up, regimes, FIC saturation, column separation and memo right.
+
+## CW-200 v2 real runs (2026-10-11)
+Platform scores 40 / 100 / 79 / 91 (claude-opus-4-8). Strict rubric count: 22 / 100 / 30 / 91 (grader lenient on 0.1 % tolerances).
+- 40: CW-211 rise read as 19000 (crest EL 23).
+- 79: detail E leg read as a drop (E-204 drain EL 3.0).
+- 91: crest-elbow note-3 rule -> level and PI-100 slightly off.
+- 100: exact.
+v3: explicit accept ranges; details A/C/D get up+down legs (4 elbows each).
