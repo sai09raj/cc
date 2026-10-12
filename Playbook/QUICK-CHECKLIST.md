@@ -147,3 +147,12 @@ runs must fail on reasoning the model gets wrong. See mistakes #77, #80, #83.
 - perfect semantic knowledge makes the remaining task routine.
 
 Stop, repair, regenerate, and only then rerun.
+
+## Task 16 success checklist (coupled numeric tasks)
+- [ ] Every graded value depends on every reading or rule decision (coupled system); simulate single misreads and confirm each drops a run below 50.
+- [ ] Every numeric criterion has an explicit accept range, not a percentage.
+- [ ] About 75 % or more of the positive weight is on the numeric results; the line-up, memo and files are +1 or +2 each.
+- [ ] The data sheet states every formula, constant and junction convention; a blind solve matches the key to 5 or more significant figures.
+- [ ] The log is replayed against the physics (alarms and auto-starts consistent), and regime margins are clear at the graded state.
+- [ ] Rubric, Ideal Flow and key are generated from one key.json; after entry, check screenshots against the files value by value.
+- [ ] After the runs: recompute strict scores from the trajectories, list each run's slip, and harden with more fair decision points of that kind.

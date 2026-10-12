@@ -15,6 +15,16 @@ Compute-only difficulty fails (COHERE-12, GRID-14, FIRE-15: 2 of 6 FIRE-15 runs 
 compiler). A timeout counts only if the model is stuck (iterating, debugging, not converging), and completed
 runs must fail on reasoning the model gets wrong. See mistakes #77, #80, #83.
 
+## PROVEN SUCCESS PATTERN: Task 16 CW-200 (first stump by completed low scores)
+
+Model A (claude-opus-4-8, max) scored 23, 22, 41, 95, 100 with all five runs completed; three below 50 is a pass.
+Full recipe: [14-CASE-STUDY-TASK-16-CW200.md](14-CASE-STUDY-TASK-16-CW200.md). In short:
+1. A fully coupled engineering system (one slip anywhere moves every graded value).
+2. Values read from drawings (to-scale sheets, up/down legs in details, elevations chained across sheets) plus a log that fixes the operating state.
+3. Every formula, constant and convention stated, so 4-significant-figure answers are fair.
+4. Rubric with explicit accept ranges ("74.90 L/s (accept 74.82 to 74.98 L/s)"), never "%", and about 77 % of the weight on the numeric results.
+5. A blind solve of the final PDF (fairness), then iteration on the platform trajectories: add more fair decision points of the kind the runs missed.
+
 ## Start here: policy, engineering method, and lessons through Task 04 Revision F
 
 This folder is a handoff package for an author—or another capable agent—who must design, validate, enter, run, grade, and submit a Magnetic Rainstorm task without repeating the long trial-and-error cycle that produced it.
