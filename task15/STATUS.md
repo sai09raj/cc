@@ -28,3 +28,10 @@ ideal-flow.md here are my earlier v1-based versions, kept for reference only.
 The 100 runs installed C compilers (apt-get gcc / pip ziglang), used the prompt-endorsed shared-state evaluation,
 and finished the full sweep in 86-100 min (6,573 s and 8,693 s total). Submitted as is by the user's decision.
 Lesson: playbook mistake #83 (compute-only difficulty is a weak stump; assume the model installs any tooling).
+
+## Reviewer outcome (2026-10-12): 5/5, "great work"
+The reviewer scored the submitted package 5/5. The real runs were 4 timeouts and 2 scores of 100. Review quality was judged on the package itself:
+- an exact integer model fully specified in the packet;
+- an answer key verified by full enumeration (two engines agreeing);
+- atomic criteria of 301 characters or fewer;
+- metadata-clean artifacts.
