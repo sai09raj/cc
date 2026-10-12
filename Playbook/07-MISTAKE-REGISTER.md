@@ -103,6 +103,9 @@ This register records specific failure modes encountered across the Task 01–04
 
 ## Do
 
+- (Tasks 16/17) Put the difficulty in fair drawing attributions (near-equal same-type values next to each other on different routes or legs) that feed a fully coupled solve.
+- (Tasks 16/17) Weight the rubric by misread sensitivity and simulate every single misread to about 40 or below before entry.
+- (Tasks 16/17) After platform runs, read every trajectory, find the shared slip, reproduce it in the model, and add more decision points of that kind.
 - Start with task architecture and semantic sufficiency.
 - Run the perfect-semantics ablation before coding the oracle.
 - Treat the artifact as an executable contract.
@@ -139,6 +142,9 @@ This register records specific failure modes encountered across the Task 01–04
 
 ## Don’t
 
+- Do not rely on log or logic traps for difficulty; Opus 4.8 max replays them correctly (KINGSMEAD v1 and v2).
+- Do not weight insensitive quantities (bus voltages, taps) heavily; a misread barely moves them, so a slipping run still passes.
+- Do not accept a single-misread simulation at or above 50 before entry.
 - Do not assume more edge cases rescue a small clean-rewrite task.
 - Do not equate internal oracle agreement with source completeness.
 - Do not accept private intent as a task rule.

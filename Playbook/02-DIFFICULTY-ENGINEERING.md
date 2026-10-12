@@ -92,6 +92,27 @@ This architecture did push Opus to 36%, 38%, and 41%. The models spent 34–56 m
 
 However, all three runs converged on the same result because the artifact omitted a transition present in the private oracle. The architecture was strong; the specification contract was not complete. This distinction matters: a well-designed hard task can still be invalidated by one hidden semantic.
 
+## What actually stumped Opus 4.8 max (Tasks 16 and 17, completed runs below 50)
+
+Two tasks passed on completed runs: CW-200 (23, 22, 41) and KINGSMEAD-11 (43, 44, 39). Both passed for the same reason.
+
+1. **Opus gets logic and log traps right.** In KINGSMEAD v1 and v2 it replayed every trap correctly in every run: breaker left open, tap left in MANUAL, NOP left closed, half-done transfer, capped PV.
+   - Traps are good for realism and fairness.
+   - They are not the difficulty.
+2. **Opus misreads fair drawing attributions.**
+   - CW-200: 18 000 and 19 000 vertical runs side by side; up and down legs in details.
+   - KINGSMEAD: 185/420 and 185/520 sections meeting at one corner on different routes.
+   - Both drawings are legible, and the blind solves read them correctly.
+   - In practice, the same misread appears in most runs (3 of 3 in KINGSMEAD v2).
+3. **The misread must feed a fully coupled solve.** One wrong length then moves most graded values: the meshed load flow, or the submerged riser.
+4. **Grade the quantities the misread moves.**
+   - Rank candidates by sensitivity: route currents and transformer Mvar move; bus voltages and taps hardly do.
+   - Give 4 significant figures with explicit accept ranges.
+   - Put about 70 % or more of the weight on these quantities.
+5. **Simulate before entry.** Every plausible single misread should score about 40 or below on the strict rubric. Memo and file rows add about 5 to 10 on the platform (KINGSMEAD: simulated 34.5, platform 39 to 44).
+
+**If v1 mostly scores 100:** read the one low run, find the reading decision it missed, and add several more fair decisions of that kind. Then move the weight onto what those misreads change. Do not add more logic traps. See `14-CASE-STUDY-TASK-16-CW200.md` and `15-CASE-STUDY-TASK-17-KINGSMEAD.md`.
+
 ## The difficulty stack
 
 Use several independent layers. No single layer should be a hidden trick.

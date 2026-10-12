@@ -386,6 +386,16 @@ When temporal composition is central, a local rule may be checked through a name
 
 Do not count a cascade of downstream rows as independent defects without a dependency audit. A single missing persistent counter may alter hundreds of events. Select witnesses across different rules, components, and epochs, or use checkpoint deltas/metamorphic invariants with clearer causal ownership.
 
+## Sensitivity weighting for coupled numeric tasks (Tasks 16 and 17)
+
+- **Choose graded quantities by misread sensitivity, not by convenience.**
+  - In KINGSMEAD v1, voltage rows (+/-2 V) passed even after a misread, so the misreading run still scored 59.
+  - In v2, all 16 route currents, T1/T2 Mvar and losses were graded at +4/+5, and the same kind of misread scored 39 to 44.
+- **Use explicit accept ranges** ("103.6 A (accept 103.47 to 103.69 A)"), never "within x %". The LLM grader passes near-misses on percentages (CW-200 v2: platform 79 against a strict 30).
+- **One quantity per row.** A direction may ride with its current because it is the sign of the same quantity.
+- **Simulate the rubric.** Run `score_sim.py` over every plausible single misread before entry and aim for 40 or below.
+- **Generate the rubric and all three Ideal Flow boxes from `key.json`** so that no stale value survives a revision.
+
 ## Tolerances and equivalent forms
 
 Use exact values when the system is deterministic and exactness is meaningful. Use justified bands when rounding, stochasticity, measurement, or tool variation exists.
