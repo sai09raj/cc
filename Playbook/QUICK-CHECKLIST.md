@@ -2,6 +2,8 @@
 
 ## RULE ZERO: never underestimate the platform model (Opus 5.5, max effort)
 
+The platform assigns Model A at random per task: Opus 5.5 or Opus 4.8 max. Tasks 16 and 17 ran on 4.8. Always design for the stronger model, Opus 5.5 (user decision, 2026-10-12).
+
 Assume the model can do almost anything a strong engineer can do in 2.5 hours, and more:
 - It installs whatever it needs: apt-get, pip, any compiler (gcc, clang, zig via pip), any library.
 - It uses all ~17 threads, writes engine code faster than ours, profiles and re-optimises.

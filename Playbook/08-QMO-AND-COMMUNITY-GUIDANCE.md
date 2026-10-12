@@ -84,6 +84,13 @@ read or look it up directly, it finds it. Put the evidence in a file it
 treats as background: it zooms into the files it thinks matter and skims
 the rest. Keep that file legible at full size.
 
+> **Update (2026-10-12, Tasks 16 and 17).** The first rule below is superseded.
+> Two fully specified coupled simulations stumped Opus on completed runs:
+> - CW-200 scored 23, 22 and 41;
+> - KINGSMEAD-11 scored 43, 44 and 39.
+>
+> Both used the same mechanism: a fair attribution decision on a drawing feeds a fully coupled solve, and the rubric is weighted by misread sensitivity. See `14-CASE-STUDY-TASK-16-CW200.md` and `15-CASE-STUDY-TASK-17-KINGSMEAD.md`. Use that recipe first. Use the diagnosis approach below only where it fits the domain better.
+
 ### Authoring rule
 
 - Prefer diagnosis/attribution tasks over "simulate a complete spec"

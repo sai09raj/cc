@@ -2,6 +2,8 @@
 
 ## RULE ZERO: never underestimate the platform model (Opus 5.5, max effort)
 
+The platform assigns Model A at random per task: Opus 5.5 or Opus 4.8 max. Tasks 16 and 17 ran on 4.8. Always design for the stronger model, Opus 5.5 (user decision, 2026-10-12).
+
 Assume the model can do almost anything a strong engineer can do in 2.5 hours, and more:
 - It installs whatever it needs: apt-get, pip, any compiler (gcc, clang, zig via pip), any library.
 - It uses all ~17 threads, writes engine code faster than ours, profiles and re-optimises.
@@ -151,7 +153,8 @@ unintentionally.
 ## Required reading order
 
 1. Current official PDFs and project handbook.
-2. [README.md](README.md).
+2. **[14-CASE-STUDY-TASK-16-CW200.md](14-CASE-STUDY-TASK-16-CW200.md) and [15-CASE-STUDY-TASK-17-KINGSMEAD.md](15-CASE-STUDY-TASK-17-KINGSMEAD.md): the two proven recipes. Read them first.**
+2a. [README.md](README.md).
 3. [01-END-TO-END-SOP.md](01-END-TO-END-SOP.md) through [04-PREFLIGHT-AND-VALIDATION.md](04-PREFLIGHT-AND-VALIDATION.md).
 4. [09-CASE-STUDY-TASK-03.md](09-CASE-STUDY-TASK-03.md), especially isolated probes versus integrated checkpoints.
 5. [12-CASE-STUDY-TASK-04.md](12-CASE-STUDY-TASK-04.md), especially trace forensics, score topology, and the limits of semantic-only failure.

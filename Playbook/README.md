@@ -2,6 +2,8 @@
 
 ## RULE ZERO: never underestimate the platform model (Opus 5.5, max effort)
 
+The platform assigns Model A at random per task: Opus 5.5 or Opus 4.8 max. Tasks 16 and 17 ran on 4.8. Always design for the stronger model, Opus 5.5 (user decision, 2026-10-12).
+
 Assume the model can do almost anything a strong engineer can do in 2.5 hours, and more:
 - It installs whatever it needs: apt-get, pip, any compiler (gcc, clang, zig via pip), any library.
 - It uses all ~17 threads, writes engine code faster than ours, profiles and re-optimises.
@@ -126,6 +128,9 @@ For Task 03 and every later Magnetic Rainstorm task, use a separate agent/review
 - [10-TASK-04-PREFLIGHT-LESSONS.md](10-TASK-04-PREFLIGHT-LESSONS.md) — pre-pilot source, implementation, and entry checks that established correctness but not difficulty.
 - [11-TASK-04-PILOT-FAILURE.md](11-TASK-04-PILOT-FAILURE.md) — the three reported 100% solves, root cause, prospective redesign, and the required post-redesign pilot gate.
 - [12-CASE-STUDY-TASK-04.md](12-CASE-STUDY-TASK-04.md) — the complete A–F history, Revision E trace forensics, score-topology failure, and Revision F's successful production-witness repair.
+- [13-CASE-STUDY-TASK-06.md](13-CASE-STUDY-TASK-06.md) — ATRIUM-9 sweep task (20/21 %), later found to rest partly on unstated rules (see the correction below).
+- [14-CASE-STUDY-TASK-16-CW200.md](14-CASE-STUDY-TASK-16-CW200.md) — **first stump by completed low scores** (23, 22, 41): the coupled-solve recipe.
+- [15-CASE-STUDY-TASK-17-KINGSMEAD.md](15-CASE-STUDY-TASK-17-KINGSMEAD.md) — **second stump** (43, 44, 39): drawing attribution, sensitivity-weighted rubric, and the v1 mistakes v2 fixed.
 - [QUICK-CHECKLIST.md](QUICK-CHECKLIST.md) — the short operational checklist to keep beside the platform.
 
 ## Recommended use by another agent
