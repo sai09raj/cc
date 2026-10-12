@@ -85,3 +85,11 @@ Platform scores 40 / 100 / 79 / 91 (claude-opus-4-8). Strict rubric count: 22 / 
 - 91: crest-elbow note-3 rule -> level and PI-100 slightly off.
 - 100: exact.
 v3: explicit accept ranges; details A/C/D get up+down legs (4 elbows each).
+
+## CW-200 v3 real runs (2026-10-12)
+Model A claude-opus-4-8. Scores 23 / 22 / 41 / 95 / 100 (avg 56; 3 of 5 below 50). Grader matched the rubric (explicit ranges worked).
+- 23: CW-206 losses omitted in code (E-203 19.73) -> cascade.
+- 22: sheet-2 18000/19000 swap (crest EL 23).
+- 41: gravity-side modelling difference (riser 45.88, outfall 31.35, level 34.230).
+- 95: TK-1 level 34.291 (only miss).
+- 100: exact.
