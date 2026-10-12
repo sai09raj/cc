@@ -156,3 +156,5 @@ Stop, repair, regenerate, and only then rerun.
 - [ ] The log is replayed against the physics (alarms and auto-starts consistent), and regime margins are clear at the graded state.
 - [ ] Rubric, Ideal Flow and key are generated from one key.json; after entry, check screenshots against the files value by value.
 - [ ] After the runs: recompute strict scores from the trajectories, list each run's slip, and harden with more fair decision points of that kind.
+- [ ] (Task 17) The drawing has near-equal same-type values next to each other on different routes or legs, legible but easy to swap; a blind solve still reads them correctly.
+- [ ] (Task 17) Graded quantities were chosen by a sensitivity ranking; every plausible single misread simulates to 40 or below.

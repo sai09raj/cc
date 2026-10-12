@@ -25,6 +25,14 @@ Full recipe: [14-CASE-STUDY-TASK-16-CW200.md](14-CASE-STUDY-TASK-16-CW200.md). I
 4. Rubric with explicit accept ranges ("74.90 L/s (accept 74.82 to 74.98 L/s)"), never "%", and about 77 % of the weight on the numeric results.
 5. A blind solve of the final PDF (fairness), then iteration on the platform trajectories: add more fair decision points of the kind the runs missed.
 
+## SECOND PROVEN SUCCESS: Task 17 KINGSMEAD-11 (33/11 kV load flow)
+
+Model A (claude-opus-4-8, max) scored 43, 44, 39, all completed. Full notes: [15-CASE-STUDY-TASK-17-KINGSMEAD.md](15-CASE-STUDY-TASK-17-KINGSMEAD.md). It added these to the Task 16 recipe:
+1. Opus solves every log or logic trap. The points are lost on **drawing attribution** (which jointed section belongs to which route) feeding a coupled solve.
+2. Place near-equal values of the same type next to each other on different routes or legs (420/520 at one corner; 18 000/19 000 in CW-200).
+3. Weight the rubric by **misread sensitivity** (currents and Mvar, not voltages). Simulate every plausible single misread and aim for 40 or below, because the platform adds about 5 to 10 points from memo and file rows.
+4. Expect the same misread in most runs. One strong, fair trap beats several weak ones.
+
 ## Start here: policy, engineering method, and lessons through Task 04 Revision F
 
 This folder is a handoff package for an author—or another capable agent—who must design, validate, enter, run, grade, and submit a Magnetic Rainstorm task without repeating the long trial-and-error cycle that produced it.
