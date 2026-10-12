@@ -78,7 +78,8 @@ def results(sol):
         a = 1 + N.TAP_STEP * (st["taps"][t] - N.TAP_NOM); h, l = idx["P33"], idx[m("A" if t == "T1" else "B")]
         i_lv = (V[h] / a - V[l]) / zt; s_lv = V[l] * np.conj(i_lv) * SB
         out["tx"][t] = dict(tap=st["taps"][t], MVA_lv=abs(s_lv), P_lv_MW=s_lv.real, Q_lv_Mvar=s_lv.imag, loss_kW=abs(i_lv) ** 2 * r * SB * 1000)
-    s_src = V[0] * np.conj((sol["Y"] @ V)[0]) * SB
+    zs = N.SRC_Z / zbase(33.0); i_in = (V[0] - V[idx["P33"]]) / zs
+    s_src = V[idx["P33"]] * np.conj(i_in) * SB        # metered at the 33 kV busbar P33
     out["source_MW"], out["source_Mvar"] = s_src.real, s_src.imag
     load_p = sum(p for p, _ in st.get("loads", N.LOAD).values()) / 1000.0
     out["losses_kW"] = (s_src.real + st["pv_kw"] / 1000.0 - load_p) * 1000

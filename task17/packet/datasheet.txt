@@ -1,10 +1,10 @@
-KINGSMEAD 33/11 kV PRIMARY SUBSTATION AND 11 kV NETWORK - DATA SHEET (sheet 1 of 2)
+KINGSMEAD 33/11 kV PRIMARY SUBSTATION AND 11 kV NETWORK - DATA SHEET (sheet 1 of 4)
 
-Arrangement (single-line diagram). The 33 kV grid infeed supplies the 33 kV busbar P33. Transformers T1 and T2 (33/11 kV) feed 11 kV busbar sections A and B, which are joined by the bus-section circuit breaker BS. Feeders F1 and F2 leave section A, feeders F3 and F4 leave section B. Secondary substations S1 to S12 are 11 kV nodes. Interconnectors IC-1 (S3 to S10) and IC-2 (S6 to S11) and the normally-open points NOP-1 (S4 to S8) and NOP-2 (S7 to S12) link the feeders. Every route, its cable sections, joints and lengths are on the cable route plan (sheet 3); each cable section has one cable type throughout.
+Arrangement (single-line diagram, sheet 3). The 33 kV grid infeed supplies the 33 kV busbar P33. Transformers T1 and T2 (33/11 kV) feed 11 kV busbar sections A and B, which are joined by the bus-section circuit breaker BS. Feeders F1 and F2 leave section A, feeders F3 and F4 leave section B. Secondary substations S1 to S12 are 11 kV nodes. Interconnectors IC-1 (S3 to S10) and IC-2 (S6 to S11) and the normally-open points NOP-1 (S4 to S8) and NOP-2 (S7 to S12) link the feeders. Every route, its cable sections, joints and lengths are on the cable route plan (sheet 4); each cable section has one cable type throughout.
 
-33 kV grid infeed: a source of 33.6 kV (line) behind an impedance of 0.36 + j3.60 ohm per phase.
+33 kV grid infeed: a source of 33.6 kV (line) behind an impedance of 0.36 + j3.60 ohm per phase. The infeed is metered at the 33 kV busbar P33: power drawn from the infeed means the power flowing from the grid into P33.
 
-Transformers T1, T2: each 15 MVA, 33/11 kV, impedance 10.0 % on 15 MVA with X/R = 20, referred to the 11 kV side. On-load tap changer on the 33 kV winding, taps 1 to 17, tap 9 nominal; each tap step changes the 33 kV winding turns by 1.25 % of nominal; a higher tap number means more 33 kV turns (lower 11 kV voltage). The ratio at tap n is 33 (1 + 0.0125 (n - 9)) : 11 kV. Magnetising current and core loss are negligible.
+Transformers T1, T2: each 15 MVA, 33/11 kV, impedance 10.0 % on 15 MVA with X/R = 20, referred to the 11 kV side and the same on every tap. On-load tap changer on the 33 kV winding, taps 1 to 17, tap 9 nominal; each tap step changes the 33 kV winding turns by 1.25 % of nominal; a higher tap number means more 33 kV turns (lower 11 kV voltage). The ratio at tap n is 33 (1 + 0.0125 (n - 9)) : 11 kV. Magnetising current and core loss are negligible.
 
 Automatic voltage control (AVC). A transformer whose AVC is in AUTO runs on the tap that brings the voltage of the 11 kV busbar section it feeds closest to 11.20 kV, with every other tap position fixed as it is. In MANUAL the tap stays where the operator left it. When BS is closed both sections are one busbar.
 
@@ -28,4 +28,4 @@ Notes.
 1. Report steady-state values for the network as the log leaves it at 09:00.
 2. Switching state changes only through operations recorded in the log.
 3. Voltages are line-to-line; currents are phase currents; power flows are three-phase.
-4. Network losses = 33 kV infeed active power + PV-1 export - total load.
+4. Network losses = 33 kV infeed active power (metered at P33) + PV-1 export - total load.

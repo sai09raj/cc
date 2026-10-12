@@ -112,9 +112,9 @@
   "MW": 7.1,
   "Mvar": 6.3415
  },
- "infeed_MW": 11.482,
- "infeed_Mvar": 6.0603,
- "losses_kW": 241.99,
+ "infeed_MW": 11.4282,
+ "infeed_Mvar": 5.5228,
+ "losses_kW": 188.24,
  "C1_kvar": 1207.48,
  "PV_kvar_absorbed": 821.71,
  "F1_3": {

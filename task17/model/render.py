@@ -54,7 +54,7 @@ def plan(out):
     ax.text(9.4, 7.0, "KINGSMEAD PRIMARY\n(F1, F2 from section A;\nF3, F4 from section B)", fontsize=8.5, zorder=8, bbox=dict(fc="white", ec="none", pad=0.1))
     ax.annotate("", xy=(17.6, 12.6), xytext=(17.6, 11.6), arrowprops=dict(arrowstyle="-|>", lw=2)); ax.text(17.5, 12.75, "N", fontsize=12, weight="bold")
     ax.set_xlim(0, 18.3); ax.set_ylim(1.5, 13.2)
-    ax.set_title("KINGSMEAD 11 kV - sheet 3: cable route plan (NOT to scale; lengths as labelled). Each route is shown section by section with cable type and section "
+    ax.set_title("KINGSMEAD 11 kV - sheet 4: cable route plan (NOT to scale; lengths as labelled). Each route is shown section by section with cable type and section "
                  "length;\njoints are bars with joint numbers. Brown: feeder routes; blue: interconnectors; dashed: normally-open routes.", fontsize=10)
     fig.savefig(out, dpi=140, bbox_inches="tight", facecolor="white"); plt.close(fig)
 
@@ -108,8 +108,8 @@ def sld(out):
     x, y = pos["S10"]; line([(x + 0.3, y), (x + 1.1, y)]); ax.add_patch(plt.Rectangle((x + 1.1, y - 0.25), 0.7, 0.5, fc="#fff2b3", ec="k")); ax.text(x + 1.45, y, "PV-1", ha="center", va="center", fontsize=8)
     x, y = pos["S6"]; line([(x + 0.3, y), (x + 0.9, y)]); cb(x + 0.6, y, False)
     ax.plot([x + 0.9, x + 0.9], [y - 0.2, y + 0.2], "k", lw=2); ax.plot([x + 1.0, x + 1.0], [y - 0.2, y + 0.2], "k", lw=2); ax.text(x + 1.1, y, "C1", va="center", fontsize=8)
-    ax.text(0.3, -0.3, "KINGSMEAD 11 kV - sheet 2: single-line diagram (schematic, not to scale). Breakers and switches shown in their NORMAL state:\n"
-            "filled square = closed, open square = open, open blade = normally-open point. Route ids (F1-1 ...) refer to the cable route plan, sheet 3.", fontsize=9, va="top")
+    ax.text(0.3, -0.3, "KINGSMEAD 11 kV - sheet 3: single-line diagram (schematic, not to scale). Breakers and switches shown in their NORMAL state:\n"
+            "filled square = closed, open square = open, open blade = normally-open point. Route ids (F1-1 ...) refer to the cable route plan, sheet 4.", fontsize=9, va="top")
     fig.savefig(out, dpi=140, bbox_inches="tight", facecolor="white"); plt.close(fig)
 
 if __name__ == "__main__":

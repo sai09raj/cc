@@ -27,9 +27,9 @@
 | 21 | +4 | Reports the current in route IC-2 at the 09:00 handover as 86.70 A (accept 86.61 to 86.79 A) with active power flowing from S11 to S6. |
 | 22 | +4 | Reports the current in route NOP-1 at the 09:00 handover as 88.40 A (accept 88.31 to 88.49 A) with active power flowing from S8 to S4. |
 | 23 | +4 | Reports the current in route NOP-2 at the 09:00 handover as 24.30 A (accept 24.28 to 24.33 A) with active power flowing from S12 to S7. |
-| 24 | +4 | Reports the active power drawn from the 33 kV infeed at the 09:00 handover as 11.48 MW (accept 11.470 to 11.494 MW). |
-| 25 | +4 | Reports the reactive power drawn from the 33 kV infeed at the 09:00 handover as 6.060 Mvar (accept 6.054 to 6.067 Mvar). |
-| 26 | +5 | Reports the network losses at the 09:00 handover as 242.0 kW (accept 241.5 to 242.4 kW). |
+| 24 | +4 | Reports the active power drawn from the 33 kV infeed at the 09:00 handover as 11.43 MW (accept 11.416 to 11.440 MW). |
+| 25 | +4 | Reports the reactive power drawn from the 33 kV infeed at the 09:00 handover as 5.523 Mvar (accept 5.517 to 5.529 Mvar). |
+| 26 | +5 | Reports the network losses at the 09:00 handover as 188.2 kW (accept 187.8 to 188.7 kW). |
 | 27 | +2 | Reports the C1 output at the 09:00 handover as 1207 kvar (accept 1206.4 to 1208.5 kvar). |
 | 28 | +1 | Reports the PV-1 export at the 09:00 handover as 2500 kW. |
 | 29 | +1 | Reports the PV-1 reactive absorption at the 09:00 handover as 821.7 kvar (accept 821.2 to 822.3 kvar). |
