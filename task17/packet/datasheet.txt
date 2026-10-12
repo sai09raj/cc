@@ -13,7 +13,7 @@ Cables (11 kV, XLPE, aluminium, three-core), per phase at 90 C:
   type 185: R 0.211 ohm/km, X 0.097 ohm/km, rating 360 A
   type 95:  R 0.411 ohm/km, X 0.108 ohm/km, rating 245 A
   type 70:  R 0.568 ohm/km, X 0.112 ohm/km, rating 205 A
-Cable shunt capacitance, switch and joint impedances are negligible. A closed route is a series impedance equal to the sum of its sections.
+Cable shunt capacitance, switch and joint impedances are negligible. The loading of a cable section is its current as a percentage of its type rating. A closed route is a series impedance equal to the sum of its sections.
 
 Loads at 09:00 (constant power, lagging power factor):
   S1 1450 kW pf 0.95 | S2 980 kW pf 0.93 | S3 1210 kW pf 0.94 | S4 760 kW pf 0.92
