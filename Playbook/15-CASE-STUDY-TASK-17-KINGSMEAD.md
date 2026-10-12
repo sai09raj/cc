@@ -39,6 +39,21 @@ The model must report the 09:00 Newton-Raphson AC load flow:
 
 **The slip.** All three v2 runs swapped the 420 m and 520 m 185 sections at S1 between F1-1 and F1-2. The log traps, the AVC, the circulating Mvar and the solver were all correct. One fair attribution decision on the drawing decided the task.
 
+## 2a. v1 mistakes that v2 fixed: do not repeat them
+
+| # | v1 mistake | Effect in v1 | v2 fix |
+|---|---|---|---|
+| 1 | Route plan had one route per line, mostly single-section routes and clear labels: **no attribution decisions** | 4 of 5 runs scored 100 in about 19 min | Every route has 2 or 3 jointed sections; routes share trenches leaving the primary; near-equal same-type lengths (185/420 and 185/520) meet at the S1 corner on different routes |
+| 2 | Difficulty was built on the **log traps** (NOP-1 left closed, T1 MANUAL, C1 in, PV cap, BS open). Simulated at 14 to 22 when missed | Opus replayed every trap correctly in every run; those simulations meant nothing | Keep the traps for fairness and story, but put the difficulty in the drawing attribution that feeds the coupled solve |
+| 3 | Rubric weight sat on **insensitive quantities**: many bus voltages at +/-2 V, which barely move under a misread, and only 9 of 16 route currents graded | The one run that misread still scored 59 | Weighted by sensitivity ranking (`rank.py`, `sens.py`): all 16 route currents and T1/T2 Mvar at +4, losses at +5, voltages cut to A, B and S2 at +2 or +3 |
+| 4 | Accepted single-misread simulations **at or above 50** (repair added in series 50, IC-1 length 53, repair ignored 64) | Showed that a realistic slip would not pass the gate | Before entry, every plausible single misread must simulate to about 40 or below (v2: 19 to 43). The platform adds about 5 to 10 points for memo and file rows |
+| 5 | The **one misread that happened** (the 510 m section past J3 given to F3-3) was not followed up with more decision points of that kind | Only 1 of 5 runs below 50 | Studied the slip that did happen and multiplied it: more corners and trenches where sections from different routes meet |
+| 6 | An early **to-scale** plan was illegible | Would have been an unfair misread | Not-to-scale plan with every length printed; difficulty comes from attribution, not from legibility. Labels near corners were moved off ambiguous spots (F2-1 300/610 after the v2 blind solve) |
+| 7 | Infeed metering point was **unstated** (P33 or the source EMF), found by the v1 blind solve | Two defensible answers for infeed and losses | Data sheet states "metered at P33"; also stated: transformer impedance the same on every tap, and the definition of section loading |
+| 8 | Ideal Flow text carried values **typed by hand** (the v1 Synthesize box still said "F4-1, 185 after J4" after the key changed) | Mismatch risk between rubric and Ideal Flow | All three Ideal Flow boxes and the rubric regenerated from `key.json`; the user's screenshots are checked value by value |
+
+**Rule.** If v1 runs mostly score 100, do not add more logic traps. Find the reading decision the one low run missed, put several more fair decisions of that kind into the drawing, and move the rubric weight onto the quantities those misreads change.
+
 ## 3. Lessons (add to the CW-200 recipe)
 
 1. **Logic traps alone do not stump Opus.** It replayed every log trap correctly in all runs, both v1 and v2. The score loss comes from **drawing attribution**: which jointed section belongs to which route. That attribution feeds a coupled solve.
