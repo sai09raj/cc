@@ -93,3 +93,5 @@ Model A claude-opus-4-8. Scores 23 / 22 / 41 / 95 / 100 (avg 56; 3 of 5 below 50
 - 41: gravity-side modelling difference (riser 45.88, outfall 31.35, level 34.230).
 - 95: TK-1 level 34.291 (only miss).
 - 100: exact.
+
+PASS: platform rule is at least 3 completed runs below 50 (user, 2026-10-12). v3 qualifies (23, 22, 41). Submit v3.
