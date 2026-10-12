@@ -6,7 +6,7 @@ Day 3  14:00  Decking complete at L1 and L2. Floor finishes and services loads n
 Day 4  08:20  Brace BR2 disconnected at its upper end (grid 2, L2) to pass the main supply duct. Permit TW-12 open. Reinstatement after the duct is fixed, planned Day 14.
 Day 5  11:45  Snagging, L2 beam in bay 3-4: end plate at grid 4 found with bolts not installed (holes misaligned). Until the bolts are installed this beam end acts as a simple connection. Grid 3 end of the same beam is complete.
 Day 6  10:30  L3 beam in bay 1-2 at grid 1: simple connection checked against sheet 3, as drawn. No action.
-Day 7  15:20  Decking and finishes complete at L3 and roof.
+Day 7  15:20  Decking complete at L3 and roof. Floor finishes, roof finishes and services loads now present as on sheet 4.
 Day 8  09:00  Storage pallets placed in storage zone S on L2, bay 2-3 (sheet 4).
 Day 9  13:40  AHU-2 lifted to the roof and landed at temporary position T in bay 3-4 (sheet 4). Move to final position F planned for Day 15 after the plinth is cast.
 Day 9  16:10  Replacement bolts for the L2 bay 3-4 end plate at grid 4 delivered. Installation booked for Day 13.

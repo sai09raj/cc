@@ -16,12 +16,12 @@ SEC = {
     "457x191x74 UB": (94.6, 33320, 74.3),
     "533x210x82 UB": (105.0, 47540, 82.2),
     "533x210x92 UB": (117.0, 55230, 92.1),
-    "114.3x5.0 CHS": (17.2, 257, 13.5),
+    "168.3x6.3 CHS": (32.1, 1053, 25.2),
 }
 
 GRID_X = {"1": 0.0, "2": 6.0, "3": 13.5, "4": 20.7}                 # bay widths 6.0 / 7.5 / 7.2
 LEVEL_Y = {"G": 0.0, "L1": 4.20, "L2": 7.95, "L3": 11.55, "R": 15.15}  # storeys 4.20 / 3.75 / 3.60 / 3.60
-SPLICE = 0.60      # column splices 600 mm above L2 on every column line
+SPLICE = {"1": ("L2", 0.60), "2": ("L1", 0.60), "3": ("L2", 0.60), "4": ("L2", 0.60)}   # per column line: (level, height above it) of the splice
 
 # Column sections per grid line: (below splice, above splice)
 COL = {"1": ("203x203x60 UC", "203x203x52 UC"),
@@ -39,7 +39,7 @@ BEAM = {
 }
 # Diagonal braces (pinned both ends, axial only): (id, from (grid, level), to (grid, level))
 BRACE = [("BR1", ("3", "G"), ("2", "L1")), ("BR2", ("3", "L1"), ("2", "L2"))]
-BRACE_SEC = "114.3x5.0 CHS"
+BRACE_SEC = "168.3x6.3 CHS"
 
 # Floor area loads (kN/m^2, dead + imposed as one case, no factors) on every bay of the level
 AREA = {"L1": 7.5, "L2": 7.5, "L3": 7.0, "R": 5.0}

@@ -5,18 +5,25 @@ You are the temporary works engineer for frame C of the Holloway Road extension.
 2. Report the horizontal displacement of the grid 1 joints at L2, L3 and the roof, and the vertical base reaction at grid 1.
 
 3. Report the beam end moments (hogging, at the column centreline) at:
-L1 bay 1 to 2 at grid 2; L1 bay 2 to 3 at grid 2 and at grid 3; L1 bay 3 to 4 at grid 4;
-L2 bay 2 to 3 at grid 2 and at grid 3;
-L3 bay 1 to 2 at grid 2; L3 bay 2 to 3 at grid 2 and at grid 3; L3 bay 3 to 4 at grid 4;
+L1 bay 1 to 2 at grid 1;
+L1 bay 2 to 3 at grid 2;
+L1 bay 2 to 3 at grid 3;
+L1 bay 3 to 4 at grid 4;
+L2 bay 2 to 3 at grid 2;
+L2 bay 2 to 3 at grid 3;
+L3 bay 1 to 2 at grid 2;
+L3 bay 2 to 3 at grid 2;
+L3 bay 3 to 4 at grid 3;
+L3 bay 3 to 4 at grid 4;
 roof bay 2 to 3 at grid 2.
 
 4. Report the maximum sagging moment in the L2 beam in bay 1 to 2.
 
 5. Report the column moments (positive when the face towards grid 4 is in tension) at:
 grid 1 just below the roof;
-grid 2 just above L1, just below L2, and just below L3;
-grid 3 just above L1, just below L2, just above L2, at the splice, just below L3, and just below the roof;
-grid 4 just above L1, just below L3, just above L3, and just below the roof.
+grid 2 just above L1, at the splice, just below L2 and just below L3;
+grid 3 just above L1, just below L2, just above L2, at the splice, just below L3 and just below the roof;
+grid 4 just above L1, just below L3 and just above L3.
 
 6. Write a handover memo listing the state of every brace, every simple connection, every temporary prop, the storage zone and AHU-2 that your analysis uses, each with the site log entry that sets it.
 

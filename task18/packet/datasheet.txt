@@ -6,7 +6,7 @@ Analysis model.
 1. Linear-elastic, first-order plane frame analysis of the state of the frame at the time stated in the site log (sheet 2). One load case: the loads below, with no load factors.
 2. Centreline model: columns lie on their grid lines and beams on their level lines; bay widths and storey heights are the dimensions on sheet 3. Joint size and connection eccentricity are ignored.
 3. E = 210 GPa for every member. Axial and bending deformation are included; shear deformation is ignored. Bending is about the major axis of every beam and column.
-4. Columns are continuous through every floor. Each column has a splice at the height dimensioned on sheet 3. The column section changes at the splice, and the splice itself is a full-strength rigid joint.
+4. Columns are continuous through every floor. Each column has one splice, at the height dimensioned beside that column on sheet 3. The column section changes at the splice, and the splice itself is a full-strength rigid joint.
 5. Beam-to-column connections are rigid (moment-resisting) unless marked as simple on sheet 3. A simple connection transmits no moment: that beam end is pinned to the column, and the column stays continuous.
 6. Column bases are fixed or pinned as drawn on sheet 3.
 7. Braces are pin-ended and carry axial force only. Brace self-weight is ignored.
@@ -19,7 +19,7 @@ Sections (A in cm2, I major axis in cm4, mass in kg/m):
   203x203x60 UC   A 76.4    I 6125     60.0        457x191x67 UB   A 85.5    I 29380    67.1
   254x254x73 UC   A 93.1    I 11410    73.1        457x191x74 UB   A 94.6    I 33320    74.3
   254x254x89 UC   A 113.0   I 14270    88.9        533x210x82 UB   A 105.0   I 47540    82.2
-  114.3x5.0 CHS   A 17.2    I 257      13.5        533x210x92 UB   A 117.0   I 55230    92.1
+  168.3x6.3 CHS   A 32.1    I 1053     25.2        533x210x92 UB   A 117.0   I 55230    92.1
 
 Loads.
 1. Self-weight of every beam and column: mass x 9.81 N/kg, a uniform load along the member (vertical on beams, along the axis of columns).

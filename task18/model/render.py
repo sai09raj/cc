@@ -7,7 +7,7 @@ import frame as F
 
 X, Y = F.GRID_X, F.LEVEL_Y
 LV = list(Y)
-YSP = Y["L2"] + F.SPLICE
+def ysp(g): return Y[F.SPLICE[g][0]] + F.SPLICE[g][1]
 
 def base_fig(title, sheet):
     fig = plt.figure(figsize=(11, 8.5), dpi=300)
@@ -55,21 +55,24 @@ def elevation(path):
     for a, b in zip("123", "234"):
         hdim(ax, X[a], X[b], -2.2, f"{round((X[b] - X[a]) * 1000)}", fs=10)
     hdim(ax, X["1"], X["4"], -3.05, f"{round((X['4'] - X['1']) * 1000)}", fs=9)
-    # splices
+    # splices: symbol and its own dimension on every column
     for g, x in X.items():
-        ax.plot([x - 0.28, x + 0.28], [YSP + 0.05] * 2, color="k", lw=1.0); ax.plot([x - 0.28, x + 0.28], [YSP - 0.05] * 2, color="k", lw=1.0)
-    vdim(ax, X["1"] - 0.95, Y["L2"], YSP, "600", fs=8)
-    ax.text(X["1"] - 1.25, YSP + 0.35, "SPLICE", fontsize=6.5, ha="right", va="bottom")
-    # column labels: one per length between floor / splice / base, written beside the column (right side)
+        sl, sh = F.SPLICE[g]; ys_ = ysp(g)
+        ax.plot([x - 0.28, x + 0.28], [ys_ + 0.05] * 2, color="k", lw=1.0); ax.plot([x - 0.28, x + 0.28], [ys_ - 0.05] * 2, color="k", lw=1.0)
+        vdim(ax, x - 0.85, Y[sl], ys_, f"{round(sh * 1000)}", fs=7.5)
+    # column labels: one per length between floor / splice / base, written beside the column (right side);
+    # the short length between a floor and the splice above it is labelled on the left with a leader
     for g, x in X.items():
-        low, up = F.COL[g]
-        segs = [("G", "L1", low), ("L1", "L2", low), ("L2", "SP", low), ("SP", "L3", up), ("L3", "R", up)]
-        for a, b, sec in segs:
-            ya = YSP if a == "SP" else Y[a]; yb = YSP if b == "SP" else Y[b]
+        low, up = F.COL[g]; sl = F.SPLICE[g][0]; ys_ = ysp(g)
+        pts = []
+        for l in LV:
+            pts.append((l, Y[l]))
+            if l == sl: pts.append(("SP", ys_))
+        for (a, ya), (b, yb) in zip(pts, pts[1:]):
+            sec = low if yb <= ys_ + 1e-9 else up
             xt = x + 0.22
-            if a == "L2" and b == "SP":
-                # short length between L2 and the splice: label on the left of the column, with a leader
-                xl = x - 0.22; yt = Y["L2"] - 0.25
+            if b == "SP":
+                xl = x - 0.22; yt = Y[sl] - 0.25
                 ax.annotate("", (x - 0.03, (ya + yb) / 2), (xl - 0.1, yt + 0.05), arrowprops=dict(arrowstyle="-", lw=0.5, shrinkA=0, shrinkB=0))
                 ax.text(xl, yt, sec, rotation=90, ha="right", va="top", fontsize=7.2)
             elif a == "SP":

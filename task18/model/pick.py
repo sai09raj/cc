@@ -6,7 +6,9 @@ def likely():
     t = {}
     for g in "1234":
         lo, up = F.COL[g]; t[f"col {g} splice labels swapped"] = state.final(COL={**F.COL, g: (up, lo)})
-    t["splice at L2"] = state.final(SPLICE=1e-6)
+    t["grid 2 splice read at L2"] = state.final(SPLICE={**F.SPLICE, "2": ("L2", 0.6)})
+    t["splices taken at floor level"] = state.final(SPLICE={g: (l, 1e-6) for g, (l, h) in F.SPLICE.items()})
+    t["grid 2 short length read 73"] = state.final(SPLICE={**F.SPLICE, "2": ("L1", 1e-6)})
     y = dict(F.LEVEL_Y); y["L2"] = 7.80; t["storeys 3.75/3.60 swapped"] = state.final(LEVEL_Y=y)
     y = dict(F.LEVEL_Y); y["L1"] = 3.75; t["storeys 4.20/3.75 swapped"] = state.final(LEVEL_Y=y)
     x = dict(F.GRID_X); x["3"] = 13.2; t["bays 7.5/7.2 swapped"] = state.final(GRID_X=x)

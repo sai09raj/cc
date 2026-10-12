@@ -22,8 +22,8 @@ def geometry(c):
         if key not in idx: idx[key] = len(nodes); nodes.append((x, y))
         return idx[key]
     els = []
-    ysp = ys["L2"] + c["SPLICE"]
     for g, x in c["GRID_X"].items():
+        sl, sh = c["SPLICE"][g]; ysp = ys[sl] + sh
         pts = [(l, ys[l]) for l in lv]
         chain = []
         for (l, y) in pts:
