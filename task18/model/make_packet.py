@@ -18,13 +18,16 @@ try: doc.del_xml_metadata()
 except Exception: pass
 t = os.path.join(OUT, ".tmp.pdf"); doc.save(t, garbage=4, deflate=True, clean=True); doc.close()
 d = fitz.open(t); d.xref_set_key(-1, "Info", "null"); d.xref_set_key(-1, "ID", "null")
+for x in range(1, d.xref_length()):          # drop embedded ICC profiles: images use plain DeviceRGB
+    if d.xref_get_key(x, "Subtype")[1] == "/Image" and d.xref_get_key(x, "ColorSpace")[0] != "null":
+        d.xref_set_key(x, "ColorSpace", "/DeviceRGB")
 cat = d.pdf_catalog(); pages = d.xref_get_key(cat, "Pages")[1]; d.update_object(cat, "<< /Type /Catalog /Pages %s >>" % pages)
 out = os.path.join(OUT, NAME); d.save(out, garbage=4, deflate=True, clean=True, no_new_id=True); d.close(); os.remove(t)
 raw = open(out, "rb").read(); i = raw.find(b"% Written by")
 if i != -1:
     j = raw.find(b"\n", i); raw = raw[:i] + b"%" + b" " * (j - i - 1) + raw[j:]; open(out, "wb").write(raw)
 raw = open(out, "rb").read()
-for bad in (b"Producer", b"Creator", b"Author", b"CreationDate", b"ModDate", b"XMP", b"matplotlib", b"tEXt"):
+for bad in (b"Producer", b"Creator", b"Author", b"CreationDate", b"ModDate", b"XMP", b"matplotlib", b"tEXt", b"ICCBased"):
     assert bad not in raw, bad
 d = fitz.open(out); print(out, d.page_count, d.metadata, d.xref_get_key(-1, "Info"))
 for pg in d: assert not pg.get_drawings(), "vector drawings present"

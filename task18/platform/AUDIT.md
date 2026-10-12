@@ -54,3 +54,24 @@ Simulated score for each likely single misread (all other readings correct; rubr
 | Storage zone or AHU-2 measured from the wrong grid | 9.4–18.1 |
 
 Beam-section misreads are local and simulate at 25–92. Beam labels are horizontal and centred, so these are the least likely slips.
+
+## Re-audit before sending (2026-10-12), against the reviewer photos and minor feedback
+- **Mechanical audit (`platform/audit.py`): ALL CHECKS PASS.**
+  - 43 criteria, all 301 characters or fewer (longest 180), all verb-led, all weights legal.
+  - Every numeric row's accept range contains its stated value, and the value is in `key.json`.
+  - Every decimal in the Ideal Flow appears in the rubric (no C2-type mismatch).
+  - Every prompt beam end, column position and memo item has a row.
+  - The -5 penalty covers "base every number on your own executed program".
+  - The PDF has no Info or ID, empty metadata, no vectors, no answer values in the text, and no hits in any decompressed stream. The ICC profile naming the generator has been removed.
+- **Changes in this pass:**
+  - Column rows give one signed value and accept the equivalent magnitude with the tension face (the same quantity).
+  - Memo rows reduced to item + state + log entry.
+  - The results-file row checks content, not just presence.
+  - The Synthesize box no longer asks for a "flag" sentence the prompt does not request.
+- **Reviewer patterns (#75, #76):**
+  - No expected value outside the packet's legal set or needing an unstated rule; two blind solves matched all 30.
+  - The only required explanation is the memo, which has 7 rows.
+  - No mechanism+value bundles.
+  - Every metric is defined in data sheet conventions a to f.
+  - No validity-only or presence-only rows.
+  - The conditional prompt rule has its penalty.

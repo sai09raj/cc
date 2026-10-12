@@ -11,8 +11,9 @@ KEYS = []
 def beam(key, lvl, bay, grid, w=4):
     KEYS.append((key, w)); return (w, f"Reports the hogging moment in the {lvl} beam of bay {bay} at its grid {grid} end {T} as {s4(k[key])} kNm (accept {acc(k[key])} kNm).")
 def col(key, grid, pos, w=4):
-    KEYS.append((key, w)); v = k[key]; face = "grid 4 side" if v > 0 else "grid 1 side"
-    return (w, f"Reports the grid {grid} column moment {pos} {T} as {sg(v)} kNm, tension on the {face} face (accept {acc(v)} kNm in the data sheet sign convention).")
+    KEYS.append((key, w)); v = k[key]; face = "grid 4" if v > 0 else "grid 1"; d = max(0.001 * abs(v), 0.05)
+    if v > 0: return (w, f"Reports the grid {grid} column moment {pos} {T} as {sg(v)} kNm, tension on the grid 4 side face (accept {rng(v - d, v + d)} kNm).")
+    return (w, f"Reports the grid {grid} column moment {pos} {T} as {sg(v)} kNm (accept {rng(v - d, v + d)} kNm, or {rng(abs(v) - d, abs(v) + d)} kNm stated as tension on the grid 1 side face).")
 def ux(key, lvl, w):
     KEYS.append((key, w)); return (w, f"Reports the horizontal displacement of the grid 1 joint at {lvl} {T} as {s4(k[key])} mm towards grid 4 (accept {acc(k[key], 0.02)} mm).")
 LVN = {"L1": "L1", "L2": "L2", "L3": "L3", "R": "the roof"}
@@ -47,14 +48,14 @@ for q in SAGS:
 C += [col(q, *posn(q)) for q in COLS]
 C += [
      (1, "The handover memo lists brace BR1 as in service, citing the Day 1 07:30 or Day 11 17:30 log entry."),
-     (1, "The handover memo lists brace BR2 as disconnected and left out of the analysis, citing the Day 4 08:20 log entry."),
+     (1, "The handover memo lists brace BR2 as out of service, citing the Day 4 08:20 log entry."),
      (1, "The handover memo lists the grid 4 end of the L2 beam in bay 3-4 as a simple connection, citing the Day 5 11:45 log entry."),
      (1, "The handover memo lists the grid 1 end of the L3 beam in bay 1-2 as a simple connection, citing the Day 6 10:30 log entry or sheet 3."),
-     (1, "The handover memo lists temporary prop TP-1 as removed and left out of the analysis, citing the Day 10 08:00 log entry."),
+     (1, "The handover memo lists temporary prop TP-1 as removed, citing the Day 10 08:00 log entry."),
      (1, "The handover memo lists storage zone S on L2 bay 2-3 as loaded, citing the Day 8 09:00 log entry."),
-     (1, "The handover memo lists AHU-2 at temporary position T, 1800 mm from grid 3, citing the Day 9 13:40 log entry."),
-     (1, "Delivers the source of the frame analysis program as a file."),
-     (1, "Delivers a results file containing the reported values."),
+     (1, "The handover memo lists AHU-2 at its temporary position T (1800 mm from grid 3), citing the Day 9 13:40 log entry."),
+     (1, "Delivers the source code of the plane frame stiffness program as a file."),
+     (1, "Delivers a results file that lists the reported line loads, displacements, base reaction and moments."),
      (1, "Delivers the handover memo as a file."),
      (-5, "Reports a displacement, reaction or moment that the response's own delivered program does not compute (a value typed in or estimated by hand rather than produced by executed code).")]
 pos = sum(w for w, _ in C if w > 0); L = max(len(t) for _, t in C); num = sum(w for w, t in C if w > 1 and t.startswith("Reports"))
@@ -89,7 +90,7 @@ synth = ("Write the handover memo from the analysed state, listing every brace, 
  "BR1 in service (Day 1, checked Day 11); BR2 disconnected and left out (Day 4; reinstatement planned Day 14); "
  "L2 bay 3-4 beam simple at grid 4 until its bolts are fitted (Day 5, booked Day 13), although sheet 3 shows it rigid; L3 bay 1-2 beam simple at grid 1 as drawn (Day 6); "
  "TP-1 removed (Day 10), so it carries nothing; storage zone S loaded (Day 8); AHU-2 at temporary position T, 1800 mm from grid 3 (Day 9), until it moves to F on Day 15. "
- "Flag for the site team that reinstating BR2, bolting the L2 grid 4 end plate or moving AHU-2 to F each changes the frame state and needs a fresh analysis. Base every value on the executed program.")
+ "Base every value on the executed program.")
 for n, t in (("analyze", analyze), ("execute-generate", execute), ("synthesize", synth)):
     open(f"ideal-flow-{n}.txt", "w").write(t); print(n, len(t))
 
