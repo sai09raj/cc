@@ -11,6 +11,7 @@ PATHS = {"F1-1": ["PS", (9.3, 8), (9.3, 11), "S1"], "F1-2": ["S1", (12, 11), "S2
          "F4-1": ["PS", (8.7, 8), (8.7, 5), "S11"], "F4-2": ["S11", (6, 3), "S12"],
          "IC-1": ["S3", (15, 2.5), "S10"], "IC-2": ["S6", (3, 5), "S11"], "NOP-1": ["S4", (13.5, 6), "S8"], "NOP-2": ["S7", (1, 3), "S12"]}
 FLIP = {"F2-2", "IC-2", "F4-2", "NOP-2", "F2-3", "F3-3", "F1-2"}
+LABEL_AT = {("F2-1", 0): 0.3}
 SIDE = {"F1-1": "E", "F3-1": "E", "F2-1": "W", "F4-1": "W"}
 ID_AT = {"IC-2": 0.25, "F1-1": 0.55, "F2-1": 0.8, "F3-1": 0.75, "F4-1": 0.9, "IC-1": 0.3, "F3-3": 0.75, "F3-2": 0.2}
 def pts(rid): return [POS[p] if isinstance(p, str) else p for p in PATHS[rid]]
@@ -32,7 +33,7 @@ def plan(out):
         ax.plot(*zip(*path), color=col, lw=2.4, zorder=2, ls="-" if not rid.startswith("NOP") else (0, (6, 3)))
         s0 = 0.0
         for k, (t, l) in enumerate(secs):
-            sm = (s0 + l / 2.0) / L * D
+            sm = (s0 + l * LABEL_AT.get((rid, k), 0.5)) / L * D
             (mx, my), (ux, uy) = point_at(path, sm); nx, ny = -uy, ux
             if rid in FLIP: nx, ny = -nx, -ny
             if rid in SIDE and abs(ux) < 0.5: nx, ny = (-1.0 if SIDE[rid] == "W" else 1.0), 0.0
