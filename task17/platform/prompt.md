@@ -1,4 +1,4 @@
-You are the day-shift distribution control engineer for the Kingsmead 33/11 kV network. The attached kingsmead_v1.pdf contains the network data sheet, the night-shift control log, the single-line diagram and the cable route plan. Using tools, determine the steady state of the network at the 09:00 handover, exactly as the data sheet defines it, with the switching state, tap positions and settings that the log leaves in force.
+You are the day-shift distribution control engineer for the Kingsmead 33/11 kV network. The attached kingsmead_v2.pdf contains the network data sheet, the night-shift control log, the single-line diagram and the cable route plan. Using tools, determine the steady state of the network at the 09:00 handover, exactly as the data sheet defines it, with the switching state, tap positions and settings that the log leaves in force.
 
 Report:
 1. The length and series impedance (R + jX, ohm per phase) of route F1-3 as it is in service at 09:00.

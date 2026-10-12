@@ -1,0 +1,14 @@
+KINGSMEAD 11 kV CONTROL LOG - NIGHT SHIFT 21/22 NOV (sheet 2 of 4)
+22:00 Handover. T1 and T2 in service, both AVC AUTO. BS closed. IC-1 and IC-2 closed. NOP-1 and NOP-2 open. C1 out. PV-1 not generating.
+22:30 Permit 4471: T2 tap-changer diverter inspection. T2 33 kV and 11 kV CBs opened. BS remains closed; T1 carries both sections.
+23:15 Rounds. All feeder currents normal.
+01:20 F1 trip and reclose. Contractor damage reported on F1-3 between joint J7 and S3. F1-3 isolated: switches opened at S2 and S3. NOP-1 closed to back-feed S4 from S8.
+02:05 Repair crew on site F1-3 (permit 4475).
+03:40 T1 AVC selected MANUAL for tap-changer counter check; T1 set to tap 9 and left in MANUAL.
+05:10 C1 at S6 switched in for voltage support.
+06:30 Permit 4471 cancelled. T2 33 kV CB closed, T2 11 kV CB closed onto section B. BS opened for T2 return-to-service checks. T2 AVC selected AUTO. T1 AVC remains MANUAL.
+07:20 Permit 4475 cancelled. F1-3 repaired: the damaged 95 mm2 section between J7 and S3 (380 m) cut out and replaced by 410 m of 185 mm2 Al laid in a new trench. F1-3 tested and switches at S2 and S3 closed. NOP-1 left closed per control engineer (ring running closed).
+07:50 Planned transfer of S7 to F4: NOP-2 closed. Opening of F2-3 at S6 postponed (switching operator recalled to another site); F2-3 remains closed.
+08:15 DNO instruction: PV-1 export limited to 2500 kW until further notice. Power factor setting unchanged.
+08:40 Rounds. No alarms. No further switching.
+09:00 Handover to day shift.

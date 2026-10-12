@@ -1,4 +1,4 @@
-"""Build artifact/kingsmead_v1.pdf: data sheet, control log, SLD, cable route plan; metadata stripped."""
+"""Build artifact/kingsmead_v2.pdf: data sheet, control log, SLD, cable route plan; metadata stripped."""
 import os, sys, json, fitz
 HERE = os.path.dirname(os.path.abspath(__file__)); OUT = os.path.join(HERE, "..", "artifact"); os.makedirs(OUT, exist_ok=True)
 sys.path.insert(0, HERE); os.chdir(HERE)
@@ -16,7 +16,7 @@ except Exception: pass
 t = os.path.join(OUT, ".tmp.pdf"); doc.save(t, garbage=4, deflate=True, clean=True); doc.close()
 d = fitz.open(t); d.xref_set_key(-1, "Info", "null"); d.xref_set_key(-1, "ID", "null")
 cat = d.pdf_catalog(); pages = d.xref_get_key(cat, "Pages")[1]; d.update_object(cat, "<< /Type /Catalog /Pages %s >>" % pages)
-out = os.path.join(OUT, "kingsmead_v1.pdf"); d.save(out, garbage=4, deflate=True, clean=True, no_new_id=True); d.close(); os.remove(t)
+out = os.path.join(OUT, "kingsmead_v2.pdf"); d.save(out, garbage=4, deflate=True, clean=True, no_new_id=True); d.close(); os.remove(t)
 raw = open(out, "rb").read(); i = raw.find(b"% Written by")
 if i != -1:
     j = raw.find(b"\n", i); raw = raw[:i] + b"%" + b" " * (j - i - 1) + raw[j:]; open(out, "wb").write(raw)

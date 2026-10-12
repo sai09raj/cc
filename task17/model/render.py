@@ -3,15 +3,16 @@ import json, math, sys
 import matplotlib; matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import net as N
-POS = {"PS": (9, 8), "S1": (9, 11), "S2": (12, 12), "S3": (15, 10.5), "S4": (13.5, 8.5), "S5": (5, 9), "S6": (3, 12), "S7": (1, 7),
+POS = {"PS": (9, 8), "S1": (9, 11), "S2": (12, 12), "S3": (15, 10.5), "S4": (13.5, 8.5), "S5": (5, 9.5), "S6": (3, 12), "S7": (1, 7),
        "S8": (12, 6), "S9": (10, 3.5), "S10": (14, 2.5), "S11": (6, 5), "S12": (3, 3)}
-PATHS = {"F1-1": ["PS", "S1"], "F1-2": ["S1", (12, 11), "S2"], "F1-3": ["S2", (15, 12), "S3"], "F1-4": ["S3", (13.5, 10.5), "S4"],
-         "F2-1": ["PS", (5, 8), "S5"], "F2-2": ["S5", (5, 12), "S6"], "F2-3": ["S6", (1, 12), "S7"],
-         "F3-1": ["PS", (12, 8), "S8"], "F3-2": ["S8", (12, 3.5), "S9"], "F3-3": ["S9", (10, 2.5), "S10"],
-         "F4-1": ["PS", (9, 5), "S11"], "F4-2": ["S11", (6, 3), "S12"],
+PATHS = {"F1-1": ["PS", (9.3, 8), (9.3, 11), "S1"], "F1-2": ["S1", (12, 11), "S2"], "F1-3": ["S2", (15, 12), "S3"], "F1-4": ["S3", (13.5, 10.5), "S4"],
+         "F2-1": ["PS", (8.7, 8), (8.7, 9.5), "S5"], "F2-2": ["S5", (5, 12), "S6"], "F2-3": ["S6", (1, 12), "S7"],
+         "F3-1": ["PS", (9.3, 8), (9.3, 6.5), (12, 6.5), "S8"], "F3-2": ["S8", (12, 3.5), "S9"], "F3-3": ["S9", (10, 2.5), "S10"],
+         "F4-1": ["PS", (8.7, 8), (8.7, 5), "S11"], "F4-2": ["S11", (6, 3), "S12"],
          "IC-1": ["S3", (15, 2.5), "S10"], "IC-2": ["S6", (3, 5), "S11"], "NOP-1": ["S4", (13.5, 6), "S8"], "NOP-2": ["S7", (1, 3), "S12"]}
 FLIP = {"F2-2", "IC-2", "F4-2", "NOP-2", "F2-3", "F3-3", "F1-2"}
-ID_AT = {"F1-1": 0.25, "F2-1": 0.3, "F3-1": 0.3, "F4-1": 0.25, "IC-1": 0.3, "F3-3": 0.75, "F3-2": 0.2}
+SIDE = {"F1-1": "E", "F3-1": "E", "F2-1": "W", "F4-1": "W"}
+ID_AT = {"IC-2": 0.25, "F1-1": 0.55, "F2-1": 0.8, "F3-1": 0.75, "F4-1": 0.9, "IC-1": 0.3, "F3-3": 0.75, "F3-2": 0.2}
 def pts(rid): return [POS[p] if isinstance(p, str) else p for p in PATHS[rid]]
 def plen(path): return sum(abs(b[0] - a[0]) + abs(b[1] - a[1]) for a, b in zip(path, path[1:]))
 def point_at(path, s):
@@ -34,6 +35,7 @@ def plan(out):
             sm = (s0 + l / 2.0) / L * D
             (mx, my), (ux, uy) = point_at(path, sm); nx, ny = -uy, ux
             if rid in FLIP: nx, ny = -nx, -ny
+            if rid in SIDE and abs(ux) < 0.5: nx, ny = (-1.0 if SIDE[rid] == "W" else 1.0), 0.0
             ax.plot([mx, mx + nx * 0.25], [my, my + ny * 0.25], color="0.4", lw=0.7, zorder=3)
             ax.text(mx + nx * 0.55, my + ny * 0.55, f"{t} Al\n{l} m", fontsize=8, ha="center", va="center", zorder=5,
                     bbox=dict(fc="white", ec="0.4", lw=0.5, pad=0.2))
@@ -43,15 +45,19 @@ def plan(out):
                 name = "J7" if rid == "F1-3" else f"J{jn if jn < 7 else jn + 1}"
                 if rid != "F1-3": jn += 1
                 ax.plot([jx - uy * 0.18, jx + uy * 0.18], [jy + ux * 0.18, jy - ux * 0.18], color="k", lw=3.5, zorder=4)
-                ax.text(jx - uy * 0.38, jy + ux * 0.38, name, fontsize=8, ha="center", va="center", zorder=5, weight="bold")
+                jn_x, jn_y = uy, -ux
+                if rid in FLIP: jn_x, jn_y = -jn_x, -jn_y
+                if rid in SIDE and abs(ux) < 0.5: jn_x, jn_y = (1.0 if SIDE[rid] == "W" else -1.0), 0.0
+                ax.text(jx + jn_x * 0.38, jy + jn_y * 0.38, name, fontsize=8, ha="center", va="center", zorder=5, weight="bold")
         (mx, my), (ux, uy) = point_at(path, ID_AT.get(rid, 0.5) * D); nx, ny = -uy, ux
         if rid not in FLIP: nx, ny = -nx, -ny
+        if rid in SIDE and abs(ux) < 0.5: nx, ny = (-1.0 if SIDE[rid] == "W" else 1.0), 0.0
         ax.text(mx + nx * 0.42, my + ny * 0.42, rid, fontsize=8.5, weight="bold", color=col, ha="center", va="center", zorder=6,
                 bbox=dict(fc="#fffbe6", ec=col, lw=0.6, pad=0.15))
     for n, (x, y) in POS.items():
         ax.add_patch(plt.Rectangle((x - 0.28, y - 0.28), 0.56, 0.56, fc="#d9e6f2" if n != "PS" else "#f2dcd9", ec="k", zorder=7))
         ax.text(x, y, "PS" if n == "PS" else n, ha="center", va="center", fontsize=9, weight="bold", zorder=8)
-    ax.text(9.4, 7.0, "KINGSMEAD PRIMARY\n(F1, F2 from section A;\nF3, F4 from section B)", fontsize=8.5, zorder=8, bbox=dict(fc="white", ec="none", pad=0.1))
+    ax.text(5.6, 7.3, "KINGSMEAD PRIMARY\n(F1, F2 from section A;\nF3, F4 from section B)", fontsize=8.5, zorder=8, bbox=dict(fc="white", ec="none", pad=0.1))
     ax.annotate("", xy=(17.6, 12.6), xytext=(17.6, 11.6), arrowprops=dict(arrowstyle="-|>", lw=2)); ax.text(17.5, 12.75, "N", fontsize=12, weight="bold")
     ax.set_xlim(0, 18.3); ax.set_ylim(1.5, 13.2)
     ax.set_title("KINGSMEAD 11 kV - sheet 4: cable route plan (NOT to scale; lengths as labelled). Each route is shown section by section with cable type and section "
