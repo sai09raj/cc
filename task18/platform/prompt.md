@@ -19,7 +19,7 @@ roof bay 2 to 3 at grid 2.
 
 4. Report the maximum sagging moment in the L2 beam in bay 1 to 2.
 
-5. Report the column moments (positive when the face towards grid 4 is in tension) at:
+5. Report the column moments (positive when the column face on the grid 4 side, away from grid 1, is in tension) at:
 grid 1 just below the roof;
 grid 2 just above L1, at the splice, just below L2 and just below L3;
 grid 3 just above L1, just below L2, just above L2, at the splice, just below L3 and just below the roof;

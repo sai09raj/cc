@@ -34,5 +34,5 @@ a. Horizontal displacement of a joint: in mm, positive towards grid 4.
 b. Base reaction: vertical, in kN, upwards positive.
 c. Beam end moment: the hogging moment at the beam end on the column centreline, in kNm.
 d. Beam maximum sagging moment: the largest sagging moment anywhere along that beam, in kNm.
-e. Column moment: the bending moment at the stated position on the column centreline, in kNm, positive when the face of the column towards grid 4 is in tension.
+e. Column moment: the bending moment at the stated position on the column centreline, in kNm, positive when the face on the grid 4 side of the column (the side away from grid 1) is in tension.
 f. Brace axial force: in kN, tension positive.

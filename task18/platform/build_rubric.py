@@ -11,8 +11,8 @@ KEYS = []
 def beam(key, lvl, bay, grid, w=4):
     KEYS.append((key, w)); return (w, f"Reports the hogging moment in the {lvl} beam of bay {bay} at its grid {grid} end {T} as {s4(k[key])} kNm (accept {acc(k[key])} kNm).")
 def col(key, grid, pos, w=4):
-    KEYS.append((key, w)); v = k[key]; face = "grid 4" if v > 0 else "grid 1"
-    return (w, f"Reports the grid {grid} column moment {pos} {T} as {sg(v)} kNm, tension on the face towards {face} (accept {acc(v)} kNm in the data sheet sign convention).")
+    KEYS.append((key, w)); v = k[key]; face = "grid 4 side" if v > 0 else "grid 1 side"
+    return (w, f"Reports the grid {grid} column moment {pos} {T} as {sg(v)} kNm, tension on the {face} face (accept {acc(v)} kNm in the data sheet sign convention).")
 def ux(key, lvl, w):
     KEYS.append((key, w)); return (w, f"Reports the horizontal displacement of the grid 1 joint at {lvl} {T} as {s4(k[key])} mm towards grid 4 (accept {acc(k[key], 0.02)} mm).")
 LVN = {"L1": "L1", "L2": "L2", "L3": "L3", "R": "the roof"}
@@ -84,7 +84,7 @@ execute = ("Write a plane frame direct stiffness program: 3 DOF per joint, axial
  f"check that the reactions balance the loads (119 kN wind). Results at Day 12, 07:00: grid 1 sway {sway} mm"
  + (f"; V at grid 1 {f('V1')} kN" if "V1" in CH else "") + ". Hogging beam end moments (kNm): " + "; ".join(bname(q) for q in BEAMS)
  + "".join(f". {q[1:3]} {q.split(':')[1].split('_')[0]} max sagging {f(q)}" for q in SAGS)
- + ". Column moments (+ = grid 4 face in tension): " + "; ".join(cname(q) for q in COLS) + ". Deliver program, results file and memo.")
+ + ". Column moments (+ = grid 4 side face in tension): " + "; ".join(cname(q) for q in COLS) + ". Deliver program, results file and memo.")
 synth = ("Write the handover memo from the analysed state, listing every brace, simple connection, temporary prop, the storage zone and AHU-2 with the log entry that sets it: "
  "BR1 in service (Day 1, checked Day 11); BR2 disconnected and left out (Day 4; reinstatement planned Day 14); "
  "L2 bay 3-4 beam simple at grid 4 until its bolts are fitted (Day 5, booked Day 13), although sheet 3 shows it rigid; L3 bay 1-2 beam simple at grid 1 as drawn (Day 6); "
@@ -113,7 +113,7 @@ prompt = f"""You are the temporary works engineer for frame C of the Holloway Ro
 
 4. Report the maximum sagging moment in the L2 beam in bay 1 to 2.
 
-5. Report the column moments (positive when the face towards grid 4 is in tension) at:
+5. Report the column moments (positive when the column face on the grid 4 side, away from grid 1, is in tension) at:
 {cols_txt}
 
 6. Write a handover memo listing the state of every brace, every simple connection, every temporary prop, the storage zone and AHU-2 that your analysis uses, each with the site log entry that sets it.

@@ -1,6 +1,6 @@
 # HOLLOWAY-18 rubric (v1)
 
-43 criteria; positive weight 127; numeric weight 115 (91%); longest 184 characters.
+43 criteria; positive weight 127; numeric weight 115 (91%); longest 181 characters.
 
 | # | Weight | Criterion |
 |---|---|---|
@@ -22,20 +22,20 @@
 | 16 | +4 | Reports the hogging moment in the L3 beam of bay 3-4 at its grid 4 end at Day 12, 07:00 as 107.1 kNm (accept 107.03 to 107.26 kNm). |
 | 17 | +4 | Reports the hogging moment in the roof beam of bay 2-3 at its grid 2 end at Day 12, 07:00 as 124.5 kNm (accept 124.38 to 124.64 kNm). |
 | 18 | +3 | Reports the maximum sagging moment in the L2 beam of bay 1-2 at Day 12, 07:00 as 96.86 kNm (accept 96.76 to 96.96 kNm). |
-| 19 | +4 | Reports the grid 1 column moment just below the roof at Day 12, 07:00 as -29.23 kNm, tension on the face towards grid 1 (accept -29.29 to -29.18 kNm in the data sheet sign convention). |
-| 20 | +4 | Reports the grid 2 column moment just above L1 at Day 12, 07:00 as -62.78 kNm, tension on the face towards grid 1 (accept -62.84 to -62.71 kNm in the data sheet sign convention). |
-| 21 | +4 | Reports the grid 2 column moment at the splice at Day 12, 07:00 as -45.30 kNm, tension on the face towards grid 1 (accept -45.36 to -45.25 kNm in the data sheet sign convention). |
-| 22 | +4 | Reports the grid 2 column moment just below L2 at Day 12, 07:00 as +46.45 kNm, tension on the face towards grid 4 (accept 46.40 to 46.51 kNm in the data sheet sign convention). |
-| 23 | +4 | Reports the grid 2 column moment just below L3 at Day 12, 07:00 as +33.87 kNm, tension on the face towards grid 4 (accept 33.82 to 33.93 kNm in the data sheet sign convention). |
-| 24 | +4 | Reports the grid 3 column moment just above L1 at Day 12, 07:00 as -70.62 kNm, tension on the face towards grid 1 (accept -70.70 to -70.54 kNm in the data sheet sign convention). |
-| 25 | +4 | Reports the grid 3 column moment just below L2 at Day 12, 07:00 as +66.27 kNm, tension on the face towards grid 4 (accept 66.20 to 66.34 kNm in the data sheet sign convention). |
-| 26 | +4 | Reports the grid 3 column moment just above L2 at Day 12, 07:00 as -38.58 kNm, tension on the face towards grid 1 (accept -38.64 to -38.53 kNm in the data sheet sign convention). |
-| 27 | +4 | Reports the grid 3 column moment at the splice at Day 12, 07:00 as -24.62 kNm, tension on the face towards grid 1 (accept -24.68 to -24.57 kNm in the data sheet sign convention). |
-| 28 | +4 | Reports the grid 3 column moment just below L3 at Day 12, 07:00 as +45.18 kNm, tension on the face towards grid 4 (accept 45.13 to 45.24 kNm in the data sheet sign convention). |
-| 29 | +4 | Reports the grid 3 column moment just below the roof at Day 12, 07:00 as -20.44 kNm, tension on the face towards grid 1 (accept -20.50 to -20.39 kNm in the data sheet sign convention). |
-| 30 | +4 | Reports the grid 4 column moment just above L1 at Day 12, 07:00 as -64.29 kNm, tension on the face towards grid 1 (accept -64.35 to -64.22 kNm in the data sheet sign convention). |
-| 31 | +4 | Reports the grid 4 column moment just below L3 at Day 12, 07:00 as +39.91 kNm, tension on the face towards grid 4 (accept 39.86 to 39.97 kNm in the data sheet sign convention). |
-| 32 | +4 | Reports the grid 4 column moment just above L3 at Day 12, 07:00 as -67.23 kNm, tension on the face towards grid 1 (accept -67.31 to -67.16 kNm in the data sheet sign convention). |
+| 19 | +4 | Reports the grid 1 column moment just below the roof at Day 12, 07:00 as -29.23 kNm, tension on the grid 1 side face (accept -29.29 to -29.18 kNm in the data sheet sign convention). |
+| 20 | +4 | Reports the grid 2 column moment just above L1 at Day 12, 07:00 as -62.78 kNm, tension on the grid 1 side face (accept -62.84 to -62.71 kNm in the data sheet sign convention). |
+| 21 | +4 | Reports the grid 2 column moment at the splice at Day 12, 07:00 as -45.30 kNm, tension on the grid 1 side face (accept -45.36 to -45.25 kNm in the data sheet sign convention). |
+| 22 | +4 | Reports the grid 2 column moment just below L2 at Day 12, 07:00 as +46.45 kNm, tension on the grid 4 side face (accept 46.40 to 46.51 kNm in the data sheet sign convention). |
+| 23 | +4 | Reports the grid 2 column moment just below L3 at Day 12, 07:00 as +33.87 kNm, tension on the grid 4 side face (accept 33.82 to 33.93 kNm in the data sheet sign convention). |
+| 24 | +4 | Reports the grid 3 column moment just above L1 at Day 12, 07:00 as -70.62 kNm, tension on the grid 1 side face (accept -70.70 to -70.54 kNm in the data sheet sign convention). |
+| 25 | +4 | Reports the grid 3 column moment just below L2 at Day 12, 07:00 as +66.27 kNm, tension on the grid 4 side face (accept 66.20 to 66.34 kNm in the data sheet sign convention). |
+| 26 | +4 | Reports the grid 3 column moment just above L2 at Day 12, 07:00 as -38.58 kNm, tension on the grid 1 side face (accept -38.64 to -38.53 kNm in the data sheet sign convention). |
+| 27 | +4 | Reports the grid 3 column moment at the splice at Day 12, 07:00 as -24.62 kNm, tension on the grid 1 side face (accept -24.68 to -24.57 kNm in the data sheet sign convention). |
+| 28 | +4 | Reports the grid 3 column moment just below L3 at Day 12, 07:00 as +45.18 kNm, tension on the grid 4 side face (accept 45.13 to 45.24 kNm in the data sheet sign convention). |
+| 29 | +4 | Reports the grid 3 column moment just below the roof at Day 12, 07:00 as -20.44 kNm, tension on the grid 1 side face (accept -20.50 to -20.39 kNm in the data sheet sign convention). |
+| 30 | +4 | Reports the grid 4 column moment just above L1 at Day 12, 07:00 as -64.29 kNm, tension on the grid 1 side face (accept -64.35 to -64.22 kNm in the data sheet sign convention). |
+| 31 | +4 | Reports the grid 4 column moment just below L3 at Day 12, 07:00 as +39.91 kNm, tension on the grid 4 side face (accept 39.86 to 39.97 kNm in the data sheet sign convention). |
+| 32 | +4 | Reports the grid 4 column moment just above L3 at Day 12, 07:00 as -67.23 kNm, tension on the grid 1 side face (accept -67.31 to -67.16 kNm in the data sheet sign convention). |
 | 33 | +1 | The handover memo lists brace BR1 as in service, citing the Day 1 07:30 or Day 11 17:30 log entry. |
 | 34 | +1 | The handover memo lists brace BR2 as disconnected and left out of the analysis, citing the Day 4 08:20 log entry. |
 | 35 | +1 | The handover memo lists the grid 4 end of the L2 beam in bay 3-4 as a simple connection, citing the Day 5 11:45 log entry. |
