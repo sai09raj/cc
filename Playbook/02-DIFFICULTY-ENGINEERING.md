@@ -111,6 +111,8 @@ Two tasks passed on completed runs: CW-200 (23, 22, 41) and KINGSMEAD-11 (43, 44
    - Put about 70 % or more of the weight on these quantities.
 5. **Simulate before entry.** Every plausible single misread should score about 40 or below on the strict rubric. Memo and file rows add about 5 to 10 on the platform (KINGSMEAD: simulated 34.5, platform 39 to 44).
 
+**What does not work (HOLLOWAY-18, 97/97/71 then 6 x 100):** text labels written on or above their member, table rows next to near-identical rows, and quantities defined by a stated rule (load strip = half of each adjacent spacing). These are lookups and a model with tools gets them right every time. Only spatial attribution of lengths along a drawn path has produced misreads.
+
 **If v1 mostly scores 100:** read the one low run, find the reading decision it missed, and add several more fair decisions of that kind. Then move the weight onto what those misreads change. Do not add more logic traps. See `14-CASE-STUDY-TASK-16-CW200.md` and `15-CASE-STUDY-TASK-17-KINGSMEAD.md`.
 
 ## The difficulty stack
