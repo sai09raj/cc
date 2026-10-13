@@ -53,13 +53,17 @@ def plan(ax, lvl):
         hdim(ax, X[a], X[b], py["D"] - 2.2, f"{round((X[b] - X[a]) * 1000)}")
     vdim(ax, -2.9, py["C"], py["B"], f"{round((LY['C'] - LY['B']) * 1000)}")
     vdim(ax, -2.9, py["D"], py["C"], f"{round((LY['D'] - LY['C']) * 1000)}")
-    load = F.AREA[lvl]
-    ax.text(-4.0, py["D"] - 3.3, f"{LVNAME[lvl]} FRAMING PLAN   floor load {load:.1f} kN/m² on all bays   ties on grid lines 1-4: {F.TIE}",
+    load = F.AREA[lvl]; lname = "roof load" if lvl == "R" else "floor load"
+    ax.text(-4.0, py["D"] - 3.3, f"{LVNAME[lvl]} FRAMING PLAN   {lname} {load:.1f} kN/m² on all bays   ties on grid lines 1-4: {F.TIE}",
             fontsize=7.6, weight="bold", ha="left", va="bottom")
     if lvl == F.STORAGE["level"]:
         s = F.STORAGE; x0, x1 = X["2"] + s["a"], X["2"] + s["b"]
         y0, y1 = py["C"] - (LY["D"] - LY["C"]) / 2 * YS, py["C"] + (LY["C"] - LY["B"]) / 2 * YS
-        ax.add_patch(Rectangle((x0, y0), x1 - x0, y1 - y0, facecolor="none", hatch="xxx", edgecolor="0.25", lw=0.6))
+        g = 0.32   # keep the hatch clear of the beam line and its label
+        ax.add_patch(Rectangle((x0, y0), x1 - x0, py["C"] - g - y0, facecolor="none", hatch="////", edgecolor="0.45", lw=0.6))
+        ax.add_patch(Rectangle((x0, py["C"] + g + 0.42), x1 - x0, y1 - py["C"] - g - 0.42, facecolor="none", hatch="////", edgecolor="0.45", lw=0.6))
+        for yy in (y0, y1): ax.plot([x0, x1], [yy, yy], color="0.25", lw=0.6)
+        for xx in (x0, x1): ax.plot([xx, xx], [y0, y1], color="0.25", lw=0.6, ls=(0, (3, 2)))
         ax.text(x1 + 0.2, y0 + 0.2, f"storage zone S +{s['q']:.1f} kN/m²\n(full width of the frame C load strip)", fontsize=6.4, va="bottom")
         hdim(ax, X["2"], x0, y0 - 0.55, f"{round(s['a'] * 1000)}", fs=6.8); hdim(ax, x0, x1, y0 - 0.55, f"{round((s['b'] - s['a']) * 1000)}", fs=6.8)
     if lvl == "R":
