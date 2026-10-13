@@ -9,4 +9,4 @@
   - storage zone and AHU-2 positions dimensioned from grid lines.
 - Log traps: BR2 out; the L2 bay 3-4 beam simple at grid 4; TP-1 removed; storage zone S loaded; AHU-2 at the temporary position T.
 - Rubric v1: 43 criteria, +127, 30 numeric rows. Every likely single misread simulates to 9-22 (`model/score_sim` via `pick.py`).
-- Next: blind solve of `artifact/holloway_v1.pdf`, then upsize the brace (114.3x5.0 CHS buckles under 124 kN), then the platform package.
+- v1 runs: 97, 97, 71 (too easy; see runs_v1/ANALYSIS.md, playbook #96). v2: redesign as framing plans + column schedule.
