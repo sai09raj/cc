@@ -54,7 +54,7 @@ open("prompt.md", "w").write(prompt); print("prompt words", len(prompt.replace("
 fv = "; ".join(f"{c[2:]} {s4(abs(k[c]))} {k['m_dir'][c[2:]].replace('->', ' to ')}" for c in FLOWS)
 tv = "; ".join(f"{c[2:]} {k[c]:.2f}" for c in TEMPS)
 analyze = ("Read the route plan route by route, taking each section's type and length from the label whose leader touches that section, and keep the sections of neighbouring routes apart where they meet at a node "
-           "(at EC A1 starts DN200 540 m and C1 DN150 480 m; at H6 B2 ends DN125 470 m and X3 ends DN100 470 m; at H9 C2 ends DN100 430 m and C3 starts DN100 360 m). "
+           "(at H1 A1 ends DN150 330 m and A2 starts DN150 420 m; at H8 C1 ends DN125 520 m and C2 starts DN125 400 m; at H4 A4 ends DN80 390 m and L1 starts DN80 640 m; at H12 D2 ends DN80 250 m and L2 ends DN80 340 m; at H6 B2 ends DN125 470 m and X3 ends DN100 470 m). "
            "Replay the log for 09:00: A3 repaired at 06:40, the 260 m DN100 section replaced by 290 m of DN125, so A3 is 450 + 290 = 740 m of DN125; XV3 left open, so X3 carries flow; "
            "H7 isolated since 02:10 (its node still joins B3 and L2); L2 isolation deferred at 08:15, so L2 stays open; L1 open; EC setpoint 92.0 C (06:00, after the 04:00 setback). "
            "The whole network is therefore meshed through X3, L1 and L2. Use the stated water properties, Swamee-Jain friction, exponential supply heat loss with flow-weighted mixing, consumer flow Q/(cp (Ts - 45)), and identical return pipes.")
