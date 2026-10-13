@@ -20,11 +20,11 @@ if "dp" in CH:
 if "loss" in CH:
     v = k["loss"]; C.append((4, f"Reports the network (supply-pipe) heat loss {T} as {s4(v)} kW (accept {rng(v * 0.999, v * 1.001, 1)} kW).")); KEYS.append(("loss", 4))
 C += [(1, "The handover memo lists crossover X3 as open (valve XV3 open), citing the 23:30 log entry or the 06:40 log entry."),
-      (1, "The handover memo lists route A3 as back in service with its new 290 m DN125 section, citing the 06:40 log entry."),
+      (1, "In the handover memo, the entry for route A3 cites the 06:40 log entry (the A3 repair) as the entry that sets its 09:00 state."),
       (1, "The handover memo lists substation H7 as isolated (taking no flow), citing the 02:10 log entry or the 07:30 log entry."),
       (1, "The handover memo lists loop route L2 as open (valves open), citing the 08:15 log entry."),
       (1, "The handover memo lists loop route L1 as open, citing the 22:00 handover log entry."),
-      (1, "The handover memo lists the EC supply setpoint as 92.0 C, citing the 06:00 log entry."),
+      (1, "In the handover memo, the entry for the EC supply setpoint cites the 06:00 log entry as the entry that sets the setpoint in force at 09:00."),
       (1, "Delivers the source code of the network solver as a file."),
       (1, "Delivers a results file that lists the reported flows, temperatures, pump differential pressure and heat loss."),
       (1, "Delivers the handover memo as a file."),

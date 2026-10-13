@@ -34,11 +34,11 @@
 | 28 | +5 | Reports the EC pump differential pressure at the 09:00 handover as 192.6 kPa (accept 192.38 to 192.77 kPa). |
 | 29 | +4 | Reports the network (supply-pipe) heat loss at the 09:00 handover as 347.9 kW (accept 347.5 to 348.3 kW). |
 | 30 | +1 | The handover memo lists crossover X3 as open (valve XV3 open), citing the 23:30 log entry or the 06:40 log entry. |
-| 31 | +1 | The handover memo lists route A3 as back in service with its new 290 m DN125 section, citing the 06:40 log entry. |
+| 31 | +1 | In the handover memo, the entry for route A3 cites the 06:40 log entry (the A3 repair) as the entry that sets its 09:00 state. |
 | 32 | +1 | The handover memo lists substation H7 as isolated (taking no flow), citing the 02:10 log entry or the 07:30 log entry. |
 | 33 | +1 | The handover memo lists loop route L2 as open (valves open), citing the 08:15 log entry. |
 | 34 | +1 | The handover memo lists loop route L1 as open, citing the 22:00 handover log entry. |
-| 35 | +1 | The handover memo lists the EC supply setpoint as 92.0 C, citing the 06:00 log entry. |
+| 35 | +1 | In the handover memo, the entry for the EC supply setpoint cites the 06:00 log entry as the entry that sets the setpoint in force at 09:00. |
 | 36 | +1 | Delivers the source code of the network solver as a file. |
 | 37 | +1 | Delivers a results file that lists the reported flows, temperatures, pump differential pressure and heat loss. |
 | 38 | +1 | Delivers the handover memo as a file. |
