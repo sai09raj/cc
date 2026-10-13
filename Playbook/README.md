@@ -35,6 +35,13 @@ Model A (claude-opus-4-8, max) scored 43, 44, 39, all completed. Full notes: [15
 3. Weight the rubric by **misread sensitivity** (currents and Mvar, not voltages). Simulate every plausible single misread and aim for 40 or below, because the platform adds about 5 to 10 points from memo and file rows.
 4. Expect the same misread in most runs. One strong, fair trap beats several weak ones.
 
+## THIRD PROVEN SUCCESS: Task 19 DH-19 (district heating, v3)
+
+Model A (claude-opus-4-8) scored 12 or 19 on every run. Full notes: [16-CASE-STUDY-TASK-19-DH19.md](16-CASE-STUDY-TASK-19-DH19.md). The key addition is the **crossed-corner recipe**:
+1. At a node, two routes' adjacent sections have the same pipe size and lengths within about 20–35 % of each other (330/420, 250/340).
+2. One route runs along the node box edge. Each route's label sits nearer the *other* route's line, and a short leader runs to its own line.
+3. Use 3–4 such corners spread across the plan, each swap simulated to 40 or below. Do not cluster traps (v2's clustered gap labels: 5 of 6 runs at 100).
+
 ## Start here: policy, engineering method, and lessons through Task 04 Revision F
 
 This folder is a handoff package for an author—or another capable agent—who must design, validate, enter, run, grade, and submit a Magnetic Rainstorm task without repeating the long trial-and-error cycle that produced it.
@@ -131,6 +138,7 @@ For Task 03 and every later Magnetic Rainstorm task, use a separate agent/review
 - [13-CASE-STUDY-TASK-06.md](13-CASE-STUDY-TASK-06.md) — ATRIUM-9 sweep task (20/21 %), later found to rest partly on unstated rules (see the correction below).
 - [14-CASE-STUDY-TASK-16-CW200.md](14-CASE-STUDY-TASK-16-CW200.md) — **first stump by completed low scores** (23, 22, 41): the coupled-solve recipe.
 - [15-CASE-STUDY-TASK-17-KINGSMEAD.md](15-CASE-STUDY-TASK-17-KINGSMEAD.md) — **second stump** (43, 44, 39): drawing attribution, sensitivity-weighted rubric, and the v1 mistakes v2 fixed.
+- [16-CASE-STUDY-TASK-19-DH19.md](16-CASE-STUDY-TASK-19-DH19.md) — **third stump** (all runs 12 or 19): the crossed-corner recipe with exact geometry, and why v1/v2 fell short.
 - [QUICK-CHECKLIST.md](QUICK-CHECKLIST.md) — the short operational checklist to keep beside the platform.
 
 ## Recommended use by another agent

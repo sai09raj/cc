@@ -160,3 +160,7 @@ Stop, repair, regenerate, and only then rerun.
 - [ ] After the runs: recompute strict scores from the trajectories, list each run's slip, and harden with more fair decision points of that kind.
 - [ ] (Task 17) The drawing has near-equal same-type values next to each other on different routes or legs, legible but easy to swap; a blind solve still reads them correctly.
 - [ ] (Task 17) Graded quantities were chosen by a sensitivity ranking; every plausible single misread simulates to 40 or below.
+- [ ] (Task 19) The route plan has 3–4 **crossed corners**: same pipe size, lengths within about 20–35 %, one route along the node box edge, each label nearer the other route's line with a leader to its own. Traps are spread out, not clustered.
+- [ ] (Task 19) Every leader touches only its own line (crop each corner at 150 dpi); no legend text that points at the trap.
+- [ ] (Task 19) Every page renders in a second engine (pypdfium2); no image has a soft mask with an RGB colour space.
+- [ ] (Task 19) Memo rows grade only the citation when the same state is graded by a results row.

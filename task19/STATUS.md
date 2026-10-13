@@ -45,3 +45,6 @@
   - H12: D2 DN80 250 / L2 DN80 340. Swap simulates to 25.7.
 - A swap leaves every route's section count, pipe-size sequence and bar count unchanged, so no count check catches it.
 - PDF: one 8-bit DeviceRGB image with no soft mask; pdfium renders page 3; metadata is clean and nothing leaks.
+
+## v3 platform runs: PASSED
+- Every run scored 12 or 19 (Opus 4.8). Sampled swaps: H1 2/2, H12 2/2, H8 1/2, H4 0/2. Playbook #102 and 16-CASE-STUDY-TASK-19-DH19.md.

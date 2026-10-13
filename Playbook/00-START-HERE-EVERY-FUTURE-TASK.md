@@ -35,6 +35,13 @@ Model A (claude-opus-4-8, max) scored 43, 44, 39, all completed. Full notes: [15
 3. Weight the rubric by **misread sensitivity** (currents and Mvar, not voltages). Simulate every plausible single misread and aim for 40 or below, because the platform adds about 5 to 10 points from memo and file rows.
 4. Expect the same misread in most runs. One strong, fair trap beats several weak ones.
 
+## THIRD PROVEN SUCCESS: Task 19 DH-19 (district heating, v3)
+
+Model A (claude-opus-4-8) scored 12 or 19 on every run. Full notes: [16-CASE-STUDY-TASK-19-DH19.md](16-CASE-STUDY-TASK-19-DH19.md). The key addition is the **crossed-corner recipe**:
+1. At a node, two routes' adjacent sections have the same pipe size and lengths within about 20–35 % of each other (330/420, 250/340).
+2. One route runs along the node box edge. Each route's label sits nearer the *other* route's line, and a short leader runs to its own line.
+3. Use 3–4 such corners spread across the plan, each swap simulated to 40 or below. Do not cluster traps (v2's clustered gap labels: 5 of 6 runs at 100).
+
 ## Scope of this file
 
 This is the permanent routing page for every future task. It is not a substitute for the rest of the folder. A fresh model should receive the **entire playbook as working context**, begin here, then read the chapters routed below before proposing an architecture.
@@ -153,7 +160,7 @@ unintentionally.
 ## Required reading order
 
 1. Current official PDFs and project handbook.
-2. **[14-CASE-STUDY-TASK-16-CW200.md](14-CASE-STUDY-TASK-16-CW200.md) and [15-CASE-STUDY-TASK-17-KINGSMEAD.md](15-CASE-STUDY-TASK-17-KINGSMEAD.md): the two proven recipes. Read them first.**
+2. **[14-CASE-STUDY-TASK-16-CW200.md](14-CASE-STUDY-TASK-16-CW200.md) and [15-CASE-STUDY-TASK-17-KINGSMEAD.md](15-CASE-STUDY-TASK-17-KINGSMEAD.md) and [16-CASE-STUDY-TASK-19-DH19.md](16-CASE-STUDY-TASK-19-DH19.md): the three proven recipes. Read them first.**
 2a. [README.md](README.md).
 3. [01-END-TO-END-SOP.md](01-END-TO-END-SOP.md) through [04-PREFLIGHT-AND-VALIDATION.md](04-PREFLIGHT-AND-VALIDATION.md).
 4. [09-CASE-STUDY-TASK-03.md](09-CASE-STUDY-TASK-03.md), especially isolated probes versus integrated checkpoints.

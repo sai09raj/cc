@@ -316,3 +316,8 @@ The artifact must explicitly cover every semantic used by the oracle. That final
 ## Gap labels between parallel route lines (DH-19 v1, #98)
 
 In DH-19 v1, both runs below 50 (11 and 12) gave a section label to the wrong route. The label sat in the gap between two parallel route lines; all other runs scored 100. Corner labels caught no run. A gap label is the strongest trap seen so far, but one alone catches only some runs. Put three or more gap traps in one drawing, on routes whose misattribution changes the meshed flow split. Give each label a leader to its correct line so it stays fair. Simulate each trap to 40 or below.
+
+
+## Crossed corners (DH-19 v3, #102): the strongest drawing trap so far
+
+Every DH-19 v3 run scored 12 or 19. At a node, two routes' adjacent sections have the same pipe size and near-equal lengths. One route runs along the node box edge, and each label sits nearer the other route's line, with a short leader to its own. Reading by proximity gives the swap. A swap keeps all section counts and pipe-size sequences, so no check catches it. Use 3-4 such corners spread across the plan. Exact geometry and numbers are in 16-CASE-STUDY-TASK-19-DH19.md, section 3.
