@@ -12,4 +12,8 @@
   - setpoint 92 C.
 - **Rubric v1:** 39 criteria, +108, explicit ranges.
 - **Score simulation:** most single misreads land at 13-37; A1/B1 at 50.5 and A2/A3 at 56.9 are weak.
-- **Next:** blind solve.
+- **Blind solve:** matched all values exactly. Fixed:
+  - EC exits separated, so no hidden leader;
+  - XV3 defined as the X3 valve pair.
+- **Audit:** PASS. 39 criteria, longest 189 characters; PDF clean.
+- **Next:** platform entry and runs.
