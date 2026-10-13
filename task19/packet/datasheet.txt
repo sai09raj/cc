@@ -1,0 +1,25 @@
+ASHGROVE DISTRICT HEATING NETWORK - DATA SHEET (sheet 1 of 3)
+
+Arrangement. The energy centre EC supplies hot water to twelve consumer substations H1 to H12 through buried pre-insulated pipe routes (sheet 3, route plan). Branch routes A1-A4, B1-B3, C1-C3 and D1-D2 leave EC; loop routes L1 (H4 to H10) and L2 (H7 to H12) and the crossover X3 (H2 to H6) link the branches. Every route is a supply pipe and a return pipe laid side by side in the same trench, with the same type and length section by section. Each route consists of the sections shown on the route plan, in the order shown, separated by valve chambers (VC). A route carries flow only when its valves are open; route valves are at both ends of every route. In normal operation the valves of every A, B, C, D and L route are open and the crossover valve XV3 on X3 is closed.
+
+Water (supply and return, all temperatures): density 965 kg/m3, dynamic viscosity 0.000315 Pa s, specific heat 4.20 kJ/(kg K), all constant.
+
+Pipe types (inner diameter mm; supply-pipe heat loss coefficient U' in W per metre of pipe per kelvin of water temperature above ground temperature):
+  DN200 210.1 mm, U' 0.42 | DN150 160.3 mm, U' 0.36 | DN125 132.5 mm, U' 0.33
+  DN100 107.1 mm, U' 0.30 | DN80 82.5 mm, U' 0.27   | DN65 70.3 mm, U' 0.25
+All pipes: absolute roughness 0.05 mm. Ground temperature 8.0 C.
+
+Hydraulics. Pressure loss in a pipe section of inner diameter D and length L carrying mass flow m (kg/s): dp = f (L/D) rho v^2 / 2 with v = m / (rho pi D^2 / 4), Reynolds number Re = rho v D / mu, and the Swamee-Jain friction factor f = 0.25 / [log10( e/(3.7 D) + 5.74/Re^0.9 )]^2. Fittings, valves, joints and elevation differences are neglected. The return pipe of a route carries the same mass flow as its supply pipe in the opposite direction and has the same pressure loss.
+
+Heat loss. Along a supply-pipe section the temperature falls as T_out = T_g + (T_in - T_g) exp( -U' L / (m cp) ), with T_g the ground temperature and m the section mass flow. Where supply flows meet at a node, the leaving temperature is the flow-weighted mean of the arriving temperatures. Return-pipe heat loss is neglected. Network heat loss means the total supply-pipe heat loss.
+
+Consumers. Each substation in service takes its heat demand (table) from the supply water it receives and returns the water at 45.0 C, so its mass flow is m = Q / (cp (T_supply at the substation - 45.0)). A substation out of service takes no flow; isolating a substation closes only its own connection, and the routes meeting at its node stay connected to each other.
+
+Heat demand at 09:00 (kW): H1 820 | H2 640 | H3 710 | H4 530 | H5 900 | H6 760 | H7 480 | H8 860 | H9 690 | H10 560 | H11 940 | H12 620
+
+Energy centre. EC delivers the supply water at its supply temperature setpoint and receives all return water at 45.0 C. The EC distribution pump runs on differential-pressure control: its differential pressure is set so that the substation with the least available differential pressure (the index substation) has exactly 60.0 kPa between its supply and return connections. EC heat output = total mass flow x cp x (supply setpoint - 45.0).
+
+Notes.
+1. Report steady-state values for the network as the control-room log leaves it at 09:00.
+2. Valve and substation states change only through operations recorded in the log.
+3. Route flow means the mass flow in the supply pipe of the route, in kg/s, with its direction between the route's end nodes.

@@ -1,0 +1,13 @@
+ASHGROVE DH - CONTROL ROOM LOG - NIGHT SHIFT 14/15 JAN (sheet 2 of 3)
+22:00 Handover. All substations in service. Valves normal: all A, B, C, D, L route valves open, crossover valve XV3 closed. EC supply setpoint 90.0 C.
+23:30 Leak alarm, route A3 between VC3 and H3. A3 isolated: valves closed at H2 and H3. XV3 opened to supply H3 and H4 from the B branch via X3 and A4.
+00:15 Rounds. Leak located in the DN100 section of A3 between VC3 and H3.
+02:10 H7 substation tripped on heat exchanger fault. H7 isolated from the network (substation valves closed; it takes no flow). Awaiting parts.
+04:00 Night setback: EC supply setpoint reduced to 86.0 C.
+05:20 Repair crew on site, A3 (permit 2207).
+06:00 Setback ends. EC supply setpoint raised to the winter curve value of 92.0 C.
+06:40 A3 repaired: the leaking DN100 section between VC3 and H3 (260 m) cut out and replaced by 290 m of DN125 laid on a new alignment. A3 valves at H2 and H3 reopened. XV3 left open per duty engineer (to keep the B branch supporting H3/H4 during warm-up).
+07:30 H7: parts not delivered; H7 remains isolated.
+08:15 Permit 2211 issued for flow meter exchange on L2. Isolation of L2 deferred to the day shift; L2 valves remain open.
+08:50 Rounds. No alarms. No further operations.
+09:00 Handover to day shift.

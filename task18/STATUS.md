@@ -11,3 +11,4 @@
 - Rubric v1: 43 criteria, +127, 30 numeric rows. Every likely single misread simulates to 9-22 (`model/score_sim` via `pick.py`).
 - v1 runs: 97, 97, 71 (too easy; see runs_v1/ANALYSIS.md, playbook #96). v2: redesign as framing plans + column schedule.
 - v2 runs: 6 x 100 (see runs_v2/ANALYSIS.md, playbook #97). Text-label and table attribution do not trap the model.
+- SHELVED (user decision 2026-10-13). Next: Task 19 on the spatial route-plan mechanism.
