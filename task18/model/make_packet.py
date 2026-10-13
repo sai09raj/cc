@@ -2,15 +2,15 @@
 import os, sys, json, fitz
 HERE = os.path.dirname(os.path.abspath(__file__)); OUT = os.path.join(HERE, "..", "artifact"); os.makedirs(OUT, exist_ok=True)
 sys.path.insert(0, HERE); os.chdir(HERE)
-import render
-NAME = "holloway_v1.pdf"
-tmp = os.path.join(OUT, ".sheet"); render.elevation(tmp + "_s3.png"); render.loading(tmp + "_s4.png")
+import render2 as render
+NAME = "holloway_v2.pdf"
+tmp = os.path.join(OUT, ".sheet"); render.plans(tmp + "_s3.png", ("L1", "L2"), 3); render.plans(tmp + "_s4.png", ("L3", "R"), 4); render.schedule(tmp + "_s5.png")
 doc = fitz.open()
 for f, fs in (("../packet/datasheet.txt", 8.4), ("../packet/sitelog.txt", 9.0)):
     p = doc.new_page(width=612, height=792)
     rc = p.insert_textbox(fitz.Rect(36, 36, 576, 756), open(f).read(), fontsize=fs, fontname="cour" if "datasheet" in f else "helv")
     assert rc >= 0, (f, rc)
-for s in ("_s3.png", "_s4.png"):
+for s in ("_s3.png", "_s4.png", "_s5.png"):
     data = open(tmp + s, "rb").read(); img = fitz.open("png", data); iw, ih = img[0].rect.width, img[0].rect.height
     q = doc.new_page(width=792, height=612); sc = min(762 / iw, 582 / ih); q.insert_image(fitz.Rect(15, 15, 15 + iw * sc, 15 + ih * sc), stream=data); os.remove(tmp + s)
 doc.set_metadata({})

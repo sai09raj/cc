@@ -1,0 +1,38 @@
+HOLLOWAY ROAD EXTENSION - STEEL FRAME ON GRID LINE C - ANALYSIS DATA SHEET (sheet 1 of 4)
+
+Structure. Frame C is a plane steel frame of three bays (grid lines 1 to 4) and four storeys (levels G, L1, L2, L3 and roof R). The frame elevation is sheet 3. The loading diagram is sheet 4. Frames are at 6.0 m centres; frame C carries the floor and roof loads of a 6.0 m wide strip.
+
+Analysis model.
+1. Linear-elastic, first-order plane frame analysis of the state of the frame at the time stated in the site log (sheet 2). One load case: the loads below, with no load factors.
+2. Centreline model: columns lie on their grid lines and beams on their level lines; bay widths and storey heights are the dimensions on sheet 3. Joint size and connection eccentricity are ignored.
+3. E = 210 GPa for every member. Axial and bending deformation are included; shear deformation is ignored. Bending is about the major axis of every beam and column.
+4. Columns are continuous through every floor. Each column has one splice, at the height dimensioned beside that column on sheet 3. The column section changes at the splice, and the splice itself is a full-strength rigid joint.
+5. Beam-to-column connections are rigid (moment-resisting) unless marked as simple on sheet 3. A simple connection transmits no moment: that beam end is pinned to the column, and the column stays continuous.
+6. Column bases are fixed or pinned as drawn on sheet 3.
+7. Braces are pin-ended and carry axial force only. Brace self-weight is ignored.
+
+Section labels on sheet 3. A beam label applies to the whole span it is written over. A column label applies to the length of column it is written beside, between the nearest floor level, splice or base below the label and the nearest floor level, splice or roof above it. A label drawn with a leader line applies instead to the length the leader points to.
+
+Sections (A in cm2, I major axis in cm4, mass in kg/m):
+  203x203x46 UC   A 58.7    I 4568     46.1        406x178x54 UB   A 69.0    I 18720    54.1
+  203x203x52 UC   A 66.3    I 5259     52.0        406x178x60 UB   A 76.5    I 21600    60.1
+  203x203x60 UC   A 76.4    I 6125     60.0        457x191x67 UB   A 85.5    I 29380    67.1
+  254x254x73 UC   A 93.1    I 11410    73.1        457x191x74 UB   A 94.6    I 33320    74.3
+  254x254x89 UC   A 113.0   I 14270    88.9        533x210x82 UB   A 105.0   I 47540    82.2
+  168.3x6.3 CHS   A 32.1    I 1053     25.2        533x210x92 UB   A 117.0   I 55230    92.1
+
+Loads.
+1. Self-weight of every beam and column: mass x 9.81 N/kg, a uniform load along the member (vertical on beams, along the axis of columns).
+2. Floor and roof area loads (kN/m2, sheet 4) act on the full span of every beam at that level: line load = area load x 6.0 m.
+3. Storage zones (sheet 4) add their area load x 6.0 m as a uniform line load over the zone length only, positioned by the dimensions on sheet 4.
+4. Plant (sheet 4) is a vertical point load on the roof beam at the position given by the dimensions on sheet 4 for the position the plant occupies.
+5. Wind (sheet 4) is a set of horizontal point loads applied at the grid-1 joints of the levels shown, acting towards grid 4.
+6. Temporary props are included only while they are installed.
+
+Reporting conventions.
+a. Horizontal displacement of a joint: in mm, positive towards grid 4.
+b. Base reaction: vertical, in kN, upwards positive.
+c. Beam end moment: the hogging moment at the beam end on the column centreline, in kNm.
+d. Beam maximum sagging moment: the largest sagging moment anywhere along that beam, in kNm.
+e. Column moment: the bending moment at the stated position on the column centreline, in kNm, positive when the face on the grid 4 side of the column (the side away from grid 1) is in tension.
+f. Brace axial force: in kN, tension positive.

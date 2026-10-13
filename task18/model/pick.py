@@ -4,16 +4,23 @@ SIB = {"457x191x67 UB": "457x191x74 UB", "457x191x74 UB": "457x191x67 UB", "533x
        "533x210x92 UB": "533x210x82 UB", "406x178x54 UB": "406x178x60 UB", "406x178x60 UB": "406x178x54 UB"}
 def likely():
     t = {}
-    for g in "1234":
-        lo, up = F.COL[g]; t[f"col {g} splice labels swapped"] = state.final(COL={**F.COL, g: (up, lo)})
-    t["grid 2 splice read at L2"] = state.final(SPLICE={**F.SPLICE, "2": ("L2", 0.6)})
-    t["splices taken at floor level"] = state.final(SPLICE={g: (l, 1e-6) for g, (l, h) in F.SPLICE.items()})
-    t["grid 2 short length read 73"] = state.final(SPLICE={**F.SPLICE, "2": ("L1", 1e-6)})
-    y = dict(F.LEVEL_Y); y["L2"] = 7.80; t["storeys 3.75/3.60 swapped"] = state.final(LEVEL_Y=y)
-    y = dict(F.LEVEL_Y); y["L1"] = 3.75; t["storeys 4.20/3.75 swapped"] = state.final(LEVEL_Y=y)
-    x = dict(F.GRID_X); x["3"] = 13.2; t["bays 7.5/7.2 swapped"] = state.final(GRID_X=x)
     fb = state.final()["BEAM"]
+    for w, name in ((6.0, "load strip 6.0 (B-C only)"), (6.6, "load strip 6.6 (C-D only)"), (12.6, "load strip 12.6 (B to D)")):
+        t[name] = state.final(SPACING=w)
+    for g in "1234":
+        for line in "BD":
+            lo, sl, sh, up, base = F.COLSCHED[f"{line}/{g}"]
+            t[f"C/{g} read from {line}/{g} row"] = state.final(COL={**F.COL, g: (lo, up)}, SPLICE={**F.SPLICE, g: (sl, sh)}, BASE={**F.BASE, g: base})
+    for line, src in (("B", F.BEAM_B), ("D", F.BEAM_D)):
+        for lvl in ("L1", "L2", "L3", "R"):
+            b = copy.deepcopy(fb)
+            for bay in ("1-2", "2-3", "3-4"):
+                sec, l_, r_ = b[(lvl, bay)]; b[(lvl, bay)] = (src[(lvl, bay)], l_, r_)
+            t[f"{lvl} beams read from line {line}"] = state.final(BEAM=b)
+    y = dict(F.LEVEL_Y); y["L2"] = 7.80; t["storeys 3.75/3.60 swapped"] = state.final(LEVEL_Y=y)
+    x = dict(F.GRID_X); x["3"] = 13.2; t["bays 7.5/7.2 swapped"] = state.final(GRID_X=x)
     b = copy.deepcopy(fb); b[("L2", "3-4")] = ("457x191x74 UB", "S", "M"); t["L2 3-4 pin at grid 3 end"] = state.final(BEAM=b)
+    b = copy.deepcopy(fb); b[("L3", "1-2")] = ("457x191x74 UB", "M", "M"); t["L3 1-2 simple end missed"] = state.final(BEAM=b)
     st = dict(F.STORAGE); st["a"], st["b"] = 3.0, 6.0; t["storage measured from grid 3"] = state.final(STORAGE=st)
     p = dict(F.PLANT); p["a"] = 7.2 - F.PLANT_TEMP_A; t["AHU-2 measured from grid 4"] = state.final(PLANT=p)
     return t

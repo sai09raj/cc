@@ -28,7 +28,7 @@ for i, v in vals.items():
     if not any(abs(abs(v) - abs(x)) <= max(0.0006 * abs(x), 0.006) for x in k.values()): bad(f"C{i} value {v} not in key")
 # 3 Ideal Flow numbers (decimal numbers) all appear in rubric values or are packet inputs
 nums = re.findall(r"[+-]?\d+\.\d+", IF["execute-generate"] + IF["analyze"])
-inputs = {"0.9035", "69.81", "4.0", "5.0", "7.0", "7.5", "6.0", "168.3", "6.3"}
+inputs = {"6.3", "0.9035", "69.81", "4.0", "5.0", "7.0", "7.5", "6.0", "168.3", "6.3"}
 for n in nums:
     if n.lstrip("+") in inputs: continue
     if not any(abs(abs(float(n)) - abs(v)) < 1e-9 for v in vals.values()): bad(f"Ideal Flow number {n} not in rubric")
@@ -40,14 +40,14 @@ for line in re.findall(r"^grid (\d) (.+?)[;.]$", P, re.M):
     g, rest = line
     for pos in re.split(r", | and ", rest):
         if not any(f"grid {g} column moment {pos} " in t for _, t in C): bad(f"prompt column grid {g} {pos} uncovered")
-for need in ["L2 at", "L3 at", "the roof at", "base reaction at grid 1", "self weight line load", "inside storage zone S", "maximum sagging"]:
+for need in ["L2 at", "L3 at", "the roof at", "self weight line load", "inside storage zone S", "maximum sagging"]:
     if not any(need in t for _, t in C): bad(f"prompt item '{need}' uncovered")
 for need in ["BR1", "BR2", "L2 beam in bay 3-4", "L3 beam in bay 1-2", "TP-1", "storage zone S", "AHU-2"]:
     if not any(need in t and "memo" in t for _, t in C): bad(f"memo item {need} uncovered")
 if not any(w < 0 and "does not compute" in t for w, t in C): bad("no penalty for 'own executed program'")
 print("prompt words (hyphens as spaces):", len(P.replace("-", " ").split()), "| Ideal Flow chars:", {n: len(t) for n, t in IF.items()})
 # 5 PDF metadata, deep: decompress every stream
-d = fitz.open("../artifact/holloway_v1.pdf"); raw = open("../artifact/holloway_v1.pdf", "rb").read()
+d = fitz.open("../artifact/holloway_v2.pdf"); raw = open("../artifact/holloway_v2.pdf", "rb").read()
 bl = [b"Producer", b"Creator", b"Author", b"CreationDate", b"ModDate", b"matplotlib", b"Software", b"tEXt", b"iTXt", b"xmp", b"XMP", b"Title", b"PyMuPDF", b"fitz"]
 hits = [x for x in bl if x in raw]
 for x in range(1, d.xref_length()):
