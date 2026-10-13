@@ -37,8 +37,8 @@
 | 31 | +1 | In the handover memo, the entry for the fan in service cites the 04:10 log entry or the 06:30 log entry as the entry that sets it. |
 | 32 | +1 | In the handover memo, the entry for regulator REG-E cites the 07:55 log entry or the 02:00 log entry as the entry that sets its 08:00 opening. |
 | 33 | +1 | In the handover memo, the entry for regulator REG-T cites the 00:30 log entry as the entry that sets its 08:00 opening. |
-| 34 | +1 | The handover memo lists door D1 as open (crosscut X1 carrying air), citing the 03:20 log entry or the 07:15 log entry. |
-| 35 | +1 | The handover memo lists stopping ST-7 as replaced by a temporary brattice (crosscut X2 carrying air), citing the 05:10 log entry or the 06:20 log entry. |
+| 34 | +1 | The handover memo lists door D1 as open, citing the 03:20 log entry or the 07:15 log entry. |
+| 35 | +1 | The handover memo lists stopping ST-7 as replaced by a temporary brattice, citing the 05:10 log entry or the 06:20 log entry. |
 | 36 | +1 | Delivers the source code of the network solver as a file. |
 | 37 | +1 | Delivers a results file that lists the reported airflows, node pressures, regulator pressure drops and fan airflow. |
 | 38 | +1 | Delivers the handover memo as a file. |
