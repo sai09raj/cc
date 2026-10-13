@@ -1,0 +1,16 @@
+BRAMHALL COLLIERY - VENTILATION CONTROL ROOM LOG, NIGHT SHIFT (sheet 2 of 3)
+
+22:00 Handover from back shift: main fan running, blade setting 0 deg. Regulators at normal openings. Door D1 shut, stopping ST-7 intact.
+00:30 T1 heading stopped for the night. REG-T closed down from 1.5 to 1.0 m2.
+01:00 Manager requests main fan blade setting +5 deg for the morning; change to be made by the day shift fitters (not done on nights).
+02:00 Methane 1.1 % in E panel return. REG-E opened from 2.8 to 3.6 m2.
+03:20 Door D1 pair propped open for the shuttle car transfer from W panel to C panel.
+04:10 Main fan tripped on bearing temperature. Standby fan started automatically 04:11 and is in service.
+05:10 Roof fall in crosscut X2 damaged stopping ST-7; air passing through X2.
+05:45 REG-C opening checked: 1.8 m2 as set.
+06:20 Temporary brattice erected at ST-7 (stopping not rebuilt).
+06:30 Main fan bearing replaced. Main fan held on standby pending vibration test by day shift; standby fan remains in service.
+07:15 Door D1 still propped open, shuttle car transfer continuing; leave open until day shift.
+07:40 Methane E return 0.8 %. REG-E to be reset to 2.8 m2 at end of shift.
+07:55 REG-E reset deferred to day shift (methane still above 0.75 %); REG-E remains at 3.6 m2.
+08:00 Handover to day shift.

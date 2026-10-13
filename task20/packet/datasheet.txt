@@ -1,0 +1,29 @@
+BRAMHALL COLLIERY - 400 m LEVEL VENTILATION - DATA SHEET (sheet 1 of 3)
+
+Arrangement. Fresh air enters through the downcast shaft DS to the pit bottom PB and returns through the upcast shaft US from the upcast bottom UB. The surface exhaust fan (main fan, with a standby fan on the same drift) draws air up US. The airways of the 400 m level are shown on sheet 3 (ventilation plan): intake airways I1-I4, W1, C1, E1; return airways W2, C2, E2, T1, R1-R3; crosscuts X1 (J7 to J8) and X2 (J8 to J9). Each airway consists of the sections shown on the plan, in the order shown, separated at survey stations (SS) where the roadway profile changes. The working faces of the W, C and E panels are in airways W2, C2 and E2: face airflow = airflow in that airway.
+
+Normal arrangement. Crosscut X1 is closed by door pair D1 (shut: no airflow; open: no added resistance). Crosscut X2 is sealed by stopping ST-7 (intact: no airflow). Regulators REG-W, REG-C, REG-E and REG-T are in airways W2, C2, E2 and T1. Normal regulator openings: REG-W 2.4 m2, REG-C 1.8 m2, REG-E 2.8 m2, REG-T 1.5 m2. Main fan blade setting 0 deg.
+
+Air. Density rho = 1.20 kg/m3 throughout, incompressible flow; natural ventilation pressure is neglected (both shaft tops are at the same atmospheric pressure).
+
+Roadway profiles (Atkinson friction factor k at 1.20 kg/m3):
+  P1  arched main, steel arches, 5.2 m span: area 16.0 m2, perimeter 15.2 m, k = 0.0090 kg/m3
+  P2  rectangular, roof bolted, 4.8 x 3.0 m: area 14.4 m2, perimeter 15.6 m, k = 0.0110 kg/m3
+  P3  rectangular, roof bolted, 4.4 x 2.6 m: area 11.4 m2, perimeter 14.0 m, k = 0.0130 kg/m3
+  P4  panel gate, yielding arches, 3.8 x 2.5 m: area 9.5 m2, perimeter 12.6 m, k = 0.0170 kg/m3
+  P5  return, rectangular, 4.6 x 2.6 m: area 12.0 m2, perimeter 14.4 m, k = 0.0150 kg/m3
+
+Formulas.
+  Airway section resistance R = k L per / A^3 (N s2/m8), L section length (m), per perimeter (m), A area (m2).
+  Airway pressure drop p = R Q |Q| (Pa), Q airflow (m3/s); R of an airway = sum of its section resistances plus any regulator or brattice in it.
+  Regulator resistance R_reg = rho / (2 (Cc A_o)^2), Cc = 0.65, A_o = regulator opening (m2).
+  A damaged stopping replaced by a temporary brattice: resistance 3.5 N s2/m8 in series with the crosscut's sections.
+  Shafts: downcast DS R = 0.0042 N s2/m8 (surface to PB); upcast US including fan drift R = 0.0048 N s2/m8 (UB to fan).
+  Fan static pressure p_fan = a - b1 Q - b2 Q^2 (Pa, Q in m3/s) for the fan in service:
+  main -5   a = 3050 Pa, b1 = 2.0 Pa s/m3, b2 = 0.047 Pa s2/m6
+  main 0    a = 3300 Pa, b1 = 2.0 Pa s/m3, b2 = 0.044 Pa s2/m6
+  main +5   a = 3550 Pa, b1 = 2.0 Pa s/m3, b2 = 0.042 Pa s2/m6
+  standby   a = 3050 Pa, b1 = 1.2 Pa s/m3, b2 = 0.049 Pa s2/m6
+  The fan pressure balances the total pressure drop surface - DS - level - UB - US - fan. Static pressure at a node is reported relative to surface atmospheric pressure (Pa, negative below atmospheric); so p(PB) = -R_DS Q_fan^2 and p(UB) = -(p_fan - R_US Q_fan^2).
+
+Statutory minimum airflow at every working face: 30.0 m3/s.
