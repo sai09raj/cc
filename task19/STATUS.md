@@ -30,3 +30,4 @@
 - Network data, key, rubric and Ideal Flow are unchanged. Only the plan sheet and the file name changed (artifact/dh19_v2.pdf).
 - The PDF metadata scan is clean and the leak check passes.
 - v1 files are archived in model_v1/ and platform_v1/.
+- Fix (#100): the plan page was blank in macOS Preview because its 1-bit soft mask had been set to /DeviceRGB. The drawing is now flattened to RGB with no mask, and make_packet.py asserts there is none.
