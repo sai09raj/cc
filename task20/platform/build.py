@@ -68,7 +68,7 @@ analyze = ("Read the ventilation plan airway by airway, taking each section's pr
 execute = ("Write a network solver: Atkinson resistances R = k L per / A^3 per section, regulators rho/(2 (0.65 A)^2) in series, p = R Q|Q|, and Newton (or Hardy Cross) on node pressures closed by the standby fan curve and the shaft resistances. "
            "Check that airflow balances at every junction and that the fan pressure equals the total drop around the circuit. "
            f"Results {T}: airflows (m3/s) {fv}; fan airflow {s4(k['Q'])} m3/s. Static pressures (Pa, relative to surface) {pv}. Regulator drops (Pa) {rv}. "
-           f"Face airflows W {s4(k['face']['W'])}, C {s4(k['face']['C'])}, E {s4(k['face']['E'])} m3/s, so the C face is below the 30.0 m3/s minimum. Deliver solver, results file and memo.")
+           f"Face airflows: W (airway W2) {s4(k['face']['W'])} m3/s and E (airway E2) above 30.0 m3/s meet the minimum; C (airway C2) {s4(k['face']['C'])} m3/s is below the 30.0 m3/s minimum. Deliver solver, results file and memo.")
 synth = ("Write the handover memo from the solved state: standby fan in service (main fan tripped 04:10, held on standby 06:30); door D1 open (03:20, still open 07:15), so X1 carries air from J7 to J8; "
          "stopping ST-7 replaced by temporary brattice (05:10 damage, 06:20 brattice), so X2 carries air from J8 to J9; REG-E at 3.6 m2 (02:00, reset deferred 07:55); REG-T at 1.0 m2 (00:30). "
          "Flag that the C panel face is below the statutory minimum. Base every value on the executed solver.")

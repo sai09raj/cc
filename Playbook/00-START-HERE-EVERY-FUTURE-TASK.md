@@ -1,5 +1,7 @@
 # Start Here — Every Future Magnetic Rainstorm Task
 
+> **PRE-HANDOVER GATE (mandatory):** before giving the user any rubric, prompt, Ideal Flow or artifact, run [00-PRE-HANDOVER-GATE.md](00-PRE-HANDOVER-GATE.md) and `python3 Playbook/tools/gate.py`, and report the result table. The user must never have to paste the checklist or the reviewer photos again.
+
 ## RULE ZERO: never underestimate the platform model (Opus 5.5, max effort)
 
 The platform assigns Model A at random per task: Opus 5.5 or Opus 4.8 max. Tasks 16 and 17 ran on 4.8. Always design for the stronger model, Opus 5.5 (user decision, 2026-10-12).
