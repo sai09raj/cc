@@ -41,3 +41,33 @@ It checks: criterion length ≤ 301; compound-criterion flags (B4); explicit ran
 ## D. Report format to the user
 
 One table: check | result | evidence. Then the files (clickable), then exact field edits if anything changed.
+
+## E. Reviewer feedback, verbatim (transcribed from the user's photos; keep for reference)
+
+### E1. Photo 1: "[Fail - 15%+ Major Rubric Errors]" (Quality: Overall Task 2)
+
+> [Fail - 15%+ Major Rubric Errors] 24 of the 50 criteria (48%) have major errors, well above the 15% limit. C39 is counterproductive: it expects an age limit of L=164, but Panel F only allows 64, 96, 128, or 192, so a correct answer can never pass it (the CB's own notes show the intended value was 64). The rubric is also missing a critical criterion, because nothing checks the prompt's required explanation of why changing one knob is not enough or the causal design argument. The remaining 22 criteria (C15–C24, C27–C33, C35, C36, C38, C40, C41) are counterproductive because their expected values cannot be derived from the image. Following the packet as written gives a baseline of 14008 cycles, and all five model runs produced exactly this result with the same dispatch hash. The CB's key expects 9026 cycles, which requires an unstated rule that the controller leaves WRITE mode once no writes are waiting. These criteria therefore penalize responses that correctly follow the specification.
+
+Maps to checks B1 (legal values), B2 (unstated rule: independent re-solve), B3 (required explanation graded).
+
+### E2. Photos 2 and 3: "[Fail - 20%+ Moderate Rubric Errors]" (Quality: Overall Task 2)
+
+> [Fail - 20%+ Moderate Rubric Errors] Seventeen of the 50 criteria (34%) contain moderate errors, which is above the 20% threshold, so this dimension falls under Fail. Most of these are atomicity problems. Criteria C13 through C24 each combine two unrelated checks: a description of how one part of the simulator should work, and an exact value for one row of the trace file. For example, C18 asks whether credit is restored only when the K packet arrives back upstream in stage 1, and in the same criterion asks whether trace row 770 equals (1217,D,e3,23,3,V,3). These two checks don't really belong together, because the value of any given trace row depends on the entire simulation working correctly, not on the specific mechanism named in the criterion. A response could implement credit restoration perfectly and still get row 770 wrong because of an unrelated bug elsewhere, and it would lose the full criterion. The model runs confirm this: the two lowest-scoring runs (fc88bc and bdaada) failed all twelve of these criteria together, which shows that the trace probes alone decide the outcome and the mechanism descriptions add nothing to the grading. Two of these criteria are even more overloaded. C19 bundles K creation, duplicate detection, the J-window rule, exact-attempt U/V joining, expiry at age 72, and smallest-attempt commit, plus a trace probe. C24 bundles control-before-DATA ordering, tie-breaking keys, blocked-edge exclusion, independent E-run counters, the BURST rule, and X-only gating, plus another trace probe. C31 has the same problem in a different form: it combines two constant values (μ=3 and ω=72) with a five-part written explanation of the baseline failure chain, so a response that reports the constants correctly but explains the failure poorly, or the reverse, can't be graded cleanly. ---- The remaining four moderate errors are overly specific criteria. C32, C33, C46, and C48 each require exact values for `assembly_highwater` and `commit_gap_cycles`, but the device contract never defines either metric. Panel B9 lists them and says they "follow B3–B8," yet none of those panels explains what they measure or when they are sampled. Because of this, a response can reasonably interpret these metrics differently from the task author and be marked wrong for it. This is exactly what happened: runs 4036e1 and 5aa4f4 matched the trace, all twelve probes, all five checkpoints, and the recommended configuration exactly, yet failed these four criteria only because of differences in those two undefined metrics. Together, the thirteen atomicity errors and four overly specific errors make up the seventeen moderate errors.
+
+Maps to checks B4 (one value or fact per criterion; no mechanism plus value) and B5 (every graded metric defined).
+
+### E3. Minor-issues review (text supplied by the user)
+
+> There were only some minor issues:
+> C2 (Counterproductive): It expects platform A at (-700, 200), but the site plan, and the ideal flow, put A at (-700, 2700). The criterion penalizes the correct reading.
+> C17-C21 (Slightly Broad): Each lower-bound criterion accepts any bound that doesn't exceed the true minimum, so a trivial bound such as 0 passes, even though the prompt asks for the strongest bound you can establish. C20 also mislabels its scenario: it gives S4 "5 feeder bays" (it has 6) and calls its value "S5's true minimum," although the number, 7,480,955, is correct for S4.
+> C12 (Slightly Broad): It checks only that a feeder count is reported for each scenario, not whether the count is correct.
+> Uncounted gap: No criterion penalizes calling a cost "proven optimal" when the reported bound is below the cost. C39 only catches costs that exceed the true minimum.
+
+Maps to checks B6 (C2-type mismatch), B7 (validity-only), B8 (mislabel), B9 (presence-only), B10 (uncounted false claim).
+
+### E4. Platform checker flags (screenshots during entry)
+
+> Rubric Contradictory Criteria Check: "Clarify target separation: A3 state summary vs memo citation; avoid mixing state and evidence in one criterion." (DH-19 rows 1 and 31.) Maps to check B11.
+
+> Rubric Contradictory Criteria Check: "'L1 open' vs 'L1 reported as not computed' - same memo target, incompatible required state vs penalty." (DH-19; no such criterion existed.) Maps to check B12: mark Invalid with the reason.
