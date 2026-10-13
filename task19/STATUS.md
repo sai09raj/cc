@@ -25,7 +25,8 @@
 - Two more gap traps added in render.py:
   - L1 DN80 640 m now sits in the A4/L1 gap near H4, next to A4's DN80 390 m.
   - X3 DN100 460 m now sits beside VC2, between A2 and X3.
-- Each of the three gap misreads simulates to 12.8.
+- B2 DN125 510 m label moved into the B2/X3 gap above VC7 (4th gap trap).
+- Each of the four gap misreads simulates to 12.8. Candidates rejected: B3/L2 swaps (100, series path through unloaded H7); L1 420 to C3 (24.8) and L2 340 to D2 (15.6) have no parallel gap to place them in.
 - Network data, key, rubric and Ideal Flow are unchanged. Only the plan sheet and the file name changed (artifact/dh19_v2.pdf).
 - The PDF metadata scan is clean and the leak check passes.
 - v1 files are archived in model_v1/ and platform_v1/.
