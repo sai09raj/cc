@@ -19,6 +19,9 @@ def likely():
                              ("D1", -1, "D2", 0, "H11: D1/D2 sections swapped"), ("D2", -1, "L2", -1, "H12: D2/L2 sections swapped"),
                              ("A4", -1, "L1", 0, "H4: A4/L1 sections swapped"), ("C3", -1, "L1", -1, "H10: C3/L1 sections swapped")]:
         d = copy.deepcopy(s); d[a][i], d[b][j] = d[b][j], d[a][i]; m[name] = state.final(routes=d)
+    d = copy.deepcopy(s); d["B2"] = d["B2"] + [d["X3"][-1]]; d["X3"] = d["X3"][:-1]; m["GAP H6: X3 470 given to B2 (seen x2)"] = state.final(routes=d)
+    d = copy.deepcopy(s); d["A4"] = d["A4"] + [d["L1"][0]]; d["L1"] = d["L1"][1:]; m["GAP H4: L1 640 given to A4"] = state.final(routes=d)
+    d = copy.deepcopy(s); d["A2"] = d["A2"] + [d["X3"][0]]; d["X3"] = d["X3"][1:]; m["GAP H2: X3 460 given to A2"] = state.final(routes=d)
     d = copy.deepcopy(s); d["A3"] = [("DN125", 450), ("DN100", 260)]; m["LOG repair ignored"] = state.final(routes=d)
     d = copy.deepcopy(s); d["A3"] = [("DN125", 450), ("DN100", 260), ("DN125", 290)]; m["LOG repair added in series"] = state.final(routes=d)
     m["LOG X3 closed"] = state.final(open={r[0] for r in N.ROUTES} - {"X3"})

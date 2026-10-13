@@ -1,9 +1,9 @@
-"""Build artifact/dh19_v1.pdf: data sheet, log, route plan; metadata stripped, leak check."""
+"""Build artifact/dh19_v2.pdf: data sheet, log, route plan; metadata stripped, leak check."""
 import os, sys, json, fitz
 HERE = os.path.dirname(os.path.abspath(__file__)); OUT = os.path.join(HERE, "..", "artifact"); os.makedirs(OUT, exist_ok=True)
 sys.path.insert(0, HERE); os.chdir(HERE)
 import render
-NAME = "dh19_v1.pdf"; tmp = os.path.join(OUT, ".plan.png"); render.plan(tmp)
+NAME = "dh19_v2.pdf"; tmp = os.path.join(OUT, ".plan.png"); render.plan(tmp)
 doc = fitz.open()
 for f, fs in (("../packet/datasheet.txt", 8.6), ("../packet/log.txt", 9.0)):
     p = doc.new_page(width=612, height=792); rc = p.insert_textbox(fitz.Rect(36, 36, 576, 756), open(f).read(), fontsize=fs, fontname="helv"); assert rc >= 0, (f, rc)

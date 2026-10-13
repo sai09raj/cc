@@ -17,3 +17,15 @@
   - XV3 defined as the X3 valve pair.
 - **Audit:** PASS. 39 criteria, longest 189 characters; PDF clean.
 - **Next:** platform entry and runs.
+
+## v1 platform runs (2026-10-13)
+- Runs 12 and 11 (trajectories 04b8779f, 4f8516a9), both the same misread: X3's DN100 470 m label, which sits in the B2/X3 gap at H6, was given to B2. All other runs scored 100. Playbook #98.
+
+## v2
+- Two more gap traps added in render.py:
+  - L1 DN80 640 m now sits in the A4/L1 gap near H4, next to A4's DN80 390 m.
+  - X3 DN100 460 m now sits beside VC2, between A2 and X3.
+- Each of the three gap misreads simulates to 12.8.
+- Network data, key, rubric and Ideal Flow are unchanged. Only the plan sheet and the file name changed (artifact/dh19_v2.pdf).
+- The PDF metadata scan is clean and the leak check passes.
+- v1 files are archived in model_v1/ and platform_v1/.

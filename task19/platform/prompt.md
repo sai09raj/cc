@@ -1,4 +1,4 @@
-You are the duty engineer taking over the Ashgrove district heating network at 09:00. The attached dh19_v1.pdf (data sheet, control room log, pipe route plan) is the complete specification. Determine the network state the log leaves at 09:00 and compute its steady-state hydraulic and thermal operation by writing and running your own network solver, following the data sheet's formulas and conventions. Report every value to 4 significant figures.
+You are the duty engineer taking over the Ashgrove district heating network at 09:00. The attached dh19_v2.pdf (data sheet, control room log, pipe route plan) is the complete specification. Determine the network state the log leaves at 09:00 and compute its steady-state hydraulic and thermal operation by writing and running your own network solver, following the data sheet's formulas and conventions. Report every value to 4 significant figures.
 
 1. State the series length of route A3 as it is at 09:00 and the EC supply setpoint in force.
 
