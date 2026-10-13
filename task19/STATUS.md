@@ -34,3 +34,14 @@
 
 ## v2 platform runs (2026-10-13)
 - Scores 100 x5 and 18, all Opus 4.8. Every gap trap was read correctly. The 18 run dropped D1's DN125 340 m section. Playbook #101.
+
+## v3 (crossed corner labels, KINGSMEAD geometry)
+- Route data, key, rubric and Ideal Flow are unchanged; the only edit is the prompt file name (dh19_v3.pdf).
+- v2's clustered gap labels are reverted to the v1 layout. The B2/X3 470 gap is kept, since it caught 2 runs in v1.
+- Four crossed corners, same pipe size, near-equal lengths. At each, the arriving route runs along the node box edge. The arriving route's label hugs the departing line, and the departing route's label sits lower, beside the arriving line. Each leader runs to its own line.
+  - H1: A1 DN150 330 / A2 DN150 420. Swap simulates to 33.0.
+  - H8: C1 DN125 520 / C2 DN125 400. Swap simulates to 31.2.
+  - H4: A4 DN80 390 / L1 DN80 640. Swap simulates to 15.6.
+  - H12: D2 DN80 250 / L2 DN80 340. Swap simulates to 25.7.
+- A swap leaves every route's section count, pipe-size sequence and bar count unchanged, so no count check catches it.
+- PDF: one 8-bit DeviceRGB image with no soft mask; pdfium renders page 3; metadata is clean and nothing leaks.

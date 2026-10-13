@@ -3,18 +3,25 @@ import sys
 import matplotlib; matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import net as N
-POS = {"EC": (9, 7), "H1": (9.6, 10.3), "H2": (12.5, 11.3), "H3": (15.5, 11.3), "H4": (16.5, 8.2), "H5": (12.2, 6.6), "H6": (13.6, 3.6),
-       "H7": (16.6, 2.4), "H8": (5.8, 8.0), "H9": (3.2, 9.4), "H10": (2.2, 12.0), "H11": (7.6, 4.2), "H12": (5.0, 1.8)}
-PATHS = {"A1": ["EC", (9.15, 7.0), (9.15, 10.3), "H1"], "A2": ["H1", (11.6, 10.3), (11.6, 11.3), "H2"], "A3": ["H2", "H3"], "A4": ["H3", (16.5, 11.3), "H4"],
+POS = {"EC": (9, 7), "H1": (8.85, 10.3), "H2": (12.5, 11.3), "H3": (15.5, 11.3), "H4": (16.5, 8.2), "H5": (12.2, 6.6), "H6": (13.6, 3.6),
+       "H7": (16.6, 2.4), "H8": (7.9, 8.0), "H9": (3.2, 9.4), "H10": (2.2, 12.0), "H11": (7.6, 4.2), "H12": (5.0, 1.8)}
+PATHS = {"A1": ["EC", (9.15, 7.0), (9.15, 10.3), "H1"], "A2": ["H1", (11.6, 10.3), (11.6, 11.3), "H2"], "A3": ["H2", "H3"], "A4": ["H3", (16.8, 11.3), (16.8, 8.2), "H4"],
          "B1": ["EC", (9.15, 7.0), (9.15, 6.6), "H5"], "B2": ["H5", (13.6, 6.6), "H6"], "B3": ["H6", (13.6, 2.4), "H7"],
          "C1": ["EC", (7.6, 7.0), (7.6, 8.0), "H8"], "C2": ["H8", (3.2, 8.0), "H9"], "C3": ["H9", (2.2, 9.4), "H10"],
-         "D1": ["EC", (8.85, 7.0), (8.85, 4.2), "H11"], "D2": ["H11", (5.0, 4.2), "H12"],
-         "L1": ["H4", (17.4, 8.2), (17.4, 13.0), (2.2, 13.0), "H10"], "L2": ["H7", (16.6, 0.9), (5.0, 0.9), "H12"],
+         "D1": ["EC", (8.85, 7.0), (8.85, 4.2), "H11"], "D2": ["H11", (5.3, 4.2), (5.3, 1.8), "H12"],
+         "L1": ["H4", (18.0, 8.2), (18.0, 13.0), (2.2, 13.0), "H10"], "L2": ["H7", (16.6, 0.9), (6.5, 0.9), (6.5, 1.8), "H12"],
          "X3": ["H2", (12.5, 9.0), (14.6, 9.0), (14.6, 3.6), "H6"]}
 FLIP = {"A2", "C2", "D2", "B3", "X3"}
-LABEL_AT = {("B1", 0): 0.6, ("C1", 0): 0.5, ("A1", 0): 0.55, ("L1", 0): 0.24, ("X3", 0): 0.2, ("A4", 1): 0.78, ("B2", 0): 0.85}
+LABEL_AT = {("B1", 0): 0.6, ("C1", 0): 0.5, ("A1", 0): 0.55}
 LABEL_SIDE = {("A2", 1): -1}
-ID_AT = {"A1": 0.75, "A2": 0.25, "A3": 0.3, "A4": 0.75, "B1": 0.2, "B2": 0.3, "B3": 0.8, "C1": 0.25, "C2": 0.8, "C3": 0.25, "D1": 0.45, "D2": 0.25, "L1": 0.78, "L2": 0.3, "X3": 0.45}
+# corner pairs: corner point C, vertical-route section (rid, k, u_V), horizontal-route section (rid, k, u_H).
+# Both labels sit in the inner corner; each leader runs to its own line.
+CORNER = [((9.15, 10.3), ("A1", 1, (0, -1)), ("A2", 0, (1, 0))),
+          ((7.6, 8.0), ("C1", 1, (0, -1)), ("C2", 0, (-1, 0))),
+          ((16.8, 8.2), ("A4", 1, (0, 1)), ("L1", 0, (1, 0))),
+          ((5.3, 1.8), ("D2", 1, (0, 1)), ("L2", 1, (1, 0)))]
+SKIP = {(v[0], v[1]) for _, v, _ in CORNER} | {(h[0], h[1]) for _, _, h in CORNER}
+ID_AT = {"A1": 0.3, "A2": 0.25, "A3": 0.3, "A4": 0.75, "B1": 0.2, "B2": 0.3, "B3": 0.8, "C1": 0.25, "C2": 0.8, "C3": 0.25, "D1": 0.45, "D2": 0.25, "L1": 0.78, "L2": 0.3, "X3": 0.45}
 def pts(rid): return [POS[p] if isinstance(p, str) else p for p in PATHS[rid]]
 def plen(path): return sum(abs(b[0] - a[0]) + abs(b[1] - a[1]) for a, b in zip(path, path[1:]))
 def point_at(path, s):
@@ -39,8 +46,9 @@ def plan(out, routes=None):
             (mx, my), (ux, uy) = point_at(path, sm); nx, ny = -uy, ux
             if rid in FLIP: nx, ny = -nx, -ny
             if LABEL_SIDE.get((rid, k)) == -1: nx, ny = -nx, -ny
-            ax.plot([mx, mx + nx * 0.25], [my, my + ny * 0.25], color="0.4", lw=0.7, zorder=3)
-            ax.text(mx + nx * 0.55, my + ny * 0.55, f"{t}\n{l} m", fontsize=8, ha="center", va="center", zorder=5, bbox=dict(fc="white", ec="0.4", lw=0.5, pad=0.2))
+            if (rid, k) not in SKIP:
+              ax.plot([mx, mx + nx * 0.25], [my, my + ny * 0.25], color="0.4", lw=0.7, zorder=3)
+              ax.text(mx + nx * 0.55, my + ny * 0.55, f"{t}\n{l} m", fontsize=8, ha="center", va="center", zorder=5, bbox=dict(fc="white", ec="0.4", lw=0.5, pad=0.2))
             s0 += l
             if k < len(secs) - 1:
                 (jx, jy), (ux, uy) = point_at(path, s0 / L * D)
@@ -51,11 +59,19 @@ def plan(out, routes=None):
         (mx, my), (ux, uy) = point_at(path, ID_AT.get(rid, 0.5) * D); nx, ny = -uy, ux
         if rid not in FLIP: nx, ny = -nx, -ny
         ax.text(mx + nx * 0.42, my + ny * 0.42, rid, fontsize=8.5, weight="bold", color=col, ha="center", va="center", zorder=6, bbox=dict(fc="#fffbe6", ec=col, lw=0.6, pad=0.15))
+    box = dict(fc="white", ec="0.4", lw=0.5, pad=0.2)
+    for (cx, cy), (vr, vk, (vx, vy)), (hr, hk, (hx, hy)) in CORNER:
+        t, l = secs_of[vr][vk]; bx, by = cx + 0.45 * hx + 0.24 * vx, cy + 0.45 * hy + 0.24 * vy
+        ax.plot([cx + 0.24 * vx, bx], [cy + 0.24 * vy, by], color="0.4", lw=0.7, zorder=3)
+        ax.text(bx, by, f"{t}\n{l} m", fontsize=8, ha="center", va="center", zorder=5, bbox=box)
+        t, l = secs_of[hr][hk]; bx, by = cx + 0.62 * hx + 0.74 * vx, cy + 0.62 * hy + 0.74 * vy
+        ax.plot([cx + 0.78 * hx, cx + 0.78 * hx + 0.74 * vx], [cy, cy + 0.74 * vy], color="0.4", lw=0.7, zorder=3)
+        ax.text(bx, by, f"{t}\n{l} m", fontsize=8, ha="center", va="center", zorder=5, bbox=box)
     for n, (x, y) in POS.items():
         ax.add_patch(plt.Rectangle((x - 0.3, y - 0.3), 0.6, 0.6, fc="#f2dcd9" if n == "EC" else "#e3efd9", ec="k", zorder=7))
         ax.text(x, y, n, ha="center", va="center", fontsize=9, weight="bold", zorder=8)
-    ax.annotate("", xy=(17.9, 12.4), xytext=(17.9, 11.4), arrowprops=dict(arrowstyle="-|>", lw=2)); ax.text(17.8, 12.55, "N", fontsize=12, weight="bold")
-    ax.set_xlim(0.8, 18.4); ax.set_ylim(0.3, 13.6)
+    ax.annotate("", xy=(18.5, 12.4), xytext=(18.5, 11.4), arrowprops=dict(arrowstyle="-|>", lw=2)); ax.text(18.4, 12.55, "N", fontsize=12, weight="bold")
+    ax.set_xlim(0.8, 18.9); ax.set_ylim(0.3, 13.6)
     ax.set_title("ASHGROVE DISTRICT HEATING - sheet 3: pipe route plan (NOT to scale; lengths as labelled). Each route is shown section by section with pipe type and\n"
                  "section length; valve chambers between sections are bars with chamber numbers. Red: branch routes A, B, C, D from the energy centre EC; blue: loop and crossover routes.", fontsize=10)
     fig.savefig(out, dpi=150, bbox_inches="tight", facecolor="white"); plt.close(fig)
