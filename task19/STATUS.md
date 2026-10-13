@@ -31,3 +31,6 @@
 - The PDF metadata scan is clean and the leak check passes.
 - v1 files are archived in model_v1/ and platform_v1/.
 - Fix (#100): the plan page was blank in macOS Preview because its 1-bit soft mask had been set to /DeviceRGB. The drawing is now flattened to RGB with no mask, and make_packet.py asserts there is none.
+
+## v2 platform runs (2026-10-13)
+- Scores 100 x5 and 18, all Opus 4.8. Every gap trap was read correctly. The 18 run dropped D1's DN125 340 m section. Playbook #101.
