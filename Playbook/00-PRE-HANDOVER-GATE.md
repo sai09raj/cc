@@ -28,6 +28,7 @@ The user should never have to paste this list or the reviewer photos again. Run 
 | B11 | Platform "Rubric Contradictory Criteria Check": a memo row repeated a state already graded in a results row (#99) | Critical flag | Grade a state once. If the results rows grade it, the memo row grades only the citation. |
 | B12 | Platform checker invented a criterion ("L1 reported as not computed") | False positive | Mark Invalid, quote the real rows, and show that one response can satisfy them all. |
 | B13 | Platform grader passed near-misses when tolerances were given as percentages (#90) | Grading | Give every numeric criterion an explicit accept range ("accept a to b"), never a percentage. |
+| B15 | Platform 'Prompt Check For Multimodal Inputs' read the prompt's PDF description as text only (#104) | Critical flag | The prompt must call the drawing a drawing and say what exists only on it (topology, section data). |
 | B14 | Drawing page blank in macOS Preview: soft mask set to /DeviceRGB (#100) | Artifact | Flatten images to RGB before inserting them; no SMask; render every page with a second engine (pypdfium2). |
 
 ## C. Mechanical checks: run the script
