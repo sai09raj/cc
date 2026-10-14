@@ -1,4 +1,4 @@
-You are the traction control engineer on the Hartsdown Tramway at the 07:30 morning peak. The attached tr21_v1.pdf (data sheet, control log, route plan) is the complete specification. Determine the supply state the log leaves at 07:30 and compute the steady state DC load flow for the 07:30 snapshot by writing and running your own network solver, following the data sheet's model and conventions. Report every value to 4 significant figures.
+You are the traction control engineer on the Hartsdown Tramway at the 07:30 morning peak. The attached tr21_v1.pdf (data sheet, control log, and a drawn route plan; the network topology and every section's conductor type and length are given only on the drawing) is the complete specification. Determine the supply state the log leaves at 07:30 and compute the steady state DC load flow for the 07:30 snapshot by writing and running your own network solver, following the data sheet's model and conventions. Report every value to 4 significant figures.
 
 1. State which substations are in service at 07:30, the no load voltages of TSS-C and TSS-D in force, and whether route X1 is in service.
 
