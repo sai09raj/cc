@@ -46,7 +46,7 @@ Model A (claude-opus-4-8) scored 12 or 19 on every run. Full notes: [16-CASE-STU
 
 ## FOURTH PROVEN SUCCESS: Task 20 MV-20 (mine ventilation), passed at the FIRST version
 
-Model A (claude-opus-4-8) scored 21, 35 and 14. This was the DH-19 v3 crossed-corner recipe applied from v1, with the pre-handover gate and an independent re-solve, so no revisions were needed. The J9 corner caught 2 of 3 runs. A crowded junction (J8) with two equal 310 m labels from different routes caught 2 of 3. Details are in task20/STATUS.md and mistake register #103.
+Model A (claude-opus-4-8) scored 21, 35 and 14. This was the DH-19 v3 crossed-corner recipe applied from v1, with the pre-handover gate and an independent re-solve, so no revisions were needed. The J9 corner caught 2 of 3 runs. A crowded junction (J8) with two equal 310 m labels from different routes caught 2 of 3. Full notes: [17-CASE-STUDY-TASK-20-MV20.md](17-CASE-STUDY-TASK-20-MV20.md).
 
 ## Scope of this file
 
@@ -166,7 +166,7 @@ unintentionally.
 ## Required reading order
 
 1. Current official PDFs and project handbook.
-2. **[14-CASE-STUDY-TASK-16-CW200.md](14-CASE-STUDY-TASK-16-CW200.md) and [15-CASE-STUDY-TASK-17-KINGSMEAD.md](15-CASE-STUDY-TASK-17-KINGSMEAD.md) and [16-CASE-STUDY-TASK-19-DH19.md](16-CASE-STUDY-TASK-19-DH19.md): the three proven recipes. Read them first.**
+2. **[14-CASE-STUDY-TASK-16-CW200.md](14-CASE-STUDY-TASK-16-CW200.md) and [15-CASE-STUDY-TASK-17-KINGSMEAD.md](15-CASE-STUDY-TASK-17-KINGSMEAD.md) [16-CASE-STUDY-TASK-19-DH19.md](16-CASE-STUDY-TASK-19-DH19.md) and [17-CASE-STUDY-TASK-20-MV20.md](17-CASE-STUDY-TASK-20-MV20.md): the proven recipes. Read them first.**
 2a. [README.md](README.md).
 3. [01-END-TO-END-SOP.md](01-END-TO-END-SOP.md) through [04-PREFLIGHT-AND-VALIDATION.md](04-PREFLIGHT-AND-VALIDATION.md).
 4. [09-CASE-STUDY-TASK-03.md](09-CASE-STUDY-TASK-03.md), especially isolated probes versus integrated checkpoints.

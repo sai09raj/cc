@@ -165,3 +165,8 @@ Stop, repair, regenerate, and only then rerun.
 - [ ] (Task 19) Every leader touches only its own line (crop each corner at 150 dpi); no legend text that points at the trap.
 - [ ] (Task 19) Every page renders in a second engine (pypdfium2); no image has a soft mask with an RGB colour space.
 - [ ] (Task 19) Memo rows grade only the citation when the same state is graded by a results row.
+- [ ] (Task 20) Every planned crossed corner was simulated before drawing; no corner pairs airways in series.
+- [ ] (Task 20) Graded set excludes series duplicates; one physically consistent memo finding (e.g. a face below its minimum) is moved by the misreads.
+- [ ] (Task 20) Domain chosen from the platform's fixed list (00-START); specialism in the subdomain.
+- [ ] (Task 20) User's platform screenshots compared word by word with the source files (airway and node names especially).
+- [ ] (Task 20) After the runs: each run reproduced from its own reading, and re-graded with the printed ranges (gate section F).

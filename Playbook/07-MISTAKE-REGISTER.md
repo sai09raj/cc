@@ -113,6 +113,7 @@ This register records specific failure modes encountered across the Task 01–04
 
 ## Do
 
+- (Task 20) Run the full recipe at v1. Simulate every planned corner before drawing it: swaps between airways in series do nothing. Exclude series-duplicate quantities from the graded set. Validate run scores afterwards (gate section F).
 - (Task 19) Build the route plan at v1 with 3-4 crossed same-size corners, lengths within about 20-35 %, each swap simulated to 40 or below; revise only the drawing between versions.
 - (Tasks 16/17) Put the difficulty in fair drawing attributions (near-equal same-type values next to each other on different routes or legs) that feed a fully coupled solve.
 - (Tasks 16/17) Weight the rubric by misread sensitivity and simulate every single misread to about 40 or below before entry.
@@ -179,6 +180,7 @@ This register records specific failure modes encountered across the Task 01–04
 - Do not pick a mechanism with structurally independent facts (each item's correctness derived only from its own data, not from any other item's value) and expect reweighting to manufacture cascading difficulty; a single capped-at-10 criterion cannot outweigh the content a narrow bug honestly leaves untouched, no matter how it's distributed.
 - Do not publish the full rule set as one numbered, ordered list; that list is the perfect-semantics summary, and handing it over removes the composition work the task is supposed to test.
 - Do not keep fixing packaging bugs after a clean blind-pilot content solve; Gate 8.5 means redesign, not another round.
+- (Task 20) Do not pick a domain that is not on the platform's fixed list; use the closest entry and put the specialism in the subdomain. Do not leave an ungraded number in the Ideal Flow.
 - Do not cluster drawing traps or use gap labels that change a route's section count; use 3-4 crossed same-size corners spread across the plan (#101, #102).
 - Do not change PDF image colour spaces blindly: flatten drawings to RGB first; a soft mask must stay /DeviceGray or macOS Preview shows a blank page (#100).
 - Do not write validity-only or presence-only criteria ("reports a bound not above the minimum", "reports a count for each scenario") when the prompt asks for the best value or a correct value; reviewers mark them slightly broad because a trivial answer passes.

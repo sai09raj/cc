@@ -46,7 +46,7 @@ Model A (claude-opus-4-8) scored 12 or 19 on every run. Full notes: [16-CASE-STU
 
 ## FOURTH PROVEN SUCCESS: Task 20 MV-20 (mine ventilation), passed at the FIRST version
 
-Model A (claude-opus-4-8) scored 21, 35 and 14. This was the DH-19 v3 crossed-corner recipe applied from v1, with the pre-handover gate and an independent re-solve, so no revisions were needed. The J9 corner caught 2 of 3 runs. A crowded junction (J8) with two equal 310 m labels from different routes caught 2 of 3. Details are in task20/STATUS.md and mistake register #103.
+Model A (claude-opus-4-8) scored 21, 35 and 14. This was the DH-19 v3 crossed-corner recipe applied from v1, with the pre-handover gate and an independent re-solve, so no revisions were needed. The J9 corner caught 2 of 3 runs. A crowded junction (J8) with two equal 310 m labels from different routes caught 2 of 3. Full notes: [17-CASE-STUDY-TASK-20-MV20.md](17-CASE-STUDY-TASK-20-MV20.md).
 
 ## Start here: policy, engineering method, and lessons through Task 04 Revision F
 
@@ -144,6 +144,7 @@ For Task 03 and every later Magnetic Rainstorm task, use a separate agent/review
 - [13-CASE-STUDY-TASK-06.md](13-CASE-STUDY-TASK-06.md) — ATRIUM-9 sweep task (20/21 %), later found to rest partly on unstated rules (see the correction below).
 - [14-CASE-STUDY-TASK-16-CW200.md](14-CASE-STUDY-TASK-16-CW200.md) — **first stump by completed low scores** (23, 22, 41): the coupled-solve recipe.
 - [15-CASE-STUDY-TASK-17-KINGSMEAD.md](15-CASE-STUDY-TASK-17-KINGSMEAD.md) — **second stump** (43, 44, 39): drawing attribution, sensitivity-weighted rubric, and the v1 mistakes v2 fixed.
+- [17-CASE-STUDY-TASK-20-MV20.md](17-CASE-STUDY-TASK-20-MV20.md) — **fourth stump, passed at v1** (21, 35, 14): the full recipe in one pass, the crowded-junction trap, and score validation.
 - [16-CASE-STUDY-TASK-19-DH19.md](16-CASE-STUDY-TASK-19-DH19.md) — **third stump** (all runs 12 or 19): the crossed-corner recipe with exact geometry, and why v1/v2 fell short.
 - [QUICK-CHECKLIST.md](QUICK-CHECKLIST.md) — the short operational checklist to keep beside the platform.
 
