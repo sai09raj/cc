@@ -44,6 +44,10 @@ Model A (claude-opus-4-8) scored 12 or 19 on every run. Full notes: [16-CASE-STU
 2. One route runs along the node box edge. Each route's label sits nearer the *other* route's line, and a short leader runs to its own line.
 3. Use 3–4 such corners spread across the plan, each swap simulated to 40 or below. Do not cluster traps (v2's clustered gap labels: 5 of 6 runs at 100).
 
+## FOURTH PROVEN SUCCESS: Task 20 MV-20 (mine ventilation), passed at the FIRST version
+
+Model A (claude-opus-4-8) scored 21, 35 and 14. This was the DH-19 v3 crossed-corner recipe applied from v1, with the pre-handover gate and an independent re-solve, so no revisions were needed. The J9 corner caught 2 of 3 runs. A crowded junction (J8) with two equal 310 m labels from different routes caught 2 of 3. Details are in task20/STATUS.md and mistake register #103.
+
 ## Start here: policy, engineering method, and lessons through Task 04 Revision F
 
 This folder is a handoff package for an author—or another capable agent—who must design, validate, enter, run, grade, and submit a Magnetic Rainstorm task without repeating the long trial-and-error cycle that produced it.

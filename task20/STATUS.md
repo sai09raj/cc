@@ -12,3 +12,12 @@
 - **Crossed corners** (same profile, lengths within 20-26 %): J2 C1/I3 P2 360/450, J5 C2/R2 P5 350/440, J7 W1/X1 P3 380/470, J9 E1/X2 P4 280/360. Strict simulated scores 17.1, 17.1, 20.7 and 17.1. Every log slip scores 13 or below.
 - **Rubric v1:** 39 criteria, +111, longest 162 characters. Numeric rows (24 x 4) chosen by the sensitivity greedy, with series duplicates excluded (R1 = W2, I1 = fan, T1 = I4). Memo rows are citation-only where a state is graded elsewhere (#99).
 - **PDF:** 3 pages, one 8-bit DeviceRGB image, no mask; pdfium renders page 3; metadata clean; no leaks. Every leader was checked in code to land on its own section.
+
+## v1 platform runs: PASSED at the first version
+- Scores 21, 35, 14 (Opus 4.8), all completed in 22–29 min. Every log trap was solved in all runs.
+- **21:** swapped the J9 crossed corner (E1 read P4 360, X2 read P4 280). This is the designed swap.
+- **35:** read every corner correctly, but dropped X1's second section (P3 310). Its label sits below X1 near J8 and the door D1 marker, next to C2's P4 310 label.
+- **14:** made three misattributions:
+  - I3's P2 450 added to C1 (J2 corner);
+  - X2's P4 360 added to E1 (J9 corner);
+  - X1's P3 310 added to C2 (J8).

@@ -52,3 +52,7 @@
 - Don't: cluster traps or make one area of the drawing look busy; it makes the model slow down and check.
 - Don't: use mixed pipe sizes or large length differences for a swap; the model rejects them.
 - Don't: trust a blind subagent solve as the difficulty test. Blind solves read every label correctly while real runs still slipped.
+
+## 6. Confirmed at v1 on the next task (MV-20, mine ventilation)
+
+The recipe in section 3, applied from the first version, passed with 21, 35 and 14. One addition: a crowded junction where two labels with the same length belong to different routes (X1's P3 310 and C2's P4 310 at J8) also caught runs, which dropped or merged the two labels. Sequence: model, then sensitivity-chosen rubric, then crossed corners, then gate, then independent re-solve, then entry.
