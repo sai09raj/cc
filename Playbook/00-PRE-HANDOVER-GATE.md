@@ -78,3 +78,9 @@ Maps to checks B6 (C2-type mismatch), B7 (validity-only), B8 (mislabel), B9 (pre
 2. Re-grade each run with the accept ranges as printed in the rubric, and compare with the platform score.
 3. Check that the non-numeric rows (state, verdicts, memo citations, files) were earned or lost for real reasons.
 4. Any mismatch means a task or rubric defect: investigate before claiming the stump.
+
+### What the simulation can and cannot replace
+
+- **It can predict grading:** given a run's values, the strict re-grade reproduces the platform score to within about 1 point (MV-20: 20.7/35.1/13.5 against 21/35/14).
+- **It cannot predict behaviour:** whether a model actually makes a given misread. DH-19 v2 traps all simulated to 12.8, but 5 of 6 real runs scored 100. Blind solves on our side read every label correctly while platform runs still slipped.
+- **How to use it:** require every trap and log slip to simulate to 40 or below before entry (necessary, not sufficient). Validate scores after the runs. Keep the platform runs as the only evidence of a stump.
