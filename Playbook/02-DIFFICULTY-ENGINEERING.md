@@ -315,6 +315,8 @@ The artifact must explicitly cover every semantic used by the oracle. That final
 
 ## Gap labels between parallel route lines (DH-19 v1, #98)
 
+> **Superseded (DH-19 v2, #101):** adding more gap labels made results worse (1 of 6 below 50, down from 2 of 6). Clustered labels look suspicious, and valve bars let the model count sections. Use the crossed corners below instead.
+
 In DH-19 v1, both runs below 50 (11 and 12) gave a section label to the wrong route. The label sat in the gap between two parallel route lines; all other runs scored 100. Corner labels caught no run. A gap label is the strongest trap seen so far, but one alone catches only some runs. Put three or more gap traps in one drawing, on routes whose misattribution changes the meshed flow split. Give each label a leader to its correct line so it stays fair. Simulate each trap to 40 or below.
 
 

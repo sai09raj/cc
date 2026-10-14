@@ -1,5 +1,6 @@
-- [ ] **Run 00-PRE-HANDOVER-GATE.md and tools/gate.py; report the table with the files.**
 # Magnetic Rainstorm Quick Checklist
+
+- [ ] **Run 00-PRE-HANDOVER-GATE.md and tools/gate.py; report the table with the files.**
 
 ## RULE ZERO: never underestimate the platform model (Opus 5.5, max effort)
 
