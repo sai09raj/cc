@@ -1,0 +1,13 @@
+HARTSDOWN TRAMWAY - TRACTION CONTROL LOG, EARLY SHIFT (sheet 2 of 3)
+
+00:30 Handover from night shift: all four substations in service at tap 0. All routes energised.
+02:00 Route X1 (N9 to N1) isolated at both ends for overhead line repair (contact wire wear).
+05:20 X1 repair complete; X1 re-energised and back in service.
+05:40 TSS-B tripped: rectifier transformer gas relay alarm. TSS-B out of service.
+06:15 TSS-D rectifier transformer tap raised to +1 to support line voltage while TSS-B is out.
+06:55 Tap raise to +1 requested for TSS-C; refused by control (TSS-C transformer already at its thermal limit). TSS-C stays at tap 0.
+07:10 TSS-B remains out pending a transformer oil test by the day shift.
+07:30 SCADA peak snapshot, trams at stops and pantograph power:
+      T104 at N1 760 kW; T117 at N3 980 kW; T122 at N4 620 kW; T109 at N5 840 kW;
+      T131 at N7 1150 kW; T126 at N8 820 kW; T113 at N9 890 kW; T140 at B 560 kW.
+      T150 is stabled in the depot behind A with its pantograph lowered (draws nothing).

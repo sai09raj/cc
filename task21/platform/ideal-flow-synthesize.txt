@@ -1,0 +1,1 @@
+Write the handover memo from the solved state: TSS-B out of service (tripped 05:40, still out at 07:10); TSS-D at tap +1, 850 V (06:15); TSS-C at tap 0, 835 V, because the raise was refused (06:55); X1 back in service after its repair (05:20). Flag that T126 at N8 is below the 600 V minimum at the peak. Base every value on the executed solver.

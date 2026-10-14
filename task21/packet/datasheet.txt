@@ -1,0 +1,26 @@
+HARTSDOWN TRAMWAY - 750 V DC TRACTION SUPPLY - DATA SHEET (sheet 1 of 3)
+
+Arrangement. Four traction substations TSS-A, TSS-B, TSS-C and TSS-D feed the overhead contact line at their feeding points A, B, C and D. The routes between feeding points and tram stops (N1 to N9) are shown on sheet 3 (route plan). Each route consists of the sections shown on the plan, in the order shown, separated at conductor change points (CP). Every route is energised and electrically continuous end to end (no section insulators are open) unless the log says otherwise; the contact line and the return rail of a route follow the same path.
+
+Electrical model.
+  Each section is represented by its loop resistance: contact line (with any parallel feeder) plus return rail, R = r x L, with r in ohm/km from the table below and L the section length. The voltage at a node is the contact-line-to-rail voltage there.
+  A traction substation is a voltage source: busbar (feeding point) voltage V = E - R_i x I, with E the no-load voltage and R_i the internal resistance (rectifier, transformer and cables), I its output current. Each substation rectifier is a diode bridge: it cannot take current back. If the network would drive current into a substation, that substation carries zero current and its feeding point floats.
+  Rectifier transformer tap: each tap step changes E by 15 V (tap +1: E + 15 V; tap -1: E - 15 V).
+  A tram at a stop is a constant-power load at that stop's node: current drawn I = P / V, with P its pantograph power from the log and V the node voltage.
+  Conductor loss = sum over all route sections of I^2 x R (substation internal losses excluded), in kW.
+  Report each route current as its magnitude with the direction of current flow along the contact line (from which node to which node), and each substation output current.
+
+Conductor types (loop resistance, contact line plus return rail):
+  K1  contact wire 107 mm2 Cu + 2 x 240 mm2 Al feeder; twin 54E1 rail: loop resistance 0.027 ohm/km
+  K2  contact wire 107 mm2 Cu + 240 mm2 Al feeder; 54E1 rail: loop resistance 0.037 ohm/km
+  K3  contact wire 107 mm2 Cu, no feeder; 59R2 grooved rail: loop resistance 0.050 ohm/km
+  K4  contact wire 80 mm2 Cu, no feeder; 59R2 grooved rail: loop resistance 0.065 ohm/km
+  K5  contact wire 150 mm2 Cu + 2 x 400 mm2 Al feeder; twin 54E1 rail: loop resistance 0.019 ohm/km
+
+Traction substations:
+  TSS-A  feeding point A: no-load voltage 835 V at tap 0, internal resistance 0.021 ohm
+  TSS-B  feeding point B: no-load voltage 835 V at tap 0, internal resistance 0.024 ohm
+  TSS-C  feeding point C: no-load voltage 835 V at tap 0, internal resistance 0.019 ohm
+  TSS-D  feeding point D: no-load voltage 835 V at tap 0, internal resistance 0.022 ohm
+
+Peak voltage check: the minimum permissible pantograph voltage at the 07:30 peak is 600 V; any tram below it must be reported.
