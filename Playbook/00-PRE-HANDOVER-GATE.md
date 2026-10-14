@@ -71,3 +71,10 @@ Maps to checks B6 (C2-type mismatch), B7 (validity-only), B8 (mislabel), B9 (pre
 > Rubric Contradictory Criteria Check: "Clarify target separation: A3 state summary vs memo citation; avoid mixing state and evidence in one criterion." (DH-19 rows 1 and 31.) Maps to check B11.
 
 > Rubric Contradictory Criteria Check: "'L1 open' vs 'L1 reported as not computed' - same memo target, incompatible required state vs penalty." (DH-19; no such criterion existed.) Maps to check B12: mark Invalid with the reason.
+
+## F. After the runs: validate the scores
+
+1. For each run, extract its section reading and log state from the trajectory, feed them into the model, and confirm its reported values match within rounding. If they match, its solver is right and the loss comes from reading or state, not from the task.
+2. Re-grade each run with the accept ranges as printed in the rubric, and compare with the platform score.
+3. Check that the non-numeric rows (state, verdicts, memo citations, files) were earned or lost for real reasons.
+4. Any mismatch means a task or rubric defect: investigate before claiming the stump.

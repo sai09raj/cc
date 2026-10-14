@@ -21,3 +21,14 @@
   - I3's P2 450 added to C1 (J2 corner);
   - X2's P4 360 added to E1 (J9 corner);
   - X1's P3 310 added to C2 (J8).
+
+## Score validity check (2026-10-14)
+- **Same solver, different reading:** each run's reported values equal our model's output for that run's own section reading, within 4 s.f. rounding (max relative difference 3.6e-4). Their solvers agree with ours; the only difference is the drawing reading.
+- **Strict re-grade with the printed accept ranges:**
+  - 21 → 20.7 (2/24 numeric rows: W1, UB);
+  - 35 → 35.1 (6/24: fan Q, PB, UB, J1, J5, J6);
+  - 14 → 13.5 (0/24).
+
+  All three match the platform scores exactly.
+- **Non-numeric rows earned in full by all runs:** standby fan, REG-E 3.6, REG-T 1.0, C face below with W and E meeting, memo citations, files. No unstated rule, rubric error or grader leniency.
+- **Note:** the outward rounding of printed ranges passed two run-35 pressures (J1 -690.3, PB -70.82) that a strict 0.1 % check fails. Simulate with the printed ranges, not the internal tolerance.
