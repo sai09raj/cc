@@ -28,3 +28,21 @@
   - Independent re-solve (scipy, using numbers parsed from the packet text and lengths read off the plan): matches all 24 values to 3e-14.
   - Leaders: checked in code.
   - PDF: 10 objects, text identical to the source, no answer strings (one coincidental 3 s.f. match: the ungraded L4 current 820.3 A against T126's 820 kW input).
+
+## v1 platform runs: 5 of 6 at 14 (validity audit, 2026-10-15)
+- **Three trajectories analysed (Opus 4.8, 12–13 min each):** all report identical values (TSS-A 2882, TSS-C 3855, TSS-D 3088, loss 963.7 kW).
+- **Cause:** every run read all four crossed corners by proximity, giving the swap:
+  - M1 got 470, M2 got 360;
+  - X1 got 410, N9R got 520;
+  - S3 got 580, S4 got 470;
+  - S6 got 330, S5 got 440.
+
+  The other 12 routes and every log trap were read correctly. No run mentions leader lines.
+- **Their values are our model fed that swapped reading** (max difference 0.05 %, 4 s.f. rounding). The strict re-grade with the printed ranges gives 13.5, matching the platform's 14: 0/24 numeric rows, 15/15 non-numeric.
+- **The key is correct:**
+  - the independent re-solve matches it to 3e-14;
+  - every leader lands on its own section (checked in code and at 200 dpi).
+- **Risk:**
+  - Neither this packet nor KINGSMEAD, DH-19 or MV-20 states the leader convention in words; it relies on standard drafting practice.
+  - Identical scores across runs invite a reviewer question about whether the drawing is ambiguous.
+  - Option: add an explicit sentence to the title or data sheet (a label belongs to the section its leader line touches). This makes the task fairer, but it will probably raise scores.
