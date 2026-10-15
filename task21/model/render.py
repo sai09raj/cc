@@ -79,7 +79,8 @@ def plan(out):
     ax.annotate("", xy=(18.1, 12.6), xytext=(18.1, 11.8), arrowprops=dict(arrowstyle="-|>", lw=2)); ax.text(18.0, 12.75, "N", fontsize=12, weight="bold")
     ax.set_xlim(0.8, 18.6); ax.set_ylim(0.8, 13.2)
     ax.set_title("HARTSDOWN TRAMWAY 750 V DC - sheet 3: traction supply route plan (schematic, NOT to scale; lengths as labelled). Each route is shown section by section with\n"
-                 "conductor type and section length; conductor change points are bars with numbers CPn. Yellow boxes: traction substation feeding points TSS-A to TSS-D; grey boxes: tram stops.", fontsize=10)
+                 "conductor type and section length; conductor change points are bars with numbers CPn. Yellow boxes: traction substation feeding points TSS-A to TSS-D; grey boxes: tram stops.\n"
+                 "Each section label belongs to the section that its leader line touches.", fontsize=10)
     fig.savefig(out, dpi=150, bbox_inches="tight", facecolor="white"); plt.close(fig)
 if __name__ == "__main__":
     plan(sys.argv[1])

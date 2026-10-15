@@ -1,6 +1,6 @@
 """Generate rubric.md/json, prompt.md and the three Ideal Flow boxes for TR-21 from model/key.json."""
 import json, math
-k = json.load(open("../model/key.json")); CH = json.load(open("../model/chosen.json")); T = "at the 07:30 peak"; PDF = "tr21_v1.pdf"
+k = json.load(open("../model/key.json")); CH = json.load(open("../model/chosen.json")); T = "at the 07:30 peak"; PDF = "tr21_v2.pdf"
 def rng(lo, hi, nd): f = 10 ** nd; return f"{math.floor(lo * f) / f:.{nd}f} to {math.ceil(hi * f) / f:.{nd}f}"
 def s4(v): return f"{v:#.4g}".rstrip(".")
 FLOWS = sorted([c for c in CH if c.startswith("q_")], key=lambda c: c[2:]); VOLT = sorted([c for c in CH if c.startswith("v_")]); TSSI = sorted([c for c in CH if c.startswith("i_")])

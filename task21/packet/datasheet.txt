@@ -1,6 +1,6 @@
 HARTSDOWN TRAMWAY - 750 V DC TRACTION SUPPLY - DATA SHEET (sheet 1 of 3)
 
-Arrangement. Four traction substations TSS-A, TSS-B, TSS-C and TSS-D feed the overhead contact line at their feeding points A, B, C and D. The routes between feeding points and tram stops (N1 to N9) are shown on sheet 3 (route plan). Each route consists of the sections shown on the plan, in the order shown, separated at conductor change points (CP). Every route is energised and electrically continuous end to end (no section insulators are open) unless the log says otherwise; the contact line and the return rail of a route follow the same path.
+Arrangement. Four traction substations TSS-A, TSS-B, TSS-C and TSS-D feed the overhead contact line at their feeding points A, B, C and D. The routes between feeding points and tram stops (N1 to N9) are shown on sheet 3 (route plan). Each route consists of the sections shown on the plan, in the order shown, separated at conductor change points (CP). Each section label on the plan belongs to the section that its leader line touches. Every route is energised and electrically continuous end to end (no section insulators are open) unless the log says otherwise; the contact line and the return rail of a route follow the same path.
 
 Electrical model.
   Each section is represented by its loop resistance: contact line (with any parallel feeder) plus return rail, R = r x L, with r in ohm/km from the table below and L the section length. The voltage at a node is the contact-line-to-rail voltage there.

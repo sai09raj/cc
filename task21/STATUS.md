@@ -52,3 +52,15 @@
   - MV-20: J5 and J7 in every run, J2 in 2 of 3.
 
   So the leaders are readable by this model; the TR-21 runs read by proximity and never checked them.
+
+## v2 (2026-10-15): leader rule stated, packet only
+- **Added:** "Each section label belongs to the section that its leader line touches." It is now the drawing title's third line, and the data sheet's Arrangement paragraph says it too.
+- **Renamed:** tr21_v2.pdf, so the prompt changed by one word. The v1 PDF is archived in archive_v1/; the v1 runs don't count for v2.
+- **Unchanged:** model, key, rubric and Ideal Flow.
+- **Audit:**
+  - 10 objects, one save, no metadata, XMP, ID, ICC, SMask, annotations, widgets, attachments or vector drawings;
+  - no generator, path or tool strings in any stream;
+  - text identical to the source;
+  - no answer strings (apart from the known 820 coincidence);
+  - leaders verified;
+  - pdfium renders all pages.
