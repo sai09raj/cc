@@ -171,3 +171,6 @@ Stop, repair, regenerate, and only then rerun.
 - [ ] (Task 20) Domain chosen from the platform's fixed list (00-START); specialism in the subdomain.
 - [ ] (Task 20) User's platform screenshots compared word by word with the source files (airway and node names especially).
 - [ ] (Task 20) After the runs: each run reproduced from its own reading, and re-graded with the printed ranges (gate section F).
+- [ ] (Task 21) The leader rule is stated on the drawing and in the data sheet: "Each section label belongs to the section that its leader line touches."
+- [ ] (Task 21) The prompt names the drawing as a drawing and says what exists only on it (topology, section data), so the multimodal checker passes.
+- [ ] (Task 21) If runs return identical scores, run the convergence audit (gate F) before claiming the stump, and keep a defence note.

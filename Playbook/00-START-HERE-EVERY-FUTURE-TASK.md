@@ -48,6 +48,10 @@ Model A (claude-opus-4-8) scored 12 or 19 on every run. Full notes: [16-CASE-STU
 
 Model A (claude-opus-4-8) scored 21, 35 and 14. This was the DH-19 v3 crossed-corner recipe applied from v1, with the pre-handover gate and an independent re-solve, so no revisions were needed. The J9 corner caught 2 of 3 runs. A crowded junction (J8) with two equal 310 m labels from different routes caught 2 of 3. Full notes: [17-CASE-STUDY-TASK-20-MV20.md](17-CASE-STUDY-TASK-20-MV20.md).
 
+## FIFTH PROVEN SUCCESS: Task 21 TR-21 (DC tramway traction supply)
+
+Model A (claude-opus-4-8): v1 scored 14 on all 6 runs (identical, leader rule unstated); v2, with the leader rule stated on the drawing and data sheet, scored 14, 14, 14, 14, 18 and 100. The 100 run proved the task fair. Lesson: **state the leader rule from v1** and audit any run set with identical scores. Full notes: [18-CASE-STUDY-TASK-21-TR21.md](18-CASE-STUDY-TASK-21-TR21.md).
+
 ## Scope of this file
 
 This is the permanent routing page for every future task. It is not a substitute for the rest of the folder. A fresh model should receive the **entire playbook as working context**, begin here, then read the chapters routed below before proposing an architecture.
@@ -166,7 +170,7 @@ unintentionally.
 ## Required reading order
 
 1. Current official PDFs and project handbook.
-2. **[14-CASE-STUDY-TASK-16-CW200.md](14-CASE-STUDY-TASK-16-CW200.md), [15-CASE-STUDY-TASK-17-KINGSMEAD.md](15-CASE-STUDY-TASK-17-KINGSMEAD.md), [16-CASE-STUDY-TASK-19-DH19.md](16-CASE-STUDY-TASK-19-DH19.md) and [17-CASE-STUDY-TASK-20-MV20.md](17-CASE-STUDY-TASK-20-MV20.md): the proven recipes. Read them first.**
+2. **[14-CASE-STUDY-TASK-16-CW200.md](14-CASE-STUDY-TASK-16-CW200.md), [15-CASE-STUDY-TASK-17-KINGSMEAD.md](15-CASE-STUDY-TASK-17-KINGSMEAD.md), [16-CASE-STUDY-TASK-19-DH19.md](16-CASE-STUDY-TASK-19-DH19.md) , [17-CASE-STUDY-TASK-20-MV20.md](17-CASE-STUDY-TASK-20-MV20.md) and [18-CASE-STUDY-TASK-21-TR21.md](18-CASE-STUDY-TASK-21-TR21.md): the proven recipes. Read them first.**
 2a. [README.md](README.md).
 3. [01-END-TO-END-SOP.md](01-END-TO-END-SOP.md) through [04-PREFLIGHT-AND-VALIDATION.md](04-PREFLIGHT-AND-VALIDATION.md).
 4. [09-CASE-STUDY-TASK-03.md](09-CASE-STUDY-TASK-03.md), especially isolated probes versus integrated checkpoints.
