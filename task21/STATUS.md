@@ -64,3 +64,9 @@
   - no answer strings (apart from the known 820 coincidence);
   - leaders verified;
   - pdfium renders all pages.
+
+## v2 platform runs: 14, 14, 14, 14, 18, 100 (5 of 6 below 50, PASSED)
+- **100 run (21.8 min):** read every corner correctly by tracing leaders ("every top box's left leader lands on the vertical route"). Values equal the key: TSS-A 2866, TSS-C 3747, TSS-D 3185, loss 945.9 kW. This is direct proof the drawing, rule and key are sound.
+- **14 run (20.4 min):** N6 and N7 read correctly; N4 and N9 swapped. Every one of the 24 numeric rows still fails (coupled solve). Strict 13.5; TSS-A 2835, as it reported.
+- **18 run (12.9 min):** N4, N9 and N6 swapped, N7 correct. Only TSS-C current passes. Strict 17.1; TSS-A 2812, as it reported.
+- **Validity:** each score reproduces from the run's own reading. The scores now vary (one run reached 100 from the same packet), which removes the "identical scores" concern from v1.

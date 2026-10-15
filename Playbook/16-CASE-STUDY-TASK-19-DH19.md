@@ -31,7 +31,8 @@
    - Q's label box goes at C + 0.62·u_Q + 0.74·u_P, lower and beside P's line, with a leader at C + 0.78·u_Q running to Q's line past the right of P's box.
    - Suppress the normal mid-section labels for those two sections.
    - The labels are crossed: reading by nearness gives the swap, and reading the leaders gives the truth.
-3. **Keep it fair.** Every leader must clearly touch its own line and must not touch the other label box. Check at the model's zoom (crop each corner at 150 dpi).
+3. **Always state the leader rule** on the drawing and in the data sheet: 'Each section label belongs to the section that its leader line touches.' TR-21 v2 (#106) showed it keeps 5 of 6 runs below 50 while letting a careful run reach 100, which proves fairness.
+4. **Keep it fair.** Every leader must clearly touch its own line and must not touch the other label box. Check at the model's zoom (crop each corner at 150 dpi).
 4. **Spread the traps out.** Use 3 or 4 crossed corners at different nodes of the plan; never cluster them, and add no extra legend text about leaders. One extra natural gap label is fine.
 5. **Simulate each swap.** Each single swap must score 40 or below on the rubric. Here they scored 33.0, 31.2, 15.6 and 25.7. Pick pairs whose swap moves the meshed flow split (a pair in series through an unloaded node, like B3/L2 through H7, scores 100 and is useless).
 
