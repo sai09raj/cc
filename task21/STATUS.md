@@ -46,3 +46,9 @@
   - Neither this packet nor KINGSMEAD, DH-19 or MV-20 states the leader convention in words; it relies on standard drafting practice.
   - Identical scores across runs invite a reviewer question about whether the drawing is ambiguous.
   - Option: add an explicit sentence to the title or data sheet (a label belongs to the section its leader line touches). This makes the task fairer, but it will probably raise scores.
+- **Final run set:** all 6 runs scored 14 (four in 14–17 min, one in 24 min, one in 29 min).
+- **Defence evidence:** the same crossed-corner geometry was read correctly by Opus 4.8 runs on other tasks:
+  - DH-19 v3: H4 in 2 of 2 runs, H8 in 1 of 2;
+  - MV-20: J5 and J7 in every run, J2 in 2 of 3.
+
+  So the leaders are readable by this model; the TR-21 runs read by proximity and never checked them.
