@@ -1,0 +1,50 @@
+FENWICK HILL SUPPLY ZONE - 24 h EXTENDED-PERIOD SIMULATION - DATA SHEET (sheet 1 of 3)
+
+Arrangement. Reservoir R (fixed water level 40.0 m above datum) supplies pumping station PS, which holds two identical pumps P-1 and P-2 in parallel discharging into junction J1. The pipes joining junctions J1 to J12 and the service tank T are shown only on sheet 2 (pipe plan, not to scale). Each pipe consists of the sections shown on the plan, in the order shown, separated at joints (bars numbered Kn). Each section label on the plan belongs to the section that its leader line touches. Pressure-reducing valve PRV-1 joins J6 (upstream) to J10 (downstream) and feeds the low zone J10, J11, J12 through pipes L1 and L2. All pipes and valves are open. All heads and levels are in metres above the common datum except the tank level, which is measured from the tank floor.
+
+Hydraulic model (solve the full network at every time step).
+  Head loss in a pipe section (Hazen-Williams, SI units): h = 10.67 x L x Q^1.852 / (C^1.852 x D^4.87), with h and L in m, Q in m3/s, D the internal diameter in m. A pipe's head loss is the sum over its sections, with flow direction from higher to lower head. Minor losses are neglected.
+  Pressure head at a junction = head at the junction - elevation of the junction.
+  Pumps: each running pump adds head H = 68.0 - 0.0042 x q^2 (H in m, q in L/s through that pump); running pumps share the station flow equally. There are no suction losses: pump suction head = 40.0 m and pump discharge head = head at J1. A non-return valve prevents reverse flow through the station. With no pump running, the station passes no flow.
+  Pump power drawn (kW) = 9.81 x Q x H / 0.72, with Q the total station flow in m3/s and H the head added (head at J1 - 40.0 m).
+  PRV-1: when the head at J6 is at or above 72.0 m, the valve holds the head at J10 at exactly 72.0 m and passes exactly the low-zone demand. When the head at J6 is below 72.0 m, the valve is wide open with no head loss (head at J10 = head at J6).
+  Service tank T: vertical cylinder, internal diameter 12.0 m, floor at 96.0 m; pipe TK enters at the tank floor. Head at the tank = 96.0 + tank level. Within a time step the tank acts as a fixed head.
+  Junction demand = base demand x the demand multiplier of the clock hour (sheet 3). Demands do not depend on pressure.
+
+Pipe types (code on the plan):
+  DI300   ductile iron 300                     internal diameter 300 mm, Hazen-Williams C = 130
+  DI250   ductile iron 250                     internal diameter 250 mm, Hazen-Williams C = 125
+  DI200   ductile iron 200                     internal diameter 200 mm, Hazen-Williams C = 120
+  CI200   cast iron 200 (old, tuberculated)    internal diameter 200 mm, Hazen-Williams C = 90
+  PVC150  PVC 150                              internal diameter 150 mm, Hazen-Williams C = 140
+
+Junctions:
+  J1   elevation  34.0 m   base demand  0.0 L/s
+  J2   elevation  41.0 m   base demand  5.8 L/s
+  J3   elevation  46.0 m   base demand  7.0 L/s
+  J4   elevation  44.0 m   base demand  4.7 L/s
+  J5   elevation  49.0 m   base demand  6.6 L/s
+  J6   elevation  52.0 m   base demand  3.9 L/s
+  J7   elevation  55.0 m   base demand  5.4 L/s
+  J8   elevation  77.0 m   base demand  3.1 L/s
+  J9   elevation  47.0 m   base demand  5.0 L/s
+  J10  elevation  30.0 m   base demand  0.0 L/s
+  J11  elevation  24.0 m   base demand  7.4 L/s
+  J12  elevation  21.0 m   base demand  6.2 L/s
+
+FENWICK HILL SUPPLY ZONE - DATA SHEET (sheet 1, continued)
+
+Time stepping. The day runs from 00:00 to 24:00 in 96 steps of 15 min. For each step starting at time t:
+  1. Evaluate the pump controls with the tank level at t (P-1 first, then P-2).
+  2. Solve the network steady state with the tank head at the level at t, the pumps running after step 1, and the demand multiplier of the clock hour containing t.
+  3. Update the level: level(t + 15 min) = level(t) + Q_T x 900 / A, with Q_T the flow into the tank through TK in m3/s (negative when the tank empties) and A = pi x 12.0^2 / 4 the tank plan area.
+  4. Step energy = pump power x 0.25 h; step cost = step energy x the tariff of the clock hour containing t.
+  The tank level at a clock time is the level at the step boundary at that time; the level at 24:00 is the level after the last step.
+
+Pump controls (tank level, in m from the tank floor). P-1 starts when the level is at or below 2.40 m and stops when the level is at or above 4.20 m. P-2 starts when the level is at or below 1.90 m and stops when the level is at or above 3.00 m. Between its start and stop levels a pump keeps its previous state. At 00:00 the tank level is 3.20 m, P-1 is running and P-2 is stopped (their states before the 00:00 control evaluation). A pump event time is the step start time at which that pump's state changes.
+
+Electricity tariff: GBP 0.08 per kWh from 00:00 to 07:00 and from 23:00 to 24:00; GBP 0.21 per kWh from 07:00 to 23:00.
+
+Service standards. Minimum pressure head 20.0 m at every junction with a base demand above zero, checked on the network solution of every step (step start times 00:00 to 23:45). Tank reserve 1.00 m: the tank level must not fall below it at any step boundary from 00:00 to 24:00.
+
+Operations review. The operations manager asks for the P-1 start level to be reviewed. Candidate P-1 start levels: 2.00, 2.20, 2.40, 2.60, 2.80 m (the present setting is 2.40 m). For each candidate, simulate the same day with every other setting unchanged (P-1 stop level 4.20 m, P-2 levels 1.90 and 3.00 m). Recommend the candidate with the lowest daily energy cost among those that keep the tank level at or above the 1.00 m reserve at every step boundary.

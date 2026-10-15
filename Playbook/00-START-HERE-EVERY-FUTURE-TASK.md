@@ -170,7 +170,7 @@ unintentionally.
 ## Required reading order
 
 1. Current official PDFs and project handbook.
-2. **[14-CASE-STUDY-TASK-16-CW200.md](14-CASE-STUDY-TASK-16-CW200.md), [15-CASE-STUDY-TASK-17-KINGSMEAD.md](15-CASE-STUDY-TASK-17-KINGSMEAD.md), [16-CASE-STUDY-TASK-19-DH19.md](16-CASE-STUDY-TASK-19-DH19.md) , [17-CASE-STUDY-TASK-20-MV20.md](17-CASE-STUDY-TASK-20-MV20.md) and [18-CASE-STUDY-TASK-21-TR21.md](18-CASE-STUDY-TASK-21-TR21.md): the proven recipes. Read them first.**
+2. **[14-CASE-STUDY-TASK-16-CW200.md](14-CASE-STUDY-TASK-16-CW200.md), [15-CASE-STUDY-TASK-17-KINGSMEAD.md](15-CASE-STUDY-TASK-17-KINGSMEAD.md), [16-CASE-STUDY-TASK-19-DH19.md](16-CASE-STUDY-TASK-19-DH19.md) , [17-CASE-STUDY-TASK-20-MV20.md](17-CASE-STUDY-TASK-20-MV20.md) and [18-CASE-STUDY-TASK-21-TR21.md](18-CASE-STUDY-TASK-21-TR21.md): the proven recipes. [19-CASE-STUDY-TASK-22-WD22.md](19-CASE-STUDY-TASK-22-WD22.md): the same trap in a different task shape (time series + decision). Read them first.**
 2a. [README.md](README.md).
 3. [01-END-TO-END-SOP.md](01-END-TO-END-SOP.md) through [04-PREFLIGHT-AND-VALIDATION.md](04-PREFLIGHT-AND-VALIDATION.md).
 4. [09-CASE-STUDY-TASK-03.md](09-CASE-STUDY-TASK-03.md), especially isolated probes versus integrated checkpoints.

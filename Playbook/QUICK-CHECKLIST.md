@@ -173,4 +173,6 @@ Stop, repair, regenerate, and only then rerun.
 - [ ] (Task 20) After the runs: each run reproduced from its own reading, and re-graded with the printed ranges (gate section F).
 - [ ] (Task 21) The leader rule is stated on the drawing and in the data sheet: "Each section label belongs to the section that its leader line touches."
 - [ ] (Task 21) The prompt names the drawing as a drawing and says what exists only on it (topology, section data), so the multimodal checker passes.
+- [ ] (Task 22) The strict re-grade includes a 'correct reading, textbook approximation' case (e.g. HW exponent 0.54) and it scores 100.
+- [ ] (Task 22) The task's shape differs from the last 3 tasks (not only the domain): answer type, number of visuals, decision structure.
 - [ ] (Task 21) If runs return identical scores, run the convergence audit (gate F) before claiming the stump, and keep a defence note.
